@@ -14,6 +14,14 @@ const Header = () => {
           <img alt="" src={logo} />
         </div>
       </Link>
+      <ul className="nav">
+        <Link to="/lesson">
+          <li className="nav-item">강의</li>
+        </Link>
+        <Link to="proud">
+          <li className="nav-item">자랑 게시판</li>
+        </Link>
+      </ul>
     </header>
   );
 };
