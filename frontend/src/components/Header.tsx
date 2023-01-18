@@ -9,11 +9,14 @@ import logo from '../assets/logo.png';
 const Header = () => {
   return (
     <header>
+      {/* 로고 */}
       <Link to="/">
         <div className="logo">
           <img alt="" src={logo} />
         </div>
       </Link>
+
+      {/* 네비게이션 */}
       <ul className="nav">
         <Link to="/lesson">
           <li className="nav-item">강의</li>
