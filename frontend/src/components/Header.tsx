@@ -35,12 +35,16 @@ const Header = () => {
 
       {/* 네비게이션 */}
       <ul className="nav">
-        <Link to="/lesson">
-          <li className="nav-item">강의</li>
-        </Link>
-        <Link to="proud">
-          <li className="nav-item">자랑 게시판</li>
-        </Link>
+        <li className="nav-item">
+          <Link to="/lesson" className="nav-item-link">
+            강의
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link to="proud" className="nav-item-link">
+            자랑 게시판
+          </Link>
+        </li>
       </ul>
 
       {/* 검색창 */}
