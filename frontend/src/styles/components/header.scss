@@ -30,4 +30,33 @@ header {
       text-shadow: 0 2px 4px gray;
     }
   }
+
+  .search {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    background-color: colors.$gray_color;
+    border-radius: 20px;
+    .searchbar {
+      padding: 6px 20px;
+      height: 36px;
+      border-width: 0px;
+      font-size: 20px;
+      border-radius: 20px;
+      background-color: colors.$gray_color;
+    }
+
+    .searchbar:focus {
+      outline: none;
+    }
+
+    .search-button {
+      background-color: transparent;
+      border-width: 0;
+      padding: 0 20px;
+    }
+    .search-button:hover {
+      cursor: pointer;
+    }
+  }
 }
