@@ -11,17 +11,23 @@ header {
       height: 50px;
     }
   }
+
   .nav {
     list-style: none;
     font-weight: bold;
     font-size: 24px;
     padding: 0;
+
     .nav-item {
       background-color: red($color: #000000);
       color: black;
       padding: 10px;
       float: left;
       margin: 0;
+    }
+
+    .nav-item:hover {
+      text-shadow: 0 2px 4px gray;
     }
   }
 }
