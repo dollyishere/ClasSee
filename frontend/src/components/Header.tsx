@@ -7,7 +7,15 @@ import '../styles/components/header.scss';
 import logo from '../assets/logo.png';
 
 const Header = () => {
-  return <header>헤더</header>;
+  return (
+    <header>
+      <Link to="/">
+        <div className="logo">
+          <img alt="" src={logo} />
+        </div>
+      </Link>
+    </header>
+  );
 };
 
 export default Header;

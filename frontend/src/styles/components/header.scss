@@ -1,8 +1,14 @@
-@use "../base/colors";
+@use '../base/colors';
 
 header {
   height: 80px;
   display: flex;
   align-items: center;
   box-shadow: 0 5px 10px gray;
+  .logo {
+    padding: 0 30px;
+    img {
+      height: 50px;
+    }
+  }
 }
