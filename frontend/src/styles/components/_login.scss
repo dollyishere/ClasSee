@@ -1,0 +1,43 @@
+@use '../base/colors';
+
+.container {
+  padding: 50 500px;
+  align-items: center;
+  border-width: 1;
+  border-color: colors.$gray_color;
+  margin: 10%;
+
+  .logo {
+    padding: 0 30px;
+    img {
+      height: 50px;
+    }
+  }
+
+  .login {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    input {
+      padding: 10px 30px;
+      margin: 10px;
+      border-width: 1px;
+      border-color: colors.$gray_color;
+      font-size: 20px;
+      border-radius: 10px;
+    }
+
+    .link {
+      display: flex;
+      list-style: none;
+      align-items: flex-end;
+    }
+  }
+  .login__button {
+    padding: 10px 30px;
+    border-width: 0px;
+    border-radius: 10px;
+    background-color: colors.$theme_color;
+  }
+}
