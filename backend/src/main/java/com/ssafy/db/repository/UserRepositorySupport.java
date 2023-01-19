@@ -1,6 +1,7 @@
 package com.ssafy.db.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssafy.db.entity.User.QAuth;
 import com.ssafy.db.entity.User.QUser;
 import com.ssafy.db.entity.User.User;
 
@@ -17,12 +18,16 @@ public class UserRepositorySupport {
     @Autowired
     private JPAQueryFactory jpaQueryFactory;
     QUser qUser = QUser.user;
+    QAuth qAuth = QAuth.auth;
 
-    public Optional<User> findUserByUserId(String userId) {
+    public Optional<User> findUserByAuth(String email) {
 //        User user = jpaQueryFactory.select(qUser).from(qUser)
-//                .where(qUser.userId.eq(userId)).fetchOne();
-//        if(user == null) return Optional.empty();
-//        return Optional.ofNullable(user);
-        return null;
+//                .where(qAuth.email.eq(userEmail)).fetchOne();
+        User user = jpaQueryFactory
+                .selectFrom(qUser)
+                .join(qUser.auth, qAuth)
+                .where(qAuth.email.eq(email)).fetchOne();
+        if(user == null) return Optional.empty();
+        return Optional.ofNullable(user);
     }
 }

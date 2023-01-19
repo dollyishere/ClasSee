@@ -23,7 +23,7 @@ public class Photocard {
     private String content;
     private String img;
     private String sign;
-    private Long like;
+    private Long likes;
 
     @CreatedDate
     @Column(name = "regdate")
