@@ -1,9 +1,8 @@
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
-import { Button, TextField } from '@mui/material';
+import { Button } from '@mui/material';
 
-import '../styles/components/header.scss';
 import logo from '../assets/logo.png';
 
 const Header = () => {
@@ -35,13 +34,13 @@ const Header = () => {
 
       {/* 네비게이션 */}
       <ul className="nav">
-        <li className="nav-item">
-          <Link to="/lesson" className="nav-item-link">
+        <li className="nav__item">
+          <Link to="/lesson" className="nav__item--link">
             강의
           </Link>
         </li>
-        <li className="nav-item">
-          <Link to="proud" className="nav-item-link">
+        <li className="nav__item">
+          <Link to="proud" className="nav__item--link">
             자랑 게시판
           </Link>
         </li>
@@ -49,11 +48,29 @@ const Header = () => {
 
       {/* 검색창 */}
       <form className="search" onSubmit={handleSearchSubmit}>
-        <input type="text" className="searchbar" ref={searchbarRef} />
-        <button type="submit" className="search-button">
+        <input type="text" className="search__searchbar" ref={searchbarRef} />
+        <button type="submit" className="search__button">
           <SearchIcon />
         </button>
       </form>
+
+      {/* 버튼 */}
+      <ul className="nav">
+        <li className="nav__item">
+          <Link to="login">
+            <button type="button" className="nav__button">
+              로그인
+            </button>
+          </Link>
+        </li>
+        <li className="nav__item">
+          <Link to="register">
+            <button type="button" className="nav__button">
+              회원가입
+            </button>
+          </Link>
+        </li>
+      </ul>
     </header>
   );
 };
