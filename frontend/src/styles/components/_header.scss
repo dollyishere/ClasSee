@@ -1,0 +1,89 @@
+@use '../base/colors';
+
+header {
+  height: 80px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 5px 10px gray;
+  .logo {
+    padding: 0 30px;
+    img {
+      height: 50px;
+    }
+  }
+
+  .nav {
+    display: flex;
+    list-style: none;
+    font-weight: bold;
+    font-size: 24px;
+    padding: 0;
+    align-items: center;
+    .nav__item {
+      color: black;
+      padding: 10px;
+      float: left;
+      margin: 0;
+      text-shadow: 0 2px 4px gray;
+      transition: 0.1s;
+      &:hover {
+        font-size: 28px;
+      }
+    }
+    .nav__item--link {
+      text-decoration: none;
+      color: black;
+    }
+
+    .nav__button {
+      background-color: colors.$theme_color;
+      color: white;
+      border-width: 0px;
+      border-radius: 10px;
+      height: 40px;
+      width: 120px;
+      box-shadow: 0 2px 4px gray;
+      transition: 0.1s;
+      font-size: 20px;
+      font-weight: bold;
+      line-height: 20px;
+      &:hover {
+        cursor: pointer;
+        background-color: colors.$theme_color_focus;
+      }
+    }
+  }
+
+  .search {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    background-color: colors.$gray_color;
+    border-radius: 20px;
+    box-shadow: 0 2px 4px gray;
+    transition: 0.1s;
+    &:focus-within {
+      padding: 2px;
+    }
+    .search__searchbar {
+      padding: 6px 20px;
+      height: 36px;
+      border-width: 0px;
+      font-size: 20px;
+      border-radius: 20px;
+      background-color: colors.$gray_color;
+      &:focus {
+        outline: none;
+      }
+    }
+
+    .search__button {
+      background-color: transparent;
+      border-width: 0;
+      padding: 0 20px;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+}
