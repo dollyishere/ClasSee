@@ -1,9 +1,12 @@
 package com.ssafy.db.entity.User;
 
 import com.ssafy.db.entity.lesson.Lesson;
+import jdk.jfr.Timespan;
 import lombok.Getter;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 /*
 * member_target : notification = 1 : N
@@ -20,7 +23,9 @@ public class Notification {
 
     private String title;
     private String content;
-    private String regime;
+    @CreatedDate
+    @Column(name = "regtime")
+    private Timestamp regTime;
 
     // 연결
     @ManyToOne(fetch = FetchType.LAZY)

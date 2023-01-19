@@ -1,8 +1,11 @@
 package com.ssafy.db.entity.lesson;
 
+import com.ssafy.db.entity.orders.Orders;
 import lombok.Getter;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,11 +20,13 @@ public class OpenLesson {
     @GeneratedValue
     private Long id;
 
+    @CreatedDate
     @Column(name = "regdate")
-    private String regDate;
+    private Timestamp regDate;
 
+    @CreatedDate
     @Column(name = "regtime")
-    private String regTime;
+    private Timestamp regTime;
 
 
     // 연결
@@ -30,5 +35,9 @@ public class OpenLesson {
     private Lesson lesson;
 
     @OneToMany(mappedBy = "openLesson")
-    private List<OpenLesson> openLessonList = new ArrayList<>();
+    private List<Orders> ordersList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "openLesson")
+    private List<Schedule> scheduleList = new ArrayList<>();
+
 }

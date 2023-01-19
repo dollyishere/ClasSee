@@ -3,8 +3,11 @@ package com.ssafy.db.entity.orders;
 import com.ssafy.db.entity.lesson.OpenLesson;
 import com.ssafy.db.entity.User.User;
 import lombok.Getter;
+import org.aspectj.apache.bcel.classfile.Module;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,14 +18,15 @@ import java.util.List;
 */
 @Entity
 @Getter
-@Table(name = "ORDER")
+@Table(name = "ORDERS")
 public class Orders {
     @Id
     @GeneratedValue
     private Long id;
 
+    @CreatedDate
     @Column(name = "regtime")
-    private String regTime;
+    private Timestamp regTime;
 
     private String phone;
     private String email;
@@ -39,7 +43,4 @@ public class Orders {
 
     @OneToMany(mappedBy = "orders")
     private List<OrdersDetail> ordersDetailList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "orders")
-    private List<Payment> paymentList = new ArrayList<>();
 }

@@ -1,9 +1,9 @@
 package com.ssafy.db.entity.lesson;
 
-import com.april2nd.entity.board.Photocard;
-import com.april2nd.entity.member.Bookmark;
-import com.april2nd.entity.member.Member;
-import com.april2nd.entity.product.Product;
+import com.ssafy.db.entity.board.Photocard;
+import com.ssafy.db.entity.User.Bookmark;
+import com.ssafy.db.entity.User.User;
+import com.ssafy.db.entity.product.Product;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -34,8 +34,8 @@ public class Lesson {
 
     // 연결
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @OneToMany(mappedBy = "lesson")
     private List<Checklist> checkList = new ArrayList<>();

@@ -1,8 +1,10 @@
 package com.ssafy.db.entity.Qna;
 
 import lombok.Getter;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 /*
 * qna : answer = 1 : 1
@@ -17,7 +19,9 @@ public class QnaAnswer {
     private Long id;
 
     private String content;
-    private String regtime;
+    @CreatedDate
+    @Column(name = "regtime")
+    private Timestamp regTime;
 
     // 연결
     @OneToOne(fetch = FetchType.LAZY)

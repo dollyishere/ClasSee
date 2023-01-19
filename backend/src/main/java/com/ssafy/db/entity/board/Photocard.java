@@ -1,10 +1,12 @@
 package com.ssafy.db.entity.board;
 
-import com.april2nd.entity.lesson.Lesson;
-import com.april2nd.entity.member.Member;
+import com.ssafy.db.entity.lesson.Lesson;
+import com.ssafy.db.entity.User.User;
 import lombok.Getter;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 /*
 * member : photocard = 1 : N
@@ -23,10 +25,14 @@ public class Photocard {
     private String sign;
     private Long like;
 
+    @CreatedDate
+    @Column(name = "regdate")
+    private Timestamp regDate;
+
     // 연결
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "lesson_id")

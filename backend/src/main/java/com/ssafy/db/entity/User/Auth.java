@@ -26,6 +26,7 @@ public class Auth {
     private String password;
     private String token;
     private String refreshToken;
+    @Enumerated(EnumType.STRING)
     private UserType type;
 
 

@@ -20,6 +20,7 @@ public class Product {
     private Long price;
 
     private String name;
+    @Enumerated(EnumType.STRING)
     private Category category;
 
     // 연결

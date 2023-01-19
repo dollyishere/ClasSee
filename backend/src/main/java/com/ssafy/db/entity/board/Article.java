@@ -1,9 +1,11 @@
 package com.ssafy.db.entity.board;
 
-import com.april2nd.entity.member.Member;
+import com.ssafy.db.entity.User.User;
 import lombok.Getter;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 /*
 * member : article = 1 : N
@@ -18,13 +20,15 @@ public class Article {
 
     private Long hit;
 
-    private String regtime;
+    @CreatedDate
+    @Column(name = "regtime")
+    private Timestamp regtime;
     private String title;
     private String content;
     private String img;
 
     // 연결
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+    @JoinColumn(name = "user_id")
+    private User user;
 }

@@ -1,9 +1,12 @@
 package com.ssafy.db.entity.lesson;
 
-import com.april2nd.entity.member.Member;
+import com.ssafy.db.entity.User.User;
 import lombok.Getter;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.sql.Time;
+import java.sql.Timestamp;
 
 /*
 * member : review = 1 : N
@@ -20,16 +23,18 @@ public class Review {
 
     private String title;
     private String content;
-    private String regtime;
+    @CreatedDate
+    @Column(name = "regtime")
+    private Timestamp regtime;
     private String img;
     private Long score;
 
     // 연결
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "lesson_id")
-    private Lesson leson;
+    private Lesson lesson;
 }

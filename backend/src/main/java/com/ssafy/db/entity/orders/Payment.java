@@ -1,8 +1,10 @@
 package com.ssafy.db.entity.orders;
 
 import lombok.Getter;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 @Getter
@@ -13,8 +15,9 @@ public class Payment {
     @GeneratedValue
     private Long id;
 
+    @CreatedDate
     @Column(name = "regtime")
-    private String regTime;
+    private Timestamp regTime;
 
     private Long amount;
     @Enumerated(EnumType.STRING)
@@ -24,4 +27,5 @@ public class Payment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "orders_id")
     private Orders orders;
+
 }
