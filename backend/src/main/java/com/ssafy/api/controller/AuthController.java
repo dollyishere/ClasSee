@@ -13,8 +13,7 @@ import com.ssafy.api.response.UserLoginPostRes;
 import com.ssafy.api.service.UserService;
 import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.common.util.JwtTokenUtil;
-import com.ssafy.db.entity.User;
-import com.ssafy.db.repository.UserRepositorySupport;
+import com.ssafy.db.entity.User.User;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -47,9 +46,9 @@ public class AuthController {
 		String userId = loginInfo.getId();
 		String password = loginInfo.getPassword();
 		
-		User user = userService.getUserByUserId(userId);
+		User user = userService.getUserByAuth(userId);
 		// 로그인 요청한 유저로부터 입력된 패스워드 와 디비에 저장된 유저의 암호화된 패스워드가 같은지 확인.(유효한 패스워드인지 여부 확인)
-		if(passwordEncoder.matches(password, user.getPassword())) {
+		if(passwordEncoder.matches(password, user.getAuth().getPassword())) {
 			// 유효한 패스워드가 맞는 경우, 로그인 성공으로 응답.(액세스 토큰을 포함하여 응답값 전달)
 			return ResponseEntity.ok(UserLoginPostRes.of(200, "Success", JwtTokenUtil.getToken(userId)));
 		}
