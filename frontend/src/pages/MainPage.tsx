@@ -1,7 +1,13 @@
 import React from 'react';
 
+import CustomCarousel from '../components/CustomCarousel';
+
 const MainPage = () => {
-  return <div>메인</div>;
+  return (
+    <div>
+      <CustomCarousel />
+    </div>
+  );
 };
 
 export default MainPage;
