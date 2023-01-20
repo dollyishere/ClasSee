@@ -1,6 +1,7 @@
 package com.ssafy.db.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssafy.db.entity.User.Auth;
 import com.ssafy.db.entity.User.QAuth;
 import com.ssafy.db.entity.User.QUser;
 import com.ssafy.db.entity.User.User;
@@ -40,6 +41,15 @@ public class UserRepositorySupport {
     //모든 유저 정보를 리스트로 반환
     public List<User> findAll() {
         return em.createQuery("select u from User u", User.class).getResultList();
+    }
+
+    //이메일로 조회
+    public List<Auth> findByEmail() {
+        return em.createQuery("select a from Auth a where a.email = :email", Auth.class).getResultList();
+    }
+    //닉네임으로 조회
+    public List<User> findByNickname() {
+        return em.createQuery("select u from User u where u.nickname = :nickname", User.class).getResultList();
     }
 
 
