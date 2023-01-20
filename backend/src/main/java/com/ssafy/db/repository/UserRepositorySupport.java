@@ -44,12 +44,14 @@ public class UserRepositorySupport {
     }
 
     //이메일로 조회
-    public List<Auth> findByEmail() {
-        return em.createQuery("select a from Auth a where a.email = :email", Auth.class).getResultList();
+    public List<Auth> findByEmail(String email) {
+        return em.createQuery("select a from Auth a where a.email = :email", Auth.class)
+                .setParameter("email", email).getResultList();
     }
     //닉네임으로 조회
-    public List<User> findByNickname() {
-        return em.createQuery("select u from User u where u.nickname = :nickname", User.class).getResultList();
+    public List<User> findByNickname(String nickname) {
+        return em.createQuery("select u from User u where u.nickname = :nickname", User.class)
+                .setParameter("nickname", nickname).getResultList();
     }
 
 
