@@ -42,10 +42,6 @@ public class UserRepositorySupport {
         return em.createQuery("select u from User u", User.class).getResultList();
     }
 
-    //Email로 찾기
-    public List<User> findByEmail(String email){
-        return em.createQuery("select u from User u", User.class).getResultList();
-    }
 
     public Optional<User> findUserByAuth(String email) {
 //        User user = jpaQueryFactory.select(qUser).from(qUser)
