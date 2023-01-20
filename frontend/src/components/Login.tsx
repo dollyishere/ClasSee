@@ -10,8 +10,8 @@ import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import logo from '../assets/logo.png';
 
 const Login = () => {
-  const idinputRef = useRef(null);
-  const pwinputRef = useRef(null);
+  const idInputRef = useRef(null);
+  const pwInputRef = useRef(null);
 
   // visibility 값을 제어하기 위한 Hook
   // false일 시, 비밀번호가 암호화되어 보이지만, true라면 입력값 그대로 보는 것이 가능함
@@ -30,6 +30,24 @@ const Login = () => {
     }
   };
 
+  // login form 제출 시, 이벤트 발생
+  const handleLoginSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault(); // form의 경우 이벤트 발생 시 새로고침되므로, 이를 방지함(preventDefault())
+    if (idInputRef?.current && pwInputRef?.current) {
+      const id = idInputRef?.current as HTMLInputElement;
+      const password = pwInputRef?.current as HTMLInputElement;
+
+      // id와 password의 value가 모두 null이 아닐 시, 로그인이 가능
+      if (id.value && password.value) {
+        console.log('로그인');
+        console.log(id.value);
+        console.log(password.value);
+        // 만약 둘 중 하나의 value가 null일 시, 에러를 출력함
+      } else {
+        console.log('에러');
+      }
+    }
+  };
   return (
     <div className="container">
       {/* 로고 확인 */}
@@ -39,27 +57,27 @@ const Login = () => {
         </div>
       </Link>
       {/* 로그인 폼 */}
-      <form className="login_form">
+      <form className="login_form" onSubmit={handleLoginSubmit}>
         {/* 각각 이메일, 비밀번호 입력 input */}
-        <input type="text" className="login__input__id" placeholder="이메일" ref={idinputRef} />
+        <input type="email" className="login__input__id" placeholder="이메일" ref={idInputRef} />
         {/* 만약 visibility 값이 false일 시, password로 취급됨 */}
         {/* true일시, password를 확인하는 것이 가능 */}
         <div className="pw_form">
           <input
-            type={visibility ? 'password' : 'text'}
+            type={visibility ? 'text' : 'password'}
             className="login__input__pw"
             placeholder="비밀번호"
-            ref={pwinputRef}
+            ref={pwInputRef}
           />
           {/* 비밀번호 입력 체크할 수 있는 버튼 */}
           {/* visibility의 값에 따라 표시되는 버튼 이미지에 변경이 있음 */}
           {visibility ? (
             <button type="submit" className="check__pw" onClick={checkPassword}>
-              <RemoveRedEyeIcon />
+              <VisibilityOffIcon />
             </button>
           ) : (
             <button type="submit" className="check__pw" onClick={checkPassword}>
-              <VisibilityOffIcon />
+              <RemoveRedEyeIcon />
             </button>
           )}
         </div>
@@ -83,6 +101,7 @@ const Login = () => {
       </form>
       {/* 소셜(카카오) 로그인 */}
       <button type="button" className="social__login__button">
+        <ChatBubbleIcon />
         카카오 로그인
       </button>
     </div>
