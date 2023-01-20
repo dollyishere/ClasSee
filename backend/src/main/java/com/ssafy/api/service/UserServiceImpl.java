@@ -41,9 +41,15 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User getUserByNickname(String nickname) {
+	public User getUserByNickname(String nickname)  {
 		// 닉네임으로 유저 정보 조회
-		User user = userRepositorySupport.findByNickname(nickname).get();
+		User user = new User();
+
+		if(userRepositorySupport.findByNickname(nickname).isPresent()){
+			user = userRepositorySupport.findByNickname(nickname).get();
+		} else{
+			user = userRepositorySupport.findByNickname(nickname).orElse(null);
+		}
 		return user;
 	}
 }
