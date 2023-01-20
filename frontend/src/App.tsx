@@ -8,6 +8,8 @@ import Header from './components/Header';
 
 import MainPage from './pages/MainPage';
 
+import Footer from './components/Footer';
+
 const App = () => {
   return (
     <div className="App">
@@ -15,6 +17,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<MainPage />} />
       </Routes>
+      <Footer />
     </div>
   );
 };

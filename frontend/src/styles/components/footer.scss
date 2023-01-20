@@ -1,0 +1,14 @@
+@use '../base/colors';
+
+footer {
+  background-color: grayscale($color: #cecece);
+  height: 80px;
+  display: flex;
+  align-items: center;
+  .logo {
+    padding: 0 30px;
+    img {
+      height: 50px;
+    }
+  }
+}
