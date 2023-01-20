@@ -43,18 +43,19 @@ public class UserRepositorySupport {
         return em.createQuery("select u from User u", User.class).getResultList();
     }
 
-    //이메일로 조회
-    public List<Auth> findByEmail(String email) {
-        return em.createQuery("select a from Auth a where a.email = :email", Auth.class)
-                .setParameter("email", email).getResultList();
-    }
     //닉네임으로 조회
-    public List<User> findByNickname(String nickname) {
-        return em.createQuery("select u from User u where u.nickname = :nickname", User.class)
-                .setParameter("nickname", nickname).getResultList();
+    public Optional<User> findByNickname(String nickname) {
+
+        User user = jpaQueryFactory
+                .select(qUser)
+                .from(qUser)
+                .where(qUser.nickname.eq(nickname)).fetchOne();
+        if(user == null) {return Optional.empty();}
+        return Optional.ofNullable(user);
     }
 
 
+    //이메일로 조회
     public Optional<User> findUserByAuth(String email) {
 //        User user = jpaQueryFactory.select(qUser).from(qUser)
 //                .where(qAuth.email.eq(userEmail)).fetchOne();
