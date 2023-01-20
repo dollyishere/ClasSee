@@ -1,16 +1,9 @@
 package com.ssafy.api.controller;
 
-import com.ssafy.api.request.UserNicknameCheckGetReq;
-import com.ssafy.api.response.UserEmailCheckGetRes;
-import com.ssafy.api.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.ssafy.api.request.UserRegisterPostReq;
 import com.ssafy.api.response.UserRes;
@@ -25,9 +18,6 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import springfox.documentation.annotations.ApiIgnore;
-
-import javax.print.DocFlavor;
-import javax.swing.text.StyledEditorKit;
 
 /**
  * 유저 관련 API 요청 처리를 위한 컨트롤러 정의.
@@ -77,17 +67,17 @@ public class UserController {
 		return ResponseEntity.status(200).body(UserRes.of(user));
 	}
 
-	@GetMapping("/email-check")
-	@ApiOperation(value = "이메일 중복 체크", notes = "DB에 이미 email이 있는지 체크")
+	@GetMapping("/check/{nickname}")
+	@ApiOperation(value = "닉네임 중복 체크", notes = "DB에 이미 nickname이 있는지 체크")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공"),
 			@ApiResponse(code = 401, message = "인증 실패"),
 			@ApiResponse(code = 404, message = "사용자 없음"),
 			@ApiResponse(code = 500, message = "서버 오류")
 	})
-	public ResponseEntity<Boolean> getUserEmail(@RequestBody UserNicknameCheckGetReq userNicknameCheckGetReq){
+	public ResponseEntity<Boolean> checkUserNickname(@PathVariable String nickname){
 
-		if(userService.getUserByNickname(userNicknameCheckGetReq.getNickname()) == null){
+		if(userService.getUserByNickname(nickname) == null){
 			return ResponseEntity.status(200).body(true);
 		}
 		else{
