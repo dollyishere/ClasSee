@@ -9,6 +9,7 @@ import com.ssafy.db.entity.lesson.Schedule;
 import com.ssafy.db.entity.orders.Orders;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "USER")
-@Getter
+@Getter @Setter
 public class User {
 
     @Id
@@ -69,20 +70,4 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Schedule> scheduleList = new ArrayList<>();
 
-    @Builder
-    public User createUser(Long id, String name, String nickname, String address, String birth, String phone, Long point, String img, UserRole role, String createdAt, Auth auth) {
-        this.id = id;
-        this.name = name;
-        this.nickname = nickname;
-        this.address = address;
-        this.birth = birth;
-        this.phone = phone;
-        this.point = point;
-        this.img = img;
-        this.role = role;
-        this.createdAt = createdAt;
-        this.auth = auth;
-
-        return this;
-    }
 }
