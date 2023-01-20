@@ -3,15 +3,14 @@
 .container {
   padding: 30px 30px;
   height: 400px;
-  width: 400px;
+  // width: 300px;
   align-items: center;
-  border-width: 1px;
-  border-color: colors.$gray_color;
-  border-style: solid;
+  // border-width: 1px;
+  // border-color: colors.$gray_color;
+  // border-style: solid;
   margin: 5%;
   background-color: white;
-  border-radius: 10px;
-  text-align: center;
+  // text-align: center;
   .logo {
     align-items: center;
     padding: 0 30px;
@@ -68,23 +67,30 @@
 
   .login__button {
     padding: 10px 10px;
+    color: white;
     height: 40px;
     width: 200px;
     border-width: 0px;
     border-radius: 10px;
     background-color: colors.$theme_color;
+    box-shadow: 0 2px 4px gray;
+    transition: 0.1s;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 20px;
     border: 0;
     outline: 0;
-    margin: 1px;
+    margin: 5px;
     &:hover {
       cursor: pointer;
+      font-size: 28px;
       background-color: colors.$theme_color_focus;
     }
   }
   .social-login {
     background-color: #ffe100;
+    color: #3c1e1e;
     &:hover {
-      cursor: pointer;
       background-color: #e4d104;
     }
   }

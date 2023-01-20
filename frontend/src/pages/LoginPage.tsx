@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 
 import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
 
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
@@ -49,7 +50,7 @@ const Login = () => {
     }
   };
   return (
-    <div className="container">
+    <Card sx={{ minWidth: 275 }} className="container">
       {/* 로고 확인 */}
       <Link to="/">
         <div className="logo">
@@ -104,7 +105,7 @@ const Login = () => {
         <ChatBubbleIcon />
         카카오 로그인
       </button>
-    </div>
+    </Card>
   );
 };
 
