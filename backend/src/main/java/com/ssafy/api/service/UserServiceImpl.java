@@ -39,4 +39,11 @@ public class UserServiceImpl implements UserService {
 		User user = userRepositorySupport.findUserByAuth(email).get();
 		return user;
 	}
+
+	@Override
+	public User getUserByNickname(String nickname) {
+		// 닉네임으로 유저 정보 조회
+		User user = userRepositorySupport.findByNickname(nickname).get();
+		return user;
+	}
 }
