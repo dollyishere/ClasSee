@@ -25,10 +25,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private SsafyUserDetailService ssafyUserDetailService;
-    
+
     @Autowired
     private UserService userService;
-    
+
     // Password 인코딩 방식에 BCrypt 암호화 방식 사용
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -60,8 +60,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(), userService)) //HTTP 요청에 JWT 토큰 인증 필터를 거치도록 필터를 추가
                 .authorizeRequests()
-                .antMatchers("/api/v1/users/me").authenticated()       //인증이 필요한 URL과 필요하지 않은 URL에 대하여 설정
-    	        	    .anyRequest().permitAll()
+                .antMatchers("/api/v1/users/me", "/api/v1/auth/test").authenticated()       //인증이 필요한 URL과 필요하지 않은 URL에 대하여 설정
+//                .antMatchers("/api/v1/users/me", "/api/v1/auth/test").authenticated()       //인증이 필요한 URL과 필요하지 않은 URL에 대하여 설정
+                .anyRequest().permitAll()
                 .and().cors();
+
     }
 }
