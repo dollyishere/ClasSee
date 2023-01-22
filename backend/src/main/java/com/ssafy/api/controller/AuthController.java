@@ -82,6 +82,27 @@ public class AuthController {
 		return ResponseEntity.status(401).body(UserLoginPostRes.of(401, "Invalid Password", null, null));
 	}
 
+	@PostMapping("/logout")
+	@ApiOperation(value = "로그아웃", notes = "<strong>토큰 정보</strong>을 통해 로그아웃 한다.")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
+			@ApiResponse(code = 401, message = "인증 실패", response = BaseResponseBody.class),
+			@ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
+			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
+	})
+	public ResponseEntity<?> logout(@RequestBody @ApiParam(value = "사용자 정보", required = true) UserLogoutPostReq userInfo) {
+		try {
+			String email = userInfo.getEmail();
+			String accessToken = userInfo.getAccessToken();
+			authService.logout(email, accessToken);
+
+			return ResponseEntity.ok(UserLoginPostRes.of(200, "로그아웃 성공", null, null));
+		} catch (IllegalArgumentException e){
+			System.out.println(e.getMessage());
+			return ResponseEntity.status(401).body(UserLoginPostRes.of(401, "unknown error", null, null));
+		}
+	}
+
 	/*
 
 		로그인 시에만 접근 가능한 api 테스트용 API
