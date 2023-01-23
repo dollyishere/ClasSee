@@ -3,7 +3,6 @@ package com.ssafy.api.controller;
 import com.ssafy.api.request.UserLogoutPostReq;
 import com.ssafy.api.service.AuthService;
 import com.ssafy.api.service.RedisService;
-import com.ssafy.common.auth.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -15,7 +14,7 @@ import com.ssafy.api.response.UserLoginPostRes;
 import com.ssafy.api.service.UserService;
 import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.common.util.JwtTokenUtil;
-import com.ssafy.db.entity.User.User;
+import com.ssafy.db.entity.user.User;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

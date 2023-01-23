@@ -1,8 +1,7 @@
 package com.ssafy.db.entity.lesson;
 
-import com.ssafy.db.entity.User.User;
+import com.ssafy.db.entity.user.User;
 import lombok.Getter;
-import org.springframework.expression.spel.ast.OpNE;
 
 import javax.persistence.*;
 

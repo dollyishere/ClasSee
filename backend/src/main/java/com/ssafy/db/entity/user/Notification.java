@@ -1,7 +1,6 @@
-package com.ssafy.db.entity.User;
+package com.ssafy.db.entity.user;
 
 import com.ssafy.db.entity.lesson.Lesson;
-import jdk.jfr.Timespan;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 

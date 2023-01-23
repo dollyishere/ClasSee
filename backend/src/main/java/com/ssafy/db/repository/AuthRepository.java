@@ -1,6 +1,6 @@
 package com.ssafy.db.repository;
 
-import com.ssafy.db.entity.User.Auth;
+import com.ssafy.db.entity.user.Auth;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

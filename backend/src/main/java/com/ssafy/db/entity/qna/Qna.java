@@ -1,8 +1,7 @@
-package com.ssafy.db.entity.Qna;
+package com.ssafy.db.entity.qna;
 
-import com.ssafy.db.entity.User.User;
+import com.ssafy.db.entity.user.User;
 import lombok.Getter;
-import org.checkerframework.checker.units.qual.C;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;

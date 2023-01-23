@@ -1,7 +1,7 @@
 package com.ssafy.db.entity.board;
 
 import com.ssafy.db.entity.lesson.Lesson;
-import com.ssafy.db.entity.User.User;
+import com.ssafy.db.entity.user.User;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 
