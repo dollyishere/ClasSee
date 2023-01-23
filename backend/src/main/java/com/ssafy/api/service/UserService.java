@@ -21,4 +21,10 @@ public interface UserService {
 	Optional<Auth> getUserByEmailAndName(UserFindPwPostReq userInfo);
 
 	void updatePassword(UserEmailPwDto userInfo);
+
+	void updateUserNickname(String email, String nickname);
+	void updateUserPassword(String email, String password);
+	void updateUserPhone(String email, String phone);
+	void updateUserAddress(String email, String address);
+	void updateUserDescription(String email, String description);
 }
