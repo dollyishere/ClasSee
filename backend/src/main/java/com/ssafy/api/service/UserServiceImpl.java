@@ -1,6 +1,6 @@
 package com.ssafy.api.service;
 
-import com.ssafy.api.request.UserSignUpPostReq;
+import com.ssafy.api.request.UserFindPwPostReq;
 import com.ssafy.db.entity.user.Auth;
 import com.ssafy.db.entity.user.UserType;
 import com.ssafy.db.repository.AuthRepository;
@@ -16,6 +16,7 @@ import com.ssafy.db.repository.UserRepositorySupport;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
+import java.util.Optional;
 
 /**
  *	유저 관련 비즈니스 로직 처리를 위한 서비스 구현 정의.
@@ -27,6 +28,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	AuthRepository authRepository;
+
+	@Autowired
+	UserRepository userRepository;
 
 	@Autowired
 	UserRepositorySupport userRepositorySupport;
@@ -50,34 +54,6 @@ public class UserServiceImpl implements UserService {
 		User user = (User) userRegisterInfo.get("USER");
 		user.setAuth(auth);
 		userRepositorySupport.save(user);
-	}
-
-	@Override
-	@Transactional
-	public void signUpUser(UserSignUpPostReq userSignUpPostReq) {
-		Auth auth = Auth.builder()
-				.email(userSignUpPostReq.getEmail())
-				.password(userSignUpPostReq.getPassword())
-				.type(UserType.LOCAL).build();
-
-		authRepositorySupport.save(auth);
-
-		User user = User.builder()
-				.name(userSignUpPostReq.getName())
-				.nickname(userSignUpPostReq.getNickname())
-				.address(userSignUpPostReq.getAddress())
-				.birth(userSignUpPostReq.getBirth())
-				.phone(userSignUpPostReq.getPhone())
-				.point(0L)
-				.img(userSignUpPostReq.getImg())
-				.createdAt(userSignUpPostReq.getCreatedAt())
-				.auth(auth).build();
-
-		userRepositorySupport.save(user);
-
-		return;
-
-
 	}
 
 	@Override
@@ -106,5 +82,12 @@ public class UserServiceImpl implements UserService {
 			user = userRepositorySupport.findByNickname(nickname).orElse(null);
 		}
 		return user;
+	}
+
+	@Override
+	public Optional<Auth> getUserByEmailAndName(UserFindPwPostReq userInfo) {
+		String email = userInfo.getEmail();
+		String name = userInfo.getName();
+		return userRepository.findUserByEmailAndName(email, name);
 	}
 }
