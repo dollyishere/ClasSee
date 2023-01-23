@@ -148,4 +148,59 @@ public class UserController {
 			return ResponseEntity.status(401).body(BaseResponseBody.of(401, "인증 실패"));
 		}
     }
+
+    @PutMapping("/update/nickname")
+    @ApiOperation(value = "유저 닉네임 업데이트", notes = "유저 정보를 수정")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공")
+    })
+    public ResponseEntity<? extends  BaseResponseBody> updateUserNickname(@RequestParam String email, @RequestParam String nickname) {
+        userService.updateUserNickname(email, nickname);
+
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"수정 완료"));
+    }
+
+    @PutMapping("/update/address")
+    @ApiOperation(value = "유저 주소 업데이트", notes = "유저 정보를 수정")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공")
+    })
+    public ResponseEntity<? extends BaseResponseBody> updateUserAddress(@RequestParam String email, @RequestParam String address) {
+        userService.updateUserAddress(email, address);
+
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"수정 완료"));
+    }
+
+    @PutMapping("/update/password")
+    @ApiOperation(value = "유저 비밀번호 업데이트", notes = "유저 정보를 수정")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공")
+    })
+    public ResponseEntity<? extends BaseResponseBody> updateUserPassword(@RequestParam String email, @RequestParam String password) {
+        userService.updateUserPassword(email, password);
+
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"수정 완료"));
+    }
+
+    @PutMapping("/update/phone")
+    @ApiOperation(value = "유저 폰번호 업데이트", notes = "유저 정보를 수정")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공")
+    })
+    public ResponseEntity<? extends BaseResponseBody> updateUserPhone(@RequestParam String email, @RequestParam String phone) {
+        userService.updateUserPhone(email, phone);
+
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"수정 완료"));
+    }
+
+    @PutMapping("/update/description")
+    @ApiOperation(value = "유저 자기소개 업데이트", notes = "유저 정보를 수정")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공")
+    })
+    public ResponseEntity<? extends BaseResponseBody> updateUserDescription(@RequestParam String email, @RequestParam String description) {
+        userService.updateUserDescription(email, description);
+
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"수정 완료"));
+    }
 }
