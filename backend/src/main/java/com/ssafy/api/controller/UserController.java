@@ -1,5 +1,6 @@
 package com.ssafy.api.controller;
 
+import com.ssafy.api.request.UserSignUpPostReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -87,5 +88,37 @@ public class UserController {
 		return ResponseEntity.status(200).body(false);
 
 	}
+
+	@GetMapping("/check/{email}")
+	@ApiOperation(value = "이메일 중복 체크", notes = "DB에 이미 email이 있는지 체크")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "해당 이메일이 이미 존재함"),
+			@ApiResponse(code = 201, message = "해당 이메일을 사용할 수 있음")
+	})
+	public ResponseEntity<Boolean> checkUserEmail(@PathVariable String email){
+
+		User user = userService.getUserByAuth(email);
+		if(user == null){
+			return ResponseEntity.status(201).body(true);
+		}
+		return ResponseEntity.status(200).body(false);
+	}
+
+	@PostMapping("/sign-up")
+	@ApiOperation(value = "회원 가입", notes = "회원 가입 성공 여부 확인")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "성공"),
+			@ApiResponse(code = 401, message = "인증 실패"),
+			@ApiResponse(code = 404, message = "사용자 없음"),
+			@ApiResponse(code = 500, message = "서버 오류")
+	})
+	public ResponseEntity<Boolean> signUp(@RequestBody UserSignUpPostReq userSignUpPostReq){
+
+		userService.signUpUser(userSignUpPostReq);
+
+		return ResponseEntity.status(200).body(true);
+
+	}
+
 
 }

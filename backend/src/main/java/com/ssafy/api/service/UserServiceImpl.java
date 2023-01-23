@@ -1,6 +1,8 @@
 package com.ssafy.api.service;
 
+import com.ssafy.api.request.UserSignUpPostReq;
 import com.ssafy.db.entity.user.Auth;
+import com.ssafy.db.entity.user.UserType;
 import com.ssafy.db.repository.AuthRepository;
 import com.ssafy.db.repository.AuthRepositorySupport;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import com.ssafy.api.request.UserRegisterPostReq;
 import com.ssafy.db.entity.user.User;
 import com.ssafy.db.repository.UserRepository;
 import com.ssafy.db.repository.UserRepositorySupport;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 
@@ -50,9 +53,45 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	@Transactional
+	public void signUpUser(UserSignUpPostReq userSignUpPostReq) {
+		Auth auth = Auth.builder()
+				.email(userSignUpPostReq.getEmail())
+				.password(userSignUpPostReq.getPassword())
+				.type(UserType.LOCAL).build();
+
+		authRepositorySupport.save(auth);
+
+		User user = User.builder()
+				.name(userSignUpPostReq.getName())
+				.nickname(userSignUpPostReq.getNickname())
+				.address(userSignUpPostReq.getAddress())
+				.birth(userSignUpPostReq.getBirth())
+				.phone(userSignUpPostReq.getPhone())
+				.point(0L)
+				.img(userSignUpPostReq.getImg())
+				.createdAt(userSignUpPostReq.getCreatedAt())
+				.auth(auth).build();
+
+		userRepositorySupport.save(user);
+
+		return;
+
+
+	}
+
+	@Override
 	public User getUserByAuth(String email) {
 		// 디비에 유저 정보 조회 (email을 통한 조회).
-		User user = userRepositorySupport.findUserByAuth(email).get();
+		// 디비에 유저 정보 조회 (email을 통한 조회).
+
+		User user = User.builder().build();
+
+		if(userRepositorySupport.findUserByAuth(email).isPresent()){
+			user = userRepositorySupport.findUserByAuth(email).get();
+		} else{
+			user = userRepositorySupport.findUserByAuth(email).orElse(null);
+		}
 		return user;
 	}
 
