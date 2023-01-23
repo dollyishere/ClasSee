@@ -29,9 +29,6 @@ import com.ssafy.db.entity.user.User;
 public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
     private UserService userService;
 
-    @Autowired
-    private RedisService redisService;
-
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager, UserService userService) {
         super(authenticationManager);
         this.userService = userService;

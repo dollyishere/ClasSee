@@ -7,20 +7,21 @@ import com.ssafy.db.entity.lesson.Lesson;
 import com.ssafy.db.entity.lesson.Review;
 import com.ssafy.db.entity.lesson.Schedule;
 import com.ssafy.db.entity.orders.Orders;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-
+@Builder
 @Entity
 @Table(name = "USER")
+@AllArgsConstructor
+@RequiredArgsConstructor
 @Getter @Setter
 public class User {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
@@ -34,6 +35,7 @@ public class User {
     private UserRole role;
 
     private String createdAt;
+//    private Long authId;
 
     // 연결
     @OneToOne(fetch = FetchType.LAZY)
