@@ -31,6 +31,7 @@ public class User {
     private String phone;
     private Long point;
     private String img;
+    private String description;
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
