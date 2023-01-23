@@ -62,6 +62,7 @@ public class UserRepositorySupport {
         User user = jpaQueryFactory
                 .selectFrom(qUser)
                 .join(qUser.auth, qAuth)
+                .fetchJoin()
                 .where(qAuth.email.eq(email)).fetchOne();
         if(user == null) return Optional.empty();
         return Optional.ofNullable(user);
