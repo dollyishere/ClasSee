@@ -1,6 +1,8 @@
 package com.ssafy.api.controller;
 
-import com.ssafy.api.request.UserSignUpPostReq;
+import com.ssafy.api.request.UserFindPwPostReq;
+import com.ssafy.api.service.EmailService;
+import com.ssafy.db.entity.user.Auth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -21,6 +23,7 @@ import io.swagger.annotations.ApiResponses;
 import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * 유저 관련 API 요청 처리를 위한 컨트롤러 정의.
@@ -32,6 +35,9 @@ public class UserController {
 
 	@Autowired
 	UserService userService;
+
+	@Autowired
+	EmailService emailService;
 
 	@PostMapping()
 	@ApiOperation(value = "회원 가입", notes = "<strong>회원가입 정보</strong>를 통해 회원가입 한다.")
@@ -104,21 +110,23 @@ public class UserController {
 		return ResponseEntity.status(200).body(false);
 	}
 
-	@PostMapping("/sign-up")
-	@ApiOperation(value = "회원 가입", notes = "회원 가입 성공 여부 확인")
+	@PostMapping("/findpw")
+	@ApiOperation(value = "비밀번호 찾기", notes = "<strong>이름과 이메알</strong>을 통해 비밀번호 찾는 메서드.")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공"),
 			@ApiResponse(code = 401, message = "인증 실패"),
 			@ApiResponse(code = 404, message = "사용자 없음"),
 			@ApiResponse(code = 500, message = "서버 오류")
 	})
-	public ResponseEntity<Boolean> signUp(@RequestBody UserSignUpPostReq userSignUpPostReq){
+	public ResponseEntity<? extends BaseResponseBody> findPw(@RequestBody @ApiParam(value = "이름, 이메일 정보", required = true) UserFindPwPostReq userInfo) throws Exception{
+		Optional<Auth> auth = userService.getUserByEmailAndName(userInfo);
 
-		userService.signUpUser(userSignUpPostReq);
+		// 입력받은 이메일과 이름으로 찾은 사용자 정보가 없다면 401 return
+		if (!auth.isPresent()) return ResponseEntity.status(401).body(BaseResponseBody.of(401, "인증 실패"));
 
-		return ResponseEntity.status(200).body(true);
-
+		// 일치하는 사용자가 있다면 해당 email로 코드 전송
+		// responsebody에 (200, 코드번호) 전송
+		String code = emailService.sendSimpleMessage(userInfo.getEmail());
+		return ResponseEntity.status(200).body(BaseResponseBody.of(200, code));
 	}
-
-
 }
