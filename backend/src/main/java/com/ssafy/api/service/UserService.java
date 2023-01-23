@@ -1,5 +1,6 @@
 package com.ssafy.api.service;
 
+import com.ssafy.api.dto.UserEmailPwDto;
 import com.ssafy.api.request.UserFindPwPostReq;
 import com.ssafy.api.request.UserRegisterPostReq;
 import com.ssafy.db.entity.user.Auth;
@@ -18,4 +19,6 @@ public interface UserService {
 	User getUserByNickname(String nickname);
 
 	Optional<Auth> getUserByEmailAndName(UserFindPwPostReq userInfo);
+
+	void updatePassword(UserEmailPwDto userInfo);
 }

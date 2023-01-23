@@ -1,10 +1,13 @@
 package com.ssafy.db.repository;
 
+import com.ssafy.api.dto.UserEmailPwDto;
 import com.ssafy.db.entity.user.Auth;
 import com.ssafy.db.entity.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -18,4 +21,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT a FROM Auth a JOIN a.user u WHERE u.name = :name AND a.email = :email")
     Optional<Auth> findUserByEmailAndName(String email, String name);
+
+    @Transactional
+    @Modifying(clearAutomatically = true)
+    @Query("UPDATE Auth set password = :password where email = :email")
+    void updatePassword(String email, String password);
 }

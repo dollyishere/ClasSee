@@ -1,5 +1,6 @@
 package com.ssafy.api.service;
 
+import com.ssafy.api.dto.UserEmailPwDto;
 import com.ssafy.api.request.UserFindPwPostReq;
 import com.ssafy.db.entity.user.Auth;
 import com.ssafy.db.entity.user.UserType;
@@ -89,5 +90,12 @@ public class UserServiceImpl implements UserService {
 		String email = userInfo.getEmail();
 		String name = userInfo.getName();
 		return userRepository.findUserByEmailAndName(email, name);
+	}
+
+	@Override
+	public void updatePassword(UserEmailPwDto userInfo) {
+		String email = userInfo.getEmail();
+		String password = passwordEncoder.encode(userInfo.getPassword());
+		userRepository.updatePassword(email, password);
 	}
 }
