@@ -10,6 +10,7 @@ import java.util.Optional;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
@@ -18,6 +19,7 @@ import javax.persistence.EntityManager;
  */
 @Repository
 @RequiredArgsConstructor
+@Transactional
 public class UserRepositorySupport {
 
     private final EntityManager em;

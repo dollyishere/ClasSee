@@ -1,5 +1,8 @@
 package com.ssafy.api.service;
 
+import com.ssafy.db.entity.user.Auth;
+import com.ssafy.db.repository.AuthRepository;
+import com.ssafy.db.repository.AuthRepositorySupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -9,13 +12,18 @@ import com.ssafy.db.entity.user.User;
 import com.ssafy.db.repository.UserRepository;
 import com.ssafy.db.repository.UserRepositorySupport;
 
+import java.util.Map;
+
 /**
  *	유저 관련 비즈니스 로직 처리를 위한 서비스 구현 정의.
  */
 @Service("userService")
 public class UserServiceImpl implements UserService {
 	@Autowired
-	UserRepository userRepository;
+	AuthRepositorySupport authRepositorySupport;
+
+	@Autowired
+	AuthRepository authRepository;
 
 	@Autowired
 	UserRepositorySupport userRepositorySupport;
@@ -23,13 +31,22 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	PasswordEncoder passwordEncoder;
 
+	/*
+		회원 가입 요청 request의 정보를 통해 진행
+		AUTH, USER 테이블에 데이터 삽입을 위해 Map<String, Object> 객체에 "AUTH", "USER"로 객체 전달받음
+
+		[AUTH] PasswordEncoder를 통해 비밀번호 암호화 후 DB에 save
+		[USER] auth객체의 auth_id를 받아 저장 후 DB에 save
+	*/
 	@Override
-	public User createUser(UserRegisterPostReq userRegisterInfo) {
-		User user = new User();
-//		user.setUserId(userRegisterInfo.getId());
-//		// 보안을 위해서 유저 패스워드 암호화 하여 디비에 저장.
-//		user.setPassword(passwordEncoder.encode(userRegisterInfo.getPassword()));
-		return userRepository.save(user);
+	public void createUser(Map<String, Object> userRegisterInfo) {
+		Auth auth = (Auth) userRegisterInfo.get("AUTH");
+		auth.setPassword(passwordEncoder.encode(auth.getPassword()));
+		authRepositorySupport.save(auth);
+
+		User user = (User) userRegisterInfo.get("USER");
+		user.setAuth(auth);
+		userRepositorySupport.save(user);
 	}
 
 	@Override
