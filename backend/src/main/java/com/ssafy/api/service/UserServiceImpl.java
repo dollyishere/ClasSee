@@ -98,4 +98,32 @@ public class UserServiceImpl implements UserService {
 		String password = passwordEncoder.encode(userInfo.getPassword());
 		userRepository.updatePassword(email, password);
 	}
+
+	//업데이트
+	@Override
+	public void updateUserNickname(String email, String nickname) {
+		userRepositorySupport.updateNickname(email, nickname);
+	}
+
+	@Override
+	public void updateUserPassword(String email, String password) {
+		userRepository.updatePassword(email, password);
+	}
+
+	@Override
+	public void updateUserPhone(String email, String phone) {
+		userRepositorySupport.updatePhone(email, phone);
+	}
+
+	@Override
+	public void updateUserAddress(String email, String address) {
+		userRepositorySupport.updateAddress(email, address);
+	}
+
+	@Override
+	public void updateUserDescription(String email, String description) {
+		userRepositorySupport.updateDescription(email, description);
+	}
+
+	// 유저 닉네임, 비밀번호, 전화번호, 주소, 소개 업데이트 업데이트
 }
