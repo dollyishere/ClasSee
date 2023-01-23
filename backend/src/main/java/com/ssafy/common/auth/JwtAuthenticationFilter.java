@@ -14,7 +14,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.auth0.jwt.JWTVerifier;
@@ -22,7 +21,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.ssafy.api.service.UserService;
 import com.ssafy.common.util.JwtTokenUtil;
 import com.ssafy.common.util.ResponseBodyWriteUtil;
-import com.ssafy.db.entity.User.User;
+import com.ssafy.db.entity.user.User;
 
 /**
  * 요청 헤더에 jwt 토큰이 있는 경우, 토큰 검증 및 인증 처리 로직 정의.

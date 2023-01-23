@@ -1,9 +1,8 @@
 package com.ssafy.db.entity.orders;
 
 import com.ssafy.db.entity.lesson.OpenLesson;
-import com.ssafy.db.entity.User.User;
+import com.ssafy.db.entity.user.User;
 import lombok.Getter;
-import org.aspectj.apache.bcel.classfile.Module;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;

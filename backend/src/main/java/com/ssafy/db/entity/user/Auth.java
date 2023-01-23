@@ -1,4 +1,4 @@
-package com.ssafy.db.entity.User;
+package com.ssafy.db.entity.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;

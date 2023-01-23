@@ -1,7 +1,6 @@
 package com.ssafy.api.response;
 
-import com.ssafy.common.model.response.BaseResponseBody;
-import com.ssafy.db.entity.User.User;
+import com.ssafy.db.entity.user.User;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

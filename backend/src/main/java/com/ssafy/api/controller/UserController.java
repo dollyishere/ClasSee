@@ -10,7 +10,7 @@ import com.ssafy.api.response.UserRes;
 import com.ssafy.api.service.UserService;
 import com.ssafy.common.auth.SsafyUserDetails;
 import com.ssafy.common.model.response.BaseResponseBody;
-import com.ssafy.db.entity.User.User;
+import com.ssafy.db.entity.user.User;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

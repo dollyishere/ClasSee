@@ -1,11 +1,10 @@
 package com.ssafy.db.entity.lesson;
 
-import com.ssafy.db.entity.User.User;
+import com.ssafy.db.entity.user.User;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
-import java.sql.Time;
 import java.sql.Timestamp;
 
 /*

@@ -5,7 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.api.request.UserRegisterPostReq;
-import com.ssafy.db.entity.User.User;
+import com.ssafy.db.entity.user.User;
 import com.ssafy.db.repository.UserRepository;
 import com.ssafy.db.repository.UserRepositorySupport;
 

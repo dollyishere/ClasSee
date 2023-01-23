@@ -1,8 +1,8 @@
 package com.ssafy.db.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ssafy.db.entity.User.QAuth;
-import com.ssafy.db.entity.User.QUser;
+import com.ssafy.db.entity.user.QAuth;
+import com.ssafy.db.entity.user.QUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

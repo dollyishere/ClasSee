@@ -1,4 +1,4 @@
-package com.ssafy.db.entity.Qna;
+package com.ssafy.db.entity.qna;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;

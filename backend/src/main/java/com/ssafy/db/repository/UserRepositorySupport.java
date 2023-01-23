@@ -1,16 +1,14 @@
 package com.ssafy.db.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ssafy.db.entity.User.Auth;
-import com.ssafy.db.entity.User.QAuth;
-import com.ssafy.db.entity.User.QUser;
-import com.ssafy.db.entity.User.User;
+import com.ssafy.db.entity.user.QAuth;
+import com.ssafy.db.entity.user.QUser;
+import com.ssafy.db.entity.user.User;
 
 import java.util.List;
 import java.util.Optional;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
