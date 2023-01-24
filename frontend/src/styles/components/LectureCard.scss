@@ -1,0 +1,38 @@
+@use '../base/colors';
+.lecture {
+  display: flex;
+}
+.lecture-card {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 2px 2px 5px #ccc;
+  background-color: #f9f9f9;
+
+  img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+  }
+
+  p {
+    margin-bottom: 5px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .instructor {
+    color: blue;
+  }
+  .name {
+    color: green;
+  }
+  .rating {
+    color: orange;
+  }
+}
