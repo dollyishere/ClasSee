@@ -41,7 +41,6 @@ public class RedisService {
     }
 
     public void deleteValues(String token){
-        System.out.println("token >>>>>>>> " + token);
         redisTemplate.delete(token);
     }
 }

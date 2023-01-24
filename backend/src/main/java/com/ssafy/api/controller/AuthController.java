@@ -97,7 +97,6 @@ public class AuthController {
 
 			return ResponseEntity.ok(UserLoginPostRes.of(200, "로그아웃 성공", null, null));
 		} catch (IllegalArgumentException e){
-			System.out.println(e.getMessage());
 			return ResponseEntity.status(401).body(UserLoginPostRes.of(401, "unknown error", null, null));
 		}
 	}
