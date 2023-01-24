@@ -203,4 +203,16 @@ public class UserController {
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200,"수정 완료"));
     }
+
+    @DeleteMapping("/delete")
+    @ApiOperation(value = "유저 삭제", notes = "유저 정보를 삭제(회원탈퇴)")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공")
+    })
+    public ResponseEntity<Boolean> withdrawalUser(@RequestParam String email){
+        userService.deleteUser(email);
+
+        return ResponseEntity.status(200).body(true);
+    }
+
 }
