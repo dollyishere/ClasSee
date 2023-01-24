@@ -77,7 +77,7 @@ public class UserController {
         return ResponseEntity.status(200).body(UserRes.of(user));
     }
 
-    @GetMapping("/check/nickname/{nickname}")
+    @GetMapping("/duplicate/nickname/{nickname}")
     @ApiOperation(value = "닉네임 중복 체크", notes = "DB에 이미 nickname이 있는지 체크")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
@@ -96,7 +96,7 @@ public class UserController {
 
     }
 
-    @GetMapping("/check/email/{email}")
+    @GetMapping("/duplicate/email/{email}")
     @ApiOperation(value = "이메일 중복 체크", notes = "DB에 이미 email이 있는지 체크")
     @ApiResponses({
             @ApiResponse(code = 200, message = "해당 이메일이 이미 존재함"),
@@ -167,17 +167,6 @@ public class UserController {
     })
     public ResponseEntity<? extends BaseResponseBody> updateUserAddress(@RequestParam String email, @RequestParam String address) {
         userService.updateUserAddress(email, address);
-
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"수정 완료"));
-    }
-
-    @PutMapping("/update/password")
-    @ApiOperation(value = "유저 비밀번호 업데이트", notes = "유저 정보를 수정")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "성공")
-    })
-    public ResponseEntity<? extends BaseResponseBody> updateUserPassword(@RequestParam String email, @RequestParam String password) {
-        userService.updateUserPassword(email, password);
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200,"수정 완료"));
     }
