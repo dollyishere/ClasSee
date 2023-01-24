@@ -57,7 +57,18 @@ public class UserController {
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 
-    @GetMapping("/me")
+    @DeleteMapping()
+    @ApiOperation(value = "유저 삭제", notes = "유저 정보를 삭제(회원탈퇴)")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공")
+    })
+    public ResponseEntity<Boolean> withdrawalUser(@RequestParam String email){
+        userService.deleteUser(email);
+
+        return ResponseEntity.status(200).body(true);
+    }
+
+    @GetMapping()
     @ApiOperation(value = "회원 본인 정보 조회", notes = "로그인한 회원 본인의 정보를 응답한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
@@ -77,7 +88,7 @@ public class UserController {
         return ResponseEntity.status(200).body(UserRes.of(user));
     }
 
-    @GetMapping("/check/nickname/{nickname}")
+    @GetMapping("/duplicate/nickname/{nickname}")
     @ApiOperation(value = "닉네임 중복 체크", notes = "DB에 이미 nickname이 있는지 체크")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
@@ -96,7 +107,7 @@ public class UserController {
 
     }
 
-    @GetMapping("/check/email/{email}")
+    @GetMapping("/duplicate/email/{email}")
     @ApiOperation(value = "이메일 중복 체크", notes = "DB에 이미 email이 있는지 체크")
     @ApiResponses({
             @ApiResponse(code = 200, message = "해당 이메일이 이미 존재함"),
@@ -111,7 +122,7 @@ public class UserController {
         return ResponseEntity.status(200).body(false);
     }
 
-    @PostMapping("/findpw")
+    @GetMapping("/check")
     @ApiOperation(value = "비밀번호 찾기", notes = "<strong>이름과 이메알</strong>을 통해 비밀번호 찾는 메서드.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
@@ -119,7 +130,7 @@ public class UserController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends BaseResponseBody> findPw(@RequestBody @ApiParam(value = "이름, 이메일 정보", required = true) UserFindPwPostReq userInfo) throws Exception {
+    public ResponseEntity<? extends BaseResponseBody> checkUser(@ApiParam(value = "이름, 이메일 정보", required = true) UserFindPwPostReq userInfo) throws Exception {
         Optional<Auth> auth = userService.getUserByEmailAndName(userInfo);
 
         // 입력받은 이메일과 이름으로 찾은 사용자 정보가 없다면 401 return
@@ -149,7 +160,7 @@ public class UserController {
 		}
     }
 
-    @PutMapping("/update/nickname")
+    @PutMapping("/nickname")
     @ApiOperation(value = "유저 닉네임 업데이트", notes = "유저 정보를 수정")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공")
@@ -160,7 +171,7 @@ public class UserController {
         return ResponseEntity.status(200).body(BaseResponseBody.of(200,"수정 완료"));
     }
 
-    @PutMapping("/update/address")
+    @PutMapping("/address")
     @ApiOperation(value = "유저 주소 업데이트", notes = "유저 정보를 수정")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공")
@@ -171,18 +182,7 @@ public class UserController {
         return ResponseEntity.status(200).body(BaseResponseBody.of(200,"수정 완료"));
     }
 
-    @PutMapping("/update/password")
-    @ApiOperation(value = "유저 비밀번호 업데이트", notes = "유저 정보를 수정")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "성공")
-    })
-    public ResponseEntity<? extends BaseResponseBody> updateUserPassword(@RequestParam String email, @RequestParam String password) {
-        userService.updateUserPassword(email, password);
-
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"수정 완료"));
-    }
-
-    @PutMapping("/update/phone")
+    @PutMapping("/phone")
     @ApiOperation(value = "유저 폰번호 업데이트", notes = "유저 정보를 수정")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공")
@@ -193,7 +193,7 @@ public class UserController {
         return ResponseEntity.status(200).body(BaseResponseBody.of(200,"수정 완료"));
     }
 
-    @PutMapping("/update/description")
+    @PutMapping("/description")
     @ApiOperation(value = "유저 자기소개 업데이트", notes = "유저 정보를 수정")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공")
@@ -203,16 +203,4 @@ public class UserController {
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200,"수정 완료"));
     }
-
-    @DeleteMapping("/delete")
-    @ApiOperation(value = "유저 삭제", notes = "유저 정보를 삭제(회원탈퇴)")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "성공")
-    })
-    public ResponseEntity<Boolean> withdrawalUser(@RequestParam String email){
-        userService.deleteUser(email);
-
-        return ResponseEntity.status(200).body(true);
-    }
-
 }
