@@ -25,14 +25,9 @@ public class RedisService {
         values.set(email, token, Duration.ofMinutes(EXPIRED_MINUTES));
     }
 
-    public void setValues(String token, String email, Long expiration){
+    public void setBlackList(String token, String email, Long expiration){
         ValueOperations<String, String> values = redisTemplate.opsForValue();
         values.set(email, token, Duration.ofMillis(expiration));
-    }
-
-    public void setBlackList(String token, String email){
-        ValueOperations<String, String> values = redisTemplate.opsForValue();
-        values.set(email, token, Duration.ofMinutes(EXPIRED_MINUTES));
     }
 
     public String getValues(String token){
