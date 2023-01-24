@@ -130,7 +130,7 @@ public class UserController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends BaseResponseBody> findPw(@RequestBody @ApiParam(value = "이름, 이메일 정보", required = true) UserFindPwPostReq userInfo) throws Exception {
+    public ResponseEntity<? extends BaseResponseBody> checkUser(@ApiParam(value = "이름, 이메일 정보", required = true) UserFindPwPostReq userInfo) throws Exception {
         Optional<Auth> auth = userService.getUserByEmailAndName(userInfo);
 
         // 입력받은 이메일과 이름으로 찾은 사용자 정보가 없다면 401 return
