@@ -77,7 +77,7 @@ public class UserController {
         return ResponseEntity.status(200).body(UserRes.of(user));
     }
 
-    @GetMapping("/check/{nickname}")
+    @GetMapping("/check/nickname/{nickname}")
     @ApiOperation(value = "닉네임 중복 체크", notes = "DB에 이미 nickname이 있는지 체크")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
@@ -96,7 +96,7 @@ public class UserController {
 
     }
 
-    @GetMapping("/check/{email}")
+    @GetMapping("/check/email/{email}")
     @ApiOperation(value = "이메일 중복 체크", notes = "DB에 이미 email이 있는지 체크")
     @ApiResponses({
             @ApiResponse(code = 200, message = "해당 이메일이 이미 존재함"),
@@ -203,4 +203,16 @@ public class UserController {
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200,"수정 완료"));
     }
+
+    @DeleteMapping("/delete")
+    @ApiOperation(value = "유저 삭제", notes = "유저 정보를 삭제(회원탈퇴)")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공")
+    })
+    public ResponseEntity<Boolean> withdrawalUser(@RequestParam String email){
+        userService.deleteUser(email);
+
+        return ResponseEntity.status(200).body(true);
+    }
+
 }

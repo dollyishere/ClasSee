@@ -33,6 +33,9 @@ public class UserRepositorySupport {
         em.persist(user);
     }
 
+    // 유저를 넣으면 유저를 DB에서 삭제
+    public void delete(User user) { em.remove(user); }
+
     //ID로 유저를 찾아 한 개를 반환
     public User findOne(Long id){
         return em.find(User.class, id);
