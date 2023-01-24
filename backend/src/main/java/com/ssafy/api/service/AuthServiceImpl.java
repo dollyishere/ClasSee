@@ -31,10 +31,10 @@ public class AuthServiceImpl implements AuthService{
         if (redisService.getValues(email) != null) redisService.deleteValues(email);
 
         /*
-        * redis에
-        *   KEY: access_token
-        *   VALUE: "logout" 으로 저장하여, 이전 구한 토큰의 유효시간동안 해당 엑세스토큰을 사용하지 못하게 처리
-        */
-        redisService.setValues("logout", accessToken, expiration);
+         * redis에
+         *   KEY: access_token
+         *   VALUE: "logout" 으로 저장하여, 이전 구한 토큰의 유효시간동안 해당 엑세스토큰을 사용하지 못하게 처리
+         */
+        redisService.setBlackList("logout", accessToken, expiration);
     }
 }

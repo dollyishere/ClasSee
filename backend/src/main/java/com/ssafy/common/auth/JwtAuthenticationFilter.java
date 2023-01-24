@@ -8,7 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ssafy.api.service.RedisService;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -28,10 +30,12 @@ import com.ssafy.db.entity.user.User;
  */
 public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
     private UserService userService;
+    private RedisTemplate redisTemplate;
 
-    public JwtAuthenticationFilter(AuthenticationManager authenticationManager, UserService userService) {
+    public JwtAuthenticationFilter(AuthenticationManager authenticationManager, UserService userService, RedisTemplate redisTemplate) {
         super(authenticationManager);
         this.userService = userService;
+        this.redisTemplate = redisTemplate;
     }
 
     @Override
@@ -50,6 +54,20 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
             filterChain.doFilter(request, response);
             return;
         }
+
+        /*
+        [토큰 블랙리스트 확인] 시작
+            header => 'Bearer [accessToken]'으로 구성되어 있다.
+            따라서 header.substr(7) => accessToken 값이 된다
+
+            해당 토큰값으로 된 key 레코드가 레디스에 있다면 사용하지 못하게 필터링
+         */
+        String isLogout = (String) redisTemplate.opsForValue().get(header.substring(7));
+
+        if(!ObjectUtils.isEmpty(isLogout)) {
+            filterChain.doFilter(request, response);
+            return;
+        } // [토큰 블랙리스트 확인] 끝
 
         try {
             // If header is present, try grab user principal from database and perform authorization
