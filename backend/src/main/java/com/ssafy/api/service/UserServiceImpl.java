@@ -106,11 +106,6 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void updateUserPassword(String email, String password) {
-		userRepository.updatePassword(email, password);
-	}
-
-	@Override
 	public void updateUserPhone(String email, String phone) {
 		userRepositorySupport.updatePhone(email, phone);
 	}

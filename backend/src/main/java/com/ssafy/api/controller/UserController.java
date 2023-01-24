@@ -57,7 +57,18 @@ public class UserController {
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 
-    @GetMapping("/me")
+    @DeleteMapping()
+    @ApiOperation(value = "유저 삭제", notes = "유저 정보를 삭제(회원탈퇴)")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공")
+    })
+    public ResponseEntity<Boolean> withdrawalUser(@RequestParam String email){
+        userService.deleteUser(email);
+
+        return ResponseEntity.status(200).body(true);
+    }
+
+    @GetMapping()
     @ApiOperation(value = "회원 본인 정보 조회", notes = "로그인한 회원 본인의 정보를 응답한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
@@ -111,7 +122,7 @@ public class UserController {
         return ResponseEntity.status(200).body(false);
     }
 
-    @PostMapping("/findpw")
+    @GetMapping("/check")
     @ApiOperation(value = "비밀번호 찾기", notes = "<strong>이름과 이메알</strong>을 통해 비밀번호 찾는 메서드.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
@@ -149,7 +160,7 @@ public class UserController {
 		}
     }
 
-    @PutMapping("/update/nickname")
+    @PutMapping("/nickname")
     @ApiOperation(value = "유저 닉네임 업데이트", notes = "유저 정보를 수정")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공")
@@ -160,7 +171,7 @@ public class UserController {
         return ResponseEntity.status(200).body(BaseResponseBody.of(200,"수정 완료"));
     }
 
-    @PutMapping("/update/address")
+    @PutMapping("/address")
     @ApiOperation(value = "유저 주소 업데이트", notes = "유저 정보를 수정")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공")
@@ -171,7 +182,7 @@ public class UserController {
         return ResponseEntity.status(200).body(BaseResponseBody.of(200,"수정 완료"));
     }
 
-    @PutMapping("/update/phone")
+    @PutMapping("/phone")
     @ApiOperation(value = "유저 폰번호 업데이트", notes = "유저 정보를 수정")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공")
@@ -182,7 +193,7 @@ public class UserController {
         return ResponseEntity.status(200).body(BaseResponseBody.of(200,"수정 완료"));
     }
 
-    @PutMapping("/update/description")
+    @PutMapping("/description")
     @ApiOperation(value = "유저 자기소개 업데이트", notes = "유저 정보를 수정")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공")
@@ -192,16 +203,4 @@ public class UserController {
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200,"수정 완료"));
     }
-
-    @DeleteMapping("/delete")
-    @ApiOperation(value = "유저 삭제", notes = "유저 정보를 삭제(회원탈퇴)")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "성공")
-    })
-    public ResponseEntity<Boolean> withdrawalUser(@RequestParam String email){
-        userService.deleteUser(email);
-
-        return ResponseEntity.status(200).body(true);
-    }
-
 }
