@@ -17,7 +17,7 @@ public class EmailController {
         this.emailService = emailService;
     }
 
-    @PostMapping("/mailConfirm")
+    @GetMapping("/mailConfirm")
     @ResponseBody
     public String mailConfirm(@RequestParam String email) throws Exception {
         String code = emailService.sendSimpleMessage(email);
