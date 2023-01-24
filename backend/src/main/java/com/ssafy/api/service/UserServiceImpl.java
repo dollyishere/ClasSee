@@ -99,7 +99,7 @@ public class UserServiceImpl implements UserService {
 		userRepository.updatePassword(email, password);
 	}
 
-	//업데이트
+	// 유저 닉네임, 비밀번호, 전화번호, 주소, 소개 업데이트 시작
 	@Override
 	public void updateUserNickname(String email, String nickname) {
 		userRepositorySupport.updateNickname(email, nickname);
@@ -125,5 +125,12 @@ public class UserServiceImpl implements UserService {
 		userRepositorySupport.updateDescription(email, description);
 	}
 
-	// 유저 닉네임, 비밀번호, 전화번호, 주소, 소개 업데이트 업데이트
+	// 유저 닉네임, 비밀번호, 전화번호, 주소, 소개 업데이트 끝
+
+	@Override
+	public void deleteUser(String email) {
+		Long userId = userRepositorySupport.findId(email);
+		User user = userRepositorySupport.findOne(userId);
+		userRepositorySupport.delete(user);
+	}
 }
