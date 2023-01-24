@@ -39,7 +39,7 @@ public class User {
 //    private Long authId;
 
     // 연결
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "auth_id")
     private Auth auth;
 
