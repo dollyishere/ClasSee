@@ -1,6 +1,8 @@
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 
+import '../styles/pages/_login.scss';
+
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 
@@ -92,9 +94,6 @@ const Login = () => {
             <Link to="/signup">회원가입</Link>
           </li>
         </ul>
-        {/* <Button variant="contained" color="warning" startIcon={<ChatBubbleIcon />} className="login__button">
-          카카오 로그인
-        </Button> */}
         {/* 로그인 버튼 */}
         <button type="submit" className="login__button">
           로그인
