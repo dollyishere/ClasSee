@@ -4,7 +4,7 @@ import CustomCarousel from '../components/CustomCarousel';
 
 const MainPage = () => {
   return (
-    <div>
+    <div className="page">
       <CustomCarousel />
     </div>
   );
