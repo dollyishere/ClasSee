@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Api(value = "공지사항 API", tags = {"Notice"})
 @RestController
-@RequestMapping("/api/v1/Notice")public class NoticeController {
+@RequestMapping("/api/v1/notice")public class NoticeController {
 
     @Autowired
     NoticeService noticeService;
