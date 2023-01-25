@@ -1,22 +1,22 @@
 package com.ssafy.db.entity.lesson;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 
 import javax.persistence.*;
 
 /*
-* lesson : curri = 1 : N
-*/
+ *  lesson : checklist = 1 : N
+ */
 @Entity
 @Getter
-@Table(name = "CURRICULUM")
-public class Curriculum {
+@Table(name = "PAMPHLET")
+public class Pamphlet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long stage;
-    private String description;
+    private String img;
 
     // 연결
     @ManyToOne(fetch = FetchType.LAZY)

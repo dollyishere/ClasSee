@@ -12,10 +12,8 @@ import javax.persistence.*;
 @Getter
 @Table(name = "CHECKLIST")
 public class Checklist {
-
-    @JsonIgnore
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String img;

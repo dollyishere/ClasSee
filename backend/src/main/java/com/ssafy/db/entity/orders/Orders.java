@@ -20,7 +20,7 @@ import java.util.List;
 @Table(name = "ORDERS")
 public class Orders {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @CreatedDate

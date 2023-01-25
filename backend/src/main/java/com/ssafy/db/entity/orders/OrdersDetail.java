@@ -16,7 +16,7 @@ import java.util.List;
 @Table(name = "ORDER_DETAIL")
 public class OrdersDetail {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Long price;
