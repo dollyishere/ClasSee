@@ -1,0 +1,6 @@
+@use '../base/colors';
+
+.container {
+  margin: 5%;
+  background-color: colors.$theme_color_lighter;
+}
