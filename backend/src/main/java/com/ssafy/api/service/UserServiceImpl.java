@@ -60,7 +60,6 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User getUserByAuth(String email) {
 		// 디비에 유저 정보 조회 (email을 통한 조회).
-		// 디비에 유저 정보 조회 (email을 통한 조회).
 
 		User user = User.builder().build();
 

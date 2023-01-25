@@ -1,6 +1,5 @@
 package com.ssafy.db.entity.orders;
 
-import com.ssafy.db.entity.product.Product;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -28,8 +27,4 @@ public class OrdersDetail {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "orders_id")
     private Orders orders;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
-    private Product product;
 }
