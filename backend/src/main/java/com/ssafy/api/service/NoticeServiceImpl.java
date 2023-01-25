@@ -57,7 +57,20 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
-    public void deleteNotice() {
+    public void deleteNotice(String email, Long id) throws Exception {
+        Notice notice = noticeRepositorySupport.findOne(id);
+
+        User user = userRepositorySupport
+                .findUserByAuth(email)
+                .get();
+
+        if(user.getRole().equals(UserRole.ROLE_ADMIN)) {
+
+            noticeRepositorySupport.delete(notice);
+            return;
+        } else {
+            throw new Exception("공지사항을 삭제할 권한이 없습니다.");
+        }
 
     }
 }

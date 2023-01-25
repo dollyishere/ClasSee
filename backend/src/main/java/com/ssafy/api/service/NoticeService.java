@@ -7,6 +7,6 @@ public interface NoticeService {
     void createNotice(NoticeCreatePostReq noticeCreatePostReq) throws Exception;
     void readNotice();
     void updateNotice();
-    void deleteNotice();
+    void deleteNotice(String email, Long id) throws Exception;
 
 }
