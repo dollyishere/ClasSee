@@ -57,6 +57,13 @@ const Header = () => {
       {/* 버튼 */}
       <ul className="nav">
         <li className="nav__item">
+          <Link to="lecture/test" target="_blank">
+            <button type="button" className="nav__button button">
+              테스트
+            </button>
+          </Link>
+        </li>
+        <li className="nav__item">
           <Link to="login">
             <button type="button" className="nav__button button">
               로그인
