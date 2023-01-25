@@ -16,29 +16,28 @@ interface Props {
   limit?: number;
 }
 
+// type showImage = { id: number; }
+
 const StepTwo = () => {
-  const [showImages, setShowImages] = useState([]);
+  const [showImages, setShowImages] = useState<string[]>([]);
   // const [imageUrlLists, setimageUrlLists] = useState([]);
 
   // 이미지 상대경로 저장
   const handleAddImages = (e: React.ChangeEvent<HTMLInputElement>) => {
     const imageLists = e.target.files as FileList;
-    let imageUrlLists = [...showImages] as string[];
-    console.log(showImages);
-    console.log(imageLists);
-    console.log(imageLists.length);
+    const imageUrlLists = [...showImages] as string[];
 
     for (let i = 0; i < imageLists.length; i += 1) {
       const currentImageUrl = URL.createObjectURL(imageLists[i]);
-      console.log(currentImageUrl);
+      console.log(typeof currentImageUrl);
       imageUrlLists.push(currentImageUrl);
       console.log(imageUrlLists);
     }
 
-    if (imageUrlLists.length > 10) {
-      imageUrlLists = imageUrlLists.slice(0, 10);
-    }
-    console.log(imageUrlLists.type);
+    // if (imageUrlLists.length > 10) {
+    //   imageUrlLists = imageUrlLists.slice(0, 10);
+    // }
+    console.log(imageUrlLists);
     setShowImages(imageUrlLists);
   };
 
@@ -50,18 +49,20 @@ const StepTwo = () => {
   return (
     <div>
       <h2>Step 2. 소개 사진 등록</h2>
-      <div>
-        <label htmlFor="input-file">
-          <input hidden type="file" id="input-file" multiple onChange={handleAddImages} />
-          <AddCircleOutlineIcon fill="#646F7C" />
-        </label>
-        {/* 저장해둔 이미지들을 순회하면서 화면에 이미지 출력 */}
-        {/* {showImages.map((image: Blob, id: Number) => (
-          <div key={id}>
-            <img src={image} alt={`${image}-${id}`} />
-            <RemoveCircleOutlineIcon onClick={() => handleDeleteImage(id)} />
+      <div className="img__container">
+        {/* 저장해둔 이미지들을 map을 통해 순회하면서 화면에 이미지 출력 */}
+        {showImages.map((image: string, id: number) => (
+          <div>
+            <img className="img__item" src={image} alt={`${image}-${id}`} />
+            <RemoveCircleOutlineIcon className="img__delete" onClick={() => handleDeleteImage(id)} />
           </div>
-        ))} */}
+        ))}
+        {showImages.length < 5 ? (
+          <label htmlFor="input-file">
+            <input hidden type="file" id="input-file" multiple onChange={handleAddImages} />
+            <AddCircleOutlineIcon fill="#646F7C" />
+          </label>
+        ) : null}
       </div>
       <CardActions>
         <Link to="/open_lecture/1">

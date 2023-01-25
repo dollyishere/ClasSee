@@ -2,5 +2,16 @@
 
 .container {
   margin: 5%;
-  background-color: colors.$theme_color_lighter;
+}
+
+.img__container {
+  display: flex;
+  .img__item {
+    width: 100px;
+    height: 100px;
+    .img__delete {
+      display: none;
+      // transition: 0.5s;
+    }
+  }
 }
