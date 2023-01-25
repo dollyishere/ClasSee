@@ -9,7 +9,7 @@ import CardActions from '@mui/material/CardActions';
 import TextField from '@mui/material/TextField';
 import Menu, { MenuProps } from '@mui/material/Menu';
 
-const ChapterOne = () => {
+const StepOne = () => {
   const lecturenameRef = useRef(null);
 
   const handleLoginSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -35,12 +35,14 @@ const ChapterOne = () => {
           ref={lecturenameRef}
         /> */}
         <CardActions>
-          <Button type="submit" variant="contained">
-            다음 단계
-          </Button>
+          <Link to="/open_lecture/2">
+            <Button type="submit" variant="contained">
+              다음 단계
+            </Button>
+          </Link>
         </CardActions>
       </form>
     </div>
   );
 };
-export default ChapterOne;
+export default StepOne;
