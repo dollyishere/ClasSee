@@ -1,19 +1,25 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import Box from '@mui/material/Box';
+import Rating from '@mui/material/Rating';
+import Typography from '@mui/material/Typography';
+import Avatar from '@mui/material/Avatar';
+import Stack from '@mui/material/Stack';
+import AvTimerIcon from '@mui/icons-material/AvTimer';
 import api, { Lecture } from '../util/api';
 import logo from '../assets/logo.png';
-
 // interface Props {}
 
-// dummy data
 const LectureCard = () => {
+  // dummy data
   const dummyData = [
     {
       id: 1,
       lectureImage: 'lectureImage1.jpg',
       instructor: 'John Doe',
       instructorImage: 'instructorImage1.jpg',
-      name: 'Introduction to React',
-      takeTime: '2 hours',
+      name: '김친절 선생님과 함께하는 뜨개질',
+      takeTime: '2',
       rating: 4.5,
     },
     {
@@ -22,7 +28,7 @@ const LectureCard = () => {
       instructor: 'Jane Smith',
       instructorImage: 'instructorImage2.jpg',
       name: 'Advanced JavaScript',
-      takeTime: '2 hours',
+      takeTime: '1',
       rating: 4.0,
     },
     {
@@ -31,27 +37,38 @@ const LectureCard = () => {
       instructor: 'Bob Johnson',
       instructorImage: 'instructorImage3.jpg',
       name: 'Node.js for Beginners',
-      takeTime: '2 hours',
+      takeTime: '3.5',
       rating: 3.5,
     },
   ];
-
+  // 더미 데이터를 useState로 받아서 저장
   const [lectures, setLectures] = useState<Lecture[]>(dummyData);
+
   return (
     <div className="lecture">
+      {/* 강의 하나씩 map으로 돌면서 카드에 적용 */}
       {lectures.map((lecture) => (
-        <div className="lecture-card" key={lecture.id}>
-          <div>
-            <img src={lecture.lectureImage} alt={lecture.name} />
-            <div>
-              <img src={lecture.instructorImage} alt={lecture.instructor} />
-            </div>
+        <Link to={`/lectures/${lecture.id}`} className="lecture__card" key={lecture.id}>
+          <div className="lecture__backImg">
+            <img className="lecture__img" src={logo} alt={lecture.name} />
           </div>
-          <p className="instructor">Instructor: {lecture.instructor}</p>
-          <p className="name">Lecture Name: {lecture.name}</p>
-          <p className="taketime">Lecture Name: {lecture.takeTime}</p>
-          <p className="rating">Rating: {lecture.rating}</p>
-        </div>
+          <div className="lecture__instructorImage">
+            <Stack className="lecture__instructorImage--image" direction="row" spacing={2}>
+              <Avatar alt="Remy Sharp" src={logo} />
+            </Stack>
+          </div>
+          <p className="lecture__name">{lecture.name}</p>
+          <div className="lecture__ratingtime">
+            <div className="lecture__rating">
+              <Rating className="lecture__rating--star" name="read-only" value={lecture.rating} readOnly />
+              <p className="lecture__rating--number"> {lecture.rating}</p>
+            </div>
+            <p className="lecture__time">
+              <AvTimerIcon />
+              {lecture.takeTime} 시간 소요
+            </p>
+          </div>
+        </Link>
       ))}
     </div>
   );
