@@ -58,14 +58,14 @@ const Header = () => {
       <ul className="nav">
         <li className="nav__item">
           <Link to="login">
-            <button type="button" className="nav__button">
+            <button type="button" className="nav__button button">
               로그인
             </button>
           </Link>
         </li>
         <li className="nav__item">
-          <Link to="register">
-            <button type="button" className="nav__button">
+          <Link to="signup">
+            <button type="button" className="nav__button button">
               회원가입
             </button>
           </Link>
