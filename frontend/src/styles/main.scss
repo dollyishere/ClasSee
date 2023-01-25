@@ -1,7 +1,15 @@
-// Base
+// base
 @use './base/colors';
 
 // components
 @use './components/header';
 @use './components/custom-carousel';
 @use './components/LectureCard';
+@use './components/button';
+
+// pages
+@use './pages/signup-page';
+.page {
+  background-color: colors.$theme_color_light;
+  height: 100vh;
+}

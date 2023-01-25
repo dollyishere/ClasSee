@@ -6,7 +6,7 @@ import Lizard from '../components/Lizard';
 
 const MainPage = () => {
   return (
-    <div>
+    <div className="page">
       <CustomCarousel />
       <LectureCard />
       <Lizard />
