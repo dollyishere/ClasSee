@@ -8,7 +8,16 @@
 
 // pages
 @use './pages/signup-page';
+
+html,
+body,
+#root,
+.App {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+}
 .page {
   background-color: colors.$theme_color_light;
-  height: 100vh;
+  height: 100%;
 }
