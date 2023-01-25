@@ -1,10 +1,13 @@
 package com.ssafy.db.entity.product;
 
+import com.ssafy.db.entity.lesson.Checklist;
 import com.ssafy.db.entity.lesson.Lesson;
 import com.ssafy.db.entity.orders.OrdersDetail;
 import lombok.Getter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /*
 * product : lesson = 1 : N
@@ -24,13 +27,9 @@ public class Product {
     private Category category;
 
     // 연결
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "lesson_id")
-    private Lesson lesson;
+    @OneToMany(mappedBy = "product")
+    private List<OrdersDetail> ordersDetailList = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "orders_detail_id")
-    private OrdersDetail ordersDetail;
-
-
+    @OneToMany(mappedBy = "product")
+    private List<Checklist> checkLists = new ArrayList<>();
 }

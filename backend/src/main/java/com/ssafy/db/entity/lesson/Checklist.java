@@ -1,6 +1,7 @@
 package com.ssafy.db.entity.lesson;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ssafy.db.entity.product.Product;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -22,4 +23,8 @@ public class Checklist {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "lesson_id")
     private Lesson lesson;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
+    private Product product;
 }

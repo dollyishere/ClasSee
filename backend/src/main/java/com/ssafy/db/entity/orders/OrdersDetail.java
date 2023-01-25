@@ -29,6 +29,7 @@ public class OrdersDetail {
     @JoinColumn(name = "orders_id")
     private Orders orders;
 
-    @OneToMany(mappedBy = "ordersDetail")
-    private List<Product> productList = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
+    private Product product;
 }
