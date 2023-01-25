@@ -14,8 +14,10 @@
   border-radius: 15px;
   box-shadow: 5px #ccc;
   background-color: #f9f9f9;
+  width: 350px;
+  height: 500px;
   .lecture__img {
-    width: 400px;
+    width: 350px;
     height: 300px;
     // border-radius: 50%;
     margin-bottom: 20px;
@@ -33,6 +35,14 @@
     font-weight: bold;
     text-align: center;
   }
+  .lecture__backImg {
+    position: relative;
+  }
+  .lecture__bookmark {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
   .lecture__instructorImage {
     border-bottom: solid 1px black;
   }
@@ -41,6 +51,7 @@
     // position: absolute;
   }
   .lecture__name {
+    margin: auto;
     color: black;
     font-weight: 800;
     font-size: 30px;
