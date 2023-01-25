@@ -14,7 +14,7 @@ import javax.persistence.*;
 @Table(name = "BOOKMARK")
 public class Bookmark {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     // 연결

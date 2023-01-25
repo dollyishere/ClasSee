@@ -15,7 +15,7 @@ import java.sql.Timestamp;
 @Table(name = "ARTICLE")
 public class Article {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Long hit;

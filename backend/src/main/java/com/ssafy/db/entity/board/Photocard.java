@@ -16,7 +16,7 @@ import java.sql.Timestamp;
 @Table(name = "PHOTOCARD")
 public class Photocard {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String title;

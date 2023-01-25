@@ -19,7 +19,7 @@ import java.util.List;
 public class Lesson {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Enumerated(EnumType.STRING)
@@ -39,6 +39,9 @@ public class Lesson {
 
     @OneToMany(mappedBy = "lesson")
     private List<Checklist> checkList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "lesson")
+    private List<Pamphlet> pamphletList = new ArrayList<>();
 
     @OneToMany(mappedBy = "lesson")
     private List<Review> reviewList = new ArrayList<>();

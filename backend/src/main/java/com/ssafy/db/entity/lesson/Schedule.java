@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Table(name = "SCHEDULE")
 public class Schedule {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Enumerated(EnumType.STRING)

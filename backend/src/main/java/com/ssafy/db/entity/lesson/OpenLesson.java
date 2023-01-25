@@ -17,7 +17,7 @@ import java.util.List;
 @Table(name = "OPEN_LESSON")
 public class OpenLesson {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @CreatedDate
