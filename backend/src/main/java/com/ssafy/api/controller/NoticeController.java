@@ -10,10 +10,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Api(value = "공지사항 API", tags = {"Notice"})
 @RestController
@@ -36,6 +33,23 @@ import org.springframework.web.bind.annotation.RestController;
             return ResponseEntity.status(401).body(BaseResponseBody.of(401,"사용자 권한 없음"));
         }
         return ResponseEntity.status(200).body(BaseResponseBody.of(200,"success"));
+    }
+
+    @DeleteMapping()
+    @ApiOperation(value = "공지 삭제", notes = "사용자 이메일로 권한 확인 후, id로 해당 공지 삭제")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 401, message = "권한이 없음")
+    })
+    public ResponseEntity<? extends BaseResponseBody> withdrawalUser(@RequestParam String email, @RequestParam Long id){
+
+        try {
+            noticeService.deleteNotice(email, id);
+        } catch (Exception e) {
+            return ResponseEntity.status(401).body(BaseResponseBody.of(401,"사용자 권한이 없음"));
+        }
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success"));
+
     }
 
 
