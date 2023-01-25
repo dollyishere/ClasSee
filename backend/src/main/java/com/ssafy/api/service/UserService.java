@@ -28,4 +28,5 @@ public interface UserService {
 	void updateUserDescription(String email, String description);
 
 	void deleteUser(String email);
+
 }

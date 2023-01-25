@@ -128,4 +128,5 @@ public class UserServiceImpl implements UserService {
 		User user = userRepositorySupport.findOne(userId);
 		userRepositorySupport.delete(user);
 	}
+
 }
