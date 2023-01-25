@@ -2,6 +2,7 @@ package com.ssafy.api.controller;
 
 import com.ssafy.api.dto.UserEmailPwDto;
 import com.ssafy.api.request.UserFindPwPostReq;
+import com.ssafy.api.response.UserInfoGetRes;
 import com.ssafy.api.service.EmailService;
 import com.ssafy.db.entity.user.Auth;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,16 +77,15 @@ public class UserController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<UserRes> getUserInfo(@ApiIgnore Authentication authentication) {
+    public ResponseEntity<UserInfoGetRes> getUserInfo(@RequestParam String email) {
         /**
          * 요청 헤더 액세스 토큰이 포함된 경우에만 실행되는 인증 처리이후, 리턴되는 인증 정보 객체(authentication) 통해서 요청한 유저 식별.
          * 액세스 토큰이 없이 요청하는 경우, 403 에러({"error": "Forbidden", "message": "Access Denied"}) 발생.
          */
-        SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
-        String email = userDetails.getUsername();
         User user = userService.getUserByAuth(email);
+        UserInfoGetRes userInfoGetRes = new UserInfoGetRes(user);
 
-        return ResponseEntity.status(200).body(UserRes.of(user));
+        return ResponseEntity.status(200).body(userInfoGetRes);
     }
 
     @GetMapping("/duplicate/nickname/{nickname}")
@@ -203,4 +203,5 @@ public class UserController {
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200,"수정 완료"));
     }
+
 }
