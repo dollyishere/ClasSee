@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import api, { Lecture } from './api';
+import api, { Lecture } from '../util/api';
 import logo from '../assets/logo.png';
 
 // interface Props {}
