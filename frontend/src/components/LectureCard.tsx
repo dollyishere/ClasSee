@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
-import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import AvTimerIcon from '@mui/icons-material/AvTimer';
@@ -60,7 +58,13 @@ const LectureCard = () => {
           <p className="lecture__name">{lecture.name}</p>
           <div className="lecture__ratingtime">
             <div className="lecture__rating">
-              <Rating className="lecture__rating--star" name="read-only" value={lecture.rating} readOnly />
+              <Rating
+                className="lecture__rating--star"
+                name="half-rating-read"
+                value={lecture.rating}
+                precision={0.5}
+                readOnly
+              />
               <p className="lecture__rating--number"> {lecture.rating}</p>
             </div>
             <p className="lecture__time">
