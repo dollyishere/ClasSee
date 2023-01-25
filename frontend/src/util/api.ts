@@ -2,9 +2,11 @@ import connection from '../components/db';
 
 interface Lecture {
   id: number;
-  image: string;
+  lectureImage: string;
   instructor: string;
+  instructorImage: string;
   name: string;
+  takeTime: string;
   rating: number;
 }
 
