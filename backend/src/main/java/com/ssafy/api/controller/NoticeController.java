@@ -22,9 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
     @Autowired
     NoticeService noticeService;
 
-    @Autowired
-    UserService userService;
-
     @PostMapping()
     @ApiOperation(value = "공지사항 등록", notes = "작성자 이메일, 제목, 내용으로 공지사항 작성")
     @ApiResponses({
