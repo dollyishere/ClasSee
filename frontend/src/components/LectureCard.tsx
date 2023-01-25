@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from 'react';
+
 import { Link } from 'react-router-dom';
 import Rating from '@mui/material/Rating';
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import AvTimerIcon from '@mui/icons-material/AvTimer';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
+import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import api, { Lecture } from '../util/api';
 import logo from '../assets/logo.png';
 // interface Props {}
 
 const LectureCard = () => {
+  const [isBookMarked, setIsBookMarked] = useState(null);
+  // const bookMark = () => {};
   // dummy data
   const dummyData = [
     {
@@ -46,12 +51,24 @@ const LectureCard = () => {
     <div className="lecture">
       {/* 강의 하나씩 map으로 돌면서 카드에 적용 */}
       {lectures.map((lecture) => (
-        <Link to={`/lectures/${lecture.id}`} className="lecture__card" key={lecture.id}>
+        <Link
+          to={`/lectures/${lecture.id}`}
+          className="lecture__card"
+          key={lecture.id}
+        >
           <div className="lecture__backImg">
             <img className="lecture__img" src={logo} alt={lecture.name} />
+            <div className="lecture__bookmark">
+              <BookmarkBorderIcon fontSize="large" color="action" />
+              <BookmarkIcon fontSize="large" color="error" />
+            </div>
           </div>
           <div className="lecture__instructorImage">
-            <Stack className="lecture__instructorImage--image" direction="row" spacing={2}>
+            <Stack
+              className="lecture__instructorImage--image"
+              direction="row"
+              spacing={2}
+            >
               <Avatar alt="Remy Sharp" src={logo} />
             </Stack>
           </div>
