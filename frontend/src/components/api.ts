@@ -11,7 +11,7 @@ interface Lecture {
 const api = {
   getLectures: (callback: (error: Error | null, results: Lecture[]) => void) => {
     const sql = 'SELECT * FROM lectures';
-    connection.query(sql, (error, results) => {
+    connection.query(sql, (error: Error | null, results: Lecture[]) => {
       if (error) throw error;
       callback(null, results);
     });
