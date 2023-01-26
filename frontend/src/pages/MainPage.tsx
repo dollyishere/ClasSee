@@ -1,13 +1,13 @@
 import React from 'react';
 
 import CustomCarousel from '../components/CustomCarousel';
-import LectureCard from '../components/LectureCard';
+import LessonCard from '../components/LessonCard';
 
 const MainPage = () => {
   return (
     <div className="page">
       <CustomCarousel />
-      <LectureCard />
+      <LessonCard />
     </div>
   );
 };

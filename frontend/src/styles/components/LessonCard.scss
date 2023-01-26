@@ -1,9 +1,9 @@
 @use '../base/colors';
-.lecture {
+.lesson {
   display: flex;
   justify-content: space-evenly;
 }
-.lecture__card {
+.lesson__card {
   text-decoration: none;
   margin-block: 15px;
   flex-direction: column;
@@ -16,7 +16,7 @@
   background-color: #f9f9f9;
   width: 350px;
   height: 500px;
-  .lecture__img {
+  .lesson__img {
     width: 350px;
     height: 300px;
     // border-radius: 50%;
@@ -35,43 +35,43 @@
     font-weight: bold;
     text-align: center;
   }
-  .lecture__backImg {
+  .lesson__backImg {
     position: relative;
   }
-  .lecture__bookmark {
+  .lesson__bookmark {
     position: absolute;
     right: 0;
     top: 0;
   }
-  .lecture__instructorImage {
+  .lesson__instructorImage {
     border-bottom: solid 1px black;
   }
-  .lecture__instructorImage--image {
+  .lesson__instructorImage--image {
     margin-left: 85%;
     // position: absolute;
   }
-  .lecture__name {
+  .lesson__name {
     margin: auto;
     color: black;
     font-weight: 800;
     font-size: 30px;
   }
-  .lecture__ratingtime {
+  .lesson__ratingtime {
     display: flex;
     justify-content: space-between;
     margin-top: 10px;
   }
 
-  .lecture__rating {
+  .lesson__rating {
     display: flex;
     align-items: center;
   }
-  .lecture__rating--number {
+  .lesson__rating--number {
     color: orange;
     margin: auto;
     margin-left: 5px;
   }
-  .lecture__time {
+  .lesson__time {
     color: black;
     margin-top: auto;
     margin-left: 10px;

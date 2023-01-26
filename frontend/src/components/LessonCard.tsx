@@ -7,18 +7,18 @@ import Stack from '@mui/material/Stack';
 import AvTimerIcon from '@mui/icons-material/AvTimer';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
-import api, { Lecture } from '../util/api';
+import { api, bookmark, Lesson } from '../util/api';
 import logo from '../assets/logo.png';
 // interface Props {}
 
-const LectureCard = () => {
+const LessonCard = () => {
   const [isBookMarked, setIsBookMarked] = useState(null);
   // const bookMark = () => {};
   // dummy data
   const dummyData = [
     {
       id: 1,
-      lectureImage: 'lectureImage1.jpg',
+      lessonImage: 'lessonImage1.jpg',
       instructor: 'John Doe',
       instructorImage: 'instructorImage1.jpg',
       name: '김친절 선생님과 함께하는 뜨개질',
@@ -27,7 +27,7 @@ const LectureCard = () => {
     },
     {
       id: 2,
-      lectureImage: 'lectureImage2.jpg',
+      lessonImage: 'lessonImage2.jpg',
       instructor: 'Jane Smith',
       instructorImage: 'instructorImage2.jpg',
       name: 'Advanced JavaScript',
@@ -36,7 +36,7 @@ const LectureCard = () => {
     },
     {
       id: 3,
-      lectureImage: 'lectureImage3.jpg',
+      lessonImage: 'lessonImage3.jpg',
       instructor: 'Bob Johnson',
       instructorImage: 'instructorImage3.jpg',
       name: 'Node.js for Beginners',
@@ -45,48 +45,48 @@ const LectureCard = () => {
     },
   ];
   // 더미 데이터를 useState로 받아서 저장
-  const [lectures, setLectures] = useState<Lecture[]>(dummyData);
+  const [lessons, setlessons] = useState<Lesson[]>(dummyData);
 
   return (
-    <div className="lecture">
+    <div className="lesson">
       {/* 강의 하나씩 map으로 돌면서 카드에 적용 */}
-      {lectures.map((lecture) => (
+      {lessons.map((lesson) => (
         <Link
-          to={`/lectures/${lecture.id}`}
-          className="lecture__card"
-          key={lecture.id}
+          to={`/lessons/${lesson.id}`}
+          className="lesson__card"
+          key={lesson.id}
         >
-          <div className="lecture__backImg">
-            <img className="lecture__img" src={logo} alt={lecture.name} />
-            <div className="lecture__bookmark">
+          <div className="lesson__backImg">
+            <img className="lesson__img" src={logo} alt={lesson.name} />
+            <div className="lesson__bookmark">
               <BookmarkBorderIcon fontSize="large" color="action" />
               <BookmarkIcon fontSize="large" color="error" />
             </div>
           </div>
-          <div className="lecture__instructorImage">
+          <div className="lesson__instructorImage">
             <Stack
-              className="lecture__instructorImage--image"
+              className="lesson__instructorImage--image"
               direction="row"
               spacing={2}
             >
               <Avatar alt="Remy Sharp" src={logo} />
             </Stack>
           </div>
-          <p className="lecture__name">{lecture.name}</p>
-          <div className="lecture__ratingtime">
-            <div className="lecture__rating">
+          <p className="lesson__name">{lesson.name}</p>
+          <div className="lesson__ratingtime">
+            <div className="lesson__rating">
               <Rating
-                className="lecture__rating--star"
+                className="lesson__rating--star"
                 name="half-rating-read"
-                value={lecture.rating}
+                value={lesson.rating}
                 precision={0.5}
                 readOnly
               />
-              <p className="lecture__rating--number"> {lecture.rating}</p>
+              <p className="lesson__rating--number"> {lesson.rating}</p>
             </div>
-            <p className="lecture__time">
+            <p className="lesson__time">
               <AvTimerIcon />
-              {lecture.takeTime} 시간 소요
+              {lesson.takeTime} 시간 소요
             </p>
           </div>
         </Link>
@@ -95,7 +95,7 @@ const LectureCard = () => {
   );
 };
 
-export default LectureCard;
+export default LessonCard;
 
 // DB API로 data 받아올때 코드
 // import React, { useEffect, useState } from 'react';
