@@ -6,8 +6,8 @@ import connection from '../components/db';
 interface Lesson {
   id: number;
   lessonImage: string;
-  instructor: string;
-  instructorImage: string;
+  teacher: string;
+  teacherImage: string;
   name: string;
   takeTime: string;
   rating: number;
@@ -24,13 +24,3 @@ export const api = {
 };
 
 export type { Lesson };
-
-// export const bookmark = {
-//   getbookmark: (callback: (error: Error | null, results: string) => void) => {
-//     const sql = 'SELECT * FROM bookmark';
-//     connection.query(sql, (error: Error | null, results: string) => {
-//       if (error) throw error;
-//       callback(null, results);
-//     });
-//   },
-// };
