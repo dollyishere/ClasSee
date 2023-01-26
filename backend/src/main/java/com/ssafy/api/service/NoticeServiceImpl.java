@@ -62,6 +62,11 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
+    public Long noticeCount() {
+        return noticeRepositorySupport.noticeCount();
+    }
+
+    @Override
     public void updateNotice(NoticeUpdatePutReq noticeUpdatePutReq) throws Exception {
 
         User user = userRepositorySupport

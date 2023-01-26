@@ -12,6 +12,7 @@ public interface NoticeService {
     void createNotice(NoticeRegisterPostReq noticeRegisterPostReq) throws Exception;
     Notice readNotice(Long id);
     List<Notice> readNoticeList(int offset, int limit);
+    Long noticeCount();
     void updateNotice(NoticeUpdatePutReq noticeUpdatePutReq) throws Exception;
     void deleteNotice(String email, Long id) throws Exception;
 
