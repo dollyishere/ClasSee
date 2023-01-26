@@ -75,12 +75,12 @@ const StepTwo = () => {
         ) : null}
       </div>
       <CardActions>
-        <Link to="/open_lecture/1">
+        <Link to="/create_lesson/1">
           <Button type="submit" variant="contained">
             이전 단계
           </Button>
         </Link>
-        <Link to="/open_lecture/3">
+        <Link to="/create_lesson/3">
           <Button type="submit" variant="contained">
             다음 단계
           </Button>

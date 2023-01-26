@@ -26,16 +26,8 @@ const StepOne = () => {
       <h2>Step 1. 강의명 입력</h2>
       <form onSubmit={handleLoginSubmit}>
         <input type="text" ref={lecturenameRef} placeholder="강의명을 입력해주세요" />
-        {/* <TextField
-          required
-          id="standard-required"
-          label="강의명"
-          placeholder="강의명을 입력해주세요"
-          variant="standard"
-          ref={lecturenameRef}
-        /> */}
         <CardActions>
-          <Link to="/open_lecture/2">
+          <Link to="/create_lesson/2">
             <Button type="submit" variant="contained">
               다음 단계
             </Button>
