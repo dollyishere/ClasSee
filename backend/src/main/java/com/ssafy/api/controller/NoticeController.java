@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
             @ApiResponse(code = 200, message = "성공"),
             @ApiResponse(code = 401, message = "권한이 없음"),
     })
-    public ResponseEntity<? extends BaseResponseBody> register(@RequestBody NoticeRegisterPostReq noticeRegisterPostReq) {
+    public ResponseEntity<? extends BaseResponseBody> registeNotice(@RequestBody NoticeRegisterPostReq noticeRegisterPostReq) {
 
         try {
             noticeService.createNotice(noticeRegisterPostReq);
