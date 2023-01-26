@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
     NoticeService noticeService;
 
     @PostMapping()
-    @ApiOperation(value = "공지사항 등록", notes = "작성자 이메일, 제목, 내용으로 공지사항 작성")
+    @ApiOperation(value = "공지사항 등록", notes = "작성자 이메일, 제목, 내용으로 권한 확인 후 공지사항 작성")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
             @ApiResponse(code = 401, message = "권한이 없음"),
@@ -87,7 +87,7 @@ import java.util.stream.Collectors;
     }
 
     @PutMapping()
-    @ApiOperation(value = "공지사항 수정", notes = "공지사항에 대한 수정")
+    @ApiOperation(value = "공지사항 수정", notes = "유저 권한 확인 후 수정")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
             @ApiResponse(code = 401, message = "수정 권한이 없음")
