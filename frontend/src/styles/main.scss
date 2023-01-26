@@ -20,4 +20,5 @@ body,
 .page {
   background-color: colors.$theme_color_light;
   height: 100%;
+  overflow: auto;
 }
