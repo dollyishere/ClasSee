@@ -40,7 +40,10 @@ public class ArticleServiceImpl implements ArticleService{
 
     @Override
     public Article readArticle(Long id) {
-        return null;
+
+        articleRepositorySupport.updateHit(id);
+        return articleRepositorySupport.findOne(id);
+
     }
 
     @Override
