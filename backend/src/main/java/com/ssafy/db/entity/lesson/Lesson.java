@@ -3,8 +3,7 @@ package com.ssafy.db.entity.lesson;
 import com.ssafy.db.entity.board.Photocard;
 import com.ssafy.db.entity.user.Bookmark;
 import com.ssafy.db.entity.user.User;
-import com.ssafy.db.entity.product.Product;
-import lombok.Getter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -13,6 +12,9 @@ import java.util.List;
 /*
 * Lesson : member = N : 1
 */
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Getter
 @Table(name = "LESSON")
@@ -57,7 +59,4 @@ public class Lesson {
 
     @OneToMany(mappedBy = "lesson")
     private List<Curriculum> curriculumList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "lesson")
-    private List<Product> productList = new ArrayList<>();
 }
