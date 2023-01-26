@@ -2,6 +2,7 @@ package com.ssafy.api.controller;
 
 import com.ssafy.api.request.NoticeRegisterPostReq;
 import com.ssafy.api.request.NoticeUpdatePutReq;
+import com.ssafy.api.response.NoticeInfoRes;
 import com.ssafy.api.response.NoticeListRes;
 import com.ssafy.api.response.PageGetRes;
 import com.ssafy.api.service.NoticeService;
@@ -66,9 +67,9 @@ import java.util.stream.Collectors;
     public ResponseEntity<?> getNoticeInfo(@RequestParam Long id){
 
         Notice notice = noticeService.readNotice(id);
-        NoticeListRes noticeListRes = new NoticeListRes(notice);
+        NoticeInfoRes noticeInfoRes = new NoticeInfoRes(notice);
 
-        return ResponseEntity.status(200).body(noticeListRes);
+        return ResponseEntity.status(200).body(noticeInfoRes);
 
     }
 
