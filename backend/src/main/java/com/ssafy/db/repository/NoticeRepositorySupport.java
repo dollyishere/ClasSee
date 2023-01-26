@@ -36,7 +36,7 @@ public class NoticeRepositorySupport {
     // 모든 공지사항 리스트를 반환
     public List<Notice> findAll() { return em.createQuery("select n from Notice n", Notice.class).getResultList(); }
 
-    // 공지사항을 10개 씩 페이징 처리해서 반환
+    // 공지사항을 limit개 씩 offset부터 페이징 처리해서 반환
     public List<Notice> findList(int offset, int limit) {
         return jpaQueryFactory
                 .selectFrom(qNotice)
