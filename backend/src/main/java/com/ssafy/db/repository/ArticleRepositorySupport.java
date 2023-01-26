@@ -34,4 +34,17 @@ public class ArticleRepositorySupport {
                 .from(qArticle)
                 .fetch();
     }
+
+    public void updateHit(Long id) {
+
+        jpaQueryFactory
+                .update(qArticle)
+                .where(qArticle.id.eq(id))
+                .set(qArticle.hit, qArticle.hit.add(1))
+                .execute();
+
+        em.clear();
+        em.flush();
+    }
+
 }
