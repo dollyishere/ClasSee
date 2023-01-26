@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { atom, selector, useRecoilState } from 'recoil';
-import { bookmarkState } from './store/';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Rating from '@mui/material/Rating';
@@ -19,8 +18,8 @@ const LessonCard = () => {
     {
       id: 1,
       lessonImage: 'lessonImage1.jpg',
-      instructor: 'John Doe',
-      instructorImage: 'instructorImage1.jpg',
+      teacher: 'John Doe',
+      teacherImage: 'teacherImage1.jpg',
       name: '김친절 선생님과 함께하는 뜨개질',
       takeTime: '2',
       rating: 4.5,
@@ -28,8 +27,8 @@ const LessonCard = () => {
     {
       id: 2,
       lessonImage: 'lessonImage2.jpg',
-      instructor: 'Jane Smith',
-      instructorImage: 'instructorImage2.jpg',
+      teacher: 'Jane Smith',
+      teacherImage: 'teacherImage2.jpg',
       name: 'Advanced JavaScript',
       takeTime: '1',
       rating: 4.0,
@@ -37,31 +36,21 @@ const LessonCard = () => {
     {
       id: 3,
       lessonImage: 'lessonImage3.jpg',
-      instructor: 'Bob Johnson',
-      instructorImage: 'instructorImage3.jpg',
+      teacher: 'Bob Johnson',
+      teacherImage: 'teacherImage3.jpg',
       name: 'Node.js for Beginners',
       takeTime: '3.5',
       rating: 3.5,
     },
   ];
-  // 더미 데이터를 useState로 받아서 저장
+  // 강의 정보를 useState로 받아서 저장
   const [lessons, setlessons] = useState<Lesson[]>(dummyData);
+  // 북마크 정보
   const [isBookMarked, setIsBookMarked] = useState(false);
-  const BookmarkToggle = () => {
-    const [isBookmarked, setIsBookmarked] = useState(false);
-    const [bookmarkData, setBookmarkData] = useRecoilState(bookmarkState);
-
-    const handleClick = async () => {
-      try {
-        const response = await axios.post('http://localhost:3000/bookmarks', {
-          isBookmarked: !isBookmarked,
-        });
-        setIsBookmarked(!isBookmarked);
-        setBookmarkData(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
+  // 북마크 아이콘 클릭 시 북마크 추가, 삭제 토글 버튼 함수
+  const getBookmarkStatus = (event: React.MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+    setIsBookMarked(!isBookMarked);
   };
   return (
     <div className="lesson">
@@ -72,28 +61,47 @@ const LessonCard = () => {
           className="lesson__card"
           key={lesson.id}
         >
+          {/* 강의 대표이미지와 북마크 버튼 담는 div */}
           <div className="lesson__backImg">
             <img className="lesson__img" src={logo} alt={lesson.name} />
-            <div onClick={getBookmarkStatus} className="lesson__bookmark">
+            {/* 북마크 버튼 클릭 시 true, false 값변경으로 아이콘 변경 */}
+            <button
+              type="button"
+              onClick={getBookmarkStatus}
+              className="lesson__bookmark"
+            >
               {isBookMarked ? (
-                <BookmarkBorderIcon fontSize="large" color="action" />
+                <BookmarkBorderIcon
+                  fontSize="large"
+                  color="action"
+                  className="lesson__bookmark--icon"
+                />
               ) : (
-                <BookmarkIcon fontSize="large" color="error" />
+                <BookmarkIcon
+                  fontSize="large"
+                  color="error"
+                  className="lesson__bookmark--icon"
+                />
               )}
-            </div>
+            </button>
           </div>
-          <div className="lesson__instructorImage">
+          {/* 강사 이미지 */}
+          <div className="lesson__teacherImage">
             <Stack
-              className="lesson__instructorImage--image"
+              className="lesson__teacherImage--image"
               direction="row"
               spacing={2}
             >
               <Avatar alt="Remy Sharp" src={logo} />
             </Stack>
           </div>
+          {/* 강의명 */}
           <p className="lesson__name">{lesson.name}</p>
+          {/* 강의 소요시간 */}
           <div className="lesson__ratingtime">
+            {/* 강의 평점 */}
             <div className="lesson__rating">
+              {/* 별 아이콘 0.5점 단위 */}
               <Rating
                 className="lesson__rating--star"
                 name="half-rating-read"
@@ -101,10 +109,14 @@ const LessonCard = () => {
                 precision={0.5}
                 readOnly
               />
+              {/* 별점 숫자 */}
               <p className="lesson__rating--number"> {lesson.rating}</p>
             </div>
+            {/* 소요시간 */}
             <p className="lesson__time">
+              {/* 소요시간 아이콘 */}
               <AvTimerIcon />
+              {/* 소요시간 숫자 */}
               {lesson.takeTime} 시간 소요
             </p>
           </div>
@@ -137,7 +149,7 @@ export default LessonCard;
 //       {lectures.map((lecture) => (
 //         <div key={lecture.id}>
 //           <img src={lecture.LectureImage} alt={lecture.name} />
-//           <p>Instructor: {lecture.instructor}</p>
+//           <p>teacher: {lecture.teacher}</p>
 //           <p>Lecture Name: {lecture.name}</p>
 //           <p>Rating: {lecture.rating}</p>
 //         </div>
