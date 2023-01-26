@@ -10,11 +10,13 @@ import com.ssafy.db.repository.UserRepositorySupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Service("notificationService")
+@Service("noticeService")
+@Transactional
 public class NoticeServiceImpl implements NoticeService {
 
     @Autowired
@@ -56,12 +58,14 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Notice> readNoticeList(int offset, int limit) {
         List<Notice> noticeList = noticeRepositorySupport.findList(offset, limit);
         return noticeList;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Long noticeCount() {
         return noticeRepositorySupport.noticeCount();
     }
