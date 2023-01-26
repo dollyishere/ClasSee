@@ -25,6 +25,10 @@ public class LessonServiceImpl implements LessonService{
     CurriculumRepositorySupport curriculumRepositorySupport;
     @Override
     public void createLesson(Map<String, Object> lessonInfo) {
+        /*
+         lessonInfo("LESSON":레슨정보, "CHECKLISTS":준비물정보, "CURRICULUMS": 커리큘럼정보);
+         각각의 KEY를 통해 객체 생성 후, DB에 데이터 삽입
+        */
         Lesson lesson = (Lesson) lessonInfo.get("LESSON");
         List<Checklist> checkLists = (List<Checklist>)lessonInfo.get("CHECKLISTS");
         List<Curriculum> curriculums = (List<Curriculum>)lessonInfo.get("CURRICULUMS");
@@ -32,11 +36,12 @@ public class LessonServiceImpl implements LessonService{
         lessonRepositorySupport.save(lesson);
 
         checkLists.forEach((checklist) -> {
-            checklist.
+            checklist.setLesson(lesson);
             checkListRepositorySupport.save(checklist);
         });
 
         curriculums.forEach((curriculum) -> {
+            curriculum.setLesson(lesson);
             curriculumRepositorySupport.save(curriculum);
         });
 

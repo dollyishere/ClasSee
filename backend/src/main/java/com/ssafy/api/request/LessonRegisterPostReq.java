@@ -1,5 +1,6 @@
 package com.ssafy.api.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ssafy.db.entity.lesson.Checklist;
 import com.ssafy.db.entity.lesson.Curriculum;
 import com.ssafy.db.entity.lesson.Lesson;
@@ -19,7 +20,7 @@ import java.util.Map;
 
 @Getter
 @Setter
-@ApiModel("NoticeCreatePostRequest")
+@ApiModel("LessonRegisterPostReq")
 public class LessonRegisterPostReq {
     @ApiModelProperty(name="name", example="강의명")
     String name;
@@ -33,10 +34,12 @@ public class LessonRegisterPostReq {
     @ApiModelProperty(name="price", example="수강료")
     Long price;
 
-    @ApiModelProperty(name="checklist", example="준비물")
+    @ApiModelProperty(name="checklist", example="준비물(img[string]) 리스트")
+    @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
     List<Checklist> checkList;
 
-    @ApiModelProperty(name="curriculum", example="커리큘럼")
+    @ApiModelProperty(name="curriculum", example="커리큘럼(stage[int], description[string]) 리스트")
+    @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
     List<Curriculum> curriculumList;
 
     public Map<String, Object> getLessonInfoFromReq() {

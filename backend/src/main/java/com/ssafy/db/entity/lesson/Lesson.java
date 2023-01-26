@@ -3,9 +3,7 @@ package com.ssafy.db.entity.lesson;
 import com.ssafy.db.entity.board.Photocard;
 import com.ssafy.db.entity.user.Bookmark;
 import com.ssafy.db.entity.user.User;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -15,7 +13,8 @@ import java.util.List;
 * Lesson : member = N : 1
 */
 @Builder
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Getter
 @Table(name = "LESSON")

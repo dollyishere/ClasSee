@@ -1,13 +1,15 @@
 package com.ssafy.db.entity.lesson;
 
 import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
 /*
 *  lesson : checklist = 1 : N
 */
 @Entity
-@Getter
+@Getter @Setter
 @Table(name = "CHECKLIST")
 public class Checklist {
     @Id
