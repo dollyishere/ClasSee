@@ -2,13 +2,8 @@ import React, { useRef, useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 import imageCompression from 'browser-image-compression';
 
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import Input from '@mui/material/Input';
 import Button from '@mui/material/Button';
 import CardActions from '@mui/material/CardActions';
-import TextField from '@mui/material/TextField';
-import Menu, { MenuProps } from '@mui/material/Menu';
 
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
