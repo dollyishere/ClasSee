@@ -4,6 +4,7 @@ import imageCompression from 'browser-image-compression';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 
+// 부모 컴포넌트 측에서 전달한 이미지 업로드 한도인 limitNumber의 type을 지정함
 interface MyProps {
   limitNumber: number;
 }
@@ -66,7 +67,7 @@ const ImageUpload = ({ limitNumber }: MyProps) => {
             <RemoveCircleOutlineIcon className="img__delete" onClick={() => handleDeleteImage(id)} />
           </div>
         ))}
-        {/* 만약 imgSrcList의 길이가 5 이상이라면, 더 이상 이미지를 추가할 수 없도록 버튼을 숨김 */}
+        {/* 만약 imgSrcList의 길이가 limitNumber에서 지정된 값 이상이라면, 더 이상 이미지를 추가할 수 없도록 버튼을 숨김 */}
         {imgSrcList.length < limitNumber ? (
           <label htmlFor="input-file" className="img-upload__label">
             <input hidden type="file" id="input-file" ref={fileRef} multiple onChange={handleAddImages} />
