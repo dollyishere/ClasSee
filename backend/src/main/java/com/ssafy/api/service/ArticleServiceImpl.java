@@ -39,7 +39,7 @@ public class ArticleServiceImpl implements ArticleService{
     }
 
     @Override
-    public Article readArticle() {
+    public Article readArticle(Long id) {
         return null;
     }
 
