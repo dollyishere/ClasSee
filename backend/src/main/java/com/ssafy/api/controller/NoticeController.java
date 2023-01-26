@@ -1,7 +1,9 @@
 package com.ssafy.api.controller;
 
 import com.ssafy.api.request.NoticeRegisterPostReq;
+import com.ssafy.api.request.NoticeUpdatePutReq;
 import com.ssafy.api.response.NoticeListRes;
+import com.ssafy.api.response.PageGetRes;
 import com.ssafy.api.service.NoticeService;
 import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.db.entity.board.Notice;
@@ -24,7 +26,7 @@ import java.util.stream.Collectors;
     NoticeService noticeService;
 
     @PostMapping()
-    @ApiOperation(value = "공지사항 등록", notes = "작성자 이메일, 제목, 내용으로 공지사항 작성")
+    @ApiOperation(value = "공지사항 등록", notes = "작성자 이메일, 제목, 내용으로 권한 확인 후 공지사항 작성")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
             @ApiResponse(code = 401, message = "권한이 없음"),
@@ -71,7 +73,7 @@ import java.util.stream.Collectors;
     }
 
     @GetMapping("/list")
-    @ApiOperation(value = "공지 리스트 조회", notes = "limit는 가져올 갯수, offset은 시작 위치(0부터 시작)")
+    @ApiOperation(value = "공지 리스트 조회", notes = "limit는 가져올 갯수, offset은 시작 위치(0부터 시작), count는 총 개수")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공")
     })
@@ -79,14 +81,33 @@ import java.util.stream.Collectors;
 
         List<Notice> noticeList = noticeService.readNoticeList(offset, limit);
         List<NoticeListRes> listRes = noticeList.stream().map(n -> new NoticeListRes(n)).collect(Collectors.toList());
+        Long noticeCount = noticeService.noticeCount();
 
-        return ResponseEntity.status(200).body(listRes);
+        PageGetRes noticePageDto = new PageGetRes();
+        noticePageDto.setPage(listRes);
+        noticePageDto.setCount(noticeCount);
+
+        return ResponseEntity.status(200).body(noticePageDto);
 
     }
 
+    @PutMapping()
+    @ApiOperation(value = "공지사항 수정", notes = "유저 권한 확인 후 수정")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 401, message = "수정 권한이 없음")
+    })
+    public ResponseEntity<?> getNoticeList(@RequestBody NoticeUpdatePutReq noticeUpdatePutReq){
 
+        try {
+            noticeService.updateNotice(noticeUpdatePutReq);
+        } catch (Exception e) {
+            return ResponseEntity.status(401).body("수정 권한이 없음");
+        }
 
+        return ResponseEntity.status(200).body("success");
 
+    }
 
 
 }

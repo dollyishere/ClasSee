@@ -7,8 +7,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@ApiModel("NoticeCreatePostRequest")
-public class NoticeRegisterPostReq {
+@ApiModel("NoticeUpdatePutRequest")
+public class NoticeUpdatePutReq {
+
+    @ApiModelProperty(name="id", example="notice_id")
+    Long id;
 
     @ApiModelProperty(name="email", example="user_email")
     String email;
@@ -21,7 +24,5 @@ public class NoticeRegisterPostReq {
 
     @ApiModelProperty(name="img", example="notice_img")
     String img;
-
-
 
 }
