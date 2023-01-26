@@ -1,17 +1,17 @@
 package com.ssafy.api.service;
 
-import com.ssafy.api.request.NoticeCreatePostReq;
+import com.ssafy.api.request.NoticeRegisterPostReq;
 import com.ssafy.db.entity.board.Notice;
-import com.ssafy.db.entity.user.Notification;
 import com.ssafy.db.entity.user.User;
 import com.ssafy.db.entity.user.UserRole;
 import com.ssafy.db.repository.NoticeRepositorySupport;
 import com.ssafy.db.repository.UserRepositorySupport;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.webjars.NotFoundException;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service("notificationService")
 public class NoticeServiceImpl implements NoticeService {
@@ -23,18 +23,18 @@ public class NoticeServiceImpl implements NoticeService {
     UserRepositorySupport userRepositorySupport;
 
     @Override
-    public void createNotice(NoticeCreatePostReq noticeCreatePostReq) throws Exception {
+    public void createNotice(NoticeRegisterPostReq noticeRegisterPostReq) throws Exception {
 
         User user = userRepositorySupport
-                .findUserByAuth(noticeCreatePostReq.getEmail())
+                .findUserByAuth(noticeRegisterPostReq.getEmail())
                 .get();
 
         if(user.getRole().equals(UserRole.ROLE_ADMIN)) {
             Notice notice = Notice.builder()
-                    .title(noticeCreatePostReq.getTitle())
-                    .content(noticeCreatePostReq.getContent())
+                    .title(noticeRegisterPostReq.getTitle())
+                    .content(noticeRegisterPostReq.getContent())
                     .hit(0)
-                    .img(noticeCreatePostReq.getImg())
+                    .img(noticeRegisterPostReq.getImg())
                     .regtime(LocalDateTime.now().toString())
                     .user(user)
                     .build();
@@ -47,8 +47,18 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
-    public void readNotice() {
+    public Notice readNotice(Long id) {
+        noticeRepositorySupport.updateHit(id);
+        Notice notice = noticeRepositorySupport.findOne(id);
+        return notice;
 
+    }
+
+    @Override
+    public List<Notice> readNoticeList(int offset, int limit) {
+        List<Notice> noticeList = noticeRepositorySupport.findList(offset, limit);
+
+        return noticeList;
     }
 
     @Override
