@@ -31,10 +31,10 @@ public class NoticeRepositorySupport {
     public void delete(Notice notice) {em.remove(notice);}
 
     // 아이디로 공지사항 한 개를 반환
-    public Notice findOne(Long id) { return em.find(Notice.class, id); };
+    public Notice findOne(Long id) { return em.find(Notice.class, id); }
 
     // 모든 공지사항 리스트를 반환
-    public List<Notice> findAll() { return em.createQuery("select n from Notice n", Notice.class).getResultList(); };
+    public List<Notice> findAll() { return em.createQuery("select n from Notice n", Notice.class).getResultList(); }
 
     // 공지사항을 10개 씩 페이징 처리해서 반환
     public List<Notice> findList(int offset, int limit) {
