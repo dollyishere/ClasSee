@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-
+import { atom, selector, useRecoilState } from 'recoil';
+import { bookmarkState } from './store/';
+import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Rating from '@mui/material/Rating';
 import Avatar from '@mui/material/Avatar';
@@ -7,13 +9,11 @@ import Stack from '@mui/material/Stack';
 import AvTimerIcon from '@mui/icons-material/AvTimer';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
-import { api, bookmark, Lesson } from '../util/api';
+import { api, Lesson } from '../util/api';
 import logo from '../assets/logo.png';
 // interface Props {}
 
 const LessonCard = () => {
-  const [isBookMarked, setIsBookMarked] = useState(null);
-  // const bookMark = () => {};
   // dummy data
   const dummyData = [
     {
@@ -46,7 +46,23 @@ const LessonCard = () => {
   ];
   // 더미 데이터를 useState로 받아서 저장
   const [lessons, setlessons] = useState<Lesson[]>(dummyData);
+  const [isBookMarked, setIsBookMarked] = useState(false);
+  const BookmarkToggle = () => {
+    const [isBookmarked, setIsBookmarked] = useState(false);
+    const [bookmarkData, setBookmarkData] = useRecoilState(bookmarkState);
 
+    const handleClick = async () => {
+      try {
+        const response = await axios.post('http://localhost:3000/bookmarks', {
+          isBookmarked: !isBookmarked,
+        });
+        setIsBookmarked(!isBookmarked);
+        setBookmarkData(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+  };
   return (
     <div className="lesson">
       {/* 강의 하나씩 map으로 돌면서 카드에 적용 */}
@@ -58,9 +74,12 @@ const LessonCard = () => {
         >
           <div className="lesson__backImg">
             <img className="lesson__img" src={logo} alt={lesson.name} />
-            <div className="lesson__bookmark">
-              <BookmarkBorderIcon fontSize="large" color="action" />
-              <BookmarkIcon fontSize="large" color="error" />
+            <div onClick={getBookmarkStatus} className="lesson__bookmark">
+              {isBookMarked ? (
+                <BookmarkBorderIcon fontSize="large" color="action" />
+              ) : (
+                <BookmarkIcon fontSize="large" color="error" />
+              )}
             </div>
           </div>
           <div className="lesson__instructorImage">
