@@ -39,8 +39,11 @@ public class ArticleServiceImpl implements ArticleService{
     }
 
     @Override
-    public Article readArticle() {
-        return null;
+    public Article readArticle(Long id) {
+
+        articleRepositorySupport.updateHit(id);
+        return articleRepositorySupport.findOne(id);
+
     }
 
     @Override

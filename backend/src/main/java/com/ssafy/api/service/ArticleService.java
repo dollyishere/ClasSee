@@ -6,7 +6,7 @@ import com.ssafy.db.entity.board.Article;
 public interface ArticleService {
 
     void createArticle(ArticleRegisterPostReq articleRegisterPostReq);
-    Article readArticle();
+    Article readArticle(Long id);
     void updateArticle();
     void deleteArticle(String email, Long id) throws Exception;
 

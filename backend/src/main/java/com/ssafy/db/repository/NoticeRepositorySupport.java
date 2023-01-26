@@ -31,15 +31,16 @@ public class NoticeRepositorySupport {
     public void delete(Notice notice) {em.remove(notice);}
 
     // 아이디로 공지사항 한 개를 반환
-    public Notice findOne(Long id) { return em.find(Notice.class, id); };
+    public Notice findOne(Long id) { return em.find(Notice.class, id); }
 
     // 모든 공지사항 리스트를 반환
-    public List<Notice> findAll() { return em.createQuery("select n from Notice n", Notice.class).getResultList(); };
+    public List<Notice> findAll() { return em.createQuery("select n from Notice n", Notice.class).getResultList(); }
 
-    // 공지사항을 10개 씩 페이징 처리해서 반환
+    // 공지사항을 limit개 씩 offset부터 페이징 처리해서 반환
     public List<Notice> findList(int offset, int limit) {
         return jpaQueryFactory
                 .selectFrom(qNotice)
+                .orderBy(qNotice.id.desc())
                 .offset(offset)
                 .limit(limit)
                 .fetch();
@@ -58,6 +59,9 @@ public class NoticeRepositorySupport {
                 .where(qNotice.id.eq(id))
                 .set(qNotice.hit, qNotice.hit.add(1))
                 .execute();
+
+        em.clear();
+        em.flush();
     }
 
     public void updateNotice(NoticeUpdatePutReq noticeUpdatePutReq) {
@@ -68,6 +72,9 @@ public class NoticeRepositorySupport {
                 .set(qNotice.img, noticeUpdatePutReq.getImg())
                 .set(qNotice.regtime, LocalDateTime.now().toString())
                 .execute();
+
+        em.clear();
+        em.flush();
     }
 
 

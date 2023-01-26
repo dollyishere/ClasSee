@@ -2,8 +2,10 @@ package com.ssafy.api.controller;
 
 import com.ssafy.api.request.ArticleRegisterPostReq;
 import com.ssafy.api.request.NoticeRegisterPostReq;
+import com.ssafy.api.response.ArticleInfoRes;
 import com.ssafy.api.service.ArticleService;
 import com.ssafy.common.model.response.BaseResponseBody;
+import com.ssafy.db.entity.board.Article;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -48,6 +50,20 @@ public class ArticleController {
         }
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200,"삭제 성공"));
+
+    }
+
+    @GetMapping()
+    @ApiOperation(value = "게시글 상세 조회", notes = "게시글id를 넘겨받아 게시글에 대한 상세 정보를 넘겨줌")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공")
+    })
+    public ResponseEntity<?> getArticleInfo(@RequestParam Long id){
+
+        Article article = articleService.readArticle(id);
+        ArticleInfoRes articleInfoRes = new ArticleInfoRes(article);
+
+        return ResponseEntity.status(200).body(articleInfoRes);
 
     }
 
