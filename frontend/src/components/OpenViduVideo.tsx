@@ -7,7 +7,7 @@ const OpenViduVideo = ({ streamManager }: any) => {
     if (streamManager && !!videoRef) {
       streamManager.addVideoElement(videoRef.current);
     }
-  }, [[]]);
+  }, []);
   useEffect(() => {
     if (streamManager && !!videoRef) {
       streamManager.addVideoElement(videoRef.current);
