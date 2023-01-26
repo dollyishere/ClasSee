@@ -49,7 +49,19 @@ public class ArticleServiceImpl implements ArticleService{
     }
 
     @Override
-    public void deleteArticle() {
+    public void deleteArticle(String email, Long id) throws Exception {
+        User user = userRepositorySupport
+                .findUserByAuth(email)
+                .get();
 
+        Article article = articleRepositorySupport.findOne(id);
+
+        if(article.getUser().getId() == user.getId()){
+            articleRepositorySupport.delete(article);
+        } else {
+            throw new Exception("작성자와 다릅니다.");
+        }
+
+        return;
     }
 }

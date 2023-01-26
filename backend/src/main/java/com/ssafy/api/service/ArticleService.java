@@ -8,6 +8,6 @@ public interface ArticleService {
     void createArticle(ArticleRegisterPostReq articleRegisterPostReq);
     Article readArticle();
     void updateArticle();
-    void deleteArticle();
+    void deleteArticle(String email, Long id) throws Exception;
 
 }
