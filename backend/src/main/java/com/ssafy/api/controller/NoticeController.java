@@ -1,8 +1,10 @@
 package com.ssafy.api.controller;
 
 import com.ssafy.api.request.NoticeRegisterPostReq;
+import com.ssafy.api.request.NoticeUpdatePutReq;
 import com.ssafy.api.response.NoticeListRes;
 import com.ssafy.api.service.NoticeService;
+import com.ssafy.api.service.UserServiceImpl;
 import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.db.entity.board.Notice;
 import io.swagger.annotations.Api;
@@ -84,9 +86,23 @@ import java.util.stream.Collectors;
 
     }
 
+    @PutMapping()
+    @ApiOperation(value = "공지사항 수정", notes = "공지사항에 대한 수정")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 401, message = "수정 권한이 없음")
+    })
+    public ResponseEntity<?> getNoticeList(@RequestBody NoticeUpdatePutReq noticeUpdatePutReq){
 
+        try {
+            noticeService.updateNotice(noticeUpdatePutReq);
+        } catch (Exception e) {
+            return ResponseEntity.status(401).body("수정 권한이 없음");
+        }
 
+        return ResponseEntity.status(200).body("success");
 
+    }
 
 
 }
