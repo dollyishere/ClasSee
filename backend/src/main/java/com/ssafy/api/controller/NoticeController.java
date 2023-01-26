@@ -3,8 +3,8 @@ package com.ssafy.api.controller;
 import com.ssafy.api.request.NoticeRegisterPostReq;
 import com.ssafy.api.request.NoticeUpdatePutReq;
 import com.ssafy.api.response.NoticeListRes;
+import com.ssafy.api.response.PageGetRes;
 import com.ssafy.api.service.NoticeService;
-import com.ssafy.api.service.UserServiceImpl;
 import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.db.entity.board.Notice;
 import io.swagger.annotations.Api;
@@ -73,7 +73,7 @@ import java.util.stream.Collectors;
     }
 
     @GetMapping("/list")
-    @ApiOperation(value = "공지 리스트 조회", notes = "limit는 가져올 갯수, offset은 시작 위치(0부터 시작)")
+    @ApiOperation(value = "공지 리스트 조회", notes = "limit는 가져올 갯수, offset은 시작 위치(0부터 시작), count는 총 개수")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공")
     })
@@ -81,8 +81,13 @@ import java.util.stream.Collectors;
 
         List<Notice> noticeList = noticeService.readNoticeList(offset, limit);
         List<NoticeListRes> listRes = noticeList.stream().map(n -> new NoticeListRes(n)).collect(Collectors.toList());
+        Long noticeCount = noticeService.noticeCount();
 
-        return ResponseEntity.status(200).body(listRes);
+        PageGetRes noticePageDto = new PageGetRes();
+        noticePageDto.setPage(listRes);
+        noticePageDto.setCount(noticeCount);
+
+        return ResponseEntity.status(200).body(noticePageDto);
 
     }
 
