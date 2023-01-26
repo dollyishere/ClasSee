@@ -1,7 +1,9 @@
 package com.ssafy.api.service;
 
+import com.ssafy.api.response.LessonListGetRes;
 import com.ssafy.db.entity.lesson.Lesson;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -9,4 +11,7 @@ import java.util.Map;
  */
 public interface LessonService {
     void createLesson(Map<String, Object> lessonInfo);
+
+    List<LessonListGetRes> setLessonProfileImgAndScore(List<Lesson> lessonList);
+
 }

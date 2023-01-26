@@ -17,6 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Getter
+@ToString
 @Table(name = "LESSON")
 public class Lesson {
 

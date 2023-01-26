@@ -2,6 +2,7 @@ package com.ssafy.db.entity.lesson;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -9,7 +10,7 @@ import javax.persistence.*;
  *  lesson : checklist = 1 : N
  */
 @Entity
-@Getter
+@Getter@Setter
 @Table(name = "PAMPHLET")
 public class Pamphlet {
     @Id

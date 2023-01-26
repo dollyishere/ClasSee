@@ -1,19 +1,20 @@
 package com.ssafy.api.service;
 
+import com.ssafy.api.response.LessonListGetRes;
 import com.ssafy.db.entity.lesson.Checklist;
 import com.ssafy.db.entity.lesson.Curriculum;
 import com.ssafy.db.entity.lesson.Lesson;
+import com.ssafy.db.entity.lesson.Pamphlet;
 import com.ssafy.db.repository.CheckListRepositorySupport;
 import com.ssafy.db.repository.CurriculumRepositorySupport;
-import com.ssafy.db.repository.LessonRepository;
 import com.ssafy.db.repository.LessonRepositorySupport;
+import com.ssafy.db.repository.PamphletRepositorySupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 public class LessonServiceImpl implements LessonService{
@@ -23,6 +24,9 @@ public class LessonServiceImpl implements LessonService{
     CheckListRepositorySupport checkListRepositorySupport;
     @Autowired
     CurriculumRepositorySupport curriculumRepositorySupport;
+
+    @Autowired
+    PamphletRepositorySupport pamphletRepositorySupport;
     @Override
     public void createLesson(Map<String, Object> lessonInfo) {
         /*
@@ -32,6 +36,7 @@ public class LessonServiceImpl implements LessonService{
         Lesson lesson = (Lesson) lessonInfo.get("LESSON");
         List<Checklist> checkLists = (List<Checklist>)lessonInfo.get("CHECKLISTS");
         List<Curriculum> curriculums = (List<Curriculum>)lessonInfo.get("CURRICULUMS");
+        List<Pamphlet> pamphlets = (List<Pamphlet>)lessonInfo.get("PAMPHLET");
 
         lessonRepositorySupport.save(lesson);
 
@@ -45,6 +50,36 @@ public class LessonServiceImpl implements LessonService{
             curriculumRepositorySupport.save(curriculum);
         });
 
+        pamphlets.forEach((pamphlet) -> {
+            pamphlet.setLesson(lesson);
+            pamphletRepositorySupport.save(pamphlet);
+        });
+    }
 
+    @Override
+    public List<LessonListGetRes> setLessonProfileImgAndScore(List<Lesson> lessonList) {
+        List<LessonListGetRes> getLessonList = new ArrayList<>();
+        // 강의 목록에 대표 이미지랑, 별점 평균 세팅해주기
+        lessonList.forEach((lesson) -> {
+            System.out.println("LESSON INSTANCE >>>>>> " + lesson.toString());
+            // 대표 이미지
+            LessonListGetRes lessonRes = LessonListGetRes.builder()
+                    .name(lesson.getName())
+                    .category(lesson.getCategory())
+                    .runningtime(lesson.getRunningtime())
+                    .build();
+
+            lessonRes.setImg(
+                    lessonRepositorySupport.findLessonProfileImg(lesson)
+            );
+
+            lessonRes.setScore(
+                    lessonRepositorySupport.setLessonAvgScore(lesson)
+            );
+
+            getLessonList.add(lessonRes);
+        });
+
+        return getLessonList;
     }
 }
