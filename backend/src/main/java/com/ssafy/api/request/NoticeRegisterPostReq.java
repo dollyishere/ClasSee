@@ -13,10 +13,10 @@ public class NoticeRegisterPostReq {
     @ApiModelProperty(name="email", example="user_email")
     String email;
 
-    @ApiModelProperty(name="email", example="notice_title")
+    @ApiModelProperty(name="title", example="notice_title")
     String title;
 
-    @ApiModelProperty(name="email", example="notice_content")
+    @ApiModelProperty(name="content", example="notice_content")
     String content;
 
     @ApiModelProperty(name="img", example="notice_img")
