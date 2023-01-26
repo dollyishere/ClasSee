@@ -47,7 +47,7 @@ import java.util.stream.Collectors;
             @ApiResponse(code = 200, message = "성공"),
             @ApiResponse(code = 401, message = "권한이 없음")
     })
-    public ResponseEntity<? extends BaseResponseBody> withdrawalUser(@RequestParam String email, @RequestParam Long id){
+    public ResponseEntity<? extends BaseResponseBody> deleteNotice(@RequestParam String email, @RequestParam Long id){
 
         try {
             noticeService.deleteNotice(email, id);
@@ -97,7 +97,7 @@ import java.util.stream.Collectors;
             @ApiResponse(code = 200, message = "성공"),
             @ApiResponse(code = 401, message = "수정 권한이 없음")
     })
-    public ResponseEntity<?> getNoticeList(@RequestBody NoticeUpdatePutReq noticeUpdatePutReq){
+    public ResponseEntity<?> noticeUpdate(@RequestBody NoticeUpdatePutReq noticeUpdatePutReq){
 
         try {
             noticeService.updateNotice(noticeUpdatePutReq);
