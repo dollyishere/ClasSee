@@ -4,6 +4,9 @@ import imageCompression from 'browser-image-compression';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 
+// 주의: 부모 컴포넌트에 따라 이미지가 다르게 나와야 함(페이지 변경 시에 그동안의 값을 저장한 후, 나중에 다시 보여주도록)
+// 아마 useEffect 쓰면 될 듯?
+
 // 부모 컴포넌트 측에서 전달한 이미지 업로드 한도인 limitNumber의 type을 지정함
 interface MyProps {
   limitNumber: number;
@@ -72,6 +75,9 @@ const ImageUpload = ({ limitNumber }: MyProps) => {
           <label htmlFor="input-file" className="img-upload__label">
             <input hidden type="file" id="input-file" ref={fileRef} multiple onChange={handleAddImages} />
             <AddCircleOutlineIcon fill="#646F7C" className="img-upload__btn" />
+            <p>
+              {imgSrcList.length} / {limitNumber}
+            </p>
           </label>
         ) : null}
       </div>
