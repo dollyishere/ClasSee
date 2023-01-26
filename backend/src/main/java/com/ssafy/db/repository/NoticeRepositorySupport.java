@@ -58,6 +58,9 @@ public class NoticeRepositorySupport {
                 .where(qNotice.id.eq(id))
                 .set(qNotice.hit, qNotice.hit.add(1))
                 .execute();
+
+        em.clear();
+        em.flush();
     }
 
     public void updateNotice(NoticeUpdatePutReq noticeUpdatePutReq) {
@@ -68,6 +71,9 @@ public class NoticeRepositorySupport {
                 .set(qNotice.img, noticeUpdatePutReq.getImg())
                 .set(qNotice.regtime, LocalDateTime.now().toString())
                 .execute();
+
+        em.clear();
+        em.flush();
     }
 
 
