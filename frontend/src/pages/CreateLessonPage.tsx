@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 
-import '../styles/pages/_open-lecture-page.scss';
+import '../styles/pages/_create-lesson-page.scss';
 
 import Card from '@mui/material/Card';
 import Input from '@mui/material/Input';
