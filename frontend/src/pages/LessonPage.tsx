@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { OpenVidu, Session, Publisher, StreamManager } from 'openvidu-browser';
 
-import useViewModel from '../viewmodels/LectureViewModel';
+import useViewModel from '../viewmodels/LessonViewModel';
 import UserVideo from '../components/UserVideo';
 
-const LecturePage = () => {
+const LessonPage = () => {
   const [OV, setOV] = useState<OpenVidu | null>(null);
   const [sessionId, setSessionId] = useState<string>('test'); // 현재 참여 중인 세션 아이디
   const [userName, setUserName] = useState<string>(
@@ -137,4 +137,4 @@ const LecturePage = () => {
   );
 };
 
-export default LecturePage;
+export default LessonPage;

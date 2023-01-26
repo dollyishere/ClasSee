@@ -8,20 +8,20 @@ import Header from './components/Header';
 
 import MainPage from './pages/MainPage';
 import SignUpPage from './pages/SignUpPage';
-import LecturePage from './pages/LecturePage';
+import LessonPage from './pages/LessonPage';
 
 const App = () => {
   const location = useLocation();
   return (
     <div className="App">
       {location.pathname === '/signup' ||
-      location.pathname.split('/')[1] === 'lecture' ? null : (
+      location.pathname.split('/')[1] === 'lesson' ? null : (
         <Header />
       )}
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/signup" element={<SignUpPage />} />
-        <Route path="/lecture/*" element={<LecturePage />} />
+        <Route path="/lesson/*" element={<LessonPage />} />
       </Routes>
     </div>
   );

@@ -1,7 +1,7 @@
 // 원래 여기서 하면 안됨. api 호출을 위한 axios 라이브러리
 import axios from 'axios';
 
-const LectureViewModel = () => {
+const LessonViewModel = () => {
   const createToken = async (sessionId: string) => {
     const response = await axios.post(
       `http://localhost:5000/api/sessions/${sessionId}/connections`,
@@ -32,4 +32,4 @@ const LectureViewModel = () => {
   };
 };
 
-export default LectureViewModel;
+export default LessonViewModel;

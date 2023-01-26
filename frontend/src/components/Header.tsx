@@ -57,7 +57,7 @@ const Header = () => {
       {/* 버튼 */}
       <ul className="nav">
         <li className="nav__item">
-          <Link to="lecture/test" target="_blank">
+          <Link to="lesson/test" target="_blank">
             <button type="button" className="nav__button button">
               테스트
             </button>
