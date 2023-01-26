@@ -75,7 +75,7 @@ import java.util.stream.Collectors;
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공")
     })
-    public ResponseEntity<?> getNoticeList(@RequestParam int offset,@RequestParam int limit){
+    public ResponseEntity<?> getNoticeList(@RequestParam int offset, @RequestParam int limit){
 
         List<Notice> noticeList = noticeService.readNoticeList(offset, limit);
         List<NoticeListRes> listRes = noticeList.stream().map(n -> new NoticeListRes(n)).collect(Collectors.toList());
