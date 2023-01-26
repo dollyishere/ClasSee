@@ -40,15 +40,16 @@
   }
   .lesson__bookmark {
     position: absolute;
+    background-color: transparent;
+    border: none;
     right: 0;
     top: 0;
   }
-  .lesson__instructorImage {
+  .lesson__teacherImage {
     border-bottom: solid 1px black;
   }
-  .lesson__instructorImage--image {
+  .lesson__teacherImage--image {
     margin-left: 85%;
-    // position: absolute;
   }
   .lesson__name {
     margin: auto;
