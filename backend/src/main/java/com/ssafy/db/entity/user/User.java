@@ -1,5 +1,6 @@
 package com.ssafy.db.entity.user;
 
+import com.ssafy.db.entity.board.Notice;
 import com.ssafy.db.entity.qna.Qna;
 import com.ssafy.db.entity.board.Article;
 import com.ssafy.db.entity.board.Photocard;
@@ -71,5 +72,8 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Schedule> scheduleList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Notice> noticeList = new ArrayList<>();
 
 }
