@@ -7,22 +7,32 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@ApiModel("NoticeRes")
-public class NoticeListRes {
+@ApiModel("NoticeInfoRes")
+public class NoticeInfoRes {
 
     Long id;
 
     String title;
 
+    String content;
+
     int hit;
+
+    String img;
 
     String regtime;
 
+    String user_nickname;
 
-    public NoticeListRes(Notice notice) {
+    public NoticeInfoRes(Notice notice){
         this.id = notice.getId();
         this.title = notice.getTitle();
+        this.content = notice.getContent();
         this.hit = notice.getHit();
+        this.img = notice.getImg();
         this.regtime = notice.getRegtime();
+        this.user_nickname = notice.getUser().getNickname();
     }
+
+
 }

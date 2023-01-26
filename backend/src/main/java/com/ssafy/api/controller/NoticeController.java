@@ -2,6 +2,7 @@ package com.ssafy.api.controller;
 
 import com.ssafy.api.request.NoticeRegisterPostReq;
 import com.ssafy.api.request.NoticeUpdatePutReq;
+import com.ssafy.api.response.NoticeInfoRes;
 import com.ssafy.api.response.NoticeListRes;
 import com.ssafy.api.response.PageGetRes;
 import com.ssafy.api.service.NoticeService;
@@ -31,7 +32,7 @@ import java.util.stream.Collectors;
             @ApiResponse(code = 200, message = "성공"),
             @ApiResponse(code = 401, message = "권한이 없음"),
     })
-    public ResponseEntity<? extends BaseResponseBody> register(@RequestBody NoticeRegisterPostReq noticeRegisterPostReq) {
+    public ResponseEntity<? extends BaseResponseBody> registeNotice(@RequestBody NoticeRegisterPostReq noticeRegisterPostReq) {
 
         try {
             noticeService.createNotice(noticeRegisterPostReq);
@@ -47,7 +48,7 @@ import java.util.stream.Collectors;
             @ApiResponse(code = 200, message = "성공"),
             @ApiResponse(code = 401, message = "권한이 없음")
     })
-    public ResponseEntity<? extends BaseResponseBody> withdrawalUser(@RequestParam String email, @RequestParam Long id){
+    public ResponseEntity<? extends BaseResponseBody> deleteNotice(@RequestParam String email, @RequestParam Long id){
 
         try {
             noticeService.deleteNotice(email, id);
@@ -66,9 +67,9 @@ import java.util.stream.Collectors;
     public ResponseEntity<?> getNoticeInfo(@RequestParam Long id){
 
         Notice notice = noticeService.readNotice(id);
-        NoticeListRes noticeListRes = new NoticeListRes(notice);
+        NoticeInfoRes noticeInfoRes = new NoticeInfoRes(notice);
 
-        return ResponseEntity.status(200).body(noticeListRes);
+        return ResponseEntity.status(200).body(noticeInfoRes);
 
     }
 
@@ -97,7 +98,7 @@ import java.util.stream.Collectors;
             @ApiResponse(code = 200, message = "성공"),
             @ApiResponse(code = 401, message = "수정 권한이 없음")
     })
-    public ResponseEntity<?> getNoticeList(@RequestBody NoticeUpdatePutReq noticeUpdatePutReq){
+    public ResponseEntity<?> noticeUpdate(@RequestBody NoticeUpdatePutReq noticeUpdatePutReq){
 
         try {
             noticeService.updateNotice(noticeUpdatePutReq);
