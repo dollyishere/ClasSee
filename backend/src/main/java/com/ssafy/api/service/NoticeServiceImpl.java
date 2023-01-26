@@ -1,6 +1,7 @@
 package com.ssafy.api.service;
 
 import com.ssafy.api.request.NoticeRegisterPostReq;
+import com.ssafy.api.request.NoticeUpdatePutReq;
 import com.ssafy.db.entity.board.Notice;
 import com.ssafy.db.entity.user.User;
 import com.ssafy.db.entity.user.UserRole;
@@ -57,13 +58,25 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     public List<Notice> readNoticeList(int offset, int limit) {
         List<Notice> noticeList = noticeRepositorySupport.findList(offset, limit);
-
         return noticeList;
     }
 
     @Override
-    public void updateNotice() {
+    public Long noticeCount() {
+        return noticeRepositorySupport.noticeCount();
+    }
 
+    @Override
+    public void updateNotice(NoticeUpdatePutReq noticeUpdatePutReq) throws Exception {
+
+        User user = userRepositorySupport
+                .findUserByAuth(noticeUpdatePutReq.getEmail())
+                        .get();
+        if(user.getRole().equals(UserRole.ROLE_ADMIN)){
+            noticeRepositorySupport.updateNotice(noticeUpdatePutReq);
+        } else {
+            throw new Exception("공지사항을 수정할 권한이 없습니다.");
+        }
     }
 
     @Override
