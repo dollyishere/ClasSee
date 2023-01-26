@@ -35,9 +35,9 @@ const StepTwo = () => {
       // compressedFile에 imageCompression에 요청을 보내 압축된 파일 정보를 받아옴
       const compressedFile = await imageCompression(img, options);
       // FormData를 통해, 파일 내용을 인코딩함
+      // FormData를 사용하는 이유는, 페이지 전환 없이 폼 데이터를 제출하기 위함임
       const formData = new FormData();
       formData.append('image', compressedFile);
-      console.log(formData);
 
       // FileReader()를 이용해 파일 정보를 비동기적으로 읽어옴
       const fileReader = new FileReader();
@@ -52,7 +52,6 @@ const StepTwo = () => {
         // result를 setImgSrcList를 이용해 imgSrcList에 추가함
         setImgSrcList([...imgSrcList, result]);
       };
-      console.log(imgSrcList);
     }
   };
 
