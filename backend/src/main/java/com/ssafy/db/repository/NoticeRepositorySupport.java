@@ -2,6 +2,7 @@ package com.ssafy.db.repository;
 
 import com.querydsl.core.QueryFactory;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssafy.api.request.NoticeUpdatePutReq;
 import com.ssafy.db.entity.board.Notice;
 import com.ssafy.db.entity.board.QNotice;
 import com.ssafy.db.entity.user.Notification;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -50,6 +52,16 @@ public class NoticeRepositorySupport {
         jpaQueryFactory.update(qNotice)
                 .where(qNotice.id.eq(id))
                 .set(qNotice.hit, qNotice.hit.add(1))
+                .execute();
+    }
+
+    public void updateNotice(NoticeUpdatePutReq noticeUpdatePutReq) {
+        jpaQueryFactory.update(qNotice)
+                .where(qNotice.id.eq(noticeUpdatePutReq.getId()))
+                .set(qNotice.title, noticeUpdatePutReq.getTitle())
+                .set(qNotice.content, noticeUpdatePutReq.getContent())
+                .set(qNotice.img, noticeUpdatePutReq.getImg())
+                .set(qNotice.regtime, LocalDateTime.now().toString())
                 .execute();
     }
 
