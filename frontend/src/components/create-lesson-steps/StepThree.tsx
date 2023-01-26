@@ -10,10 +10,12 @@ import TextField from '@mui/material/TextField';
 import Menu, { MenuProps } from '@mui/material/Menu';
 
 const StepThree = () => {
+  const lessonIntroRef = useRef(null);
+
   return (
     <div>
       <h2>Step 3. 강의 소개 입력</h2>
-      <textarea cols={30} rows={10} placeholder="강의 소개를 입력해주세요." />
+      <textarea cols={30} rows={10} placeholder="강의 소개를 입력해주세요." ref={lessonIntroRef} />
       <CardActions>
         <Link to="/create_lesson/2">
           <Button type="submit" variant="contained">
