@@ -47,6 +47,13 @@ public class NoticeRepositorySupport {
                 .fetch();
     }
 
+    public Long noticeCount(){
+        return jpaQueryFactory
+                .select(qNotice.count())
+                .from(qNotice)
+                .fetchOne();
+    }
+
     public void updateHit(Long id) {
 
         jpaQueryFactory.update(qNotice)
