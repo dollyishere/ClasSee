@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @ApiModel("NoticeCreatePostRequest")
-public class NoticeCreatePostReq {
+public class NoticeRegisterPostReq {
 
     @ApiModelProperty(name="email", example="user_email")
     String email;
