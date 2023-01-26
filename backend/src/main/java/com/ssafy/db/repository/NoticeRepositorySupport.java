@@ -40,6 +40,7 @@ public class NoticeRepositorySupport {
     public List<Notice> findList(int offset, int limit) {
         return jpaQueryFactory
                 .selectFrom(qNotice)
+                .orderBy(qNotice.id.desc())
                 .offset(offset)
                 .limit(limit)
                 .fetch();
