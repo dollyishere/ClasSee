@@ -35,6 +35,23 @@ public class ArticleRepositorySupport {
                 .fetch();
     }
 
+    public List<Article> findList(int offset, int limit) {
+        return jpaQueryFactory
+                .selectFrom(qArticle)
+                .orderBy(qArticle.id.desc())
+                .offset(offset)
+                .limit(limit)
+                .fetch();
+    }
+
+    public Long articleCount(){
+        return jpaQueryFactory
+                .select(qArticle.count())
+                .from(qArticle)
+                .fetchOne();
+    }
+
+
     public void updateHit(Long id) {
 
         jpaQueryFactory
