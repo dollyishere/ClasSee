@@ -46,11 +46,14 @@ const RecommandLessons = () => {
   // 강의 정보를 useState로 받아서 저장
   const [lessons, setlessons] = useState<Lesson[]>(dummyData);
   return (
-    <div className="lesson">
+    <div>
+      <h1 className="recommandClass"> 추천 클래스 </h1>
       {/* 강의 하나씩 map으로 돌면서 카드에 적용 */}
-      {lessons.map((lesson) => (
-        <LessonCard lesson={lesson} />
-      ))}
+      <div className="lesson">
+        {lessons.map((lesson) => (
+          <LessonCard lesson={lesson} />
+        ))}
+      </div>
     </div>
   );
 };
