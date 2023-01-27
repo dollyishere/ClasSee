@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service("articleService")
 @Transactional
@@ -44,6 +45,20 @@ public class ArticleServiceImpl implements ArticleService{
         articleRepositorySupport.updateHit(id);
         return articleRepositorySupport.findOne(id);
 
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Article> readArticleList(int offset, int limit) {
+        return articleRepositorySupport
+                .findList(offset, limit);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Long articleCount(){
+        return articleRepositorySupport
+                .articleCount();
     }
 
     @Override
