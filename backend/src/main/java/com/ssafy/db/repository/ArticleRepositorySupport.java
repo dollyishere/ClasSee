@@ -1,6 +1,7 @@
 package com.ssafy.db.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssafy.api.request.ArticleUpdatePutReq;
 import com.ssafy.db.entity.board.Article;
 import com.ssafy.db.entity.board.Notice;
 import com.ssafy.db.entity.board.QArticle;
@@ -35,12 +36,43 @@ public class ArticleRepositorySupport {
                 .fetch();
     }
 
+    public List<Article> findList(int offset, int limit) {
+        return jpaQueryFactory
+                .selectFrom(qArticle)
+                .orderBy(qArticle.id.desc())
+                .offset(offset)
+                .limit(limit)
+                .fetch();
+    }
+
+    public Long articleCount(){
+        return jpaQueryFactory
+                .select(qArticle.count())
+                .from(qArticle)
+                .fetchOne();
+    }
+
+
     public void updateHit(Long id) {
 
         jpaQueryFactory
                 .update(qArticle)
                 .where(qArticle.id.eq(id))
                 .set(qArticle.hit, qArticle.hit.add(1))
+                .execute();
+
+        em.clear();
+        em.flush();
+    }
+
+    public void updateArticle(ArticleUpdatePutReq articleUpdatePutReq) {
+
+        jpaQueryFactory
+                .update(qArticle)
+                .where(qArticle.id.eq(articleUpdatePutReq.getId()))
+                .set(qArticle.title, articleUpdatePutReq.getTitle())
+                .set(qArticle.content, articleUpdatePutReq.getContent())
+                .set(qArticle.img, articleUpdatePutReq.getImg())
                 .execute();
 
         em.clear();

@@ -1,6 +1,7 @@
 package com.ssafy.api.service;
 
 import com.ssafy.api.request.ArticleRegisterPostReq;
+import com.ssafy.api.request.ArticleUpdatePutReq;
 import com.ssafy.db.entity.board.Article;
 import com.ssafy.db.entity.user.User;
 import com.ssafy.db.repository.ArticleRepositorySupport;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service("articleService")
 @Transactional
@@ -47,8 +49,31 @@ public class ArticleServiceImpl implements ArticleService{
     }
 
     @Override
-    public void updateArticle() {
+    @Transactional(readOnly = true)
+    public List<Article> readArticleList(int offset, int limit) {
+        return articleRepositorySupport
+                .findList(offset, limit);
+    }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Long articleCount(){
+        return articleRepositorySupport
+                .articleCount();
+    }
+
+    @Override
+    public void updateArticle(ArticleUpdatePutReq articleUpdatePutReq) throws Exception {
+        User user = userRepositorySupport
+                .findUserByAuth(articleUpdatePutReq.getEmail())
+                .get();
+
+        if(user.getAuth().getEmail().equals(articleUpdatePutReq.getEmail())){
+            articleRepositorySupport.updateArticle(articleUpdatePutReq);
+            return;
+        } else {
+            throw new Exception("글 작성자와 수정하려는 자가 다릅니다");
+        }
     }
 
     @Override

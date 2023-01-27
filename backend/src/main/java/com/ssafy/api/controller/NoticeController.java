@@ -43,7 +43,7 @@ import java.util.stream.Collectors;
     }
 
     @DeleteMapping()
-    @ApiOperation(value = "공지 삭제", notes = "사용자 이메일로 권한 확인 후, id로 해당 공지 삭제")
+    @ApiOperation(value = "공지사항 삭제", notes = "사용자 이메일로 권한 확인 후, id로 해당 공지 삭제")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
             @ApiResponse(code = 401, message = "권한이 없음")
