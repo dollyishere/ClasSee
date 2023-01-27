@@ -57,9 +57,11 @@ const LessonCard = ({ lesson }: Props) => {
           )}
         </button>
       </div>
-      {/* 강사 이미지 */}
+      {/* 카테고리, 강사 이미지 */}
       <div className="lesson__categoryteacherImage">
-        <div className="lesson__category">hi</div>
+        <div className="lesson__category">
+          <p className="lesson__category--text">{lesson.category}</p>
+        </div>
         <Stack
           className="lesson__teacherImage--image"
           direction="row"
