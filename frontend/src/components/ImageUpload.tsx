@@ -8,11 +8,11 @@ import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 // 아마 useEffect 쓰면 될 듯?
 
 // 부모 컴포넌트 측에서 전달한 이미지 업로드 한도인 limitNumber의 type을 지정함
-interface MyProps {
+interface Props {
   limitNumber: number;
 }
 
-const ImageUpload = ({ limitNumber }: MyProps) => {
+const ImageUpload = ({ limitNumber }: Props) => {
   const fileRef = useRef<HTMLInputElement>(null);
 
   // 이미지 파일 src를 저장할 imgSrcList 변수를 useState(속성 array(string))으로 선언
@@ -50,7 +50,6 @@ const ImageUpload = ({ limitNumber }: MyProps) => {
         const result = event?.target?.result as string;
         // result를 setImgSrcList를 이용해 imgSrcList에 추가함
         setImgSrcList([...imgSrcList, result]);
-        console.log(imgSrcList);
       };
     }
   };
