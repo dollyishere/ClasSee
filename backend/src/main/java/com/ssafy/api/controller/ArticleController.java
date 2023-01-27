@@ -1,8 +1,9 @@
 package com.ssafy.api.controller;
 
 import com.ssafy.api.request.ArticleRegisterPostReq;
-import com.ssafy.api.request.NoticeRegisterPostReq;
-import com.ssafy.api.response.ArticleInfoRes;
+import com.ssafy.api.response.ArticleInfoGetRes;
+import com.ssafy.api.response.ArticleListGetRes;
+import com.ssafy.api.response.PageGetRes;
 import com.ssafy.api.service.ArticleService;
 import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.db.entity.board.Article;
@@ -13,6 +14,9 @@ import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Api(value = "게시글 API", tags = {"Article"})
 @RestController
@@ -61,10 +65,31 @@ public class ArticleController {
     public ResponseEntity<?> getArticleInfo(@RequestParam Long id){
 
         Article article = articleService.readArticle(id);
-        ArticleInfoRes articleInfoRes = new ArticleInfoRes(article);
+        ArticleInfoGetRes articleInfoGetRes = new ArticleInfoGetRes(article);
 
-        return ResponseEntity.status(200).body(articleInfoRes);
+        return ResponseEntity.status(200).body(articleInfoGetRes);
 
+    }
+
+    @GetMapping("/list")
+    @ApiOperation(value = "게시글 목록 조회", notes = "limit는 가져올 갯수, offset은 시작 위치(0부터 시작), count는 총 개수")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공")
+    })
+    public ResponseEntity<?> getArticleList(@RequestParam int offset, @RequestParam int limit){
+
+        Long articleCount = articleService.articleCount();
+
+        List<Article> articleList = articleService.readArticleList(offset, limit);
+        List<ArticleListGetRes> articleListGetResList = articleList
+                        .stream()
+                        .map(a -> new ArticleListGetRes(a)).collect(Collectors.toList());
+
+        PageGetRes articlePageDto = new PageGetRes();
+        articlePageDto.setCount(articleCount);
+        articlePageDto.setPage(articleListGetResList);
+
+        return ResponseEntity.status(200).body(articlePageDto);
     }
 
 
