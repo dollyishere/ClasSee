@@ -36,7 +36,7 @@ public class ArticleController {
 
         articleService.createArticle(articleRegisterPostReq);
 
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"등록 성공"));
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"성공"));
 
     }
 
@@ -51,10 +51,10 @@ public class ArticleController {
         try {
             articleService.deleteArticle(email, id);
         } catch (Exception e) {
-            return ResponseEntity.status(401).body(BaseResponseBody.of(401, "작성자와 다릅니다"));
+            return ResponseEntity.status(401).body(BaseResponseBody.of(401, "삭제 권한이 없음"));
         }
 
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"삭제 성공"));
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"성공"));
 
     }
 
@@ -123,10 +123,10 @@ public class ArticleController {
         try{
             articleService.updateArticle(articleUpdatePutReq);
         } catch (Exception e){
-            return ResponseEntity.status(401).body("수정 실패");
+            return ResponseEntity.status(401).body("수정 권한이 없음");
         }
 
-        return ResponseEntity.status(200).body("수정 성공");
+        return ResponseEntity.status(200).body("성공");
 
     }
 
