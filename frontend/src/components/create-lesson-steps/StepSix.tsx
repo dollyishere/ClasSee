@@ -1,7 +1,12 @@
 import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { IconButton, Button, CardActions } from '@mui/material';
+import { IconButton, Button, CardActions, Box, Fab } from '@mui/material';
+
+import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import NavigationIcon from '@mui/icons-material/Navigation';
 
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
@@ -9,18 +14,18 @@ import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 interface OptionalSet {
   optionName: string;
   optionalPrice: number;
+  // totalPrice: number;
 }
 
 const StepFive = () => {
   // 각 stage를 입력하는 용도로 사용하는 input 값을 제어할 stageRef를 생성함
   // type은 HTMLInputElement로 지정해줌
-  const stageRef = useRef<HTMLInputElement>(null);
   const basicPriceRef = useRef<HTMLInputElement>(null);
   const optionRef = useRef<HTMLInputElement>(null);
   const optionalPriceRef = useRef<HTMLInputElement>(null);
 
   // option input form이 보이는지 여부를 결정할 inputVisiable 변수를 useState로 생성
-  const [inputVisiable, setInputVisiable] = useState(true);
+  const [inputVisiable, setInputVisiable] = useState(false);
   const [edditAble, setEdditAble] = useState(true);
 
   // stage 값을 담아줄 stageList를 useState로 생성, type은 string array로 지정해줌
@@ -48,6 +53,7 @@ const StepFive = () => {
         // 이후 stageRef.current.value 값을 초기화해줌
         optionRef.current.value = '' as string;
         optionalPriceRef.current.value = '' as string;
+        setInputVisiable(false);
       }
     }
   };
@@ -74,6 +80,13 @@ const StepFive = () => {
               <span>{option.optionalPrice}</span>
               <span>원</span>
               <RemoveCircleOutlineIcon type="submit" onClick={() => deleteBtn(id)} />
+              <h3>
+                {' '}
+                총 합계:{' '}
+                {basicPriceRef.current
+                  ? option.optionalPrice + (parseInt(basicPriceRef.current.value, 10) as number)
+                  : option.optionalPrice}{' '}
+              </h3>
             </li>
           ))}
         </ul>
@@ -88,7 +101,13 @@ const StepFive = () => {
             <AddCircleOutlineIcon />
           </IconButton>
         </form>
-      ) : null}
+      ) : (
+        <Box sx={{ '& > :not(style)': { m: 1 } }}>
+          <Fab aria-label="add" onClick={() => setInputVisiable(true)}>
+            <AddIcon />
+          </Fab>
+        </Box>
+      )}
       <CardActions>
         <Link to="/create_lesson/5">
           <Button type="submit" variant="contained">

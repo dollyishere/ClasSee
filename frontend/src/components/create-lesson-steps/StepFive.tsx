@@ -62,7 +62,6 @@ const StepFive = () => {
           <AddCircleOutlineIcon />
         </IconButton>
       </form>
-
       <CardActions>
         <Link to="/create_lesson/4">
           <Button type="submit" variant="contained">
