@@ -9,8 +9,10 @@ interface Lesson {
   teacher: string;
   teacherImage: string;
   name: string;
-  takeTime: string;
+  runningTime: string;
+  category: string;
   rating: number;
+  isBookMarked: boolean;
 }
 
 export const api = {
