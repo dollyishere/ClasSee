@@ -45,8 +45,14 @@
     right: 0;
     top: 0;
   }
-  .lesson__teacherImage {
+  .lesson__categoryteacherImage {
     border-bottom: solid 1px black;
+    display: flex;
+  }
+  .lesson__category {
+    background-color: rgb(149, 59, 209);
+    border-radius: 15px;
+    padding: 0px 50px;
   }
   .lesson__teacherImage--image {
     margin-left: 85%;
