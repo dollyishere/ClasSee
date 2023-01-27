@@ -1,6 +1,7 @@
 package com.ssafy.api.service;
 
 import com.ssafy.api.request.ArticleRegisterPostReq;
+import com.ssafy.api.request.ArticleUpdatePutReq;
 import com.ssafy.db.entity.board.Article;
 import com.ssafy.db.entity.user.User;
 import com.ssafy.db.repository.ArticleRepositorySupport;
@@ -62,8 +63,17 @@ public class ArticleServiceImpl implements ArticleService{
     }
 
     @Override
-    public void updateArticle() {
+    public void updateArticle(ArticleUpdatePutReq articleUpdatePutReq) throws Exception {
+        User user = userRepositorySupport
+                .findUserByAuth(articleUpdatePutReq.getEmail())
+                .get();
 
+        if(user.getAuth().getEmail().equals(articleUpdatePutReq.getEmail())){
+            articleRepositorySupport.updateArticle(articleUpdatePutReq);
+            return;
+        } else {
+            throw new Exception("글 작성자와 수정하려는 자가 다릅니다");
+        }
     }
 
     @Override
