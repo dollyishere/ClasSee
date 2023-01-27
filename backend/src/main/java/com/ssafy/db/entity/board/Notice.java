@@ -24,7 +24,6 @@ public class Notice {
 
     private String title;
     private String content;
-    private int hit;
     private String img;
     private String regtime;
 

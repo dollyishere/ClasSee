@@ -14,15 +14,12 @@ public class NoticeListRes {
 
     String title;
 
-    int hit;
-
     String regtime;
 
 
     public NoticeListRes(Notice notice) {
         this.id = notice.getId();
         this.title = notice.getTitle();
-        this.hit = notice.getHit();
         this.regtime = notice.getRegtime();
     }
 }

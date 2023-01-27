@@ -53,17 +53,6 @@ public class NoticeRepositorySupport {
                 .fetchOne();
     }
 
-    public void updateHit(Long id) {
-
-        jpaQueryFactory.update(qNotice)
-                .where(qNotice.id.eq(id))
-                .set(qNotice.hit, qNotice.hit.add(1))
-                .execute();
-
-        em.clear();
-        em.flush();
-    }
-
     public void updateNotice(NoticeUpdatePutReq noticeUpdatePutReq) {
         jpaQueryFactory.update(qNotice)
                 .where(qNotice.id.eq(noticeUpdatePutReq.getId()))
