@@ -1,13 +1,10 @@
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import Input from '@mui/material/Input';
 import Button from '@mui/material/Button';
 import CardActions from '@mui/material/CardActions';
-import TextField from '@mui/material/TextField';
-import Menu, { MenuProps } from '@mui/material/Menu';
+
+import CategorySelectBox from '../CategorySelectBox';
 
 const StepOne = () => {
   const lecturenameRef = useRef(null);
@@ -24,6 +21,9 @@ const StepOne = () => {
   return (
     <div>
       <h2>Step 1. 강의명 입력</h2>
+      <div>
+        <CategorySelectBox />
+      </div>
       <form onSubmit={handleLoginSubmit}>
         <input type="text" ref={lecturenameRef} placeholder="강의명을 입력해주세요" />
         <CardActions>
