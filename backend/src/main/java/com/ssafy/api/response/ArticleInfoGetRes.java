@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 @Getter
 @Setter
 @ApiModel("ArticleInfoRes")
-public class ArticleInfoRes {
+public class ArticleInfoGetRes {
 
     Long id;
 
@@ -28,7 +28,9 @@ public class ArticleInfoRes {
 
     String user_nickname;
 
-    public ArticleInfoRes(Article article){
+    String user_img;
+
+    public ArticleInfoGetRes(Article article){
         this.id = article.getId();
         this.hit = article.getHit();
         this.title = article.getTitle();
@@ -37,6 +39,7 @@ public class ArticleInfoRes {
         this.regtime = article.getRegtime();
         this.user_id = article.getUser().getId();
         this.user_nickname = article.getUser().getNickname();
+        this.user_img = article.getUser().getImg();
     }
 
 }
