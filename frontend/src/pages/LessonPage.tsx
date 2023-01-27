@@ -8,6 +8,7 @@ import UserVideo from '../components/UserVideo';
 const LessonPage = () => {
   const location = useLocation();
   const role = location.pathname.split('/')[3];
+  const [isFocused, setIsFocused] = useState<boolean>(false);
   const [count, setCount] = useState<number>(0);
   const [OV, setOV] = useState<OpenVidu | null>(null);
   const [sessionId, setSessionId] = useState<string>(
@@ -28,12 +29,17 @@ const LessonPage = () => {
 
   // 세션에서 나간 사람을 subscribers에서 제거
   const deleteSubscriber = (streamManager: any) => {
-    const newSubscribers = subscribers;
-    const index = newSubscribers.indexOf(streamManager, 0);
+    const data = JSON.parse(streamManager.stream.connection.data);
+    if (data.role === 'student') {
+      const newSubscribers = subscribers;
+      const index = newSubscribers.indexOf(streamManager, 0);
 
-    if (index > -1) {
-      newSubscribers.splice(index, 1);
-      setSubscribers([...newSubscribers]);
+      if (index > -1) {
+        newSubscribers.splice(index, 1);
+        setSubscribers([...newSubscribers]);
+      }
+    } else if (data.role === 'teacher') {
+      setTeacherStreamManager(undefined);
     }
   };
 
@@ -143,75 +149,82 @@ const LessonPage = () => {
       window.removeEventListener('beforeunload', onbeforeunload);
     };
   }, []);
+
+  const handleVideoClick = (num: number) => {
+    if (num >= 0) {
+      setStudentStreamManager(subscribers[num]);
+    }
+    setIsFocused((prev) => !prev);
+  };
   return (
     <div className="page">
       <div className="lesson-page__header">헤더</div>
       <div className="lesson-page__videos">
-        <div className="lesson-page__video--students">
-          <div className="lesson-page__video--students-col">
-            <div className="lesson-page__stream-container">
-              {subscribers[1] !== undefined ? (
-                <UserVideo streamManager={subscribers[1]} />
-              ) : null}
+        <div className="lesson-page__video--students-left">
+          {isFocused ? (
+            <div className="lesson-page__video--student">
+              <div
+                role="presentation"
+                className="lesson-page__student-stream-container"
+                onClick={() => handleVideoClick(-1)}
+              >
+                <UserVideo streamManager={studentStreamManager} />
+              </div>
             </div>
-            <div className="lesson-page__stream-container">
-              {subscribers[4] !== undefined ? (
-                <UserVideo streamManager={subscribers[4]} />
-              ) : null}
+          ) : (
+            <div className="lesson-page__video--students-group">
+              <div className="lesson-page__video--students-col">
+                {subscribers.map((sub: any, i: number) =>
+                  i % 3 === 1 ? (
+                    <div
+                      role="presentation"
+                      className="lesson-page__stream-container"
+                      onClick={() => handleVideoClick(i)}
+                    >
+                      <UserVideo streamManager={sub} />
+                    </div>
+                  ) : null,
+                )}
+              </div>
+              <div className="lesson-page__video--students-col">
+                {subscribers.map((sub: any, i: number) =>
+                  i % 3 === 0 ? (
+                    <div
+                      role="presentation"
+                      className="lesson-page__stream-container"
+                      onClick={() => handleVideoClick(i)}
+                    >
+                      <UserVideo streamManager={sub} />
+                    </div>
+                  ) : null,
+                )}
+              </div>
+              <div className="lesson-page__video--students-col">
+                {subscribers.map((sub: any, i: number) =>
+                  i % 3 === 2 ? (
+                    <div
+                      role="presentation"
+                      className="lesson-page__stream-container"
+                      onClick={() => handleVideoClick(i)}
+                    >
+                      <UserVideo streamManager={sub} />
+                    </div>
+                  ) : null,
+                )}
+              </div>
             </div>
-            <div className="lesson-page__stream-container">
-              {subscribers[7] !== undefined ? (
-                <UserVideo streamManager={subscribers[7]} />
-              ) : null}
-            </div>
-          </div>
-          <div className="lesson-page__video--students-col">
-            <div className="lesson-page__stream-container">
-              {subscribers[0] !== undefined ? (
-                <UserVideo streamManager={subscribers[0]} />
-              ) : null}
-            </div>
-            <div className="lesson-page__stream-container">
-              {subscribers[3] !== undefined ? (
-                <UserVideo streamManager={subscribers[3]} />
-              ) : null}
-            </div>
-            <div className="lesson-page__stream-container">
-              {subscribers[6] !== undefined ? (
-                <UserVideo streamManager={subscribers[6]} />
-              ) : null}
-            </div>
-            <div className="lesson-page__stream-container">
-              {subscribers[9] !== undefined ? (
-                <UserVideo streamManager={subscribers[9]} />
-              ) : null}
-            </div>
-          </div>
-          <div className="lesson-page__video--students-col">
-            <div className="lesson-page__stream-container">
-              {subscribers[2] !== undefined ? (
-                <UserVideo streamManager={subscribers[2]} />
-              ) : null}
-            </div>
-            <div className="lesson-page__stream-container">
-              {subscribers[5] !== undefined ? (
-                <UserVideo streamManager={subscribers[5]} />
-              ) : null}
-            </div>
-            <div className="lesson-page__stream-container">
-              {subscribers[8] !== undefined ? (
-                <UserVideo streamManager={subscribers[8]} />
-              ) : null}
-            </div>
-          </div>
+          )}
         </div>
         <div className="lesson-page__video--teacher">
-          <div className="lesson-page__main-stream-container">
+          <div className="lesson-page__teacher-stream-container">
             {teacherStreamManager !== undefined ? (
               <UserVideo streamManager={teacherStreamManager} />
             ) : null}
           </div>
         </div>
+        {isFocused ? (
+          <div className="lesson-page__video--students-bottom">test</div>
+        ) : null}
       </div>
       <div className="lesson-page__footer">푸터</div>
     </div>
