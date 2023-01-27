@@ -11,8 +11,9 @@ import java.util.List;
 @ApiModel("PageGetRes")
 public class PageGetRes {
 
+    Long count;
+
     List<?> page;
 
-    Long count;
 
 }
