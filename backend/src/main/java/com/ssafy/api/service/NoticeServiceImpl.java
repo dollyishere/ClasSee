@@ -36,7 +36,6 @@ public class NoticeServiceImpl implements NoticeService {
             Notice notice = Notice.builder()
                     .title(noticeRegisterPostReq.getTitle())
                     .content(noticeRegisterPostReq.getContent())
-                    .hit(0)
                     .img(noticeRegisterPostReq.getImg())
                     .regtime(LocalDateTime.now().toString())
                     .user(user)
@@ -50,8 +49,8 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Notice readNotice(Long id) {
-        noticeRepositorySupport.updateHit(id);
         Notice notice = noticeRepositorySupport.findOne(id);
         return notice;
 

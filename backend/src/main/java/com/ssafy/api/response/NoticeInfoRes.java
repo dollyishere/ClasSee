@@ -16,8 +16,6 @@ public class NoticeInfoRes {
 
     String content;
 
-    int hit;
-
     String img;
 
     String regtime;
@@ -28,7 +26,6 @@ public class NoticeInfoRes {
         this.id = notice.getId();
         this.title = notice.getTitle();
         this.content = notice.getContent();
-        this.hit = notice.getHit();
         this.img = notice.getImg();
         this.regtime = notice.getRegtime();
         this.user_nickname = notice.getUser().getNickname();
