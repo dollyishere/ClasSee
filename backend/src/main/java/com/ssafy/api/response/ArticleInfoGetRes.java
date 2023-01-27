@@ -24,7 +24,7 @@ public class ArticleInfoGetRes {
 
     Timestamp regtime;
 
-    Long user_id;
+    String user_email;
 
     String user_nickname;
 
@@ -37,7 +37,7 @@ public class ArticleInfoGetRes {
         this.content = article.getContent();
         this.img = article.getImg();
         this.regtime = article.getRegtime();
-        this.user_id = article.getUser().getId();
+        this.user_email = article.getUser().getAuth().getEmail();
         this.user_nickname = article.getUser().getNickname();
         this.user_img = article.getUser().getImg();
     }
