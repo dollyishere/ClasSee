@@ -140,7 +140,7 @@ dependencies {
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
     // openVidu java-client
-    implementation ("io.openvidu:openvidu-java-client:2.25.0")
+    implementation group: 'io.openvidu', name: 'openvidu-java-client', version: '2.24.0'
 
     implementation('commons-io:commons-io:2.6')
     implementation("org.apache.commons:commons-collections4:4.4")
