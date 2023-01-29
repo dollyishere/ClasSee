@@ -47,7 +47,7 @@ const LessonPage = () => {
     session?.disconnect();
 
     setOV(null);
-    setSubscribers(Array(10).fill(undefined));
+    setSubscribers([]);
     setSession(undefined);
     setStudentStreamManager(undefined);
     setTeacherStreamManager(undefined);
@@ -153,9 +153,15 @@ const LessonPage = () => {
   const handleVideoClick = (num: number) => {
     if (num >= 0) {
       setStudentStreamManager(subscribers[num]);
+    } else {
+      const newSubscribers = subscribers;
+      if (studentStreamManager !== undefined) {
+        setStudentStreamManager(undefined);
+      }
     }
     setIsFocused((prev) => !prev);
   };
+
   return (
     <div className="page">
       <div className="lesson-page__header">헤더</div>
@@ -223,7 +229,15 @@ const LessonPage = () => {
           </div>
         </div>
         {isFocused ? (
-          <div className="lesson-page__video--students-bottom">test</div>
+          <div className="lesson-page__video--students-bottom">
+            {subscribers.map((sub: any) =>
+              studentStreamManager !== sub ? (
+                <div className="lesson-page__stream-container">
+                  <UserVideo streamManager={sub} />
+                </div>
+              ) : null,
+            )}
+          </div>
         ) : null}
       </div>
       <div className="lesson-page__footer">푸터</div>
