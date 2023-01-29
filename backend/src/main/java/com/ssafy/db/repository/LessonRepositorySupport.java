@@ -56,10 +56,17 @@ public class LessonRepositorySupport {
     }
 
     public double setLessonAvgScore(Lesson lesson) {
-        return jpaQueryFactory
-                .select(qReview.score.avg())
-                .from(qReview)
-                .where(qReview.lesson.eq(lesson))
-                .fetchOne();
+        double avgScore = 0l;
+        try {
+            avgScore = jpaQueryFactory
+                    .select(qReview.score.avg())
+                    .from(qReview)
+                    .where(qReview.lesson.eq(lesson))
+                    .fetchOne();
+        } catch (Exception e){
+            System.out.println(e.getStackTrace());
+        }
+
+        return avgScore;
     }
 }
