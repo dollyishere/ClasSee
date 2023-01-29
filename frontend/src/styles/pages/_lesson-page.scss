@@ -69,4 +69,21 @@
 .lesson-page__footer {
   background-color: blue;
   height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .lesson-page__buttons {
+    display: flex;
+    .lesson-page__button {
+      border: none;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      color: white;
+      cursor: pointer;
+    }
+    .lesson-page__button--quit {
+      background-color: #FF4D4D;
+    }
+  }
 }

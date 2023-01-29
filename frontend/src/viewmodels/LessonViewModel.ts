@@ -27,6 +27,10 @@ const LessonViewModel = () => {
     const token = await createToken(sessionId);
     return token;
   };
+
+  const chat = (message: string) => {
+    console.log(message);
+  };
   return {
     getToken,
   };

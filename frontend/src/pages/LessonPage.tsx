@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { OpenVidu, Session, Publisher, StreamManager } from 'openvidu-browser';
+import PhoneIcon from '@mui/icons-material/Phone';
 
 import useViewModel from '../viewmodels/LessonViewModel';
 import UserVideo from '../components/UserVideo';
@@ -240,7 +241,17 @@ const LessonPage = () => {
           </div>
         ) : null}
       </div>
-      <div className="lesson-page__footer">푸터</div>
+      <div className="lesson-page__footer">
+        <div className="lesson-page__buttons">
+          <button
+            type="button"
+            className="lesson-page__button lesson-page__button--quit"
+            onClick={window.close}
+          >
+            <PhoneIcon fontSize="large" />
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
