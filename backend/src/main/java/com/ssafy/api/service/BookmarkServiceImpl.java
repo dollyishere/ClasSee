@@ -1,14 +1,10 @@
 package com.ssafy.api.service;
 
-import com.ssafy.api.request.BookmarkRegisterPostReq;
-import com.ssafy.db.entity.lesson.Lesson;
+import com.ssafy.api.request.BookmarkRegisterReq;
 import com.ssafy.db.entity.user.Bookmark;
-import com.ssafy.db.entity.user.User;
 import com.ssafy.db.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service("bookmarkService")
 public class BookmarkServiceImpl implements BookmarkService {
@@ -22,13 +18,25 @@ public class BookmarkServiceImpl implements BookmarkService {
     LessonRepositorySupport lessonRepositorySupport;
 
     @Override
-    public void create(BookmarkRegisterPostReq registerInfo) {
+    public void create(BookmarkRegisterReq requestInfo) {
         Bookmark bookmark = Bookmark.builder()
-                                    .lessonId(registerInfo.getLesson_id())
+                                    .lessonId(requestInfo.getLesson_id())
                                     .userId(
-                                            userRepositorySupport.findId(registerInfo.getEmail())
+                                            userRepositorySupport.findId(requestInfo.getEmail())
                                     )
                                     .build();
         bookmarkRepositorySupport.save(bookmark);
+    }
+
+    @Override
+    public void delete(String email, Long lessonId) {
+        Bookmark bookmark = Bookmark.builder()
+                .lessonId(lessonId)
+                .userId(
+                        userRepositorySupport.findId(email)
+                )
+                .build();
+
+        bookmarkRepositorySupport.delete(bookmark);
     }
 }
