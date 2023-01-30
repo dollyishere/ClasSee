@@ -25,4 +25,5 @@ public class LessonListGetRes extends BaseResponseBody {
     String img;
     double score;
 
+    boolean isBookmarked;
 }
