@@ -9,6 +9,8 @@ import Header from './components/Header';
 import MainPage from './pages/MainPage';
 import SignUpPage from './pages/SignUpPage';
 
+import Footer from './components/Footer';
+
 const App = () => {
   const location = useLocation();
   return (
