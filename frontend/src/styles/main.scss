@@ -3,7 +3,10 @@
 
 // components
 @use './components/header';
+@use './components/footer';
 @use './components/custom-carousel';
+@use './components/LessonCard';
+@use './components/CreateApplyLessonCard';
 @use './components/button';
 @use './components/user-video';
 @use './components/chat-box';

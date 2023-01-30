@@ -1,0 +1,47 @@
+@use '../base/colors';
+
+footer {
+  background-color: grayscale($color: #cecece);
+  height: 100px;
+  display: flex;
+  align-items: center;
+  .logo {
+    margin-left: auto;
+
+    img {
+      height: 50px;
+    }
+  }
+  .info {
+    margin-left: 40px;
+    margin-right: auto;
+    .info__item1 {
+      display: flex;
+      .info__mation1 {
+        margin-right: 40px;
+      }
+      .info__mation2 {
+        margin-left: auto;
+      }
+      .info__item--text {
+        text-align: left;
+        margin: 0;
+        font-size: 12px;
+      }
+    }
+    .info__item2 {
+      margin: 0;
+      .info__item--text {
+        text-align: left;
+        margin-top: 8px;
+        margin-bottom: 0;
+        font-size: 15px;
+      }
+      .info__item--text2 {
+        text-align: center;
+        margin: 0;
+        font-size: 15px;
+      }
+    }
+  }
+}
