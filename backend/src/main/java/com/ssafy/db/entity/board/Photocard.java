@@ -2,7 +2,10 @@ package com.ssafy.db.entity.board;
 
 import com.ssafy.db.entity.lesson.Lesson;
 import com.ssafy.db.entity.user.User;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
@@ -14,6 +17,9 @@ import java.sql.Timestamp;
 */
 @Entity@Getter
 @Table(name = "PHOTOCARD")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Photocard {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
