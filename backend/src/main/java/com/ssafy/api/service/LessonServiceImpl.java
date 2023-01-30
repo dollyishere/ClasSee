@@ -61,9 +61,9 @@ public class LessonServiceImpl implements LessonService{
         List<LessonListGetRes> getLessonList = new ArrayList<>();
         // 강의 목록에 대표 이미지랑, 별점 평균 세팅해주기
         lessonList.forEach((lesson) -> {
-            System.out.println("LESSON INSTANCE >>>>>> " + lesson.toString());
             // 대표 이미지
             LessonListGetRes lessonRes = LessonListGetRes.builder()
+                    .id(lesson.getId())
                     .name(lesson.getName())
                     .category(lesson.getCategory())
                     .runningtime(lesson.getRunningtime())

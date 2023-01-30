@@ -18,6 +18,7 @@ import lombok.Setter;
 @Setter
 @ApiModel("LessonListGetResponse")
 public class LessonListGetRes extends BaseResponseBody {
+    Long id; // 레슨 아이디
     String name;
     Long runningtime;
     Category category;
