@@ -1,22 +1,19 @@
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
 
 import Button from '@mui/material/Button';
 import CardActions from '@mui/material/CardActions';
 
 import CategorySelectBox from '../CategorySelectBox';
+import { getLessonNameState, getCategoryState } from '../../models/GetLessonNameAtom';
 
 const StepOne = () => {
-  const lecturenameRef = useRef(null);
+  const [getLessonName, setGetLessonName] = useRecoilState(getLessonNameState);
 
-  const handleLoginSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log(e.target);
-    console.log(lecturenameRef?.current);
-    if (lecturenameRef?.current) {
-      const lecturename = lecturenameRef?.current as HTMLInputElement;
-      console.log(lecturename.value);
-    }
+  const handleLoginSubmit = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setGetLessonName(e.target.value);
+    console.log(getLessonName);
   };
   return (
     <div>
@@ -24,8 +21,8 @@ const StepOne = () => {
       <div>
         <CategorySelectBox />
       </div>
-      <form onSubmit={handleLoginSubmit}>
-        <input type="text" ref={lecturenameRef} placeholder="강의명을 입력해주세요" />
+      <div>
+        <input value={getLessonName} onChange={handleLoginSubmit} placeholder="강의명을 입력해주세요" />
         <CardActions>
           <Link to="/create_lesson/2">
             <Button type="submit" variant="contained">
@@ -33,7 +30,7 @@ const StepOne = () => {
             </Button>
           </Link>
         </CardActions>
-      </form>
+      </div>
     </div>
   );
 };

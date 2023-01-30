@@ -4,12 +4,18 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { useRecoilState } from 'recoil';
+import { getCategoryState } from '../models/GetLessonNameAtom';
 
+// interface Props {
+//   getCategorySelect: string;
+
+// }
 const CategorySelectBox = () => {
-  const [categorySelect, setCategorySelect] = useState('');
+  const [getCategorySelect, setGetCategorySelect] = useRecoilState(getCategoryState);
 
   const handleChange = (event: SelectChangeEvent) => {
-    setCategorySelect(event.target.value);
+    setGetCategorySelect(event.target.value);
   };
 
   return (
@@ -19,17 +25,17 @@ const CategorySelectBox = () => {
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={categorySelect}
+          value={getCategorySelect}
           label="category"
           onChange={handleChange}
         >
-          <MenuItem value={1}>공예</MenuItem>
-          <MenuItem value={2}>드로잉</MenuItem>
-          <MenuItem value={3}>음악</MenuItem>
-          <MenuItem value={4}>운동</MenuItem>
-          <MenuItem value={5}>요리</MenuItem>
-          <MenuItem value={6}>뷰티</MenuItem>
-          <MenuItem value={99}>기타</MenuItem>
+          <MenuItem value="공예">공예</MenuItem>
+          <MenuItem value="드로잉">드로잉</MenuItem>
+          <MenuItem value="음악">음악</MenuItem>
+          <MenuItem value="운동">운동</MenuItem>
+          <MenuItem value="요리">요리</MenuItem>
+          <MenuItem value="뷰티">뷰티</MenuItem>
+          <MenuItem value="기타">기타</MenuItem>
         </Select>
       </FormControl>
     </Box>
