@@ -1,10 +1,8 @@
 package com.ssafy.api.service;
 
+import com.ssafy.api.request.LessonScheduleRegisterPostReq;
 import com.ssafy.api.response.LessonListGetRes;
-import com.ssafy.db.entity.lesson.Checklist;
-import com.ssafy.db.entity.lesson.Curriculum;
-import com.ssafy.db.entity.lesson.Lesson;
-import com.ssafy.db.entity.lesson.Pamphlet;
+import com.ssafy.db.entity.lesson.*;
 import com.ssafy.db.repository.CheckListRepositorySupport;
 import com.ssafy.db.repository.CurriculumRepositorySupport;
 import com.ssafy.db.repository.LessonRepositorySupport;
@@ -61,9 +59,9 @@ public class LessonServiceImpl implements LessonService{
         List<LessonListGetRes> getLessonList = new ArrayList<>();
         // 강의 목록에 대표 이미지랑, 별점 평균 세팅해주기
         lessonList.forEach((lesson) -> {
-            System.out.println("LESSON INSTANCE >>>>>> " + lesson.toString());
             // 대표 이미지
             LessonListGetRes lessonRes = LessonListGetRes.builder()
+                    .id(lesson.getId())
                     .name(lesson.getName())
                     .category(lesson.getCategory())
                     .runningtime(lesson.getRunningtime())
@@ -81,5 +79,10 @@ public class LessonServiceImpl implements LessonService{
         });
 
         return getLessonList;
+    }
+
+    @Override
+    public void createSchedule(OpenLesson requestInfo) throws Exception{
+        lessonRepositorySupport.save(requestInfo);
     }
 }

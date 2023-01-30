@@ -49,14 +49,16 @@ public class Lesson {
     @OneToMany(mappedBy = "lesson")
     private List<Review> reviewList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "lesson")
+    @OneToMany
+    @JoinColumn(name = "lesson_id")
     private List<Bookmark> bookmarkList = new ArrayList<>();
+
+    @OneToMany
+    @JoinColumn(name = "lesson_id")
+    private List<OpenLesson> openLessonList = new ArrayList<>();
 
     @OneToMany(mappedBy = "lesson")
     private List<Photocard> photocardList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "lesson")
-    private List<OpenLesson> openLessonList = new ArrayList<>();
 
     @OneToMany(mappedBy = "lesson")
     private List<Curriculum> curriculumList = new ArrayList<>();

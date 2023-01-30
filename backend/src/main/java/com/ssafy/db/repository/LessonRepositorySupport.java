@@ -25,6 +25,7 @@ public class LessonRepositorySupport {
     private final JPAQueryFactory jpaQueryFactory;
 
     QLesson qLesson = QLesson.lesson;
+    QOpenLesson qOpenLesson = QOpenLesson.openLesson;
     QPamphlet qPamplet = QPamphlet.pamphlet;
 
     QUser qUser = QUser.user;
@@ -33,6 +34,9 @@ public class LessonRepositorySupport {
     // 유저를 넣으면 유저를 DB에 저장
     public void save(Lesson lesson){
         em.persist(lesson);
+    }
+    public void save(OpenLesson openLesson){
+        em.persist(openLesson);
     }
 
 
@@ -56,10 +60,17 @@ public class LessonRepositorySupport {
     }
 
     public double setLessonAvgScore(Lesson lesson) {
-        return jpaQueryFactory
-                .select(qReview.score.avg())
-                .from(qReview)
-                .where(qReview.lesson.eq(lesson))
-                .fetchOne();
+        double avgScore = 0l;
+        try {
+            avgScore = jpaQueryFactory
+                    .select(qReview.score.avg())
+                    .from(qReview)
+                    .where(qReview.lesson.eq(lesson))
+                    .fetchOne();
+        } catch (Exception e){
+            System.out.println(e.getStackTrace());
+        }
+
+        return avgScore;
     }
 }
