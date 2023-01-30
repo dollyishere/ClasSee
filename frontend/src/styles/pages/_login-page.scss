@@ -1,97 +1,101 @@
 @use '../base/colors';
 
-.container {
-  padding: 30px 30px;
-  height: 400px;
-  // width: 300px;
-  align-items: center;
-  // border-width: 1px;
-  // border-color: colors.$gray_color;
-  // border-style: solid;
-  margin: 5%;
-  background-color: white;
-  // text-align: center;
-  .logo {
+.login-page {
+  height: 100%;
+  .login-page__container {
+    margin: 200px auto;
+    width: 70%;
+    padding: 30px 30px;
+    height: 400px;
+    // width: 300px;
     align-items: center;
-    padding: 0 30px;
-    img {
-      height: 50px;
+    // border-width: 1px;
+    // border-color: colors.$gray_color;
+    // border-style: solid;
+    background-color: white;
+    // text-align: center;
+    .logo {
+      align-items: center;
+      padding: 0 30px;
+      img {
+        height: 50px;
+      }
     }
-  }
 
-  .login {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    .login__input {
-      padding: 0px 10px;
+    .login {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      .login__input {
+        padding: 0px 10px;
+        height: 40px;
+        width: 200px;
+        margin: 10px;
+        border-width: 1px;
+        border-color: colors.$gray_color;
+        font-size: 12px;
+        border-radius: 10px;
+        &:focus {
+          border-color: colors.$theme_color;
+        }
+      }
+
+      .login__show {
+        background-color: transparent;
+        color: colors.$gray_color;
+        border-width: 0;
+        padding: 0 0px;
+        &:hover {
+          cursor: pointer;
+          color: black;
+        }
+      }
+
+      .link {
+        display: inline;
+        align-items: flex-end;
+        text-align: center;
+        list-style: none;
+        float: inline-end;
+        li {
+          display: inline-block;
+        }
+        .link__item {
+          font-size: 12px;
+          color: colors.$theme_color;
+        }
+      }
+    }
+
+    .login__button {
+      padding: 10px 10px;
+      color: white;
       height: 40px;
       width: 200px;
-      margin: 10px;
-      border-width: 1px;
-      border-color: colors.$gray_color;
-      font-size: 12px;
+      border-width: 0px;
       border-radius: 10px;
-      &:focus {
-        border-color: colors.$theme_color;
-      }
-    }
-
-    .login__show {
-      background-color: transparent;
-      color: colors.$gray_color;
-      border-width: 0;
-      padding: 0 0px;
+      background-color: colors.$theme_color;
+      box-shadow: 0 2px 4px gray;
+      transition: 0.1s;
+      font-size: 20px;
+      font-weight: bold;
+      line-height: 20px;
+      border: 0;
+      outline: 0;
+      margin: 5px;
       &:hover {
         cursor: pointer;
-        color: black;
+        font-size: 28px;
+        background-color: colors.$theme_color_focus;
       }
     }
-
-    .link {
-      display: inline;
-      align-items: flex-end;
-      text-align: center;
-      list-style: none;
-      float: inline-end;
-      li {
-        display: inline-block;
+    .social-login {
+      background-color: #ffe100;
+      color: #3c1e1e;
+      &:hover {
+        background-color: #e4d104;
       }
-      .link__item {
-        font-size: 12px;
-        color: colors.$theme_color;
-      }
-    }
-  }
-
-  .login__button {
-    padding: 10px 10px;
-    color: white;
-    height: 40px;
-    width: 200px;
-    border-width: 0px;
-    border-radius: 10px;
-    background-color: colors.$theme_color;
-    box-shadow: 0 2px 4px gray;
-    transition: 0.1s;
-    font-size: 20px;
-    font-weight: bold;
-    line-height: 20px;
-    border: 0;
-    outline: 0;
-    margin: 5px;
-    &:hover {
-      cursor: pointer;
-      font-size: 28px;
-      background-color: colors.$theme_color_focus;
-    }
-  }
-  .social-login {
-    background-color: #ffe100;
-    color: #3c1e1e;
-    &:hover {
-      background-color: #e4d104;
     }
   }
 }

@@ -51,9 +51,9 @@ const Login = () => {
     }
   };
   return (
-    <div className="page">
+    <div className="page login-page">
       <Header />
-      <Card sx={{ minWidth: 275 }} className="container">
+      <Card className="login-page__container">
         {/* 로고 확인 */}
         <Link to="/">
           <div className="logo">
