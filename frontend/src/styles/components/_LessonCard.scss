@@ -1,0 +1,99 @@
+@use '../base/colors';
+.lesson {
+  display: flex;
+  justify-content: space-evenly;
+}
+.recommandClass {
+  text-align: left;
+  margin-left: 100px;
+  font-size: 50px;
+}
+.lesson__card {
+  text-decoration: none;
+  margin-block: 15px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  border: 3px solid #ccc;
+  border-radius: 15px;
+  box-shadow: 5px #ccc;
+  background-color: #f9f9f9;
+  width: 350px;
+  height: 500px;
+  .lesson__img {
+    width: 350px;
+    height: 300px;
+    // border-radius: 50%;
+    margin-bottom: 20px;
+  }
+  img {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 20px;
+    // border-radius: 50%;
+  }
+
+  p {
+    margin-bottom: 5px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+  }
+  .lesson__backImg {
+    position: relative;
+  }
+  .lesson__bookmark {
+    position: absolute;
+    background-color: transparent;
+    border: none;
+    right: 0;
+    top: 0;
+  }
+  .lesson__categoryteacherImage {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .lesson__category {
+    background-color: #b8b8ff;
+
+    border-radius: 15px;
+    padding: 0px 0px;
+  }
+  .lesson__category--text {
+    margin: 0;
+    padding: 5px 10px 0px 10px;
+    color: white;
+  }
+  // .lesson__teacherImage--image {
+  //   margin-left: 85%;
+  // }
+  .lesson__name {
+    border-top: solid 1px black;
+    margin: auto;
+    color: black;
+    font-weight: 800;
+    font-size: 30px;
+  }
+  .lesson__ratingtime {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+
+  .lesson__rating {
+    display: flex;
+    align-items: center;
+  }
+  .lesson__rating--number {
+    color: orange;
+    margin: auto;
+    margin-left: 5px;
+  }
+  .lesson__time {
+    color: black;
+    margin-top: auto;
+    margin-left: 10px;
+  }
+}

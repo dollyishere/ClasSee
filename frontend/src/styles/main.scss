@@ -4,11 +4,27 @@
 // components
 @use './components/header';
 @use './components/custom-carousel';
+@use './components/LessonCard';
+@use './components/CreateApplyLessonCard';
 @use './components/button';
 
 // pages
 @use './pages/signup-page';
 .page {
   background-color: colors.$theme_color_light;
-  height: 100vh;
+  // height: 100vh;
 }
+
+// html,
+// body,
+// #root,
+// .App {
+//   margin: 0;
+//   height: 100%;
+//   overflow: hidden;
+// }
+// .page {
+//   background-color: colors.$theme_color_light;
+//   height: 100%;
+//   overflow: auto;
+// }
