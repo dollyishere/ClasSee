@@ -62,6 +62,12 @@ const StepFive = () => {
           <AddCircleOutlineIcon />
         </IconButton>
       </form>
+      <label htmlFor="number_of_participants">
+        <input id="number_of_participants" type="number" placeholder="참여 인원" min={0} max={10} />명
+      </label>
+      <label htmlFor="time_of_lesson">
+        <input id="time_of_lesson" type="number" placeholder="예상 강의 시간" step={0.5} min={0} max={10} /> 시간
+      </label>
       <CardActions>
         <Link to="/create_lesson/4">
           <Button type="submit" variant="contained">
