@@ -1,7 +1,11 @@
 package com.ssafy.api.service;
 
 import com.ssafy.api.request.QnaRegisterPostReq;
+import com.ssafy.api.request.QnaUpdatePutReq;
 import com.ssafy.db.entity.qna.Qna;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 public interface QnaService {
 
@@ -9,8 +13,12 @@ public interface QnaService {
 
     void deleteQna(String email, Long id) throws Exception;
 
-    Qna readQna();
+    Qna readQna(Long id);
 
-    void updateQna();
+    @Transactional(readOnly = true)
+    Long qnaCount();
 
+    List<Qna> readQnaList(int offset, int limit, String email);
+
+    void updateQna(QnaUpdatePutReq qnaUpdatePutReq) throws Exception;
 }
