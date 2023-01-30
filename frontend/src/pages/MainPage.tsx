@@ -12,8 +12,10 @@ const MainPage = () => {
   return (
     <div className="page">
       <CustomCarousel />
-      {authTokenState ? <CreateLessons /> : <p>no lessons</p>}
-      {authTokenState ? <ApplyLessons /> : <p>no lessons</p>}
+      <div className="create_apply_lessons">
+        {authTokenState ? <CreateLessons /> : <p>no lessons</p>}
+        {authTokenState ? <ApplyLessons /> : <p>no lessons</p>}
+      </div>
       <RecommandLessons />
     </div>
   );
