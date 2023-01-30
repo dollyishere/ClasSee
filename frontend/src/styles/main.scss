@@ -5,10 +5,24 @@
 @use './components/header';
 @use './components/custom-carousel';
 @use './components/button';
+@use './components/user-video';
+@use './components/chat-box';
+@use './components/message';
 
 // pages
 @use './pages/signup-page';
+@use './pages/lesson-page';
+
+html,
+body,
+#root,
+.App {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+}
 .page {
   background-color: colors.$theme_color_light;
-  height: 100vh;
+  height: 100%;
+  overflow: auto;
 }
