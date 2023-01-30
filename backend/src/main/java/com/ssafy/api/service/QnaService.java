@@ -15,7 +15,6 @@ public interface QnaService {
 
     Qna readQna(Long id);
 
-    @Transactional(readOnly = true)
     Long qnaCount();
 
     List<Qna> readQnaList(int offset, int limit, String email);
