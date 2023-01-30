@@ -33,35 +33,35 @@ const ApplyLessons = () => {
       rating: 4,
       isBookMarked: true,
     },
-    {
-      id: 3,
-      lessonImage: 'lessonImage3.jpg',
-      teacher: 'jinho',
-      teacherImage: 'teacherImage3.jpg',
-      name: 'Node.js for Beginners',
-      runningTime: '3.5',
-      category: '요리',
-      rating: 3.5,
-      isBookMarked: false,
-    },
-    {
-      id: 4,
-      lessonImage: 'lessonImage3.jpg',
-      teacher: 'jinho',
-      teacherImage: 'teacherImage3.jpg',
-      name: 'React for Beginners',
-      runningTime: '1',
-      category: '프로그래밍',
-      rating: 3,
-      isBookMarked: false,
-    },
+    // {
+    //   id: 3,
+    //   lessonImage: 'lessonImage3.jpg',
+    //   teacher: 'jinho',
+    //   teacherImage: 'teacherImage3.jpg',
+    //   name: 'Node.js for Beginners',
+    //   runningTime: '3.5',
+    //   category: '요리',
+    //   rating: 3.5,
+    //   isBookMarked: false,
+    // },
+    // {
+    //   id: 4,
+    //   lessonImage: 'lessonImage3.jpg',
+    //   teacher: 'jinho',
+    //   teacherImage: 'teacherImage3.jpg',
+    //   name: 'React for Beginners',
+    //   runningTime: '1',
+    //   category: '프로그래밍',
+    //   rating: 3,
+    //   isBookMarked: false,
+    // },
   ];
   const [lessons, setlessons] = useState<Lesson[]>(dummyData);
   const [isApplied, setIsApplied] = useState(true);
 
   return (
-    <div>
-      <h1 className="applylessons"> 신청한 클래스 </h1>
+    <div className="applylessons">
+      <h1 className="applylesson--title"> 신청한 클래스 </h1>
 
       {isApplied ? (
         <div className="lesson">
