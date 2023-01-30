@@ -1,12 +1,13 @@
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 
-import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
+
+import Header from '../components/Header';
 
 import logo from '../assets/logo.png';
 
@@ -50,75 +51,78 @@ const Login = () => {
     }
   };
   return (
-    <Card sx={{ minWidth: 275 }} className="container">
-      {/* 로고 확인 */}
-      <Link to="/">
-        <div className="logo">
-          <img alt="" src={logo} />
-        </div>
-      </Link>
-      {/* 로그인 폼 */}
-      <form className="login" onSubmit={handleLoginSubmit}>
-        {/* 각각 이메일, 비밀번호 입력 input */}
-        <input
-          type="email"
-          className="login__input"
-          placeholder="이메일"
-          ref={idInputRef}
-        />
-        {/* 만약 visible 값이 false일 시, password로 취급됨 */}
-        {/* true일시, password를 확인하는 것이 가능 */}
-        <div>
+    <div className="page">
+      <Header />
+      <Card sx={{ minWidth: 275 }} className="container">
+        {/* 로고 확인 */}
+        <Link to="/">
+          <div className="logo">
+            <img alt="" src={logo} />
+          </div>
+        </Link>
+        {/* 로그인 폼 */}
+        <form className="login" onSubmit={handleLoginSubmit}>
+          {/* 각각 이메일, 비밀번호 입력 input */}
           <input
-            type={visible ? 'text' : 'password'}
+            type="email"
             className="login__input"
-            placeholder="비밀번호"
-            ref={pwInputRef}
+            placeholder="이메일"
+            ref={idInputRef}
           />
-          {/* 비밀번호 입력 체크할 수 있는 버튼 */}
-          {/* visible의 값에 따라 표시되는 버튼 이미지에 변경이 있음 */}
-          {visible ? (
-            <button
-              type="submit"
-              className="login__show"
-              onClick={showPassword}
-            >
-              <VisibilityOffIcon />
-            </button>
-          ) : (
-            <button
-              type="submit"
-              className="login__show"
-              onClick={showPassword}
-            >
-              <RemoveRedEyeIcon />
-            </button>
-          )}
-        </div>
-        {/* 비밀번호 & 회원가입 페이지로 이동 */}
-        <ul className="link">
-          <li className="link__item">
-            <Link to="/find_pw">비밀번호 찾기</Link>
-          </li>
-          <li>|</li>
-          <li className="link__item">
-            <Link to="/signup">회원가입</Link>
-          </li>
-        </ul>
-        {/* <Button variant="contained" color="warning" startIcon={<ChatBubbleIcon />} className="login__button">
+          {/* 만약 visible 값이 false일 시, password로 취급됨 */}
+          {/* true일시, password를 확인하는 것이 가능 */}
+          <div>
+            <input
+              type={visible ? 'text' : 'password'}
+              className="login__input"
+              placeholder="비밀번호"
+              ref={pwInputRef}
+            />
+            {/* 비밀번호 입력 체크할 수 있는 버튼 */}
+            {/* visible의 값에 따라 표시되는 버튼 이미지에 변경이 있음 */}
+            {visible ? (
+              <button
+                type="button"
+                className="login__show"
+                onClick={showPassword}
+              >
+                <VisibilityOffIcon />
+              </button>
+            ) : (
+              <button
+                type="button"
+                className="login__show"
+                onClick={showPassword}
+              >
+                <RemoveRedEyeIcon />
+              </button>
+            )}
+          </div>
+          {/* 비밀번호 & 회원가입 페이지로 이동 */}
+          <ul className="link">
+            <li className="link__item">
+              <Link to="/find_pw">비밀번호 찾기</Link>
+            </li>
+            <li>|</li>
+            <li className="link__item">
+              <Link to="/signup">회원가입</Link>
+            </li>
+          </ul>
+          {/* <Button variant="contained" color="warning" startIcon={<ChatBubbleIcon />} className="login__button">
           카카오 로그인
         </Button> */}
-        {/* 로그인 버튼 */}
-        <button type="submit" className="login__button">
-          로그인
+          {/* 로그인 버튼 */}
+          <button type="submit" className="login__button">
+            로그인
+          </button>
+        </form>
+        {/* 소셜(카카오) 로그인 */}
+        <button type="button" className="login__button social-login">
+          <ChatBubbleIcon />
+          카카오 로그인
         </button>
-      </form>
-      {/* 소셜(카카오) 로그인 */}
-      <button type="button" className="login__button social-login">
-        <ChatBubbleIcon />
-        카카오 로그인
-      </button>
-    </Card>
+      </Card>
+    </div>
   );
 };
 
