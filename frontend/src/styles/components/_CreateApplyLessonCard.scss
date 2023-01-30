@@ -1,0 +1,14 @@
+@use '../base/colors';
+
+.create_apply_lessons {
+  display: flex;
+  margin-bottom: 100px;
+}
+.createlessons {
+  border-right: solid 1px black;
+  width: 50%;
+}
+.applylessons {
+  margin-left: 10px;
+  width: 50%;
+}
