@@ -74,7 +74,7 @@ public class TeacherController {
         List<Lesson> lessonList = teacherService.getLessonList(user);
         if(lessonList == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "개설 강의 없음"));
 
-        List<LessonListGetRes> lessonListGetResList =  lessonService.setLessonProfileImgAndScore(lessonList);
+        List<LessonListGetRes> lessonListGetResList =  lessonService.setLessonProperty(lessonList);
         return ResponseEntity.status(200).body(lessonListGetResList);
     }
 }

@@ -26,4 +26,17 @@ public class LessonListGetRes extends BaseResponseBody {
     double score;
 
     boolean isBookmarked;
+
+    public static LessonListGetRes of(Integer statusCode, String message, LessonListGetRes lessonListGetRes) {
+        lessonListGetRes.setMessage(message);
+        lessonListGetRes.setStatusCode(statusCode);
+        lessonListGetRes.setId(lessonListGetRes.getId());
+        lessonListGetRes.setName(lessonListGetRes.getName());
+        lessonListGetRes.setRunningtime(lessonListGetRes.getRunningtime());
+        lessonListGetRes.setCategory(lessonListGetRes.getCategory());
+        lessonListGetRes.setImg(lessonListGetRes.getImg());
+        lessonListGetRes.setScore(lessonListGetRes.getScore());
+        lessonListGetRes.setBookmarked(lessonListGetRes.isBookmarked());
+        return lessonListGetRes;
+    }
 }
