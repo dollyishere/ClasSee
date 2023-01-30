@@ -1,8 +1,10 @@
 package com.ssafy.api.controller;
 
 import com.ssafy.api.request.QnaRegisterPostReq;
+import com.ssafy.api.response.ArticleInfoGetRes;
 import com.ssafy.api.service.QnaService;
 import com.ssafy.common.model.response.BaseResponseBody;
+import com.ssafy.db.entity.board.Article;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -31,19 +33,28 @@ public class QnaController {
         return ResponseEntity.status(200).body(BaseResponseBody.of(200,"success"));
     }
 
-    @DeleteMapping()
-    @ApiOperation(value = "Qna 삭제", notes = "Qna 아이디와 로그인한 사람의 이메일을 받아, 비교한 뒤 삭제")
+    @GetMapping("/check")
+    @ApiOperation(value = "사용자 동일 체크", notes = "삭제, 수정 시 QnA의 작성자와 로그인된 사용자가 같은 지 확인")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "성공"),
-            @ApiResponse(code = 401, message = "실패")
+            @ApiResponse(code = 200, message = "성공")
     })
-    public ResponseEntity<? extends BaseResponseBody> deleteQna(@RequestParam String email, @RequestParam Long id) throws Exception {
+    public ResponseEntity<Boolean> checkUser(@RequestParam String email, @RequestParam Long id){
 
-        try{
-            qnaService.deleteQna(email, id);
-        } catch (Exception e){
-            return ResponseEntity.status(401).body(BaseResponseBody.of(401,"fail"));
+        if(qnaService.checkUser(email, id)){
+            return ResponseEntity.status(200).body(true);
+        } else {
+            return ResponseEntity.status(200).body(false);
         }
+
+    }
+
+    @DeleteMapping()
+    @ApiOperation(value = "Qna 삭제", notes = "Qna id로 삭제")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공")
+    })
+    public ResponseEntity<? extends BaseResponseBody> deleteQna(@RequestParam Long id) {
+        qnaService.deleteQna(id);
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success"));
     }
