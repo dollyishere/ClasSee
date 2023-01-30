@@ -40,7 +40,7 @@ const Header = () => {
           </Link>
         </li>
         <li className="nav__item">
-          <Link to="proud" className="nav__item--link">
+          <Link to="/proud" className="nav__item--link">
             자랑 게시판
           </Link>
         </li>
@@ -57,21 +57,21 @@ const Header = () => {
       {/* 버튼 */}
       <ul className="nav">
         <li className="nav__item">
-          <Link to="lesson/test/student" target="_blank">
+          <Link to="/lesson/test/student" target="_blank">
             <button type="button" className="nav__button button">
               테스트
             </button>
           </Link>
         </li>
         <li className="nav__item">
-          <Link to="login">
+          <Link to="/login">
             <button type="button" className="nav__button button">
               로그인
             </button>
           </Link>
         </li>
         <li className="nav__item">
-          <Link to="signup">
+          <Link to="/signup">
             <button type="button" className="nav__button button">
               회원가입
             </button>
