@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 public class BookmarkServiceImpl implements BookmarkService {
     @Autowired
     BookmarkRepositorySupport bookmarkRepositorySupport;
+    @Autowired
+    BookmarkRepository bookmarkRepository;
 
     @Autowired
     UserRepositorySupport userRepositorySupport;
@@ -30,13 +32,8 @@ public class BookmarkServiceImpl implements BookmarkService {
 
     @Override
     public void delete(String email, Long lessonId) {
-        Bookmark bookmark = Bookmark.builder()
-                .lessonId(lessonId)
-                .userId(
-                        userRepositorySupport.findId(email)
-                )
-                .build();
+        Long userId = userRepositorySupport.findId(email);
 
-        bookmarkRepositorySupport.delete(bookmark);
+        bookmarkRepository.removeBookmark(userId, lessonId);
     }
 }

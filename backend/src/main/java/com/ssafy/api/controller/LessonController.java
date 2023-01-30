@@ -1,6 +1,7 @@
 package com.ssafy.api.controller;
 
 import com.ssafy.api.request.LessonRegisterPostReq;
+import com.ssafy.api.request.LessonScheduleRegisterPostReq;
 import com.ssafy.api.request.UserRegisterPostReq;
 import com.ssafy.api.service.LessonService;
 import com.ssafy.api.service.UserService;
@@ -40,7 +41,7 @@ public class LessonController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends BaseResponseBody> register(
+    public ResponseEntity<? extends BaseResponseBody> registerLesson(
             @RequestBody @ApiParam(value = "강의 등록 정보", required = true) LessonRegisterPostReq requestInfo) {
         /*[lessonInfo]
             1. 강사 이메일
@@ -57,6 +58,31 @@ public class LessonController {
         if(user == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "사용자 없음"));
 
         lessonService.createLesson(requestInfo.getLessonInfoFromReq(user));
+
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+    }
+
+    @PostMapping("/schedules")
+    @ApiOperation(value = "강의 스케줄 등록", notes = "<strong>강의 진행 정보</strong>를 통해 회원가입 한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 401, message = "인증 실패"),
+            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<? extends BaseResponseBody> registerSchedule(
+            @RequestBody @ApiParam(value = "강의 등록 정보", required = true) LessonScheduleRegisterPostReq requestInfo) {
+        /*[requestInfo]
+            1. 강의 아이디(lessonId)
+            2. 강의 일자(regDate)
+            3. 강의 시작 시간(startTime)
+            4. 강의 종료 시간(endTime)
+        */
+        try {
+            lessonService.createSchedule(requestInfo.getOpenLessonInfoFromReq(requestInfo));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(BaseResponseBody.of(500, "Fail"));
+        }
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }

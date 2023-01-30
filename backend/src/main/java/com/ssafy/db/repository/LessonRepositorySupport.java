@@ -25,6 +25,7 @@ public class LessonRepositorySupport {
     private final JPAQueryFactory jpaQueryFactory;
 
     QLesson qLesson = QLesson.lesson;
+    QOpenLesson qOpenLesson = QOpenLesson.openLesson;
     QPamphlet qPamplet = QPamphlet.pamphlet;
 
     QUser qUser = QUser.user;
@@ -33,6 +34,9 @@ public class LessonRepositorySupport {
     // 유저를 넣으면 유저를 DB에 저장
     public void save(Lesson lesson){
         em.persist(lesson);
+    }
+    public void save(OpenLesson openLesson){
+        em.persist(openLesson);
     }
 
 

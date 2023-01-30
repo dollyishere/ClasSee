@@ -1,10 +1,8 @@
 package com.ssafy.api.service;
 
+import com.ssafy.api.request.LessonScheduleRegisterPostReq;
 import com.ssafy.api.response.LessonListGetRes;
-import com.ssafy.db.entity.lesson.Checklist;
-import com.ssafy.db.entity.lesson.Curriculum;
-import com.ssafy.db.entity.lesson.Lesson;
-import com.ssafy.db.entity.lesson.Pamphlet;
+import com.ssafy.db.entity.lesson.*;
 import com.ssafy.db.repository.CheckListRepositorySupport;
 import com.ssafy.db.repository.CurriculumRepositorySupport;
 import com.ssafy.db.repository.LessonRepositorySupport;
@@ -81,5 +79,10 @@ public class LessonServiceImpl implements LessonService{
         });
 
         return getLessonList;
+    }
+
+    @Override
+    public void createSchedule(OpenLesson requestInfo) throws Exception{
+        lessonRepositorySupport.save(requestInfo);
     }
 }

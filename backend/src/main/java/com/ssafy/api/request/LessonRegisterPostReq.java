@@ -54,7 +54,7 @@ public class LessonRegisterPostReq {
     public Map<String, Object> getLessonInfoFromReq(User user) {
         Map<String, Object> lessonInfo = new HashMap<>();
 
-        Lesson lesson = new Lesson().builder()
+        Lesson lesson = Lesson.builder()
                 .name(name)
                 .description(description)
                 .maximum(maximum)
