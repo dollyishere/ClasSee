@@ -6,12 +6,14 @@ import RecommandLessons from '../components/RecommandLessons';
 import CreateLessons from '../components/CreateLessons';
 import ApplyLessons from '../components/ApplyLessons';
 import Footer from '../components/Footer';
+import Header from '../components/Header';
 
 const MainPage = () => {
   const authTokenState = useRecoilValue(authToken);
 
   return (
     <div className="page">
+      <Header />
       <CustomCarousel />
       <div className="create_apply_lessons">
         {authTokenState ? <CreateLessons /> : <p>no lessons</p>}

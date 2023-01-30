@@ -17,10 +17,6 @@ const App = () => {
   return (
     <RecoilRoot>
       <div className="App">
-        {location.pathname === '/signup' ||
-        location.pathname.split('/')[1] === 'lesson' ? null : (
-          <Header />
-        )}
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="/signup" element={<SignUpPage />} />

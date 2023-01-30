@@ -22,10 +22,8 @@ body,
 .App {
   margin: 0;
   height: 100%;
-  overflow: hidden;
 }
+
 .page {
   background-color: colors.$theme_color_light;
-  height: 100%;
-  overflow: auto;
 }

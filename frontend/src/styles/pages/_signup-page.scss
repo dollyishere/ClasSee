@@ -2,13 +2,8 @@
 
 // 회원가입 페이지 css
 #signup-page {
-  // 회원가입 내용 입력 카드를 가운데에 두기 위한 padding
-  padding: 200px;
-
   // 세로 가운데 정렬을 위해 flex container화
-  display: flex;
-  align-items: center;
-
+  padding: 100px;
   // 로고 이미지 css
   img {
     // 이미지 크기
