@@ -28,6 +28,7 @@ const LessonPage = () => {
   const [publisher, setPublisher] = useState<Publisher>();
   const [subscribers, setSubscribers] = useState<Array<StreamManager>>([]); // 세션 참여자
   const [currentVideoDevice, setCurrentVideoDevice] = useState<any>();
+  const [messages, setMessages] = useState<Array<any>>([]);
 
   const { getToken, chat } = useViewModel();
 
@@ -79,12 +80,7 @@ const LessonPage = () => {
           const newSubscribers = subscribers;
 
           newSubscribers.push(subscriber);
-          // for (let i = 0; i < 10; i += 1) {
-          //   if (newSubscribers[i] === undefined) {
-          //     newSubscribers[i] = subscriber;
-          //     break;
-          //   }
-          // }
+
           setSubscribers([...newSubscribers]);
         } else {
           setTeacherStreamManager(subscriber);
@@ -99,8 +95,15 @@ const LessonPage = () => {
       });
 
       newSession.on('signal:chat', (event: any) => {
-        console.log(event.data);
-        console.log(JSON.parse(event.from.data).clientData);
+        const message = {
+          message: event.data,
+          creationTime: event.from.creationTime,
+          from: JSON.parse(event.from.data).clientData,
+          role: JSON.parse(event.from.data).role,
+        };
+        const newMessages = messages;
+        newMessages.push(message);
+        setMessages([...newMessages]);
       });
 
       getToken(sessionId).then((token: any) => {
@@ -154,7 +157,6 @@ const LessonPage = () => {
   useEffect(() => {
     if (!OV) {
       joinSession();
-      if (session !== undefined) chat(session, 'hi');
     }
     return () => {
       window.removeEventListener('beforeunload', onbeforeunload);
@@ -275,7 +277,16 @@ const LessonPage = () => {
         </div>
       </div>
       {isChatBoxVisible ? (
-        <ChatBox toggleChatBox={toggleChatBox} chat={chat} session={session} />
+        // isChatBoxVisible이 true이면 채팅창 보이게 하기
+        <ChatBox
+          toggleChatBox={toggleChatBox}
+          chat={chat}
+          session={session}
+          messages={messages}
+          setMessages={setMessages}
+          userName={userName}
+          role={role}
+        />
       ) : null}
     </div>
   );

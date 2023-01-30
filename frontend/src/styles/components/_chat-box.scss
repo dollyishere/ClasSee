@@ -1,7 +1,7 @@
-@use'../base/colors';
+@use '../base/colors';
 
 .chat-box {
-  width: 400px;
+  width: 500px;
   background-color: colors.$theme-color;
 
   .chat-box__header {
@@ -27,6 +27,7 @@
     margin: 0 10px;
     height: 83%;
     border-radius: 10px;
+    overflow: auto;
   }
 
   .chat-box__form {
