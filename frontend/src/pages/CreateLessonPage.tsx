@@ -4,15 +4,8 @@ import { Link, Outlet } from 'react-router-dom';
 import '../styles/pages/_create-lesson-page.scss';
 
 import Card from '@mui/material/Card';
-import Input from '@mui/material/Input';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Menu, { MenuProps } from '@mui/material/Menu';
-import LinearProgress, { LinearProgressProps } from '@mui/material/LinearProgress';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
 
-const OpenLecturePage = () => {
+const CreateLessonPage = () => {
   const [progress, setProgress] = React.useState(10);
   return (
     <div className="container">
@@ -26,4 +19,4 @@ const OpenLecturePage = () => {
     </div>
   );
 };
-export default OpenLecturePage;
+export default CreateLessonPage;
