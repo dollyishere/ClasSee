@@ -1,6 +1,7 @@
 package com.ssafy.db.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssafy.api.request.QnaUpdatePutReq;
 import com.ssafy.db.entity.qna.QQna;
 import com.ssafy.db.entity.qna.Qna;
 import com.ssafy.db.entity.user.QUser;
@@ -34,9 +35,10 @@ public class QnaRepositorySupport {
                 .fetch();
     }
 
-    public List<Qna> findList(int offset, int limit){
+    public List<Qna> findList(int offset, int limit, Long user_id){
         return jpaQueryFactory
                 .selectFrom(qQna)
+                .where(qQna.user.id.eq(user_id))
                 .orderBy(qQna.id.desc())
                 .offset(offset)
                 .limit(limit)
@@ -48,6 +50,18 @@ public class QnaRepositorySupport {
                 .select(qQna.count())
                 .from(qQna)
                 .fetchOne();
+    }
+
+    public void updateQna(QnaUpdatePutReq qnaUpdatePutReq){
+        jpaQueryFactory
+                .update(qQna)
+                .where(qQna.id.eq(qnaUpdatePutReq.getId()))
+                .set(qQna.title, qnaUpdatePutReq.getTitle())
+                .set(qQna.content, qnaUpdatePutReq.getContent())
+                .execute();
+
+        em.clear();
+        em.flush();
     }
 
 
