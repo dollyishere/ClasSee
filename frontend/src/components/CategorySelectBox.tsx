@@ -4,15 +4,13 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { useRecoilState } from 'recoil';
-import { getCategoryState } from '../models/GetLessonNameAtom';
 
 // interface Props {
 //   getCategorySelect: string;
 
 // }
 const CategorySelectBox = () => {
-  const [getCategorySelect, setGetCategorySelect] = useRecoilState(getCategoryState);
+  const [getCategorySelect, setGetCategorySelect] = useState('');
 
   const handleChange = (event: SelectChangeEvent) => {
     setGetCategorySelect(event.target.value);

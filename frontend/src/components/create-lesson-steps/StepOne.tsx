@@ -1,15 +1,13 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
 
 import Button from '@mui/material/Button';
 import CardActions from '@mui/material/CardActions';
 
 import CategorySelectBox from '../CategorySelectBox';
-import { getLessonNameState, getCategoryState } from '../../models/GetLessonNameAtom';
 
 const StepOne = () => {
-  const [getLessonName, setGetLessonName] = useRecoilState(getLessonNameState);
+  const [getLessonName, setGetLessonName] = useState('');
 
   const handleLoginSubmit = (e: React.ChangeEvent<HTMLInputElement>) => {
     setGetLessonName(e.target.value);

@@ -83,7 +83,7 @@ const StepFive = () => {
               <h3>
                 {' '}
                 총 합계:{' '}
-                {basicPriceRef.current
+                {basicPriceRef.current && option.optionalPrice
                   ? option.optionalPrice + (parseInt(basicPriceRef.current.value, 10) as number)
                   : option.optionalPrice}{' '}
               </h3>
@@ -92,7 +92,7 @@ const StepFive = () => {
         </ul>
       ) : null}
       <hr />
-      {inputVisiable ? (
+      {basicPriceRef.current && inputVisiable ? (
         <form onSubmit={handleOptionSubmit}>
           <label htmlFor="option">Option {optionsList.length + 1}.</label>
           <input type="text" id="option" placeholder="옵션" ref={optionRef} />
