@@ -1,7 +1,10 @@
 package com.ssafy.db.entity.qna;
 
 import com.ssafy.db.entity.user.User;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
@@ -12,6 +15,9 @@ import java.sql.Timestamp;
 */
 @Entity
 @Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "QNA")
 public class Qna {
     @Id
@@ -20,9 +26,9 @@ public class Qna {
 
     private String title;
     private String content;
-    @CreatedDate
+
     @Column(name = "regtime")
-    private Timestamp regTime;
+    private String regTime;
 
     // 연결
     @ManyToOne(fetch = FetchType.LAZY)
