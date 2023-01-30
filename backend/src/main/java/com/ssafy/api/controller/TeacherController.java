@@ -43,9 +43,9 @@ public class TeacherController {
     TeacherService teacherService;
     @Autowired
     UserService userService;
-
     @Autowired
     LessonService lessonService;
+
 
 
     @GetMapping("/lessons")
