@@ -49,7 +49,8 @@ public class Lesson {
     @OneToMany(mappedBy = "lesson")
     private List<Review> reviewList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "lesson")
+    @OneToMany
+    @JoinColumn(name = "lesson_id")
     private List<Bookmark> bookmarkList = new ArrayList<>();
 
     @OneToMany(mappedBy = "lesson")

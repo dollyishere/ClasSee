@@ -44,10 +44,10 @@ public class User {
     @JoinColumn(name = "auth_id")
     private Auth auth;
 
-    @OneToMany(mappedBy = "targetUserId")
+    @OneToMany(mappedBy = "targetUserEmail")
     private List<Notification> targetUserList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "sendUserId")
+    @OneToMany(mappedBy = "sendUserEmail")
     private List<Notification> sendMemberList = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
@@ -55,7 +55,9 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Review> reviewList = new ArrayList<>();
-    @OneToMany(mappedBy = "user")
+
+    @OneToMany
+    @JoinColumn(name = "user_id")
     private List<Bookmark> bookmarkList = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")

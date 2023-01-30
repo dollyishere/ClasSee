@@ -1,7 +1,10 @@
 package com.ssafy.db.entity.user;
 
 import com.ssafy.db.entity.lesson.Lesson;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 
@@ -9,6 +12,10 @@ import javax.persistence.*;
 * member : bookmark = 1 : N
 * lesson : bookmark = 1 : N
 */
+
+@Builder
+@AllArgsConstructor
+@RequiredArgsConstructor
 @Entity
 @Getter
 @Table(name = "BOOKMARK")
@@ -17,12 +24,18 @@ public class Bookmark {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // 연결
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "lesson_id")
-    private Lesson lesson;
+    @Column(name = "lesson_id")
+    private Long lessonId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @Column(name = "user_id")
+    private Long userId;
+
+//    // 연결
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "lesson_id")
+//    private Lesson lesson;
+//
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "user_email")
+//    private User user;
 }
