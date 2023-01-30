@@ -1,0 +1,14 @@
+.button {
+  border-width: 0px;
+  border-radius: 10px;
+  height: 40px;
+  box-shadow: 0 2px 4px gray;
+  transition: 0.1s;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 20px;
+
+  &:hover {
+    cursor: pointer;
+  }
+}

@@ -38,17 +38,10 @@ header {
     .nav__button {
       background-color: colors.$theme_color;
       color: white;
-      border-width: 0px;
-      border-radius: 10px;
-      height: 40px;
+
       width: 120px;
-      box-shadow: 0 2px 4px gray;
-      transition: 0.1s;
-      font-size: 20px;
-      font-weight: bold;
-      line-height: 20px;
+
       &:hover {
-        cursor: pointer;
         background-color: colors.$theme_color_focus;
       }
     }
