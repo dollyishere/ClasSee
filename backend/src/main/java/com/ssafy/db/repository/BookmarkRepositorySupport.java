@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -21,11 +22,8 @@ public class BookmarkRepositorySupport{
 
 
     // 북마크 등록
-    public void save(Bookmark requestInfo){
+    @Transactional public void save(Bookmark requestInfo){
         em.persist(requestInfo);
     }
 
-    public void delete(Bookmark requestInfo){
-        em.remove(requestInfo);
-    }
 }
