@@ -32,7 +32,7 @@ public class ArticleController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공")
     })
-    public ResponseEntity<? extends BaseResponseBody> registeArticle(@RequestBody ArticleRegisterPostReq articleRegisterPostReq) {
+    public ResponseEntity<? extends BaseResponseBody> registArticle(@RequestBody ArticleRegisterPostReq articleRegisterPostReq) {
 
         articleService.createArticle(articleRegisterPostReq);
 
