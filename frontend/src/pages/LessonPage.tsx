@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import {
+  ConnectionEvent,
   ExceptionEvent,
   OpenVidu,
+  OpenViduError,
+  OpenViduErrorName,
   Session,
   SignalEvent,
   StreamEvent,
@@ -14,6 +17,24 @@ import MessageIcon from '@mui/icons-material/Message';
 import useViewModel from '../viewmodels/LessonViewModel';
 import UserVideo from '../components/UserVideo';
 import ChatBox from '../components/ChatBox';
+
+interface Device {
+  deviceId: string;
+  label: string;
+  kind: string;
+}
+
+interface Msg {
+  from: string;
+  role: string;
+  message: string;
+}
+
+interface ConnectionError {
+  code: number | string;
+  message: string;
+  stack?: string;
+}
 
 const LessonPage = () => {
   // 사용자가 강사인지 수강생인지 url로 넘겨받도록 함
@@ -58,10 +79,10 @@ const LessonPage = () => {
 
   // 현재 사용하는 캠 디바이스를 저장할 state
   // 이건 나중에 카메라 변경 기능 구현할 때 건드립니다.
-  const [currentVideoDevice, setCurrentVideoDevice] = useState<any>();
+  const [currentVideoDevice, setCurrentVideoDevice] = useState<Device>();
 
   // 채팅 메시지를 저장할 state (배열)
-  const [messages, setMessages] = useState<Array<any>>([]);
+  const [messages, setMessages] = useState<Array<Msg>>([]);
 
   // viewModel의 함수들
   // getToken은 서버로부터 세션 토큰을 받아옴
@@ -158,7 +179,7 @@ const LessonPage = () => {
 
       // 다른 사용자가 메시지를 전송한 이벤트
       newSession.on('signal:chat', (event: SignalEvent) => {
-        if (event.from !== undefined) {
+        if (event.from !== undefined && event.data !== undefined) {
           // 메시지 객체 생성
           const message = {
             message: event.data,
@@ -204,7 +225,7 @@ const LessonPage = () => {
               }
             */
             const videoDevices = devices.filter(
-              (device: any) => device.kind === 'videoinput',
+              (device: Device) => device.kind === 'videoinput',
             );
 
             // 현재 스트림에서 사용하고 있는 캠 deviceId
@@ -215,7 +236,7 @@ const LessonPage = () => {
 
             // 컴퓨터와 연결된 디바이스 정보 중에서 현재 사용하고 있는 캠 정보를 가져옴
             const newCurrentVideoDevice = videoDevices.find(
-              (device: any) => device.deviceId === currentVideoDeviceId,
+              (device: Device) => device.deviceId === currentVideoDeviceId,
             );
 
             // currentVideoDevice state를 현재 사용하고 있는 캠 정보로 저장
@@ -229,7 +250,7 @@ const LessonPage = () => {
               setStudentStreamManager(newPublisher);
             }
           })
-          .catch((error: any) => {
+          .catch((error: ConnectionError) => {
             console.log('Error', error.code, error.message);
           });
       });
@@ -349,7 +370,7 @@ const LessonPage = () => {
           {isFocused ? (
             /* isFocused가 true이면 왼쪽에 선택된 학생의 화면을 표시하고 아래에는 나머지 학생 화면 표시 */
             <div className="lesson-page__video--students-bottom">
-              {subscribers.map((sub: any) =>
+              {subscribers.map((sub: StreamManager) =>
                 studentStreamManager !== sub ? (
                   <div className="lesson-page__stream-container">
                     <UserVideo streamManager={sub} />
