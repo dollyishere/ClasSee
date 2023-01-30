@@ -7,12 +7,10 @@ public interface QnaService {
 
     void createQna(QnaRegisterPostReq qnaRegisterPostReq);
 
-    void deleteQna(Long id);
+    void deleteQna(String email, Long id) throws Exception;
 
     Qna readQna();
 
     void updateQna();
-
-    boolean checkUser(String email, Long id);
 
 }
