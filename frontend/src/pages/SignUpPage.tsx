@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { Card, CardContent, Typography } from '@mui/material';
+import { Card, CardContent } from '@mui/material';
 
 import logo from '../assets/logo.png';
 
@@ -9,46 +9,48 @@ const SignUpPage = () => {
 
   // 오늘 년도 기준으로 생년월일 Select 박스의 년도 생성
   const createSelectYearOption = () => {
-    // 엘리먼트를 담을 배열
-    const elements = [];
+    // 년도 엘리먼트를 담을 배열
+    const years = [];
 
     // 지금부터 100년 전 까지
     for (let i = 0; i < 100; i += 1) {
-      elements.push(
+      years.push(
         <option value={today.getFullYear() - i} key={i}>
           {today.getFullYear() - i} 년
         </option>,
       );
     }
-    return elements;
+    return years;
   };
 
   // 생년월일 Select 박스의 월 생성
   const createSelectMonthOption = () => {
-    const elements = [];
+    // 월 엘리먼트를 담을 배열
+    const months = [];
 
     for (let i = 1; i <= 12; i += 1) {
-      elements.push(
+      months.push(
         <option value={i} key={i}>
           {i}
         </option>,
       );
     }
-    return elements;
+    return months;
   };
 
   // 생년월일 Select 박스의 일 생성
   const createSelectDayOption = () => {
-    const elements = [];
+    // 일 엘리먼트를 담을 배열
+    const days = [];
 
     for (let i = 1; i <= 31; i += 1) {
-      elements.push(
+      days.push(
         <option value={i} key={i}>
           {i}일
         </option>,
       );
     }
-    return elements;
+    return days;
   };
 
   // 회원가입 버튼 클릭시 실행할 함수
