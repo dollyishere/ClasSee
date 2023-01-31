@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
-import authToken from '../store/authToken';
+import authToken from '../models/authToken';
 import CustomCarousel from '../components/CustomCarousel';
-import RecommandLessons from '../components/RecommandLessons';
-import MyCreatedLessons from '../components/MyCreatedLessons';
+import RecommandLessons from '../components/MainPage/RecommandLessons';
+import MyCreatedLessons from '../components/MainPage/MyCreatedLessonsMainpage';
 import ApplyLessons from '../components/ApplyLessons';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
