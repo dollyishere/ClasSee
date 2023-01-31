@@ -63,32 +63,24 @@ public class ArticleServiceImpl implements ArticleService{
     }
 
     @Override
-    public void updateArticle(ArticleUpdatePutReq articleUpdatePutReq) throws Exception {
+    public void updateArticle(ArticleUpdatePutReq articleUpdatePutReq){
         User user = userRepositorySupport
                 .findUserByAuth(articleUpdatePutReq.getEmail())
                 .get();
 
-        if(user.getAuth().getEmail().equals(articleUpdatePutReq.getEmail())){
             articleRepositorySupport.updateArticle(articleUpdatePutReq);
             return;
-        } else {
-            throw new Exception("글 작성자와 수정하려는 자가 다릅니다");
-        }
     }
 
     @Override
-    public void deleteArticle(String email, Long id) throws Exception {
+    public void deleteArticle(String email, Long id) {
         User user = userRepositorySupport
                 .findUserByAuth(email)
                 .get();
 
         Article article = articleRepositorySupport.findOne(id);
 
-        if(article.getUser().getId() == user.getId()){
-            articleRepositorySupport.delete(article);
-        } else {
-            throw new Exception("작성자와 다릅니다.");
-        }
+        articleRepositorySupport.delete(article);
 
         return;
     }

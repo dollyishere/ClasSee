@@ -26,13 +26,12 @@ public class NoticeServiceImpl implements NoticeService {
     UserRepositorySupport userRepositorySupport;
 
     @Override
-    public void createNotice(NoticeRegisterPostReq noticeRegisterPostReq) throws Exception {
+    public void createNotice(NoticeRegisterPostReq noticeRegisterPostReq) {
 
         User user = userRepositorySupport
                 .findUserByAuth(noticeRegisterPostReq.getEmail())
                 .get();
 
-        if(user.getRole().equals(UserRole.ROLE_ADMIN)) {
             Notice notice = Notice.builder()
                     .title(noticeRegisterPostReq.getTitle())
                     .content(noticeRegisterPostReq.getContent())
@@ -43,9 +42,6 @@ public class NoticeServiceImpl implements NoticeService {
 
             noticeRepositorySupport.save(notice);
             return;
-        } else {
-            throw new Exception("공지사항을 설정할 권한이 없습니다.");
-        }
     }
 
     @Override
@@ -70,33 +66,26 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
-    public void updateNotice(NoticeUpdatePutReq noticeUpdatePutReq) throws Exception {
+    public void updateNotice(NoticeUpdatePutReq noticeUpdatePutReq) {
 
         User user = userRepositorySupport
                 .findUserByAuth(noticeUpdatePutReq.getEmail())
                         .get();
-        if(user.getRole().equals(UserRole.ROLE_ADMIN)){
+
             noticeRepositorySupport.updateNotice(noticeUpdatePutReq);
-        } else {
-            throw new Exception("공지사항을 수정할 권한이 없습니다.");
-        }
+
     }
 
     @Override
-    public void deleteNotice(String email, Long id) throws Exception {
+    public void deleteNotice(String email, Long id) {
         Notice notice = noticeRepositorySupport.findOne(id);
 
         User user = userRepositorySupport
                 .findUserByAuth(email)
                 .get();
 
-        if(user.getRole().equals(UserRole.ROLE_ADMIN)) {
-
             noticeRepositorySupport.delete(notice);
             return;
-        } else {
-            throw new Exception("공지사항을 삭제할 권한이 없습니다.");
-        }
 
     }
 }

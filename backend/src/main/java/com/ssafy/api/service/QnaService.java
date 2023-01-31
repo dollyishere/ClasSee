@@ -11,14 +11,13 @@ public interface QnaService {
 
     void createQna(QnaRegisterPostReq qnaRegisterPostReq);
 
-    void deleteQna(String email, Long id) throws Exception;
+    void deleteQna(String email, Long id);
 
     Qna readQna(Long id);
 
-    @Transactional(readOnly = true)
     Long qnaCount();
 
     List<Qna> readQnaList(int offset, int limit, String email);
 
-    void updateQna(QnaUpdatePutReq qnaUpdatePutReq) throws Exception;
+    void updateQna(QnaUpdatePutReq qnaUpdatePutReq);
 }

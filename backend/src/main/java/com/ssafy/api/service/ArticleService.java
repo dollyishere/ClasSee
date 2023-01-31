@@ -12,7 +12,7 @@ public interface ArticleService {
     Article readArticle(Long id);
     List<Article> readArticleList(int offset, int limit);
     Long articleCount();
-    void updateArticle(ArticleUpdatePutReq articleUpdatePutReq) throws Exception;
-    void deleteArticle(String email, Long id) throws Exception;
+    void updateArticle(ArticleUpdatePutReq articleUpdatePutReq);
+    void deleteArticle(String email, Long id);
 
 }
