@@ -44,17 +44,20 @@ const StepFive = ({
       // 만약 입력값이 null이 아니라면, setCurriculumList를 이용해 curriculumList에 해당 값을 초기화함
       if (curriculum) {
         setCurriculumList([...curriculumList, curriculum]);
+        // 이후 curriculumRef.current.value 값을 초기화해줌
+        curriculumRef.current.value = '' as string;
+        setInputVisiable(false);
+      } else {
+        // 만약 값을 입력하지 않았을 시, 값을 입력해달라는 메세지를 출력함
+        console.log('값을 입력해 주세요.');
       }
-
-      // 이후 curriculumRef.current.value 값을 초기화해줌
-      curriculumRef.current.value = '' as string;
-      setInputVisiable(false);
     }
   };
 
   // 만약 삭제 버튼을 누를 시, 해당하는 stage는 삭제됨
   const deleteBtn = (id: number) => {
     setCurriculumList(curriculumList.filter((_, currentIndex) => currentIndex !== id));
+    console.log(curriculumList);
   };
 
   return (
@@ -67,23 +70,24 @@ const StepFive = ({
             <li>
               <h3>Step {id + 1}.</h3>
               {stage}
-              <RemoveCircleOutlineIcon type="submit" onClick={() => deleteBtn(id)} />
+              <RemoveCircleOutlineIcon type="button" onClick={() => deleteBtn(id)} />
             </li>
           ))}
         </ul>
       ) : null}
       <hr />
       {/* inputVisiable이 true라면, 커리큘럼을 추가하는 것이 가능함(input 태그가 보임) */}
-      {inputVisiable ? (
+      {/* 만약 curriculmList.length가 0이라면(현재 추가된 커리큘럼이 하나도 없다면), 그 때도 input 태그는 자동으로 보임 */}
+      {curriculumList.length === 0 || inputVisiable ? (
         <form onSubmit={onCurriculumSubmit}>
           <h3>Stage {curriculumList.length + 1}.</h3>
-          <input ref={curriculumRef} type="text" placeholder="커리큘럼을 단계별로 입력해주세요" />
+          <input ref={curriculumRef} type="text" placeholder="커리큘럼을 단계별로 입력해주세요" required />
           <IconButton type="submit" aria-label="add">
             <AddCircleOutlineIcon />
           </IconButton>
         </form>
       ) : (
-        // 만약 false라면, 추가할 것인지 선택하도록 조정함
+        // 만약 false라면, 새로 값을 추가할 것인지 선택하도록 조정함
         <Box sx={{ '& > :not(style)': { m: 1 } }}>
           <Fab aria-label="add" onClick={() => setInputVisiable(true)}>
             <AddIcon />
