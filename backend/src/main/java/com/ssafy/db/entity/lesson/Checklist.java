@@ -19,7 +19,10 @@ public class Checklist {
     private String img;
 
     // 연결
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "lesson_id")
-    private Lesson lesson;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "lesson_id")
+//    private Lesson lesson;
+
+    @Column(name = "lesson_id")
+    private Long lessonId;
 }
