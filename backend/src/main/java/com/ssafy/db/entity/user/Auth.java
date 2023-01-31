@@ -31,6 +31,7 @@ public class Auth {
     private String password;
     private String token;
     private String refreshToken;
+    private String salt;
     @Enumerated(EnumType.STRING)
     private UserType type;
 
