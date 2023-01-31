@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { atom, selector, useRecoilState } from 'recoil';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { api, Lesson } from '../util/api';
-import logo from '../assets/logo.png';
-import LessonCard from './LessonCard';
+import { api, Lesson } from '../../apis/api';
+import logo from '../../assets/logo.png';
+import LessonCard from '../LessonCard';
 
 const RecommandLessons = () => {
   // dummy data

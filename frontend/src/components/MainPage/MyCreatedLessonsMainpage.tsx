@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { atom, selector, useRecoilState } from 'recoil';
+import { atom, selector, useRecoilState, useRecoilValue } from 'recoil';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { api, Lesson } from '../util/api';
-import logo from '../assets/logo.png';
-import LessonCard from './LessonCard';
+import { api, Lesson } from '../../apis/api';
+import logo from '../../assets/logo.png';
+import LessonCard from '../LessonCard';
 // 로그인이 되었을 때만 이 컴포넌트가 보여짐
 // 내가 개설한 강의를 get으로 api요청 보냄
 // 강의가 있으면 강의카드를 보여주고
@@ -57,6 +57,7 @@ const MyCreatedLessons = () => {
     // },
   ];
   const [lessons, setlessons] = useState<Lesson[]>(dummyData);
+  useRecoilValue;
   const [isCreated, setIsCreated] = useState(true);
   return (
     <div className="createlessons">
