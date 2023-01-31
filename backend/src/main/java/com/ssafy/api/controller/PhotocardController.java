@@ -44,7 +44,7 @@ public class PhotocardController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공")
     })
-    public ResponseEntity<?> photocardList(@RequestParam int offset, @RequestParam int limit, @RequestParam String email){
+    public ResponseEntity<?> photocardList(@RequestParam int offset, @RequestParam int limit){
 
         List<Photocard> photocardList =
                 photocardService
