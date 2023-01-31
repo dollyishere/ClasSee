@@ -2,9 +2,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@mui/material';
 
+import useViewModel from '../viewmodels/SignUpViewModel';
+
 import logo from '../assets/logo.png';
 
 const SignUpPage = () => {
+  const { duplicationCheck } = useViewModel();
+
   const today = new Date();
 
   // 오늘 년도 기준으로 생년월일 Select 박스의 년도 생성
