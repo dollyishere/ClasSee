@@ -91,8 +91,8 @@ public class UserController {
     @GetMapping("/duplicate/nickname/{nickname}")
     @ApiOperation(value = "닉네임 중복 체크", notes = "DB에 이미 nickname이 있는지 체크")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "해당 이메일을 사용할 수 있음"),
-            @ApiResponse(code = 409, message = "해당 이메일을 사용할 수 없음")
+            @ApiResponse(code = 200, message = "해당 닉네임을 사용할 수 있음"),
+            @ApiResponse(code = 409, message = "해당 닉네임을 사용할 수 없음")
     })
     public ResponseEntity<? extends BaseResponseBody> checkUserNickname(@PathVariable String nickname) {
 
