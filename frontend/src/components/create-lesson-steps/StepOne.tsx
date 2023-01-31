@@ -1,13 +1,8 @@
-import React, { useRef, useState, useContext } from 'react';
+import React from 'react';
 
 import CategorySelectBox from '../CategorySelectBox';
 
-interface StepOneProps {
-  lessonName: string;
-  setLessonName: React.Dispatch<React.SetStateAction<string>>;
-  categorySelect: string;
-  setCategorySelect: React.Dispatch<React.SetStateAction<string>>;
-}
+import { StepOneProps } from '../../types/CreateLessonType';
 
 const StepOne = ({ lessonName, setLessonName, categorySelect, setCategorySelect }: StepOneProps) => {
   const handleInputLessonName = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -1,17 +1,11 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 
 import { Box, Fab } from '@mui/material';
 
 import AddIcon from '@mui/icons-material/Add';
-
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 
-interface StepSixProps {
-  basicPrice: number;
-  setBasicPrice: React.Dispatch<React.SetStateAction<number>>;
-  kitPrice: number;
-  setKitPrice: React.Dispatch<React.SetStateAction<number>>;
-}
+import { StepSixProps } from '../../types/CreateLessonType';
 
 const StepFive = ({ basicPrice, setBasicPrice, kitPrice, setKitPrice }: StepSixProps) => {
   // option input form이 보이는지 여부를 결정할 inputVisiable 변수를 useState로 생성

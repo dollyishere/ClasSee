@@ -1,10 +1,6 @@
-import React, { useRef } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
 
-interface StepThreeProps {
-  lessonDescription: string;
-  setLessonDescription: React.Dispatch<React.SetStateAction<string>>;
-}
+import { StepThreeProps } from '../../types/CreateLessonType';
 
 const StepThree = ({ lessonDescription, setLessonDescription }: StepThreeProps) => {
   const handleInputLessonName = (e: React.ChangeEvent<HTMLTextAreaElement>) => {

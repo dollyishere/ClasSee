@@ -1,21 +1,8 @@
-import React, { useRef, useCallback, useState } from 'react';
-import { Link } from 'react-router-dom';
-
-import Button from '@mui/material/Button';
-import CardActions from '@mui/material/CardActions';
+import React from 'react';
 
 import ImageUpload from '../ImageUpload';
 
-interface ImageUploadProps {
-  limitNumber: number;
-  imgSrcList: string[];
-  setImgSrcList: React.Dispatch<React.SetStateAction<string[]>>;
-}
-
-interface MaterialDescriptionProps {
-  materialDescription: string;
-  setMaterialDescription: React.Dispatch<React.SetStateAction<string>>;
-}
+import { ImageUploadProps, MaterialDescriptionProps } from '../../types/CreateLessonType';
 
 // 상의한 Props를 엮어서 CombinedProps라는 새로운 type를 생성함
 type CombinedProps = ImageUploadProps & MaterialDescriptionProps;

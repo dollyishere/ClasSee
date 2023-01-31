@@ -1,12 +1,7 @@
-import React, { useRef, useCallback, useState } from 'react';
-
+import React from 'react';
 import ImageUpload from '../ImageUpload';
 
-interface ImageUploadProps {
-  limitNumber: number;
-  imgSrcList: string[];
-  setImgSrcList: React.Dispatch<React.SetStateAction<string[]>>;
-}
+import { ImageUploadProps } from '../../types/CreateLessonType';
 
 const StepTwo = ({ limitNumber, imgSrcList, setImgSrcList }: ImageUploadProps) => {
   return (

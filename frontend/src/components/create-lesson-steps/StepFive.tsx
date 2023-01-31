@@ -6,14 +6,7 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import AddIcon from '@mui/icons-material/Add';
 
-interface StepFiveProps {
-  curriculumList: string[];
-  setCurriculumList: React.Dispatch<React.SetStateAction<string[]>>;
-  maximum: number;
-  setMaximum: React.Dispatch<React.SetStateAction<number>>;
-  runningtime: number;
-  setRunningtime: React.Dispatch<React.SetStateAction<number>>;
-}
+import { StepFiveProps } from '../../types/CreateLessonType';
 
 const StepFive = ({
   curriculumList,
@@ -84,11 +77,7 @@ const StepFive = ({
       {inputVisiable ? (
         <form onSubmit={onCurriculumSubmit}>
           <h3>Stage {curriculumList.length + 1}.</h3>
-          {curriculumList.length === 0 ? (
-            <input ref={curriculumRef} type="text" placeholder="커리큘럼을 단계별로 입력해주세요" required />
-          ) : (
-            <input ref={curriculumRef} type="text" placeholder="커리큘럼을 단계별로 입력해주세요" />
-          )}
+          <input ref={curriculumRef} type="text" placeholder="커리큘럼을 단계별로 입력해주세요" />
           <IconButton type="submit" aria-label="add">
             <AddCircleOutlineIcon />
           </IconButton>
@@ -101,6 +90,8 @@ const StepFive = ({
           </Fab>
         </Box>
       )}
+      {/* 최대 참가 가능 인원 수를 입력하는 input 태그임 */}
+      {/* 최저값은 0, 최대 값은 10으로 지정함 */}
       <label htmlFor="number_of_participants">
         <input
           id="number_of_participants"
@@ -113,6 +104,8 @@ const StepFive = ({
         />
         명
       </label>
+      {/* 예상 강의 시간을 입력하는 input 태그임 */}
+      {/* 마찬가지로 최저값 0, 최대값 1로 대신 step을 0.5, 즉 30분 단위로 지정함(만약 시와 분을 분리시켜야 한다면 로직 변경) */}
       <label htmlFor="time_of_lesson">
         <input
           id="time_of_lesson"

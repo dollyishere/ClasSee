@@ -1,15 +1,11 @@
-import React, { useRef, useCallback, useState } from 'react';
+import React, { useRef } from 'react';
 import imageCompression from 'browser-image-compression';
 
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 
 // 부모 컴포넌트 측에서 전달한 Props의 type을 지정함
-interface ImageUploadProps {
-  limitNumber: number;
-  imgSrcList: string[];
-  setImgSrcList: React.Dispatch<React.SetStateAction<string[]>>;
-}
+import { ImageUploadProps } from '../types/CreateLessonType';
 
 const ImageUpload = ({ limitNumber, imgSrcList, setImgSrcList }: ImageUploadProps) => {
   const fileRef = useRef<HTMLInputElement>(null);

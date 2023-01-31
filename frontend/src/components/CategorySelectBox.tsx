@@ -1,15 +1,10 @@
-import React, { useState, useRef } from 'react';
-import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import React from 'react';
 
-interface Props {
-  categorySelect: string;
-  setCategorySelect: React.Dispatch<React.SetStateAction<string>>;
-}
-const CategorySelectBox = ({ categorySelect, setCategorySelect }: Props) => {
+import { Box, InputLabel, MenuItem, FormControl, Select, SelectChangeEvent } from '@mui/material';
+
+import { CategoryProps } from '../types/CreateLessonType';
+
+const CategorySelectBox = ({ categorySelect, setCategorySelect }: CategoryProps) => {
   const handleChange = (event: SelectChangeEvent) => {
     setCategorySelect(event.target.value);
   };
