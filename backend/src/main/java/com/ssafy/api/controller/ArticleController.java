@@ -101,11 +101,11 @@ public class ArticleController {
                         .stream()
                         .map(a -> new ArticleListGetRes(a)).collect(Collectors.toList());
 
-        PageGetRes articlePageDto = new PageGetRes();
-        articlePageDto.setCount(articleCount);
-        articlePageDto.setPage(articleListGetResList);
+        PageGetRes articlePage = new PageGetRes();
+        articlePage.setCount(articleCount);
+        articlePage.setPage(articleListGetResList);
 
-        return ResponseEntity.status(200).body(articlePageDto);
+        return ResponseEntity.status(200).body(articlePage);
     }
 
     @PutMapping()
