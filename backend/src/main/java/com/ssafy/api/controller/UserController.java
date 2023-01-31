@@ -3,6 +3,7 @@ package com.ssafy.api.controller;
 import com.ssafy.api.dto.UserEmailPwDto;
 import com.ssafy.api.request.UserFindPwPostReq;
 import com.ssafy.api.response.UserInfoGetRes;
+import com.ssafy.api.service.AuthService;
 import com.ssafy.api.service.EmailService;
 import com.ssafy.db.entity.user.Auth;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,9 @@ public class UserController {
     UserService userService;
 
     @Autowired
+    AuthService authService;
+
+    @Autowired
     EmailService emailService;
 
     @PostMapping()
@@ -47,10 +51,13 @@ public class UserController {
             @ApiResponse(code = 200, message = "성공"),
             @ApiResponse(code = 401, message = "인증 실패"),
             @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 409, message = "중복 이메일"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<? extends BaseResponseBody> register(
             @RequestBody @ApiParam(value = "회원가입 정보", required = true) UserRegisterPostReq registerInfo) {
+
+        if(userService.getUserByAuth(registerInfo.getEmail()) != null) return ResponseEntity.status(409).body(BaseResponseBody.of(409, "DUPLICATE"));
 
         //임의로 리턴된 User 인스턴스. 현재 코드는 회원 가입 성공 여부만 판단하기 때문에 굳이 Insert 된 유저 정보를 응답하지 않음.
         userService.createUser(registerInfo.getUserInfoFromReq(registerInfo.getPassword()));
@@ -154,9 +161,9 @@ public class UserController {
         try {
             userService.updatePassword(userInfo);
             // 입력받은 이메일과 이름으로 찾은 사용자 정보가 없다면 401 return
-            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success"));
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "SUCCESS"));
         } catch (Exception e){
-			return ResponseEntity.status(401).body(BaseResponseBody.of(401, "인증 실패"));
+			return ResponseEntity.status(401).body(BaseResponseBody.of(405, "SERVER ERROR"));
 		}
     }
 
