@@ -35,7 +35,6 @@ public class Lesson {
     @Column(name = "CKLS_DESCRIPTION")
     private String cklsDescription;
     private String name;
-    private String location;
 
     // 연결
     @ManyToOne(fetch = FetchType.LAZY)
