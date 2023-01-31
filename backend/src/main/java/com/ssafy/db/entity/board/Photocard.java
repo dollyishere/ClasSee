@@ -31,9 +31,8 @@ public class Photocard {
     private String sign;
     private Long likes;
 
-    @CreatedDate
     @Column(name = "regdate")
-    private Timestamp regDate;
+    private String regDate;
 
     // 연결
     @ManyToOne(fetch = FetchType.LAZY)
