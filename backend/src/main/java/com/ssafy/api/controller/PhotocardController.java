@@ -48,7 +48,7 @@ public class PhotocardController {
 
         List<Photocard> photocardList =
                 photocardService
-                .readPhotocardList(offset, limit, email);
+                .readPhotocardList(offset, limit);
 
         List<PhotocardListGetRes> photocardListGetResList =
                 photocardList
@@ -56,11 +56,11 @@ public class PhotocardController {
                         .map(p -> new PhotocardListGetRes(p))
                         .collect(Collectors.toList());
 
-        Long phtocardCount = photocardService.photocardCount(email);
+        Long photocardCount = photocardService.photocardCount();
 
         PageGetRes photocardPage = new PageGetRes();
 
-        photocardPage.setCount(phtocardCount);
+        photocardPage.setCount(photocardCount);
         photocardPage.setPage(photocardListGetResList);
 
         return ResponseEntity.status(200).body(photocardPage);
@@ -69,8 +69,7 @@ public class PhotocardController {
     @DeleteMapping()
     @ApiOperation(value = "포토 카드 삭제", notes = "포토 카드 id를 입력 받아 삭제")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "success"),
-            @ApiResponse(code = 401, message = "invalid")
+            @ApiResponse(code = 200, message = "success")
     })
     public ResponseEntity<? extends BaseResponseBody> deletePhotocard(@RequestParam String email, @RequestParam Long id) {
 

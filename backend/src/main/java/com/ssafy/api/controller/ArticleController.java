@@ -43,8 +43,7 @@ public class ArticleController {
     @DeleteMapping()
     @ApiOperation(value = "게시글 삭제", notes = "삭제하려는 사람과 게시글 아이디를 받아, 권한이 있는지 확인 후 삭제")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "success"),
-            @ApiResponse(code = 401, message = "invalid")
+            @ApiResponse(code = 200, message = "success")
     })
     public ResponseEntity<? extends BaseResponseBody> deleteArticle(@RequestParam String email, @RequestParam Long id) {
 
@@ -71,8 +70,7 @@ public class ArticleController {
     @GetMapping("/check")
     @ApiOperation(value = "사용자 동일 체크", notes = "게시글id의 작성자와 로그인된 사용자가 같은 지 확인")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "success"),
-            @ApiResponse(code = 401, message =  "invalid")
+            @ApiResponse(code = 200, message = "success")
     })
     public ResponseEntity<Boolean> checkUser(@RequestParam String email, @RequestParam Long id){
 
@@ -111,8 +109,7 @@ public class ArticleController {
     @PutMapping()
     @ApiOperation(value = "게시글 수정", notes = "유저 email을 받아, 정보가 같으면 수정")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "success"),
-            @ApiResponse(code = 401, message = "invalid")
+            @ApiResponse(code = 200, message = "success")
     })
     public ResponseEntity<?> updateArticle(@RequestBody ArticleUpdatePutReq articleUpdatePutReq){
 
