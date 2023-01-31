@@ -36,6 +36,9 @@ public class UserRegisterPostReq {
 	@ApiModelProperty(name="유저 연락처", example="your_phone")
 	String phone;
 
+	@ApiModelProperty(name="유저 salt", example="your_salt")
+	String salt;
+
 	public Map<String, Object> getUserInfoFromReq(String password) {
 		Map<String, Object> userInfo = new HashMap<>();
 
@@ -43,6 +46,7 @@ public class UserRegisterPostReq {
 				.email(email)
 				.password(password)
 				.type(UserType.LOCAL)
+				.salt(salt)
 				.build();
 
 		User user = User.builder()
