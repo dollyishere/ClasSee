@@ -58,26 +58,17 @@ public class PhotocardServiceImpl implements PhotocardService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Photocard> readPhotocardList(int offset, int limit, String email) {
-
-        User user = userRepositorySupport
-                .findUserByAuth(email)
-                .get();
+    public List<Photocard> readPhotocardList(int offset, int limit) {
 
         return photocardRepositorySupport
-                .findList(offset, limit, user.getId());
+                .findList(offset, limit);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Long photocardCount(String email) {
+    public Long photocardCount() {
 
-        User user = userRepositorySupport
-                .findUserByAuth(email).get();
-
-        Long user_id = user.getId();
-
-        return photocardRepositorySupport.photocardCount(user_id);
+        return photocardRepositorySupport.photocardCount();
     }
 
     @Override
