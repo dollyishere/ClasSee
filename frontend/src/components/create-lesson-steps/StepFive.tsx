@@ -84,7 +84,11 @@ const StepFive = ({
       {inputVisiable ? (
         <form onSubmit={onCurriculumSubmit}>
           <h3>Stage {curriculumList.length + 1}.</h3>
-          <input ref={curriculumRef} type="text" placeholder="커리큘럼을 단계별로 입력해주세요" />
+          {curriculumList.length === 0 ? (
+            <input ref={curriculumRef} type="text" placeholder="커리큘럼을 단계별로 입력해주세요" required />
+          ) : (
+            <input ref={curriculumRef} type="text" placeholder="커리큘럼을 단계별로 입력해주세요" />
+          )}
           <IconButton type="submit" aria-label="add">
             <AddCircleOutlineIcon />
           </IconButton>
