@@ -30,8 +30,11 @@ public class Lesson {
 
     private Long maximum;
     private Long price;
+    private Long kitPrice;
     private Long runningtime;
     private String description;
+    @Column(name = "CKLS_DESCRIPTION")
+    private String chlsDescription;
     private String name;
     private String location;
 
