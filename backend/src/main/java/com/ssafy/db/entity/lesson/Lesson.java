@@ -25,8 +25,7 @@ public class Lesson {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    private Category category;
+    private String category;
 
     private Long maximum;
     private Long price;
