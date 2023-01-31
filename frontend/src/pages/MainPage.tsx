@@ -3,7 +3,7 @@ import { useRecoilValue } from 'recoil';
 import authToken from '../store/authToken';
 import CustomCarousel from '../components/CustomCarousel';
 import RecommandLessons from '../components/RecommandLessons';
-import CreateLessons from '../components/CreateLessons';
+import MyCreatedLessons from '../components/MyCreatedLessons';
 import ApplyLessons from '../components/ApplyLessons';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
@@ -16,7 +16,7 @@ const MainPage = () => {
       <Header />
       <CustomCarousel />
       <div className="create_apply_lessons">
-        {authTokenState ? <CreateLessons /> : <p>no lessons</p>}
+        {authTokenState ? <MyCreatedLessons /> : <p>no lessons</p>}
         {authTokenState ? <ApplyLessons /> : <p>no lessons</p>}
       </div>
       <RecommandLessons />

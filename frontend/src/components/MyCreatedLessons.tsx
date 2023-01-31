@@ -9,7 +9,7 @@ import LessonCard from './LessonCard';
 // 내가 개설한 강의를 get으로 api요청 보냄
 // 강의가 있으면 강의카드를 보여주고
 // 강의가 없다면(빈 배열이라면) 없음을 보여줌
-const CreateLessons = () => {
+const MyCreatedLessons = () => {
   const dummyData = [
     {
       id: 1,
@@ -74,4 +74,4 @@ const CreateLessons = () => {
   );
 };
 
-export default CreateLessons;
+export default MyCreatedLessons;
