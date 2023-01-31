@@ -30,7 +30,7 @@ public class ArticleController {
     @PostMapping()
     @ApiOperation(value = "게시글 등록", notes = "작성자 이메일, 제목, 내용, 이미지 주소 입력 후 게시글 생성")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "성공")
+            @ApiResponse(code = 200, message = "success")
     })
     public ResponseEntity<? extends BaseResponseBody> registArticle(@RequestBody ArticleRegisterPostReq articleRegisterPostReq) {
 
@@ -43,25 +43,21 @@ public class ArticleController {
     @DeleteMapping()
     @ApiOperation(value = "게시글 삭제", notes = "삭제하려는 사람과 게시글 아이디를 받아, 권한이 있는지 확인 후 삭제")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "성공"),
-            @ApiResponse(code = 401, message = "삭제 권한이 없음")
+            @ApiResponse(code = 200, message = "success"),
+            @ApiResponse(code = 401, message = "invalid")
     })
     public ResponseEntity<? extends BaseResponseBody> deleteArticle(@RequestParam String email, @RequestParam Long id) {
 
-        try {
             articleService.deleteArticle(email, id);
-        } catch (Exception e) {
-            return ResponseEntity.status(401).body(BaseResponseBody.of(401, "삭제 권한이 없음"));
-        }
 
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"성공"));
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"success"));
 
     }
 
     @GetMapping()
     @ApiOperation(value = "게시글 상세 조회", notes = "게시글id를 넘겨받아 게시글에 대한 상세 정보를 넘겨줌")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "성공")
+            @ApiResponse(code = 200, message = "success")
     })
     public ResponseEntity<?> getArticleInfo(@RequestParam Long id){
 
@@ -75,8 +71,8 @@ public class ArticleController {
     @GetMapping("/check")
     @ApiOperation(value = "사용자 동일 체크", notes = "게시글id의 작성자와 로그인된 사용자가 같은 지 확인")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "성공"),
-            @ApiResponse(code = 401, message =  "권한없음")
+            @ApiResponse(code = 200, message = "success"),
+            @ApiResponse(code = 401, message =  "invalid")
     })
     public ResponseEntity<Boolean> checkUser(@RequestParam String email, @RequestParam Long id){
 
@@ -94,7 +90,7 @@ public class ArticleController {
     @GetMapping("/list")
     @ApiOperation(value = "게시글 목록 조회", notes = "limit는 가져올 갯수, offset은 시작 위치(0부터 시작), count는 총 개수")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "성공")
+            @ApiResponse(code = 200, message = "success")
     })
     public ResponseEntity<?> getArticleList(@RequestParam int offset, @RequestParam int limit){
 
@@ -115,18 +111,14 @@ public class ArticleController {
     @PutMapping()
     @ApiOperation(value = "게시글 수정", notes = "유저 email을 받아, 정보가 같으면 수정")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "성공"),
-            @ApiResponse(code = 401, message = "수정 권한이 없음")
+            @ApiResponse(code = 200, message = "success"),
+            @ApiResponse(code = 401, message = "invalid")
     })
     public ResponseEntity<?> updateArticle(@RequestBody ArticleUpdatePutReq articleUpdatePutReq){
 
-        try{
-            articleService.updateArticle(articleUpdatePutReq);
-        } catch (Exception e){
-            return ResponseEntity.status(401).body("수정 권한이 없음");
-        }
+        articleService.updateArticle(articleUpdatePutReq);
 
-        return ResponseEntity.status(200).body("성공");
+        return ResponseEntity.status(200).body("success");
 
     }
 
