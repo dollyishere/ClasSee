@@ -1,17 +1,17 @@
-import React, { useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
-
-import Button from '@mui/material/Button';
-import CardActions from '@mui/material/CardActions';
+import React, { useRef, useState, useContext } from 'react';
 
 import CategorySelectBox from '../CategorySelectBox';
+
+interface OutletProps {
+  data: string;
+  setData: React.Dispatch<React.SetStateAction<string>>;
+}
 
 const StepOne = () => {
   const [getLessonName, setGetLessonName] = useState('');
 
   const handleLoginSubmit = (e: React.ChangeEvent<HTMLInputElement>) => {
     setGetLessonName(e.target.value);
-    console.log(getLessonName);
   };
   return (
     <div>
@@ -21,13 +21,6 @@ const StepOne = () => {
       </div>
       <div>
         <input value={getLessonName} onChange={handleLoginSubmit} placeholder="강의명을 입력해주세요" />
-        <CardActions>
-          <Link to="/create_lesson/2">
-            <Button type="submit" variant="contained">
-              다음 단계
-            </Button>
-          </Link>
-        </CardActions>
       </div>
     </div>
   );

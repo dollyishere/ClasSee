@@ -15,18 +15,6 @@ const StepFour = () => {
       {/* props로 ImageUpload에 전달할 사진 개수를 limit 변수에 지정 */}
       <ImageUpload limitNumber={10} />
       <textarea cols={30} rows={10} placeholder="준비물에 대해 입력해주세요." ref={materialEnrollRef} />
-      <CardActions>
-        <Link to="/create_lesson/3">
-          <Button type="submit" variant="contained">
-            이전 단계
-          </Button>
-        </Link>
-        <Link to="/create_lesson/5">
-          <Button type="submit" variant="contained">
-            다음 단계
-          </Button>
-        </Link>
-      </CardActions>
     </div>
   );
 };

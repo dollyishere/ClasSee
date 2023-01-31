@@ -12,18 +12,6 @@ const StepTwo = () => {
       <h2>Step 2. 소개 사진 등록</h2>
       {/* props로 ImageUpload에 전달할 사진 개수를 limit 변수에 지정 */}
       <ImageUpload limitNumber={5} />
-      <CardActions>
-        <Link to="/create_lesson/1">
-          <Button type="submit" variant="contained">
-            이전 단계
-          </Button>
-        </Link>
-        <Link to="/create_lesson/3">
-          <Button type="submit" variant="contained">
-            다음 단계
-          </Button>
-        </Link>
-      </CardActions>
     </div>
   );
 };

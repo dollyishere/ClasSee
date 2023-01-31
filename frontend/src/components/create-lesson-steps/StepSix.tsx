@@ -108,18 +108,6 @@ const StepFive = () => {
           </Fab>
         </Box>
       )}
-      <CardActions>
-        <Link to="/create_lesson/5">
-          <Button type="submit" variant="contained">
-            이전 단계
-          </Button>
-        </Link>
-        <Link to="/create_lesson/6">
-          <Button type="submit" variant="contained">
-            다음 단계
-          </Button>
-        </Link>
-      </CardActions>
     </div>
   );
 };

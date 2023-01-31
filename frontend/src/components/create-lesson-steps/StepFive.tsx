@@ -68,18 +68,6 @@ const StepFive = () => {
       <label htmlFor="time_of_lesson">
         <input id="time_of_lesson" type="number" placeholder="예상 강의 시간" step={0.5} min={0} max={10} /> 시간
       </label>
-      <CardActions>
-        <Link to="/create_lesson/4">
-          <Button type="submit" variant="contained">
-            이전 단계
-          </Button>
-        </Link>
-        <Link to="/create_lesson/6">
-          <Button type="submit" variant="contained">
-            다음 단계
-          </Button>
-        </Link>
-      </CardActions>
     </div>
   );
 };

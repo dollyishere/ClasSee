@@ -16,18 +16,6 @@ const StepThree = () => {
     <div>
       <h2>Step 3. 강의 소개 입력</h2>
       <textarea cols={30} rows={10} placeholder="강의 소개를 입력해주세요." ref={lessonIntroRef} />
-      <CardActions>
-        <Link to="/create_lesson/2">
-          <Button type="submit" variant="contained">
-            이전 단계
-          </Button>
-        </Link>
-        <Link to="/create_lesson/4">
-          <Button type="submit" variant="contained">
-            다음 단계
-          </Button>
-        </Link>
-      </CardActions>
     </div>
   );
 };
