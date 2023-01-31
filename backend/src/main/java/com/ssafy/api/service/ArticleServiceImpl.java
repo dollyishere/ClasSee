@@ -73,11 +73,7 @@ public class ArticleServiceImpl implements ArticleService{
     }
 
     @Override
-    public void deleteArticle(String email, Long id) {
-        User user = userRepositorySupport
-                .findUserByAuth(email)
-                .get();
-
+    public void deleteArticle(Long id) {
         Article article = articleRepositorySupport.findOne(id);
 
         articleRepositorySupport.delete(article);
