@@ -91,35 +91,32 @@ public class UserController {
     @GetMapping("/duplicate/nickname/{nickname}")
     @ApiOperation(value = "닉네임 중복 체크", notes = "DB에 이미 nickname이 있는지 체크")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "성공"),
-            @ApiResponse(code = 401, message = "인증 실패"),
-            @ApiResponse(code = 404, message = "사용자 없음"),
-            @ApiResponse(code = 500, message = "서버 오류")
+            @ApiResponse(code = 200, message = "해당 이메일을 사용할 수 있음"),
+            @ApiResponse(code = 409, message = "해당 이메일을 사용할 수 없음")
     })
-    public ResponseEntity<Boolean> checkUserNickname(@PathVariable String nickname) {
+    public ResponseEntity<? extends BaseResponseBody> checkUserNickname(@PathVariable String nickname) {
 
         User user = userService.getUserByNickname(nickname);
         if (user == null) {
-            return ResponseEntity.status(200).body(true);
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success"));
         }
-
-        return ResponseEntity.status(200).body(false);
+        return ResponseEntity.status(409).body(BaseResponseBody.of(409, "invalid"));
 
     }
 
     @GetMapping("/duplicate/email/{email}")
     @ApiOperation(value = "이메일 중복 체크", notes = "DB에 이미 email이 있는지 체크")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "해당 이메일이 이미 존재함"),
-            @ApiResponse(code = 201, message = "해당 이메일을 사용할 수 있음")
+            @ApiResponse(code = 200, message = "해당 이메일을 사용할 수 있음"),
+            @ApiResponse(code = 409, message = "해당 이메일을 사용할 수 없음")
     })
-    public ResponseEntity<Boolean> checkUserEmail(@PathVariable String email) {
+    public ResponseEntity<? extends BaseResponseBody> checkUserEmail(@PathVariable String email) {
 
         User user = userService.getUserByAuth(email);
         if (user == null) {
-            return ResponseEntity.status(201).body(true);
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success"));
         }
-        return ResponseEntity.status(200).body(false);
+        return ResponseEntity.status(409).body(BaseResponseBody.of(409, "invalid"));
     }
 
     @GetMapping("/check")
