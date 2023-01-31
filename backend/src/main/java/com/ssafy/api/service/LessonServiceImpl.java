@@ -109,6 +109,8 @@ public class LessonServiceImpl implements LessonService {
 
         LessonDetailsRes lessonDetailsRes = LessonDetailsRes.builder()
                 .lessonName(lesson.getName())
+                .cklsDescription(lesson.getCklsDescription())
+                .kitPrice(lesson.getKitPrice())
                 .category(lesson.getCategory())
                 .runningtime(lesson.getRunningtime())
                 .userName(user.getName())

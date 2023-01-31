@@ -31,6 +31,9 @@ public class LessonRegisterPostReq {
     String name;
     @ApiModelProperty(name="description", example="강의 소개")
     String description;
+
+    @ApiModelProperty(name="ckls_description", example="준비물 소개")
+    String cklsDescription;
     @ApiModelProperty(name="runningtime", example="강의 소요 시간")
     Long runningtime;
     @ApiModelProperty(name="maximum", example="강의 수강 인원")
@@ -38,6 +41,11 @@ public class LessonRegisterPostReq {
 
     @ApiModelProperty(name="price", example="수강료")
     Long price;
+
+    @ApiModelProperty(name="kit_price", example="키트 가격")
+    Long kitPrice;
+
+
 
     @ApiModelProperty(name="checklist", example="준비물(img[string]) 리스트")
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
@@ -60,6 +68,8 @@ public class LessonRegisterPostReq {
                 .maximum(maximum)
                 .runningtime(runningtime)
                 .price(price)
+                .cklsDescription(cklsDescription)
+                .kitPrice(kitPrice)
                 .user(user)
                 .build();
 

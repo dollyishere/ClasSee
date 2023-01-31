@@ -33,6 +33,9 @@ import java.util.List;
 @ApiModel("LessonDetailsResponse")
 public class LessonDetailsRes extends BaseResponseBody {
     String lessonName;
+    String cklsDescription;
+
+    Long kitPrice;
     Category category;
     Long runningtime;
     String userName;
