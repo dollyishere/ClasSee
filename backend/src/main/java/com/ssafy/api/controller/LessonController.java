@@ -56,11 +56,11 @@ public class LessonController {
             9. 강의 가격
         */
         User user = userService.getUserByAuth(requestInfo.getEmail());
-        if(user == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "사용자 없음"));
+        if(user == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "NOT FOUND"));
 
         lessonService.createLesson(requestInfo.getLessonInfoFromReq(user));
 
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "SUCCESS"));
     }
 
     @PostMapping("/schedules")
@@ -82,10 +82,10 @@ public class LessonController {
         try {
             lessonService.createSchedule(requestInfo.getOpenLessonInfoFromReq(requestInfo));
         } catch (Exception e) {
-            return ResponseEntity.status(500).body(BaseResponseBody.of(500, "Fail"));
+            return ResponseEntity.status(500).body(BaseResponseBody.of(500, "SERVER ERROR"));
         }
 
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "SUCCESS"));
     }
 
     @GetMapping("/details")
@@ -99,6 +99,6 @@ public class LessonController {
     public ResponseEntity<? extends BaseResponseBody> getLessonDetails(@RequestParam Long lessonId) {
         LessonDetailsRes lessonDetailsRes = lessonService.getLessonDetails(lessonId);
 
-        return ResponseEntity.status(200).body(LessonDetailsRes.of(200, "Success", lessonDetailsRes));
+        return ResponseEntity.status(200).body(LessonDetailsRes.of(200, "SUCCESS", lessonDetailsRes));
     }
 }
