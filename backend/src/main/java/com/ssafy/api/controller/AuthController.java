@@ -57,7 +57,7 @@ public class AuthController {
 		String password = loginInfo.getPassword();
 
 		User user = userService.getUserByAuth(email);
-		if(user == null) return ResponseEntity.status(404).body(UserLoginPostRes.of(404, "USER NOT FOUND", null));
+		if(user == null) return ResponseEntity.status(404).body(UserLoginPostRes.of(404, "USER NOT FOUND", "NULL"));
 
 		// 로그인 요청한 유저로부터 입력된 패스워드 와 디비에 저장된 유저의 암호화된 패스워드가 같은지 확인.(유효한 패스워드인지 여부 확인)
 		if (password.equals(user.getAuth().getPassword())) {
@@ -100,10 +100,25 @@ public class AuthController {
 			String accessToken = userInfo.getAccessToken();
 			authService.logout(email, accessToken);
 
-			return ResponseEntity.ok(UserLoginPostRes.of(200, "SUCCESS", null));
+			return ResponseEntity.ok(UserLoginPostRes.of(200, "SUCCESS", "NULL"));
 		} catch (IllegalArgumentException e){
 			return ResponseEntity.status(401).body(BaseResponseBody.of(401, "INVALID"));
 		}
+	}
+
+	@GetMapping("/salt")
+	@ApiOperation(value = "salt 요청 api", notes = "사용자의 salt 반환")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
+			@ApiResponse(code = 401, message = "인증 실패", response = BaseResponseBody.class),
+			@ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
+			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
+	})
+	public ResponseEntity<? extends BaseResponseBody> findSalt(@RequestParam String email) {
+		User user = userService.getUserByAuth(email);
+		if(user == null) return ResponseEntity.status(404).body(UserLoginPostRes.of(404, "USER NOT FOUND", "NULL"));
+
+		return ResponseEntity.status(200).body(UserLoginPostRes.of(200, "SUCCESS", user.getAuth().getSalt()));
 	}
 
 	/*
@@ -119,6 +134,6 @@ public class AuthController {
 			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
 	})
 	public ResponseEntity<UserLoginPostRes> test() {
-		return ResponseEntity.ok(UserLoginPostRes.of(200, "Success", null));
+		return ResponseEntity.ok(UserLoginPostRes.of(200, "Success", "test"));
 	}
 }

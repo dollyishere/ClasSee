@@ -31,4 +31,12 @@ public class UserLoginPostRes extends BaseResponseBody{
 		res.setSalt(userLoginPostRes.getSalt());
 		return res;
 	}
+
+	public static UserLoginPostRes of(Integer statusCode, String message, String salt) {
+		UserLoginPostRes res = new UserLoginPostRes();
+		res.setStatusCode(statusCode);
+		res.setMessage(message);
+		res.setSalt(salt);
+		return res;
+	}
 }
