@@ -2,49 +2,48 @@ import React, { useEffect, useState } from 'react';
 import { atom, selector, useRecoilState } from 'recoil';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { api, Lesson } from '../../apis/api';
 import logo from '../../assets/logo.png';
 import LessonCard from '../LessonCard';
 
 const RecommandLessons = () => {
   // dummy data
-  const dummyData = [
-    {
-      id: 1,
-      lessonImage: 'lessonImage1.jpg',
-      teacher: 'John Doe',
-      teacherImage: 'teacherImage1.jpg',
-      name: '김친절 선생님과 함께하는 뜨개질',
-      runningTime: '2',
-      category: '수공예',
-      rating: 4.5,
-      isBookMarked: true,
-    },
-    {
-      id: 2,
-      lessonImage: 'lessonImage2.jpg',
-      teacher: 'Jane Smith',
-      teacherImage: 'teacherImage2.jpg',
-      name: 'Advanced JavaScript',
-      runningTime: '1',
-      category: '수공예',
-      rating: 4.0,
-      isBookMarked: true,
-    },
-    {
-      id: 3,
-      lessonImage: 'lessonImage3.jpg',
-      teacher: 'Bob Johnson',
-      teacherImage: 'teacherImage3.jpg',
-      name: 'Node.js for Beginners',
-      runningTime: '3.5',
-      category: '수공예',
-      rating: 3.5,
-      isBookMarked: false,
-    },
-  ];
+  // const dummyData = [
+  //   {
+  //     id: 1,
+  //     lessonImage: 'lessonImage1.jpg',
+  //     teacher: 'John Doe',
+  //     teacherImage: 'teacherImage1.jpg',
+  //     name: '김친절 선생님과 함께하는 뜨개질',
+  //     runningTime: '2',
+  //     category: '수공예',
+  //     rating: 4.5,
+  //     isBookMarked: true,
+  //   },
+  //   {
+  //     id: 2,
+  //     lessonImage: 'lessonImage2.jpg',
+  //     teacher: 'Jane Smith',
+  //     teacherImage: 'teacherImage2.jpg',
+  //     name: 'Advanced JavaScript',
+  //     runningTime: '1',
+  //     category: '수공예',
+  //     rating: 4.0,
+  //     isBookMarked: true,
+  //   },
+  //   {
+  //     id: 3,
+  //     lessonImage: 'lessonImage3.jpg',
+  //     teacher: 'Bob Johnson',
+  //     teacherImage: 'teacherImage3.jpg',
+  //     name: 'Node.js for Beginners',
+  //     runningTime: '3.5',
+  //     category: '수공예',
+  //     rating: 3.5,
+  //     isBookMarked: false,
+  //   },
+  // ];
   // 강의 정보를 useState로 받아서 저장
-  const [lessons, setlessons] = useState<Lesson[]>(dummyData);
+  const [lessons, setlessons] = useState([]);
   return (
     <div>
       <h1 className="recommandClass"> 추천 클래스 </h1>
