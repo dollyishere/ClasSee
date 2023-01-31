@@ -3,6 +3,8 @@ package com.ssafy.db.repository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.db.entity.board.Photocard;
 import com.ssafy.db.entity.board.QPhotocard;
+import com.ssafy.db.entity.lesson.Lesson;
+import com.ssafy.db.entity.lesson.QLesson;
 import com.ssafy.db.entity.user.QUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -20,6 +22,8 @@ public class PhotocardRepositorySupport {
 
     QPhotocard qPhotocard = QPhotocard.photocard;
 
+    QLesson qLesson = QLesson.lesson;
+
     QUser qUser = QUser.user;
 
     public void save(Photocard photocard) { em.persist(photocard); }
@@ -27,6 +31,8 @@ public class PhotocardRepositorySupport {
     public void delete(Photocard photocard) { em.remove(photocard); }
 
     public Photocard findOne(Long id) { return em.find(Photocard.class, id); }
+
+    public Lesson findOneLesson(Long id) { return em.find(Lesson.class, id); }
 
     public List<Photocard> findAll() {
         return jpaQueryFactory
@@ -45,6 +51,12 @@ public class PhotocardRepositorySupport {
                 .fetch();
     }
 
-
+    public Long photocardCount(Long id){
+        return jpaQueryFactory
+                .select(qPhotocard.count())
+                .from(qPhotocard)
+                .where(qPhotocard.user.id.eq(id))
+                .fetchOne();
+    }
 
 }
