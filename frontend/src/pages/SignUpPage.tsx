@@ -7,7 +7,7 @@ import useViewModel from '../viewmodels/SignUpViewModel';
 import logo from '../assets/logo.png';
 
 const SignUpPage = () => {
-  const { duplicationCheck } = useViewModel();
+  const { emailDuplicationCheck } = useViewModel();
 
   const today = new Date();
 
@@ -58,8 +58,14 @@ const SignUpPage = () => {
   };
 
   // 회원가입 버튼 클릭시 실행할 함수
-  const handleSignUpSubmit = () => {
+  const handleSignUpSubmit = (event: any) => {
+    event.preventDefault();
     console.log('submit');
+  };
+
+  // 중복확인 버튼 클릭시 실행할 함수
+  const handleEmailDuplicationCheck = () => {
+    emailDuplicationCheck();
   };
   return (
     <div className="page" id="signup-page">
@@ -80,7 +86,7 @@ const SignUpPage = () => {
                   <div>아이디</div>
                   <div className="signup-page__form--row">
                     <input
-                      type="text"
+                      type="email"
                       className="signup-page__input"
                       id="signup-page__input--id"
                       placeholder="이메일"
@@ -88,6 +94,7 @@ const SignUpPage = () => {
                     <button
                       type="button"
                       className="button signup-page__input--button"
+                      onClick={handleEmailDuplicationCheck}
                     >
                       중복 확인
                     </button>

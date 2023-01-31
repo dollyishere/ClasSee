@@ -1,10 +1,10 @@
 const SignUpViewModel = () => {
-  const duplicationCheck = () => {
+  const emailDuplicationCheck = () => {
     console.log('test');
   };
 
   return {
-    duplicationCheck,
+    emailDuplicationCheck,
   };
 };
 
