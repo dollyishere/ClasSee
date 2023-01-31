@@ -1,8 +1,8 @@
 package com.ssafy.api.service;
 
+import com.ssafy.api.dto.LessonInfoDto;
 import com.ssafy.api.request.LessonScheduleRegisterPostReq;
 import com.ssafy.api.response.LessonDetailsRes;
-import com.ssafy.api.response.LessonListGetRes;
 import com.ssafy.db.entity.lesson.Lesson;
 import com.ssafy.db.entity.lesson.OpenLesson;
 
@@ -15,7 +15,7 @@ import java.util.Map;
 public interface LessonService {
     void createLesson(Map<String, Object> lessonInfo);
 
-    List<LessonListGetRes> setLessonProperty(List<Lesson> lessonList);
+    List<LessonInfoDto> setLessonProperty(List<Lesson> lessonList);
 
     void createSchedule(OpenLesson requestInfo) throws Exception;
 

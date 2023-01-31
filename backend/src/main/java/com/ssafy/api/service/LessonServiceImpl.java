@@ -1,8 +1,8 @@
 package com.ssafy.api.service;
 
+import com.ssafy.api.dto.LessonInfoDto;
 import com.ssafy.api.request.LessonScheduleRegisterPostReq;
 import com.ssafy.api.response.LessonDetailsRes;
-import com.ssafy.api.response.LessonListGetRes;
 import com.ssafy.db.entity.lesson.*;
 import com.ssafy.db.entity.user.User;
 import com.ssafy.db.repository.*;
@@ -64,12 +64,12 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public List<LessonListGetRes> setLessonProperty(List<Lesson> lessonList) {
-        List<LessonListGetRes> getLessonList = new ArrayList<>();
+    public List<LessonInfoDto> setLessonProperty(List<Lesson> lessonList) {
+        List<LessonInfoDto> getLessonList = new ArrayList<>();
         // 강의 목록에 대표 이미지랑, 별점 평균 세팅해주기
         lessonList.forEach((lesson) -> {
             // 대표 이미지
-            LessonListGetRes lessonRes = LessonListGetRes.builder()
+            LessonInfoDto lessonRes = LessonInfoDto.builder()
                     .id(lesson.getId())
                     .name(lesson.getName())
                     .category(lesson.getCategory())

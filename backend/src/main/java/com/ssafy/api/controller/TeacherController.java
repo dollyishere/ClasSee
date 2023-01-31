@@ -1,36 +1,25 @@
 package com.ssafy.api.controller;
 
-import com.ssafy.api.dto.UserEmailPwDto;
-import com.ssafy.api.request.UserFindPwPostReq;
-import com.ssafy.api.response.LessonListGetRes;
-import com.ssafy.api.response.UserInfoGetRes;
-import com.ssafy.api.service.EmailService;
+import com.ssafy.api.dto.LessonInfoDto;
+import com.ssafy.api.response.LessonDetailsRes;
+import com.ssafy.api.response.LessonInfoListRes;
 import com.ssafy.api.service.LessonService;
 import com.ssafy.api.service.TeacherService;
 import com.ssafy.db.entity.lesson.Lesson;
-import com.ssafy.db.entity.user.Auth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import com.ssafy.api.request.UserRegisterPostReq;
-import com.ssafy.api.response.UserRes;
 import com.ssafy.api.service.UserService;
-import com.ssafy.common.auth.SsafyUserDetails;
 import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.db.entity.user.User;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 /**
  * 유저 관련 API 요청 처리를 위한 컨트롤러 정의.
@@ -56,7 +45,7 @@ public class TeacherController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> getLessonListInfo(@RequestParam String email) {
+    public ResponseEntity<? extends BaseResponseBody> getLessonListInfo(@RequestParam String email) {
         /*
         리턴 값
         강의 리스트
@@ -68,13 +57,16 @@ public class TeacherController {
         */
         User user = userService.getUserByAuth(email);
 
-        if(user == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "사용자 없음"));
+        if(user == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "사용자 정보 없음"));
 
         // 해당 유저가 개설한 강의 리스트
         List<Lesson> lessonList = teacherService.getLessonList(user);
         if(lessonList == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "개설 강의 없음"));
 
-        List<LessonListGetRes> lessonListGetResList =  lessonService.setLessonProperty(lessonList);
-        return ResponseEntity.status(200).body(lessonListGetResList);
+        List<LessonInfoDto> lessonInfoList =  lessonService.setLessonProperty(lessonList);
+        LessonInfoListRes res = LessonInfoListRes.builder()
+                                                 .lessonInfoList(lessonInfoList)
+                                                 .build();
+        return ResponseEntity.status(200).body(LessonInfoListRes.of(200, "SUCCESS", res));
     }
 }

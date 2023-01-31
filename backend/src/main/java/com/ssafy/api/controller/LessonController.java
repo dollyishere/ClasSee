@@ -4,7 +4,6 @@ import com.ssafy.api.request.LessonRegisterPostReq;
 import com.ssafy.api.request.LessonScheduleRegisterPostReq;
 import com.ssafy.api.request.UserRegisterPostReq;
 import com.ssafy.api.response.LessonDetailsRes;
-import com.ssafy.api.response.LessonListGetRes;
 import com.ssafy.api.response.UserInfoGetRes;
 import com.ssafy.api.service.LessonService;
 import com.ssafy.api.service.UserService;
