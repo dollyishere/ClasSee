@@ -46,10 +46,10 @@ public class QnaController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "success")
     })
-    public ResponseEntity<? extends BaseResponseBody> deleteQna(@RequestParam String email, @RequestParam Long id) {
+    public ResponseEntity<? extends BaseResponseBody> deleteQna(@RequestParam Long id) {
 
 
-        qnaService.deleteQna(email, id);
+        qnaService.deleteQna(id);
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success"));
     }

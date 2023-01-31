@@ -36,11 +36,7 @@ public class QnaServiceImpl implements QnaService {
     }
 
     @Override
-    public void deleteQna(String email, Long id) {
-
-        User user = userRepositorySupport
-                .findUserByAuth(email)
-                .get();
+    public void deleteQna(Long id) {
 
         Qna qna = qnaRepositorySupport
                 .findOne(id);
