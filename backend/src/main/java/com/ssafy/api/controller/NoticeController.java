@@ -78,11 +78,11 @@ import java.util.stream.Collectors;
         List<NoticeListRes> listRes = noticeList.stream().map(n -> new NoticeListRes(n)).collect(Collectors.toList());
         Long noticeCount = noticeService.noticeCount();
 
-        PageGetRes noticePageDto = new PageGetRes();
-        noticePageDto.setPage(listRes);
-        noticePageDto.setCount(noticeCount);
+        PageGetRes noticePage = new PageGetRes();
+        noticePage.setPage(listRes);
+        noticePage.setCount(noticeCount);
 
-        return ResponseEntity.status(200).body(noticePageDto);
+        return ResponseEntity.status(200).body(noticePage);
 
     }
 
