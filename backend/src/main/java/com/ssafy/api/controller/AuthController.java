@@ -38,8 +38,6 @@ public class AuthController {
 
 	@Autowired
 	RedisService redisService;
-	@Autowired
-	PasswordEncoder passwordEncoder;
 
 	@Autowired
 	JwtTokenUtil jwtTokenUtil;
@@ -54,19 +52,24 @@ public class AuthController {
 			@ApiResponse(code = 409, message = "이메일 중복", response = BaseResponseBody.class),
 			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
 	})
-	public ResponseEntity<UserLoginPostRes> login(@RequestBody @ApiParam(value = "로그인 정보", required = true) UserLoginPostReq loginInfo) {
+	public ResponseEntity<? extends BaseResponseBody> login(@RequestBody @ApiParam(value = "로그인 정보", required = true) UserLoginPostReq loginInfo) {
 		String email = loginInfo.getEmail();
 		String password = loginInfo.getPassword();
 
 		User user = userService.getUserByAuth(email);
-		if(user == null) return ResponseEntity.status(404).body(UserLoginPostRes.of(404, "USER NOT FOUND", null, null));
+		if(user == null) return ResponseEntity.status(404).body(UserLoginPostRes.of(404, "USER NOT FOUND", "NULL"));
 
 		// 로그인 요청한 유저로부터 입력된 패스워드 와 디비에 저장된 유저의 암호화된 패스워드가 같은지 확인.(유효한 패스워드인지 여부 확인)
-		if (passwordEncoder.matches(password, user.getAuth().getPassword())) {
+		if (password.equals(user.getAuth().getPassword())) {
 
 			// 프론트로 보내줄 access, refresh token 생성
 			String accessToken = JwtTokenUtil.getToken(JwtTokenUtil.atkExpirationTime, email);
 			String refreshToken = JwtTokenUtil.getToken(JwtTokenUtil.rtkExpirationTime, email);
+			UserLoginPostRes userLoginPostRes = UserLoginPostRes.builder()
+					.accessToken(accessToken)
+					.refreshToken(refreshToken)
+					.salt(user.getAuth().getSalt())
+					.build();
 
 			/*
 				redis db에 저장
@@ -77,10 +80,10 @@ public class AuthController {
 
 			// 유효한 패스워드가 맞는 경우, 로그인 성공으로 응답.(액세스 토큰을 포함하여 응답값 전달)
 //            authService.saveRefreshToken(email, refreshToken);
-			return ResponseEntity.ok(UserLoginPostRes.of(200, "SUCCESS", accessToken, refreshToken));
+			return ResponseEntity.ok(UserLoginPostRes.of(200, "SUCCESS", userLoginPostRes));
 		}
 		// 유효하지 않는 패스워드인 경우, 로그인 실패로 응답.
-		return ResponseEntity.status(401).body(UserLoginPostRes.of(401, "INVALID PASSWORD", null, null));
+		return ResponseEntity.status(401).body(BaseResponseBody.of(401, "INVALID"));
 	}
 
 	@PostMapping("/logout")
@@ -97,10 +100,25 @@ public class AuthController {
 			String accessToken = userInfo.getAccessToken();
 			authService.logout(email, accessToken);
 
-			return ResponseEntity.ok(UserLoginPostRes.of(200, "SUCCESS", null, null));
+			return ResponseEntity.ok(UserLoginPostRes.of(200, "SUCCESS", "NULL"));
 		} catch (IllegalArgumentException e){
-			return ResponseEntity.status(401).body(UserLoginPostRes.of(405, "SERVER ERROR", null, null));
+			return ResponseEntity.status(401).body(BaseResponseBody.of(401, "INVALID"));
 		}
+	}
+
+	@GetMapping("/salt")
+	@ApiOperation(value = "salt 요청 api", notes = "사용자의 salt 반환")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
+			@ApiResponse(code = 401, message = "인증 실패", response = BaseResponseBody.class),
+			@ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
+			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
+	})
+	public ResponseEntity<? extends BaseResponseBody> findSalt(@RequestParam String email) {
+		User user = userService.getUserByAuth(email);
+		if(user == null) return ResponseEntity.status(404).body(UserLoginPostRes.of(404, "USER NOT FOUND", "NULL"));
+
+		return ResponseEntity.status(200).body(UserLoginPostRes.of(200, "SUCCESS", user.getAuth().getSalt()));
 	}
 
 	/*
@@ -116,6 +134,6 @@ public class AuthController {
 			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
 	})
 	public ResponseEntity<UserLoginPostRes> test() {
-		return ResponseEntity.ok(UserLoginPostRes.of(200, "Success", "test", "test"));
+		return ResponseEntity.ok(UserLoginPostRes.of(200, "Success", "test"));
 	}
 }

@@ -25,15 +25,16 @@ public class Lesson {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    private Category category;
+    private String category;
 
     private Long maximum;
     private Long price;
+    private Long kitPrice;
     private Long runningtime;
     private String description;
+    @Column(name = "CKLS_DESCRIPTION")
+    private String cklsDescription;
     private String name;
-    private String location;
 
     // 연결
     @ManyToOne(fetch = FetchType.LAZY)

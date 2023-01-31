@@ -36,8 +36,6 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	UserRepositorySupport userRepositorySupport;
 
-	@Autowired
-	PasswordEncoder passwordEncoder;
 
 	/*
 		회원 가입 요청 request의 정보를 통해 진행
@@ -49,7 +47,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void createUser(Map<String, Object> userRegisterInfo) {
 		Auth auth = (Auth) userRegisterInfo.get("AUTH");
-		auth.setPassword(passwordEncoder.encode(auth.getPassword()));
+		auth.setPassword(auth.getPassword());
 		authRepositorySupport.save(auth);
 
 		User user = (User) userRegisterInfo.get("USER");
@@ -94,7 +92,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void updatePassword(UserEmailPwDto userInfo) {
 		String email = userInfo.getEmail();
-		String password = passwordEncoder.encode(userInfo.getPassword());
+		String password = userInfo.getPassword();
 		userRepository.updatePassword(email, password);
 	}
 

@@ -4,12 +4,14 @@ import com.ssafy.common.model.response.BaseResponseBody;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 /**
  * 유저 로그인 API ([POST] /api/v1/auth) 요청에 대한 응답값 정의.
  */
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @ApiModel("UserLoginPostResponse")
@@ -18,12 +20,23 @@ public class UserLoginPostRes extends BaseResponseBody{
 	String accessToken;
 	String refreshToken;
 
-	public static UserLoginPostRes of(Integer statusCode, String message, String accessToken, String refreshToken) {
+	String salt;
+
+	public static UserLoginPostRes of(Integer statusCode, String message, UserLoginPostRes userLoginPostRes) {
 		UserLoginPostRes res = new UserLoginPostRes();
 		res.setStatusCode(statusCode);
 		res.setMessage(message);
-		res.setAccessToken(accessToken);
-		res.setRefreshToken(refreshToken);
+		res.setAccessToken(userLoginPostRes.getAccessToken());
+		res.setRefreshToken(userLoginPostRes.getRefreshToken());
+		res.setSalt(userLoginPostRes.getSalt());
+		return res;
+	}
+
+	public static UserLoginPostRes of(Integer statusCode, String message, String salt) {
+		UserLoginPostRes res = new UserLoginPostRes();
+		res.setStatusCode(statusCode);
+		res.setMessage(message);
+		res.setSalt(salt);
 		return res;
 	}
 }
