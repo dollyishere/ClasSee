@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@mui/material';
 
@@ -7,8 +7,23 @@ import useViewModel from '../viewmodels/SignUpViewModel';
 import logo from '../assets/logo.png';
 
 const SignUpPage = () => {
+  const emailRef = useRef(null); // 이메일 input에 접근하기 위한 hook
+  const pwRef = useRef(null); // 비밀번호 input에 접근하기 위한 hook
+  const pwCheckRef = useRef(null); // 비밀번호 확인 input에 접근하기 위한 hook
+  const nameRef = useRef(null); // 이름 input에 접근하기 위한 hook
+  const nicknameRef = useRef(null); // 닉네임 input에 접근하기 위한 hook
+  const addressRef = useRef(null); // 주소 input에 접근하기 위한 hook
+  const phoneNumRef = useRef(null); // 전화번호 input에 접근하기 위한 hook
+  const certificationNumref = useRef(null); // 인증번호 input에 접근하기 위한 hook
+
+  const [yearState, setYearState] = useState<string>(''); // 생년월일 년도를 저장할 state
+  const [monthState, setMonthState] = useState<string>(''); // 생년월일 월을 저장할 state
+  const [dayState, setDayState] = useState<string>(''); // 생년월일 일을 저장할 state
+  const [agencyState, setAgencyState] = useState<string>(''); // 통신사를 저장할 state
+
   const { emailDuplicationCheck } = useViewModel();
 
+  // 지금 날짜, 시간을 나타내는 Date 객체
   const today = new Date();
 
   // 오늘 년도 기준으로 생년월일 Select 박스의 년도 생성
@@ -58,15 +73,39 @@ const SignUpPage = () => {
   };
 
   // 회원가입 버튼 클릭시 실행할 함수
-  const handleSignUpSubmit = (event: any) => {
+  const handleSignUpSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
     console.log('submit');
   };
 
   // 중복확인 버튼 클릭시 실행할 함수
-  const handleEmailDuplicationCheck = () => {
+  const handleEmailDuplicationCheck = (e: React.MouseEvent<HTMLElement>) => {
     emailDuplicationCheck();
   };
+
+  // 년도 select 클릭시 실행할 함수
+  const handleYearSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setYearState(e.target.value);
+  };
+
+  // 월 select 클릭시 실행할 함수
+  const handleMonthSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setMonthState(e.target.value);
+  };
+
+  // 일 select 클릭시 실행할 함수
+  const handleDaySelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setDayState(e.target.value);
+  };
+
+  // 통신사 select 클릭시 실행할 함수
+  const handleAgencySelectChange = (
+    e: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    setAgencyState(e.target.value);
+  };
+
   return (
     <div className="page" id="signup-page">
       {/* mui card */}
@@ -90,6 +129,7 @@ const SignUpPage = () => {
                       className="signup-page__input"
                       id="signup-page__input--id"
                       placeholder="이메일"
+                      ref={emailRef}
                     />
                     <button
                       type="button"
@@ -109,6 +149,7 @@ const SignUpPage = () => {
                     className="signup-page__input"
                     id="signup-page__input--pw"
                     placeholder="비밀번호"
+                    ref={pwRef}
                   />
                 </label>
               </li>
@@ -120,6 +161,7 @@ const SignUpPage = () => {
                     className="signup-page__input"
                     id="signup-page__input-pw--chk"
                     placeholder="비밀번호 확인"
+                    ref={pwCheckRef}
                   />
                 </label>
               </li>
@@ -131,6 +173,7 @@ const SignUpPage = () => {
                     className="signup-page__input"
                     id="signup-page__input--name"
                     placeholder="이름"
+                    ref={nameRef}
                   />
                 </label>
               </li>
@@ -142,15 +185,15 @@ const SignUpPage = () => {
                       <select
                         id="signup-page__select--birth-year"
                         className="signup-page__select-item"
+                        onChange={handleYearSelectChange}
                       >
-                        <option defaultValue={new Date().getFullYear()}>
-                          년도
-                        </option>
+                        <option defaultValue={0}>년도</option>
                         {createSelectYearOption()}
                       </select>
                       <select
                         id="signup-page__select--birth-month"
                         className="signup-page__select-item"
+                        onChange={handleMonthSelectChange}
                       >
                         <option defaultValue={new Date().getMonth()}>월</option>
                         {createSelectMonthOption()}
@@ -158,6 +201,7 @@ const SignUpPage = () => {
                       <select
                         id="signup-page__select--birth-day"
                         className="signup-page__select-item"
+                        onChange={handleDaySelectChange}
                       >
                         <option defaultValue={new Date().getDate()}>일</option>
                         {createSelectDayOption()}
@@ -174,6 +218,7 @@ const SignUpPage = () => {
                     className="signup-page__input"
                     id="signup-page__input--nickname"
                     placeholder="닉네임"
+                    ref={nicknameRef}
                   />
                 </label>
               </li>
@@ -185,6 +230,7 @@ const SignUpPage = () => {
                     className="signup-page__input"
                     id="signup-page__input--address"
                     placeholder="주소"
+                    ref={addressRef}
                   />
                 </label>
               </li>
@@ -196,6 +242,7 @@ const SignUpPage = () => {
                       <select
                         className="signup-page__select-item"
                         id="signup-page__select-item--TSP"
+                        onChange={handleAgencySelectChange}
                       >
                         <option defaultValue="nothing">통신사</option>
                         <option value="lg">LG U+</option>
@@ -207,6 +254,7 @@ const SignUpPage = () => {
                         className="signup-page__input"
                         id="signup-page__input--phone"
                         placeholder="01012345678"
+                        ref={phoneNumRef}
                       />
                     </div>
                     <button
@@ -221,6 +269,7 @@ const SignUpPage = () => {
                       type="text"
                       className="signup-page__input"
                       placeholder="인증번호를 입력하세요."
+                      ref={certificationNumref}
                     />
                   </div>
                 </label>
