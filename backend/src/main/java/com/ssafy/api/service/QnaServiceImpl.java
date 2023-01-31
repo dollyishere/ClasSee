@@ -36,7 +36,7 @@ public class QnaServiceImpl implements QnaService {
     }
 
     @Override
-    public void deleteQna(String email, Long id) throws Exception {
+    public void deleteQna(String email, Long id) {
 
         User user = userRepositorySupport
                 .findUserByAuth(email)
@@ -45,11 +45,7 @@ public class QnaServiceImpl implements QnaService {
         Qna qna = qnaRepositorySupport
                 .findOne(id);
 
-        if(user.getId() == qna.getUser().getId()){
             qnaRepositorySupport.delete(qna);
-        } else {
-            throw new Exception("작성자와 일치하지 않습니다");
-        }
 
     }
 
@@ -79,7 +75,7 @@ public class QnaServiceImpl implements QnaService {
     }
 
     @Override
-    public void updateQna(QnaUpdatePutReq qnaUpdatePutReq) throws Exception {
+    public void updateQna(QnaUpdatePutReq qnaUpdatePutReq) {
 
         User user = userRepositorySupport
                 .findUserByAuth(qnaUpdatePutReq.getUser_email())
@@ -88,11 +84,7 @@ public class QnaServiceImpl implements QnaService {
         Qna qna = qnaRepositorySupport
                 .findOne(qnaUpdatePutReq.getId());
 
-        if(user.getId() == qna.getUser().getId()){
             qnaRepositorySupport.updateQna(qnaUpdatePutReq);
-        } else {
-            throw new Exception("작성자와 일치하지 않습니다");
-        }
 
     }
 
