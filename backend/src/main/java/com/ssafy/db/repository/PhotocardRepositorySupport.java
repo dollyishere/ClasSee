@@ -41,21 +41,19 @@ public class PhotocardRepositorySupport {
                 .fetch();
     }
 
-    public List<Photocard> findList(int offset, int limit, Long user_id) {
+    public List<Photocard> findList(int offset, int limit) {
         return jpaQueryFactory
                 .selectFrom(qPhotocard)
-                .where(qPhotocard.user.id.eq(user_id))
                 .orderBy(qPhotocard.id.desc())
                 .offset(offset)
                 .limit(limit)
                 .fetch();
     }
 
-    public Long photocardCount(Long id){
+    public Long photocardCount(){
         return jpaQueryFactory
                 .select(qPhotocard.count())
                 .from(qPhotocard)
-                .where(qPhotocard.user.id.eq(id))
                 .fetchOne();
     }
 
