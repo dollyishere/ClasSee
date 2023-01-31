@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 import { SignUpRequest, SignUpResponse } from '../types/UserType';
 
@@ -15,8 +15,22 @@ const UserApi = () => {
       });
   };
 
+  const doEmailDuplicationCheck = async (email: string) => {
+    try {
+      const response = await axios.get<number>(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/users/duplicate/email/${email}`,
+      );
+      // 요청 결과를 리턴
+      return response.status;
+    } catch (error: any) {
+      console.error(error);
+    }
+    return null;
+  };
+
   return {
     doSignUp,
+    doEmailDuplicationCheck,
   };
 };
 
