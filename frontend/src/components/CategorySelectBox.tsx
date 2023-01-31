@@ -5,15 +5,13 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
-// interface Props {
-//   getCategorySelect: string;
-
-// }
-const CategorySelectBox = () => {
-  const [getCategorySelect, setGetCategorySelect] = useState('');
-
+interface Props {
+  categorySelect: string;
+  setCategorySelect: React.Dispatch<React.SetStateAction<string>>;
+}
+const CategorySelectBox = ({ categorySelect, setCategorySelect }: Props) => {
   const handleChange = (event: SelectChangeEvent) => {
-    setGetCategorySelect(event.target.value);
+    setCategorySelect(event.target.value);
   };
 
   return (
@@ -23,7 +21,7 @@ const CategorySelectBox = () => {
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={getCategorySelect}
+          value={categorySelect}
           label="category"
           onChange={handleChange}
         >

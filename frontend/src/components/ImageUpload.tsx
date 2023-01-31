@@ -4,19 +4,15 @@ import imageCompression from 'browser-image-compression';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 
-// 주의: 부모 컴포넌트에 따라 이미지가 다르게 나와야 함(페이지 변경 시에 그동안의 값을 저장한 후, 나중에 다시 보여주도록)
-// 아마 useEffect 쓰면 될 듯?
-
-// 부모 컴포넌트 측에서 전달한 이미지 업로드 한도인 limitNumber의 type을 지정함
-interface Props {
+// 부모 컴포넌트 측에서 전달한 Props의 type을 지정함
+interface ImageUploadProps {
   limitNumber: number;
+  imgSrcList: string[];
+  setImgSrcList: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-const ImageUpload = ({ limitNumber }: Props) => {
+const ImageUpload = ({ limitNumber, imgSrcList, setImgSrcList }: ImageUploadProps) => {
   const fileRef = useRef<HTMLInputElement>(null);
-
-  // 이미지 파일 src를 저장할 imgSrcList 변수를 useState(속성 array(string))으로 선언
-  const [imgSrcList, setImgSrcList] = useState<string[]>([]);
 
   // 만약 사용자가 이미지를 input을 통해 추가했을 시, 이하 함수 실행
   const handleAddImages = async (e: React.ChangeEvent<HTMLInputElement>) => {

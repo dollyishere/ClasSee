@@ -2,25 +2,25 @@ import React, { useRef, useState, useContext } from 'react';
 
 import CategorySelectBox from '../CategorySelectBox';
 
-interface OutletProps {
-  data: string;
-  setData: React.Dispatch<React.SetStateAction<string>>;
+interface StepOneProps {
+  lessonName: string;
+  setLessonName: React.Dispatch<React.SetStateAction<string>>;
+  categorySelect: string;
+  setCategorySelect: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const StepOne = () => {
-  const [getLessonName, setGetLessonName] = useState('');
-
-  const handleLoginSubmit = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setGetLessonName(e.target.value);
+const StepOne = ({ lessonName, setLessonName, categorySelect, setCategorySelect }: StepOneProps) => {
+  const handleInputLessonName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLessonName(e.target.value);
   };
   return (
     <div>
       <h2>Step 1. 강의명 입력</h2>
       <div>
-        <CategorySelectBox />
+        <CategorySelectBox categorySelect={categorySelect} setCategorySelect={setCategorySelect} />
       </div>
       <div>
-        <input value={getLessonName} onChange={handleLoginSubmit} placeholder="강의명을 입력해주세요" />
+        <input value={lessonName} onChange={handleInputLessonName} placeholder="강의명을 입력해주세요" />
       </div>
     </div>
   );
