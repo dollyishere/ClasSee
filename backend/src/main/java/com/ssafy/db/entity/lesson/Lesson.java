@@ -34,7 +34,7 @@ public class Lesson {
     private Long runningtime;
     private String description;
     @Column(name = "CKLS_DESCRIPTION")
-    private String chlsDescription;
+    private String cklsDescription;
     private String name;
     private String location;
 
