@@ -40,10 +40,12 @@ public class Lesson {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "lesson")
+    @OneToMany
+    @JoinColumn(name = "lesson_id")
     private List<Checklist> checkList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "lesson")
+    @OneToMany
+    @JoinColumn(name = "lesson_id")
     private List<Pamphlet> pamphletList = new ArrayList<>();
 
     @OneToMany(mappedBy = "lesson")
@@ -60,6 +62,7 @@ public class Lesson {
     @OneToMany(mappedBy = "lesson")
     private List<Photocard> photocardList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "lesson")
+    @OneToMany
+    @JoinColumn(name = "lesson_id")
     private List<Curriculum> curriculumList = new ArrayList<>();
 }
