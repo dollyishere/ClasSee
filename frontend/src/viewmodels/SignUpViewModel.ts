@@ -3,10 +3,12 @@ import useApi from '../apis/UserApi';
 import { SignUpRequest } from '../types/UserType';
 
 const SignUpViewModel = () => {
-  const { doSignUp } = useApi();
+  const { doSignUp, doEmailDuplicationCheck } = useApi();
 
-  const emailDuplicationCheck = () => {
-    console.log('test');
+  const emailDuplicationCheck = async (email: string) => {
+    const res = await doEmailDuplicationCheck(email);
+
+    return res;
   };
 
   const signup = (data: SignUpRequest) => {

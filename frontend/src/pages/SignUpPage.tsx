@@ -21,6 +21,9 @@ const SignUpPage = () => {
   const [dayState, setDayState] = useState<string>(''); // 생년월일 일을 저장할 state
   const [agencyState, setAgencyState] = useState<string>(''); // 통신사를 저장할 state
 
+  const [isValidEmail, setIsValidEmail] = useState<boolean>(false); // 사용 가능한 이메일인지
+  const [isValidPassword, setIsValidPassword] = useState<boolean>(false); // 사용 가능한 비밀번호인지
+
   const { emailDuplicationCheck } = useViewModel();
 
   // 지금 날짜, 시간을 나타내는 Date 객체
@@ -50,7 +53,7 @@ const SignUpPage = () => {
     for (let i = 1; i <= 12; i += 1) {
       months.push(
         <option value={i} key={i}>
-          {i}
+          {i}월
         </option>,
       );
     }
@@ -75,13 +78,62 @@ const SignUpPage = () => {
   // 회원가입 버튼 클릭시 실행할 함수
   const handleSignUpSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (
+      emailRef.current !== null &&
+      pwRef.current !== null &&
+      pwCheckRef.current !== null &&
+      nameRef.current !== null &&
+      nicknameRef.current !== null &&
+      addressRef.current !== null &&
+      phoneNumRef.current !== null
+    ) {
+      const emailTarget = emailRef.current as HTMLInputElement; // 이메일
+      const pwTarget = pwRef.current as HTMLInputElement; // 비밀번호
+      const pwCheckTarget = pwCheckRef.current as HTMLInputElement; // 비밀번호 확인
+      const nameTarget = nameRef.current as HTMLInputElement; // 이름
+      const nicknameTarget = nicknameRef.current as HTMLInputElement; // 닉네임
+      const addressTarget = addressRef.current as HTMLInputElement; // 주소
+      const phoneNumTarget = phoneNumRef.current as HTMLInputElement; // 휴대폰 번호
+      const birthday = yearState + monthState + dayState; // 생년월일
 
-    console.log('submit');
+      // 비밀번호와 비밀번호 확인의 입력값이 같은지 확인
+      if (pwCheckTarget.value !== pwTarget.value) {
+        pwTarget.value = '';
+        pwCheckTarget.value = '';
+        alert('비밀번호가 다릅니다.');
+      }
+    }
+  };
+
+  // 유효한 이메일인지 확인하는 함수
+  const emailValidationCheck = (email: string) => {
+    const pattern =
+      /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+
+    return pattern.test(email);
   };
 
   // 중복확인 버튼 클릭시 실행할 함수
-  const handleEmailDuplicationCheck = (e: React.MouseEvent<HTMLElement>) => {
-    emailDuplicationCheck();
+  const handleEmailDuplicationCheck = async () => {
+    if (emailRef.current !== null) {
+      const target = emailRef.current as HTMLInputElement;
+      if (!emailValidationCheck(target.value)) {
+        alert('이메일 형식을 맞춰주세요.');
+        target.value = '';
+        return;
+      }
+      const res = await emailDuplicationCheck(target.value);
+      if (res === null) {
+        console.log('서버 오류');
+      } else if (res === 201) {
+        setIsValidEmail(true);
+        target.readOnly = true;
+        alert('사용 가능한 이메일 입니다.');
+      } else if (res === 200) {
+        alert('중복된 이메일입니다.');
+        target.value = '';
+      }
+    }
   };
 
   // 년도 select 클릭시 실행할 함수
@@ -91,12 +143,12 @@ const SignUpPage = () => {
 
   // 월 select 클릭시 실행할 함수
   const handleMonthSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setMonthState(e.target.value);
+    setMonthState(`0${e.target.value}`.slice(-2));
   };
 
   // 일 select 클릭시 실행할 함수
   const handleDaySelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setDayState(e.target.value);
+    setDayState(`0${e.target.value}`.slice(-2));
   };
 
   // 통신사 select 클릭시 실행할 함수
@@ -195,7 +247,7 @@ const SignUpPage = () => {
                         className="signup-page__select-item"
                         onChange={handleMonthSelectChange}
                       >
-                        <option defaultValue={new Date().getMonth()}>월</option>
+                        <option defaultValue={0}>월</option>
                         {createSelectMonthOption()}
                       </select>
                       <select
@@ -203,7 +255,7 @@ const SignUpPage = () => {
                         className="signup-page__select-item"
                         onChange={handleDaySelectChange}
                       >
-                        <option defaultValue={new Date().getDate()}>일</option>
+                        <option defaultValue={0}>일</option>
                         {createSelectDayOption()}
                       </select>
                     </div>
