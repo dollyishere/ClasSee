@@ -32,36 +32,33 @@ public class QnaController {
     @PostMapping()
     @ApiOperation(value = "Qna 등록", notes = "제목, 내용, 시간과 작성자 이메일 입력 후 Qna등록")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "성공")
+            @ApiResponse(code = 200, message = "success")
     })
     public ResponseEntity<? extends BaseResponseBody> registQna(@RequestBody QnaRegisterPostReq qnaRegisterPostReq){
 
         qnaService.createQna(qnaRegisterPostReq);
 
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"성공"));
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"success"));
     }
 
     @DeleteMapping()
     @ApiOperation(value = "Qna 삭제", notes = "Qna 아이디와 로그인한 사람의 이메일을 받아, 비교한 뒤 삭제")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "성공"),
-            @ApiResponse(code = 401, message = "권한이 없음")
+            @ApiResponse(code = 200, message = "success"),
+            @ApiResponse(code = 401, message = "invalid")
     })
-    public ResponseEntity<? extends BaseResponseBody> deleteQna(@RequestParam String email, @RequestParam Long id) throws Exception {
+    public ResponseEntity<? extends BaseResponseBody> deleteQna(@RequestParam String email, @RequestParam Long id) {
 
-        try{
-            qnaService.deleteQna(email, id);
-        } catch (Exception e){
-            return ResponseEntity.status(401).body(BaseResponseBody.of(401,"권한이 없음"));
-        }
 
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "성공"));
+        qnaService.deleteQna(email, id);
+
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success"));
     }
 
     @GetMapping()
     @ApiOperation(value = "qna 상세 조회", notes = "qna를 클릭했을 때, qna id를 입력받아 공지 상세정보 반환")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "성공")
+            @ApiResponse(code = 200, message = "success")
     })
     public ResponseEntity<?> getQnaInfo(@RequestParam Long id){
 
@@ -74,7 +71,7 @@ public class QnaController {
     @GetMapping("/list")
     @ApiOperation(value = "qna 리스트 조회", notes = "내가 한 qna 리스트 반환")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "성공")
+            @ApiResponse(code = 200, message = "success")
     })
     public ResponseEntity<?> getQnaList(@RequestParam int offset, @RequestParam int limit, @RequestParam String email){
 
@@ -95,18 +92,14 @@ public class QnaController {
     @PutMapping()
     @ApiOperation(value = "qna 수정", notes = "내가 한 qna 수정")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "성공"),
-            @ApiResponse(code = 401, message = "권한이 없음")
+            @ApiResponse(code = 200, message = "success"),
+            @ApiResponse(code = 401, message = "invalid")
     })
     public ResponseEntity<? extends BaseResponseBody> updateQna(@RequestBody QnaUpdatePutReq qnaUpdatePutReq) {
 
-        try{
             qnaService.updateQna(qnaUpdatePutReq);
-        } catch (Exception e){
-            return ResponseEntity.status(401).body(BaseResponseBody.of(401,"권한이 없음"));
-        }
 
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"성공"));
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"success"));
 
     }
 
