@@ -8,8 +8,8 @@ import java.util.List;
 public interface PhotocardService {
 
     void createPhotocard(PhotocardRegistPostReq photocardRegistPostReq);
-    List<Photocard> readPhotocardList(String email);
-    Long photocardCount();
+    List<Photocard> readPhotocardList(int offset, int limit, String email);
+    Long photocardCount(String email);
     void deletePhotocard(String email, Long id);
 
 
