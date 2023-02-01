@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { atom, selector, useRecoilState, useRecoilValue } from 'recoil';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { Link } from 'react-router-dom';
 import logo from '../../assets/logo.png';
 import LessonCard from '../LessonCard';
 import useViewModel from '../../viewmodels/MainPageViewModel';
+import { LessonsResponse, Lesson } from '../../types/LessonsType';
+import PrivateInfoState from '../../models/PrivateInfoAtom';
 
 // 로그인이 되었을 때만 이 컴포넌트가 보여짐
 // 내가 개설한 강의를 get으로 api요청 보냄
@@ -59,20 +61,26 @@ const MyCreatedLessonsMainpage = () => {
   // ];
   // 내가 개설한 강의 2개 가져오는 함수
   const { getMyCreatedLessonsMainpage } = useViewModel();
+  const [lessons, setLessons] = useState<LessonsResponse>();
+  const userInfo = useRecoilValue(PrivateInfoState);
   // 메인페이지 마운트 시 강의 정보들 요청
+
   useEffect(() => {
-    getMyCreatedLessonsMainpage(userId);
+    if (userInfo.userId)
+      getMyCreatedLessonsMainpage(userInfo.userId).then(
+        (res: LessonsResponse) => {
+          console.log(res);
+          setLessons(res);
+        },
+      );
   }, []);
 
-  const [lessons, setlessons] = useState([]);
-  // useRecoilValue;
-  const [isCreated, setIsCreated] = useState(true);
   return (
     <div className="createlessons">
       <h1 className="createlessons__title"> 개설한 강의 </h1>
-      {isCreated ? (
+      {lessons && lessons.lessons ? (
         <div className="lesson">
-          {lessons.map((lesson) => (
+          {lessons.lessons.map((lesson: Lesson) => (
             <LessonCard lesson={lesson} />
           ))}
         </div>
