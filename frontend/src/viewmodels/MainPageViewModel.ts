@@ -1,11 +1,11 @@
 import axios from 'axios';
 import useApi from '../apis/LessonsApi';
-import { MyCreatedLessonsMainpageResponse } from '../types/LessonsType';
+import { LessonsResponse } from '../types/LessonsType';
 
 const MainPageViewModel = () => {
   const { MyCreatedLessonsMainpageApi } = useApi();
 
-  const getMyCreatedLessonsMainpage = async (userId: number) => {
+  const getMyCreatedLessonsMainpage = async (userId: string) => {
     const res = await MyCreatedLessonsMainpageApi(userId);
 
     return res;
