@@ -11,6 +11,9 @@ import PrivateInfoState from '../../models/PrivateInfoAtom';
 // 내가 신청한 강의를 get으로 api요청 보냄
 // 강의가 있으면 강의카드를 보여주고
 // 강의가 없다면(빈 배열이라면) 없음을 보여줌
+interface MyApply {
+  hover: number;
+}
 const MyAppliedLessonsMainpageTest = () => {
   const dummyData = [
     {
@@ -57,7 +60,7 @@ const MyAppliedLessonsMainpageTest = () => {
     //   rating: 3,
     //   isBookMarked: false,
   ];
-  const [hover, setHover] = useState(false);
+  const [hover, setHover] = useState();
   const { getMyAppliedLessonsMainpage } = useViewModel();
   // const [lessons, setLessons] = useState<LessonsResponse>();
   const [lessons, setLessons] = useState(dummyData);
@@ -71,11 +74,16 @@ const MyAppliedLessonsMainpageTest = () => {
   //       },
   //     );
   // }, []);
+  const apply: MyApply = {
+    hover: 1,
+  };
   return (
     <div className="applylessons">
       <h1 className="applylesson--title"> 신청한 클래스 </h1>
       {lessons ? (
-        lessons.map((lesson: Lesson) => <LessonCard lesson={lesson} />)
+        lessons.map((lesson: Lesson, myapplied: MyApply) => (
+          <LessonCard lesson={lesson} myapplied={myapplied} />
+        ))
       ) : (
         <div>no Created</div>
       )}

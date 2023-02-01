@@ -10,21 +10,21 @@ import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import { LessonsResponse, Lesson } from '../types/LessonsType';
 import logo from '../assets/logo.png';
 
-interface Props {
-  lesson: {
-    id: number;
-    lessonImage: string;
-    teacher: string;
-    teacherImage: string;
-    name: string;
-    runningTime: string;
-    category: string;
-    rating: number;
-    isBookMarked: boolean;
-  };
-}
+// interface Props {
+//   lesson: {
+//     id: number;
+//     lessonImage: string;
+//     teacher: string;
+//     teacherImage: string;
+//     name: string;
+//     runningTime: string;
+//     category: string;
+//     rating: number;
+//     isBookMarked: boolean;
+//   };
+// }
 
-const LessonCard = ({ lesson }: Props) => {
+const LessonCard = ({ lesson }: { lesson: Lesson }, myapplied: number) => {
   const [isBookMarked, setIsBookMarked] = useState(lesson.isBookMarked);
   // 북마크 아이콘 클릭 시 북마크 추가, 삭제 토글 버튼 함수
   const getBookmarkStatus = (event: React.MouseEvent<HTMLElement>) => {
