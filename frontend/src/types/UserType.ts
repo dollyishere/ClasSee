@@ -12,9 +12,7 @@ export interface SignUpRequest {
 }
 
 export interface SaltResponse extends Response {
-  data: {
-    salt: string;
-  };
+  salt: string;
 }
 
 export interface UserInfo {
