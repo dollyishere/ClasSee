@@ -1,3 +1,5 @@
+import { Response } from './BaseType';
+
 export interface SignUpRequest {
   email: string;
   password: string;
@@ -9,9 +11,10 @@ export interface SignUpRequest {
   salt: string;
 }
 
-export interface SignUpResponse {
-  message: string;
-  statusCode: number;
+export interface SaltResponse extends Response {
+  data: {
+    salt: string;
+  };
 }
 
 export interface UserInfo {
