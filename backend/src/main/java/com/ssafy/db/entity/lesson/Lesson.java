@@ -59,9 +59,6 @@ public class Lesson {
     @JoinColumn(name = "lesson_id")
     private List<OpenLesson> openLessonList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "lesson")
-    private List<Photocard> photocardList = new ArrayList<>();
-
     @OneToMany
     @JoinColumn(name = "lesson_id")
     private List<Curriculum> curriculumList = new ArrayList<>();
