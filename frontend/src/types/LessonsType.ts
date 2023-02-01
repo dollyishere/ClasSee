@@ -1,4 +1,4 @@
-export interface MyCreatedLessonsMainpageResponse {
+export interface Lesson {
   id: number;
   lessonImage: string;
   teacher: string;
@@ -8,4 +8,8 @@ export interface MyCreatedLessonsMainpageResponse {
   category: string;
   rating: number;
   isBookMarked: boolean;
+}
+
+export interface LessonsResponse {
+  lessons: Array<Lesson>;
 }
