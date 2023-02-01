@@ -49,8 +49,8 @@ public class PhotocardServiceImpl implements PhotocardService {
                 .img(photocardRegistPostReq.getImg())
                 .sign(photocardRegistPostReq.getSign())
                 .regDate(LocalDateTime.now().toString())
+                .lesson_name(lesson.getName())
                 .user(user)
-                .lesson(lesson)
                 .build();
 
         photocardRepositorySupport.save(photocard);
@@ -126,7 +126,6 @@ public class PhotocardServiceImpl implements PhotocardService {
         Long user_id = userRepositorySupport.findId(email);
 
         Likes likes = photocardRepositorySupport.findOneLikes(user_id, id);
-
 
         photocardRepositorySupport.deleteLikes(likes);
         return;
