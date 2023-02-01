@@ -29,7 +29,6 @@ application.properties
 application-secret.properties
 !**/src/main/**/out/
 !**/src/test/**/out/
-backend/build.gradle
 
 
 ### NetBeans ###
