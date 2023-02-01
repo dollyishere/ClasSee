@@ -1,13 +1,17 @@
 package com.ssafy.api.service;
 
 import com.ssafy.api.dto.LessonInfoDto;
+import com.ssafy.api.dto.OpenLessonInfoDto;
 import com.ssafy.api.response.LessonDetailsRes;
+import com.ssafy.api.response.LessonSchedulsRes;
 import com.ssafy.db.entity.lesson.*;
 import com.ssafy.db.entity.user.User;
 import com.ssafy.db.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -122,5 +126,27 @@ public class LessonServiceImpl implements LessonService {
                 .isBookmarked(isBookmarked)
                 .build();
         return lessonDetailsRes;
+    }
+
+    @Override
+    public LessonSchedulsRes getLessonSchedules(Long lessonId, LocalDate regDate) {
+        List<OpenLesson> lessonSchedules = lessonRepositorySupport.findScheduleByLessonId(lessonId);
+        List<OpenLessonInfoDto> lessonSchedulesRes = new ArrayList<>();
+        lessonSchedules.forEach((schedule) ->{
+            if(!regDate.isEqual(schedule.getStartTime().toLocalDate())) return;
+            lessonSchedulesRes.add(
+                    OpenLessonInfoDto.builder()
+                            .openLessonId(schedule.getId())
+                            .lessonId(schedule.getLessonId())
+                            .startTime(schedule.getStartTime())
+                            .endTime(schedule.getEndTime())
+                            .build()
+            );
+        });
+
+        LessonSchedulsRes res = LessonSchedulsRes.builder()
+                .lessonScheduls(lessonSchedulesRes)
+                .build();
+        return res;
     }
 }

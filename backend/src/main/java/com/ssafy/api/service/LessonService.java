@@ -2,9 +2,13 @@ package com.ssafy.api.service;
 
 import com.ssafy.api.dto.LessonInfoDto;
 import com.ssafy.api.response.LessonDetailsRes;
+import com.ssafy.api.response.LessonSchedulsRes;
 import com.ssafy.db.entity.lesson.Lesson;
 import com.ssafy.db.entity.lesson.OpenLesson;
+import org.apache.tomcat.jni.Local;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -19,4 +23,6 @@ public interface LessonService {
     void createSchedule(OpenLesson requestInfo) throws Exception;
 
     LessonDetailsRes getLessonDetails(Long lessonId, String email);
+
+    LessonSchedulsRes getLessonSchedules(Long lessonId, LocalDate regDate);
 }
