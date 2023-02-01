@@ -11,6 +11,8 @@ public interface PhotocardService {
     List<Photocard> readPhotocardList(int offset, int limit);
     Long photocardCount();
     void deletePhotocard(String email, Long id);
+    Long likesCount(Photocard photocard);
+    Boolean likesCheck(String email, Long id);
 
 
 

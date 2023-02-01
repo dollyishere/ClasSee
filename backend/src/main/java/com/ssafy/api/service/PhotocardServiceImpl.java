@@ -83,4 +83,24 @@ public class PhotocardServiceImpl implements PhotocardService {
         photocardRepositorySupport.delete(photocard);
 
     }
+
+    @Override
+    public Long likesCount(Photocard photocard) {
+
+        Long id = photocard.getId();
+
+        return photocardRepositorySupport
+                .likesCount(id);
+    }
+
+    @Override
+    public Boolean likesCheck(String email, Long id) {
+        Long user_id = userRepositorySupport.findId(email);
+
+        if(photocardRepositorySupport.likesCheck(id, user_id) == null){
+            return false;
+        } else{
+            return true;
+        }
+    }
 }
