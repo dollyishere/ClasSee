@@ -95,6 +95,18 @@ public class PhotocardController {
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success"));
     }
 
+    @DeleteMapping("/likes")
+    @ApiOperation(value = "좋아요 취소", notes = "좋아요를 취소할 사용자 email, 포토카드 id를 입력 받아 좋아요 취소(삭제)")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "success")
+    })
+    public ResponseEntity<? extends BaseResponseBody> deleteLikes(@RequestParam String email, @RequestParam Long id) {
+
+        photocardService.deletePhotocard(email, id);
+
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success"));
+    }
+
 
 
 }
