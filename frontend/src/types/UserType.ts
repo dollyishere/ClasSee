@@ -13,3 +13,7 @@ export interface SignUpResponse {
   message: string;
   statusCode: number;
 }
+
+export interface UserInfo {
+  userId: string | null;
+}

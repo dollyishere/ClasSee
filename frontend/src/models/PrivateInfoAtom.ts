@@ -1,6 +1,6 @@
 import React from 'react';
 import { atom } from 'recoil';
-import { UserInfo } from '../types/UserInfo';
+import { UserInfo } from '../types/UserType';
 
 const PrivateInfoState = atom<UserInfo>({
   key: 'PrivateInfoData',
