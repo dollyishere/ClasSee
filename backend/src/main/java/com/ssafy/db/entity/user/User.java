@@ -61,7 +61,7 @@ public class User {
     @JoinColumn(name = "user_id")
     private List<Bookmark> bookmarkList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Photocard> photocardList = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
