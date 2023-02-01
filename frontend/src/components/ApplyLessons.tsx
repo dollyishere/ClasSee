@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { atom, selector, useRecoilState } from 'recoil';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { api, Lesson } from '../util/api';
+
+import { Lesson } from '../types/LessonsType';
 import logo from '../assets/logo.png';
 import LessonCard from './LessonCard';
 // 로그인이 되었을 때만 이 컴포넌트가 보여짐
