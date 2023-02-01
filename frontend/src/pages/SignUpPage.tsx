@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Card, CardContent } from '@mui/material';
 
 import useViewModel from '../viewmodels/SignUpViewModel';
@@ -10,6 +10,8 @@ import logo from '../assets/logo.png';
 import { SignUpRequest } from '../types/UserType';
 
 const SignUpPage = () => {
+  const navigate = useNavigate(); // 페이지 이동을 위한 hook
+
   const emailRef = useRef(null); // 이메일 input에 접근하기 위한 hook
   const pwRef = useRef(null); // 비밀번호 input에 접근하기 위한 hook
   const pwCheckRef = useRef(null); // 비밀번호 확인 input에 접근하기 위한 hook
@@ -161,7 +163,10 @@ const SignUpPage = () => {
       };
 
       const res = await signup(requestData);
-      console.log(res);
+      if (res === 'Success') {
+        alert('가입 되셨습니다.');
+        navigate('/login');
+      }
     }
   };
 
