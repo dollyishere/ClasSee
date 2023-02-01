@@ -19,11 +19,6 @@ public class AuthServiceImpl implements AuthService{
     RedisService redisService;
 
     @Override
-    public int saveRefreshToken(String email, String token) {
-        return authRepository.saveRefreshToken(email, token);
-    }
-
-    @Override
     public void logout(String email, String accessToken) {
         Long expiration = JwtTokenUtil.getExpiration(accessToken); // 현재 로그인된 유저의 엑세스 토큰 유효시간
 
