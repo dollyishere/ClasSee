@@ -34,9 +34,19 @@ public class PhotocardRepositorySupport {
 
     public void delete(Photocard photocard) { em.remove(photocard); }
 
-    public void likesSave(Likes likes) { em.persist(likes); }
+    public void saveLikes(Likes likes) { em.persist(likes); }
+
+    public void deleteLikes(Likes likes) { em.remove(likes); }
 
     public Photocard findOne(Long id) { return em.find(Photocard.class, id); }
+
+    public Likes findOneLikes(Long user_id, Long photocard_id){
+        return jpaQueryFactory
+                .select(qLikes)
+                .from(qLikes)
+                .where(qLikes.user.id.eq(user_id), qLikes.photocard.id.eq(photocard_id))
+                .fetchOne();
+    }
 
     public Lesson findOneLesson(Long id) { return em.find(Lesson.class, id); }
 
