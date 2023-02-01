@@ -73,14 +73,7 @@ public class PhotocardServiceImpl implements PhotocardService {
     }
 
     @Override
-    public void deletePhotocard(String email, Long id) {
-        User user = User.builder().build();
-
-        if(userRepositorySupport.findUserByAuth(email).isPresent()){
-            user = userRepositorySupport.findUserByAuth(email).get();
-        } else{
-            user = userRepositorySupport.findUserByAuth(email).orElse(null);
-        }
+    public void deletePhotocard(Long id) {
 
         Photocard photocard = photocardRepositorySupport
                 .findOne(id);
