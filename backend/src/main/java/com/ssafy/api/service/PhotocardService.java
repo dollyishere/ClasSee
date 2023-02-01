@@ -14,6 +14,7 @@ public interface PhotocardService {
     Long likesCount(Photocard photocard);
     Boolean likesCheck(String email, Long id);
     void createLikes(String email, Long id);
+    void deleteLikes(String email, Long id);
 
 
 
