@@ -1,5 +1,6 @@
 package com.ssafy.db.entity.user;
 
+import com.ssafy.db.entity.board.Likes;
 import com.ssafy.db.entity.board.Notice;
 import com.ssafy.db.entity.qna.Qna;
 import com.ssafy.db.entity.board.Article;
@@ -77,5 +78,8 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Notice> noticeList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Likes> likesList = new ArrayList<>();
 
 }
