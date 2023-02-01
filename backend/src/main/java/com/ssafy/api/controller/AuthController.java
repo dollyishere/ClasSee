@@ -4,9 +4,9 @@ import com.ssafy.api.request.UserLogoutPostReq;
 import com.ssafy.api.service.AuthService;
 import com.ssafy.api.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import com.ssafy.api.request.UserLoginPostReq;
@@ -22,6 +22,8 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.ApiResponse;
 
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * 인증 관련 API 요청 처리를 위한 컨트롤러 정의.
  */
@@ -30,6 +32,12 @@ import io.swagger.annotations.ApiResponse;
 @RestController
 @RequestMapping("/api/v1/auth")
 public class AuthController {
+
+	@Value("${jwt.expiration.atk}")
+	Integer atkExpirationTime;
+
+	@Value("${jwt.expiration.rtk}")
+	Integer rtkExpirationTime;
 	@Autowired
 	UserService userService;
 
@@ -43,6 +51,8 @@ public class AuthController {
 	JwtTokenUtil jwtTokenUtil;
 
 
+
+
 	@PostMapping("/login")
 	@ApiOperation(value = "로그인", notes = "<strong>이메일과 패스워드</strong>를 통해 로그인 한다.")
 	@ApiResponses({
@@ -52,7 +62,8 @@ public class AuthController {
 			@ApiResponse(code = 409, message = "이메일 중복", response = BaseResponseBody.class),
 			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
 	})
-	public ResponseEntity<? extends BaseResponseBody> login(@RequestBody @ApiParam(value = "로그인 정보", required = true) UserLoginPostReq loginInfo) {
+	public ResponseEntity<? extends BaseResponseBody> login(
+			@RequestBody @ApiParam(value = "로그인 정보", required = true) UserLoginPostReq loginInfo, HttpServletResponse res) {
 		String email = loginInfo.getEmail();
 		String password = loginInfo.getPassword();
 
@@ -66,8 +77,6 @@ public class AuthController {
 			String accessToken = JwtTokenUtil.getToken(JwtTokenUtil.atkExpirationTime, email);
 			String refreshToken = JwtTokenUtil.getToken(JwtTokenUtil.rtkExpirationTime, email);
 			UserLoginPostRes userLoginPostRes = UserLoginPostRes.builder()
-					.accessToken(accessToken)
-					.refreshToken(refreshToken)
 					.salt(user.getAuth().getSalt())
 					.build();
 
@@ -78,9 +87,15 @@ public class AuthController {
 			*/
 			redisService.setValues(refreshToken, user.getAuth().getEmail());
 
+			try {
+				res.setHeader("accessToken", accessToken);
+				res.setHeader("refreshToken", refreshToken);
+			} catch (Exception e){
+				return ResponseEntity.status(401).body(BaseResponseBody.of(401, "TOKEN RESPONSE FAILED"));
+			}
+
 			// 유효한 패스워드가 맞는 경우, 로그인 성공으로 응답.(액세스 토큰을 포함하여 응답값 전달)
-//            authService.saveRefreshToken(email, refreshToken);
-			return ResponseEntity.ok(UserLoginPostRes.of(200, "SUCCESS", userLoginPostRes));
+			return ResponseEntity.ok(UserLoginPostRes.of(200, "SUCCESS", userLoginPostRes.getSalt()));
 		}
 		// 유효하지 않는 패스워드인 경우, 로그인 실패로 응답.
 		return ResponseEntity.status(401).body(BaseResponseBody.of(401, "INVALID"));

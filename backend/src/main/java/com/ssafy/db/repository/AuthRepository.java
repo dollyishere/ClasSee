@@ -12,10 +12,4 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Repository
 public interface AuthRepository extends JpaRepository<Auth, Long> {
-    @Transactional
-    @Modifying(clearAutomatically = true)
-    @Query("UPDATE Auth set refreshToken = :token where email = :email")
-    int saveRefreshToken(String email, String token);
-
-
 }
