@@ -1,6 +1,7 @@
 package com.ssafy.api.service;
 
 import com.ssafy.api.request.PhotocardRegistPostReq;
+import com.ssafy.db.entity.board.Likes;
 import com.ssafy.db.entity.board.Photocard;
 import com.ssafy.db.entity.lesson.Lesson;
 import com.ssafy.db.entity.user.User;
@@ -103,4 +104,25 @@ public class PhotocardServiceImpl implements PhotocardService {
             return true;
         }
     }
+
+    @Override
+    public void createLikes(String email, Long id) {
+        User user = userRepositorySupport
+                .findUserByAuth(email)
+                .get();
+
+        Photocard photocard = photocardRepositorySupport
+                .findOne(id);
+
+        Likes likes = Likes
+                .builder()
+                .user(user)
+                .photocard(photocard)
+                .build();
+
+        photocardRepositorySupport.likesSave(likes);
+        return;
+    }
+
+
 }
