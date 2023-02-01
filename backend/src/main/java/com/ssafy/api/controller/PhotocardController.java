@@ -39,12 +39,15 @@ public class PhotocardController {
 
     }
 
+
+
     @GetMapping("/list")
-    @ApiOperation(value = "포토카드 리스트", notes = "limit는 가져올 갯수, offset은 시작 위치(0부터 시작), count는 총 개수")
+    @ApiOperation(value = "포토카드 리스트", notes = "limit는 가져올 갯수, offset은 시작 위치(0부터 시작), count는 총 개수," +
+            " likes_count는 해당 포토카드의 좋아요 총개수, likes_check는 true면 내가 좋아요 누른 포토카드이고 false면 안누른 포토카드")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공")
     })
-    public ResponseEntity<?> photocardList(@RequestParam int offset, @RequestParam int limit){
+    public ResponseEntity<?> photocardList(@RequestParam int offset, @RequestParam int limit, @RequestParam String email){
 
         List<Photocard> photocardList =
                 photocardService
@@ -53,7 +56,9 @@ public class PhotocardController {
         List<PhotocardListGetRes> photocardListGetResList =
                 photocardList
                         .stream()
-                        .map(p -> new PhotocardListGetRes(p))
+                        .map(p -> new PhotocardListGetRes(p,
+                                photocardService.likesCount(p),
+                                photocardService.likesCheck(email, p.getId())))
                         .collect(Collectors.toList());
 
         Long photocardCount = photocardService.photocardCount();
