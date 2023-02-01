@@ -1,7 +1,9 @@
 package com.ssafy.db.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssafy.db.entity.board.Likes;
 import com.ssafy.db.entity.board.Photocard;
+import com.ssafy.db.entity.board.QLikes;
 import com.ssafy.db.entity.board.QPhotocard;
 import com.ssafy.db.entity.lesson.Lesson;
 import com.ssafy.db.entity.lesson.QLesson;
@@ -25,6 +27,8 @@ public class PhotocardRepositorySupport {
     QLesson qLesson = QLesson.lesson;
 
     QUser qUser = QUser.user;
+
+    QLikes qLikes = QLikes.likes;
 
     public void save(Photocard photocard) { em.persist(photocard); }
 
@@ -54,6 +58,23 @@ public class PhotocardRepositorySupport {
         return jpaQueryFactory
                 .select(qPhotocard.count())
                 .from(qPhotocard)
+                .fetchOne();
+    }
+
+    public Long likesCount(Long id){
+        return jpaQueryFactory
+                .select(qLikes.count())
+                .from(qLikes)
+                .where(qLikes.photocard.id.eq(id))
+                .fetchOne();
+    };
+
+    public Likes likesCheck(Long photocard_id, Long user_id){
+        return jpaQueryFactory
+                .select(qLikes)
+                .from(qLikes)
+                .where(qLikes.user.id.eq(user_id),
+                        qLikes.photocard.id.eq(photocard_id))
                 .fetchOne();
     }
 
