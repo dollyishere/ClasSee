@@ -39,6 +39,18 @@ public class PhotocardController {
 
     }
 
+    @PostMapping("/likes")
+    @ApiOperation(value = "좋아요 등록", notes = "좋아요를 누른 사용자 email, 포토카드 id를 입력 받아 좋아요 등록")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공")
+    })
+    public ResponseEntity<? extends BaseResponseBody> registLikes(@RequestParam String email, @RequestParam Long id) {
+
+        photocardService.createLikes(email, id);
+
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"성공"));
+
+    }
 
 
     @GetMapping("/list")
