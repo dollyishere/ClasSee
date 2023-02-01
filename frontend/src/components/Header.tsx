@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import { Button } from '@mui/material';
 
-import logo from '../assets/logo.png';
+import logo from '../assets/logo2.png';
 
 const Header = () => {
   const searchbarRef = useRef(null); // 검색창을 접근/제어하기 위한 hook
