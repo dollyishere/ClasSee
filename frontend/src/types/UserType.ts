@@ -5,6 +5,7 @@ export interface SignUpRequest {
   nickname: string;
   address: string;
   phone: string;
+  salt: string;
 }
 
 export interface SignUpResponse {
