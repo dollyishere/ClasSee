@@ -1,6 +1,7 @@
 package com.ssafy.api.service;
 
 import com.ssafy.api.request.PhotocardRegistPostReq;
+import com.ssafy.db.entity.board.Likes;
 import com.ssafy.db.entity.board.Photocard;
 import com.ssafy.db.entity.lesson.Lesson;
 import com.ssafy.db.entity.user.User;
@@ -58,33 +59,28 @@ public class PhotocardServiceImpl implements PhotocardService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Photocard> readPhotocardList(int offset, int limit, String email) {
-
-        User user = userRepositorySupport
-                .findUserByAuth(email)
-                .get();
+    public List<Photocard> readPhotocardList(int offset, int limit) {
 
         return photocardRepositorySupport
-                .findList(offset, limit, user.getId());
+                .findList(offset, limit);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Long photocardCount(String email) {
+    public Long photocardCount() {
 
-        User user = userRepositorySupport
-                .findUserByAuth(email).get();
-
-        Long user_id = user.getId();
-
-        return photocardRepositorySupport.photocardCount(user_id);
+        return photocardRepositorySupport.photocardCount();
     }
 
     @Override
     public void deletePhotocard(String email, Long id) {
-        User user = userRepositorySupport
-                .findUserByAuth(email)
-                .get();
+        User user = User.builder().build();
+
+        if(userRepositorySupport.findUserByAuth(email).isPresent()){
+            user = userRepositorySupport.findUserByAuth(email).get();
+        } else{
+            user = userRepositorySupport.findUserByAuth(email).orElse(null);
+        }
 
         Photocard photocard = photocardRepositorySupport
                 .findOne(id);
@@ -92,4 +88,56 @@ public class PhotocardServiceImpl implements PhotocardService {
         photocardRepositorySupport.delete(photocard);
 
     }
+
+    @Override
+    public Long likesCount(Photocard photocard) {
+
+        Long id = photocard.getId();
+
+        return photocardRepositorySupport
+                .likesCount(id);
+    }
+
+    @Override
+    public Boolean likesCheck(String email, Long id) {
+        Long user_id = userRepositorySupport.findId(email);
+
+        if(photocardRepositorySupport.likesCheck(id, user_id) == null){
+            return false;
+        } else{
+            return true;
+        }
+    }
+
+    @Override
+    public void createLikes(String email, Long id) {
+        User user = userRepositorySupport
+                .findUserByAuth(email)
+                .get();
+
+        Photocard photocard = photocardRepositorySupport
+                .findOne(id);
+
+        Likes likes = Likes
+                .builder()
+                .user(user)
+                .photocard(photocard)
+                .build();
+
+        photocardRepositorySupport.saveLikes(likes);
+        return;
+    }
+
+    @Override
+    public void deleteLikes(String email, Long id) {
+        Long user_id = userRepositorySupport.findId(email);
+
+        Likes likes = photocardRepositorySupport.findOneLikes(user_id, id);
+
+
+        photocardRepositorySupport.deleteLikes(likes);
+        return;
+    }
+
+
 }

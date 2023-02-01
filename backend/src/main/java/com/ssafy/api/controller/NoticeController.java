@@ -29,8 +29,7 @@ import java.util.stream.Collectors;
     @PostMapping()
     @ApiOperation(value = "공지사항 등록", notes = "작성자 이메일, 제목, 내용으로 권한 확인 후 공지사항 작성")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "success"),
-            @ApiResponse(code = 401, message = "invalid"),
+            @ApiResponse(code = 200, message = "success")
     })
     public ResponseEntity<? extends BaseResponseBody> registNotice(@RequestBody NoticeRegisterPostReq noticeRegisterPostReq) {
 
@@ -42,8 +41,7 @@ import java.util.stream.Collectors;
     @DeleteMapping()
     @ApiOperation(value = "공지사항 삭제", notes = "사용자 이메일로 권한 확인 후, id로 해당 공지 삭제")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "success"),
-            @ApiResponse(code = 401, message = "invalid")
+            @ApiResponse(code = 200, message = "success")
     })
     public ResponseEntity<? extends BaseResponseBody> deleteNotice(@RequestParam String email, @RequestParam Long id){
 
@@ -89,8 +87,7 @@ import java.util.stream.Collectors;
     @PutMapping()
     @ApiOperation(value = "공지사항 수정", notes = "유저 권한 확인 후 수정")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "success"),
-            @ApiResponse(code = 401, message = "invalid")
+            @ApiResponse(code = 200, message = "success")
     })
     public ResponseEntity<?> noticeUpdate(@RequestBody NoticeUpdatePutReq noticeUpdatePutReq){
 

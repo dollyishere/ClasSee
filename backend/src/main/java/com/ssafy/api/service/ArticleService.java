@@ -13,6 +13,6 @@ public interface ArticleService {
     List<Article> readArticleList(int offset, int limit);
     Long articleCount();
     void updateArticle(ArticleUpdatePutReq articleUpdatePutReq);
-    void deleteArticle(String email, Long id);
+    void deleteArticle(Long id);
 
 }

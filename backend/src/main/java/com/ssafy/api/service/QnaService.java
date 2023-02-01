@@ -11,7 +11,7 @@ public interface QnaService {
 
     void createQna(QnaRegisterPostReq qnaRegisterPostReq);
 
-    void deleteQna(String email, Long id);
+    void deleteQna(Long id);
 
     Qna readQna(Long id);
 

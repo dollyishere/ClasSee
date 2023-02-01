@@ -44,13 +44,12 @@ public class QnaController {
     @DeleteMapping()
     @ApiOperation(value = "Qna 삭제", notes = "Qna 아이디와 로그인한 사람의 이메일을 받아, 비교한 뒤 삭제")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "success"),
-            @ApiResponse(code = 401, message = "invalid")
+            @ApiResponse(code = 200, message = "success")
     })
-    public ResponseEntity<? extends BaseResponseBody> deleteQna(@RequestParam String email, @RequestParam Long id) {
+    public ResponseEntity<? extends BaseResponseBody> deleteQna(@RequestParam Long id) {
 
 
-        qnaService.deleteQna(email, id);
+        qnaService.deleteQna(id);
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success"));
     }
@@ -92,8 +91,7 @@ public class QnaController {
     @PutMapping()
     @ApiOperation(value = "qna 수정", notes = "내가 한 qna 수정")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "success"),
-            @ApiResponse(code = 401, message = "invalid")
+            @ApiResponse(code = 200, message = "success")
     })
     public ResponseEntity<? extends BaseResponseBody> updateQna(@RequestBody QnaUpdatePutReq qnaUpdatePutReq) {
 
@@ -102,7 +100,5 @@ public class QnaController {
         return ResponseEntity.status(200).body(BaseResponseBody.of(200,"success"));
 
     }
-
-
 
 }

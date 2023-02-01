@@ -39,8 +39,23 @@ public class PhotocardController {
 
     }
 
+    @PostMapping("/likes")
+    @ApiOperation(value = "좋아요 등록", notes = "좋아요를 누른 사용자 email, 포토카드 id를 입력 받아 좋아요 등록")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공")
+    })
+    public ResponseEntity<? extends BaseResponseBody> registLikes(@RequestParam String email, @RequestParam Long id) {
+
+        photocardService.createLikes(email, id);
+
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"성공"));
+
+    }
+
+
     @GetMapping("/list")
-    @ApiOperation(value = "포토카드 리스트", notes = "limit는 가져올 갯수, offset은 시작 위치(0부터 시작), count는 총 개수")
+    @ApiOperation(value = "포토카드 리스트", notes = "limit는 가져올 갯수, offset은 시작 위치(0부터 시작), count는 총 개수," +
+            " likes_count는 해당 포토카드의 좋아요 총개수, likes_check는 true면 내가 좋아요 누른 포토카드이고 false면 안누른 포토카드")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공")
     })
@@ -48,19 +63,21 @@ public class PhotocardController {
 
         List<Photocard> photocardList =
                 photocardService
-                .readPhotocardList(offset, limit, email);
+                .readPhotocardList(offset, limit);
 
         List<PhotocardListGetRes> photocardListGetResList =
                 photocardList
                         .stream()
-                        .map(p -> new PhotocardListGetRes(p))
+                        .map(p -> new PhotocardListGetRes(p,
+                                photocardService.likesCount(p),
+                                photocardService.likesCheck(email, p.getId())))
                         .collect(Collectors.toList());
 
-        Long phtocardCount = photocardService.photocardCount(email);
+        Long photocardCount = photocardService.photocardCount();
 
         PageGetRes photocardPage = new PageGetRes();
 
-        photocardPage.setCount(phtocardCount);
+        photocardPage.setCount(photocardCount);
         photocardPage.setPage(photocardListGetResList);
 
         return ResponseEntity.status(200).body(photocardPage);
@@ -69,10 +86,21 @@ public class PhotocardController {
     @DeleteMapping()
     @ApiOperation(value = "포토 카드 삭제", notes = "포토 카드 id를 입력 받아 삭제")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "success"),
-            @ApiResponse(code = 401, message = "invalid")
+            @ApiResponse(code = 200, message = "success")
     })
     public ResponseEntity<? extends BaseResponseBody> deletePhotocard(@RequestParam String email, @RequestParam Long id) {
+
+        photocardService.deletePhotocard(email, id);
+
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success"));
+    }
+
+    @DeleteMapping("/likes")
+    @ApiOperation(value = "좋아요 취소", notes = "좋아요를 취소할 사용자 email, 포토카드 id를 입력 받아 좋아요 취소(삭제)")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "success")
+    })
+    public ResponseEntity<? extends BaseResponseBody> deleteLikes(@RequestParam String email, @RequestParam Long id) {
 
         photocardService.deletePhotocard(email, id);
 

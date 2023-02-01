@@ -41,14 +41,13 @@ public class ArticleController {
     }
 
     @DeleteMapping()
-    @ApiOperation(value = "게시글 삭제", notes = "삭제하려는 사람과 게시글 아이디를 받아, 권한이 있는지 확인 후 삭제")
+    @ApiOperation(value = "게시글 삭제", notes = "게시글 ID로 삭제")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "success"),
-            @ApiResponse(code = 401, message = "invalid")
+            @ApiResponse(code = 200, message = "success")
     })
-    public ResponseEntity<? extends BaseResponseBody> deleteArticle(@RequestParam String email, @RequestParam Long id) {
+    public ResponseEntity<? extends BaseResponseBody> deleteArticle(@RequestParam Long id) {
 
-            articleService.deleteArticle(email, id);
+            articleService.deleteArticle(id);
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200,"success"));
 
@@ -68,24 +67,6 @@ public class ArticleController {
 
     }
 
-    @GetMapping("/check")
-    @ApiOperation(value = "사용자 동일 체크", notes = "게시글id의 작성자와 로그인된 사용자가 같은 지 확인")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "success"),
-            @ApiResponse(code = 401, message =  "invalid")
-    })
-    public ResponseEntity<Boolean> checkUser(@RequestParam String email, @RequestParam Long id){
-
-        Article article = articleService.readArticle(id);
-        ArticleInfoGetRes articleInfoGetRes = new ArticleInfoGetRes(article);
-
-        if(articleInfoGetRes.getUser_email().equals(email)){
-            return ResponseEntity.status(200).body(true);
-        } else{
-            return ResponseEntity.status(401).body(false);
-        }
-
-    }
 
     @GetMapping("/list")
     @ApiOperation(value = "게시글 목록 조회", notes = "limit는 가져올 갯수, offset은 시작 위치(0부터 시작), count는 총 개수")
@@ -109,10 +90,9 @@ public class ArticleController {
     }
 
     @PutMapping()
-    @ApiOperation(value = "게시글 수정", notes = "유저 email을 받아, 정보가 같으면 수정")
+    @ApiOperation(value = "게시글 수정", notes = "게시글 수정 내용을 받아 수정")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "success"),
-            @ApiResponse(code = 401, message = "invalid")
+            @ApiResponse(code = 200, message = "success")
     })
     public ResponseEntity<?> updateArticle(@RequestBody ArticleUpdatePutReq articleUpdatePutReq){
 
