@@ -1,18 +1,21 @@
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 
 import { SignUpRequest, SignUpResponse } from '../types/UserType';
 
 const UserApi = () => {
   // 회원가입 함수
-  const doSignUp = (signupRequestBody: SignUpRequest) => {
-    axios
-      .post<SignUpResponse>(
+  const doSignUp = async (signupRequestBody: SignUpRequest) => {
+    try {
+      const response = await axios.post<SignUpResponse>(
         `${process.env.REACT_APP_SERVER_URI}/api/v1/users`,
         signupRequestBody,
-      )
-      .then((res) => {
-        console.log(res.data);
-      });
+      );
+
+      return response.data.message;
+    } catch (error: any) {
+      console.error(error);
+    }
+    return null;
   };
 
   const doEmailDuplicationCheck = async (email: string) => {
