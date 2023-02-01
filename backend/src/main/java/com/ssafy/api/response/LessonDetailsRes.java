@@ -36,6 +36,7 @@ public class LessonDetailsRes extends BaseResponseBody {
     String cklsDescription;
 
     Long kitPrice;
+    String kitDescription;
     String category;
     Long runningtime;
     String userName;

@@ -114,6 +114,7 @@ public class LessonServiceImpl implements LessonService {
                 .lessonName(lesson.getName())
                 .cklsDescription(lesson.getCklsDescription())
                 .kitPrice(lesson.getKitPrice())
+                .kitDescription(lesson.getKitDescription())
                 .category(lesson.getCategory())
                 .runningtime(lesson.getRunningtime())
                 .userName(teacher.getName())
