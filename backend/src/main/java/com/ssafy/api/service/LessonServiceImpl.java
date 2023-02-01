@@ -102,7 +102,6 @@ public class LessonServiceImpl implements LessonService {
 
         List<Curriculum> curriculums = lessonRepositorySupport.findCurriculumByLesson(lessonId);
         List<Checklist> checklists = lessonRepositorySupport.findCheckListByLesson(lessonId);
-        List<OpenLesson> openLessons = lessonRepositorySupport.findScheduleByLesson(lessonId);
         List<Pamphlet> pamphlets = lessonRepositorySupport.findPamphletByLesson(lessonId);
         double score = lessonRepositorySupport.setLessonAvgScore(lesson);
         Long isBookmarked = bookmarkRepository.isBookmarked(userId, lessonId);
@@ -117,7 +116,6 @@ public class LessonServiceImpl implements LessonService {
                 .userDesciption(teacher.getDescription())
                 .profileImg(teacher.getImg())
                 .curriculums(curriculums)
-                .openLessons(openLessons)
                 .checkLists(checklists)
                 .pamphlets(pamphlets)
                 .score(score)

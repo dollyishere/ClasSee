@@ -40,6 +40,4 @@ public class Orders {
     @JoinColumn(name = "open_lesson_id")
     private OpenLesson openLesson;
 
-    @OneToMany(mappedBy = "orders")
-    private List<OrdersDetail> ordersDetailList = new ArrayList<>();
 }
