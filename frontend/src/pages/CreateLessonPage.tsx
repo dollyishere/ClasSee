@@ -1,4 +1,5 @@
 import React, { useState, useRef, useMemo, createContext, useContext } from 'react';
+import { useNavigate as navigate } from 'react-router-dom';
 
 import '../styles/pages/_create-lesson-page.scss';
 
@@ -10,6 +11,10 @@ import StepThree from '../components/create-lesson-steps/StepThree';
 import StepFour from '../components/create-lesson-steps/StepFour';
 import StepFive from '../components/create-lesson-steps/StepFive';
 import StepSix from '../components/create-lesson-steps/StepSix';
+
+import CreateLessonModel from '../viewmodels/CreateLessonModel';
+
+import { CheckListType, CurriculumType, PamphletType, CreateLessonRequest } from '../types/CreateLessonType';
 
 const CreateLessonPage = () => {
   // component 전환의 기준이 되는 selectedComponent를 useState로 생성(기본값 1)
@@ -29,9 +34,73 @@ const CreateLessonPage = () => {
   const [curriListState, setCurriListState] = useState<string[]>([]);
   const [maximumState, setMaximumState] = useState<number>(0);
   const [runningtimeState, setRunningtimeState] = useState<number>(0);
-  // Step6의 기본 요금, 옵션 추가 시 요금을 담기 위한 basicPriceState, kitPriceState 생성
+  // Step6의 기본 요금, 옵션 추가 시 설명과 요금을 담기 위한 basicPriceState, kitDescState, kitPriceState 생성
   const [basicPriceState, setBasicPriceState] = useState<number>(0);
+  const [kitDescState, setKitDescState] = useState<string>('');
   const [kitPriceState, setKitPriceState] = useState<number>(0);
+
+  const { createLesson } = CreateLessonModel();
+
+  const handleCreateLessonSubmit = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    if (kitPriceState === 0) {
+      setKitDescState('');
+    }
+    if (
+      lessonNameState !== '' &&
+      categorySelectState !== '' &&
+      // lessonImgListState.length !== 0 &&
+      // lessonDescState !== '' &&
+      // materialImgListState.length !== 0 &&
+      // materialDescState !== '' &&
+      curriListState.length !== 0 &&
+      maximumState !== 0 &&
+      // runningtimeState !== 0 &&
+      basicPriceState !== 0
+      // kitPriceState !== 0
+    ) {
+      const checkList: CheckListType[] = lessonImgListState.map((lessonImg: string) => {
+        return {
+          img: lessonImg,
+        };
+      });
+      const curriculumList: CurriculumType[] = curriListState.map((curriculum: string, id: number) => {
+        return {
+          stage: id,
+          description: curriculum,
+        };
+      });
+      const pamphletList: PamphletType[] = materialImgListState.map((materialImg: string) => {
+        return {
+          img: materialImg as string,
+        };
+      });
+
+      const createLessonRequestBody: CreateLessonRequest = {
+        category: categorySelectState,
+        checkList: checkList as CheckListType[],
+        cklsDescription: materialDescState,
+        curriculumList: curriculumList as CurriculumType[],
+        description: lessonDescState,
+        email: 'test1234@gmail.com',
+        kitDescription: kitDescState,
+        kitPrice: kitPriceState,
+        maximum: maximumState,
+        name: lessonNameState,
+        pamphletList: pamphletList as PamphletType[],
+        price: basicPriceState,
+        runningtime: runningtimeState,
+      };
+
+      const res = await createLesson(createLessonRequestBody);
+      console.log(res);
+      // if (res === 'Success') {
+      //   alert('강의가 등록되었습니다.');
+      //   // navigate('/');
+      // }
+    } else {
+      alert('필수 입력값을 모두 입력해주십시오');
+    }
+  };
 
   return (
     <div className="container">
@@ -78,6 +147,8 @@ const CreateLessonPage = () => {
           <StepSix
             basicPriceState={basicPriceState}
             setBasicPriceState={setBasicPriceState}
+            kitDescState={kitDescState}
+            setKitDescState={setKitDescState}
             kitPriceState={kitPriceState}
             setKitPriceState={setKitPriceState}
           />
@@ -95,7 +166,7 @@ const CreateLessonPage = () => {
           {/* 반대로 다음 단계 버튼의 경우, selectedComponent의 값이 6이라면 다음 단계 대신 강의 생성 버튼을 보이도록 함 */}
           {/* 마찬가지로 다음 단계 버튼의 경우 누를 때마다 selectedComponent 값을 1씩 증가시켜 재렌더링을 유도함 */}
           {selectedComponent === 6 ? (
-            <Button type="button" variant="contained">
+            <Button type="button" variant="contained" onClick={handleCreateLessonSubmit}>
               강의 생성
             </Button>
           ) : (

@@ -22,6 +22,8 @@ export interface StepFiveProps {
 export interface StepSixProps {
   basicPriceState: number;
   setBasicPriceState: React.Dispatch<React.SetStateAction<number>>;
+  kitDescState: string;
+  setKitDescState: React.Dispatch<React.SetStateAction<string>>;
   kitPriceState: number;
   setKitPriceState: React.Dispatch<React.SetStateAction<number>>;
 }
@@ -40,4 +42,44 @@ export interface MaterialDescProps {
 export interface CategoryProps {
   categorySelectState: string;
   setCategorySelectState: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export interface ChangeComponentProps {
+  selectedComponentState: number;
+  setSelectedComponentState: React.Dispatch<React.SetStateAction<number>>;
+  handleCreateLessonSubmit: (event: React.MouseEvent<HTMLButtonElement>) => void;
+}
+
+export interface CheckListType {
+  img: string;
+}
+
+export interface CurriculumType {
+  stage: number;
+  description: string;
+}
+
+export interface PamphletType {
+  img: string;
+}
+
+export interface CreateLessonRequest {
+  category: string;
+  checkList: CheckListType[];
+  cklsDescription: string;
+  curriculumList: CurriculumType[];
+  description: string;
+  email: string;
+  kitDescription: string;
+  kitPrice: number;
+  maximum: number;
+  name: string;
+  pamphletList: PamphletType[];
+  price: number;
+  runningtime: number;
+}
+
+export interface CreateLessonResponse {
+  message: string;
+  statusCode: number;
 }

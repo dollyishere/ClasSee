@@ -7,19 +7,40 @@ import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 
 import { StepSixProps } from '../../types/CreateLessonType';
 
-const StepFive = ({ basicPriceState, setBasicPriceState, kitPriceState, setKitPriceState }: StepSixProps) => {
+const StepFive = ({
+  basicPriceState,
+  setBasicPriceState,
+  kitDescState,
+  setKitDescState,
+  kitPriceState,
+  setKitPriceState,
+}: StepSixProps) => {
   // option input form이 보이는지 여부를 결정할 inputVisiable 변수를 useState로 생성
   const [inputVisiable, setInputVisiable] = useState(false);
 
   // 기본 강의 가격(basicPriceState)을 해당하는 input 내부 값이 바뀔 때마다 setBasicPriceState로 함께 변경되게 함
   // 이때 input의 기본 value는 string이므로, parseInt를 사용하여 number로 바꿔줌
+  // NaN 방지를 위해, 해당 값 입력 시 0으로 자동으로 변환되도록 함
   const handleInputBasicPrice = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setBasicPriceState(parseInt(e.target.value, 10) as number);
+    if (Number.isNaN(parseInt(e.target.value, 10) as number)) {
+      setBasicPriceState(0);
+    } else {
+      setBasicPriceState(parseInt(e.target.value, 10) as number);
+    }
+  };
+
+  const handleInputKitDesc = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setKitDescState(e.target.value);
   };
 
   // basicPriceState와 같은 로직으로 kitPriceState의 값도 변동되도록 코드를 구성해줌
+  // NaN 방지를 위해, 해당 값 입력 시 0으로 자동으로 변환되도록 함
   const handleInputKitPrice = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setKitPriceState(parseInt(e.target.value, 10) as number);
+    if (Number.isNaN(parseInt(e.target.value, 10) as number)) {
+      setKitPriceState(0);
+    } else {
+      setKitPriceState(parseInt(e.target.value, 10) as number);
+    }
   };
 
   // 만약 삭제 버튼을 누를 시, 다시 추가 버튼이 보이도록 inputVisiable 값을 false로 바꿔줌
@@ -27,6 +48,7 @@ const StepFive = ({ basicPriceState, setBasicPriceState, kitPriceState, setKitPr
   const deleteBtn = () => {
     setInputVisiable(false);
     setKitPriceState(0);
+    setKitDescState('');
   };
 
   return (
@@ -58,7 +80,7 @@ const StepFive = ({ basicPriceState, setBasicPriceState, kitPriceState, setKitPr
         </Box>
       ) : (
         <label htmlFor="option">
-          키트
+          <h5>키트</h5>
           <input
             type="number"
             id="option"
@@ -69,6 +91,18 @@ const StepFive = ({ basicPriceState, setBasicPriceState, kitPriceState, setKitPr
             onChange={handleInputKitPrice}
           />
           원{/* 만약 아래 삭제 버튼을 누를 시, 추가한 키트 가격이 초기화되고 및 입력 input이 보이지 않게 됨 */}
+          <br />
+          {kitPriceState !== 0 ? (
+            <textarea
+              cols={30}
+              rows={10}
+              id="option"
+              placeholder="키트에 대한 설명을 입력해주세요."
+              value={kitDescState}
+              onChange={handleInputKitDesc}
+            />
+          ) : null}
+          <br />
           <RemoveCircleOutlineIcon type="button" onClick={deleteBtn} />
         </label>
       )}

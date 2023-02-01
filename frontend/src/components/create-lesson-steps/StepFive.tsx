@@ -20,14 +20,26 @@ const StepFive = ({
   // type은 HTMLInputElement로 지정해줌
   const curriRef = useRef<HTMLInputElement>(null);
   // option input form이 보이는지 여부를 결정할 inputVisiable 변수를 useState로 생성
-  const [inputVisiable, setInputVisiable] = useState(true);
+  const [inputVisiable, setInputVisiable] = useState(false);
 
+  // 기본 강의 가격(setMaximumState)을 해당하는 input 내부 값이 바뀔 때마다 setMaximumState로 함께 변경되게 함
+  // 이때 input의 기본 value는 string이므로, parseInt를 사용하여 number로 바꿔줌
+  // NaN 방지를 위해, 해당 값 입력 시 0으로 자동으로 변환되도록 함
   const handleInputMaximum = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setMaximumState(parseInt(e.target.value, 10) as number);
+    if (Number.isNaN(parseInt(e.target.value, 10) as number)) {
+      setMaximumState(0);
+    } else {
+      setMaximumState(parseInt(e.target.value, 10) as number);
+    }
   };
 
+  // 위와 동일하게 로직을 구성함
   const handleInputRunningtime = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setRunningtimeState(parseFloat(e.target.value) as number);
+    if (Number.isNaN(parseInt(e.target.value, 10) as number)) {
+      setRunningtimeState(0);
+    } else {
+      setRunningtimeState(parseInt(e.target.value, 10) as number);
+    }
   };
 
   // stage input form이 submit되었을 때 실행될 이벤트인 onCurriSubmit을 제작함
@@ -51,6 +63,7 @@ const StepFive = ({
         // 만약 값을 입력하지 않았을 시, 값을 입력해달라는 메세지를 출력함
         console.log('값을 입력해 주세요.');
       }
+      console.log(inputVisiable);
     }
   };
 
@@ -76,9 +89,9 @@ const StepFive = ({
         </ul>
       ) : null}
       <hr />
-      {/* inputVisiable이 true라면, 커리큘럼을 추가하는 것이 가능함(input 태그가 보임) */}
+      {/* inputVisiable이 true거나 아직 curriListState에 아무 값도 없다면, 커리큘럼을 추가하는 것이 가능함(input 태그가 보임) */}
       {/* 만약 curriListState.length가 0이라면(현재 추가된 커리큘럼이 하나도 없다면), 그 때도 input 태그는 자동으로 보임 */}
-      {curriListState.length === 0 || inputVisiable ? (
+      {inputVisiable || curriListState.length === 0 ? (
         <form onSubmit={onCurriSubmit}>
           <h3>Stage {curriListState.length + 1}.</h3>
           <input ref={curriRef} type="text" placeholder="커리큘럼을 단계별로 입력해주세요" required />
@@ -109,13 +122,13 @@ const StepFive = ({
         명
       </label>
       {/* 예상 강의 시간을 입력하는 input 태그임 */}
-      {/* 마찬가지로 최저값 0, 최대값 1로 대신 step을 0.5, 즉 30분 단위로 지정함(만약 시와 분을 분리시켜야 한다면 로직 변경) */}
+      {/* 마찬가지로 최저값 0, 최대값 1로 지정 */}
       <label htmlFor="time_of_lesson">
         <input
           id="time_of_lesson"
           type="number"
           placeholder="예상 강의 시간"
-          step={0.5}
+          step={0}
           min={0}
           max={10}
           value={runningtimeState}
