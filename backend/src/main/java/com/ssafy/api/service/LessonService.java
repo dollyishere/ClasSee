@@ -1,7 +1,6 @@
 package com.ssafy.api.service;
 
 import com.ssafy.api.dto.LessonInfoDto;
-import com.ssafy.api.request.LessonScheduleRegisterPostReq;
 import com.ssafy.api.response.LessonDetailsRes;
 import com.ssafy.db.entity.lesson.Lesson;
 import com.ssafy.db.entity.lesson.OpenLesson;
@@ -19,5 +18,5 @@ public interface LessonService {
 
     void createSchedule(OpenLesson requestInfo) throws Exception;
 
-    LessonDetailsRes getLessonDetails(Long lessonId);
+    LessonDetailsRes getLessonDetails(Long lessonId, String email);
 }

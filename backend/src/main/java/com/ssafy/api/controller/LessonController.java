@@ -2,24 +2,15 @@ package com.ssafy.api.controller;
 
 import com.ssafy.api.request.LessonRegisterPostReq;
 import com.ssafy.api.request.LessonScheduleRegisterPostReq;
-import com.ssafy.api.request.UserRegisterPostReq;
 import com.ssafy.api.response.LessonDetailsRes;
-import com.ssafy.api.response.UserInfoGetRes;
 import com.ssafy.api.service.LessonService;
 import com.ssafy.api.service.UserService;
 import com.ssafy.common.model.response.BaseResponseBody;
-import com.ssafy.db.entity.lesson.Checklist;
-import com.ssafy.db.entity.lesson.Curriculum;
-import com.ssafy.db.entity.lesson.Lesson;
 import com.ssafy.db.entity.user.User;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 유저 관련 API 요청 처리를 위한 컨트롤러 정의.
@@ -87,7 +78,7 @@ public class LessonController {
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "SUCCESS"));
     }
 
-    @GetMapping("/details")
+    @GetMapping("/details/{lessonId}")
     @ApiOperation(value = "강의 상세 화면", notes = "강의정보, 강사정보, 강의 일정 정보를 반환한다")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
@@ -95,8 +86,8 @@ public class LessonController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends BaseResponseBody> getLessonDetails(@RequestParam Long lessonId) {
-        LessonDetailsRes lessonDetailsRes = lessonService.getLessonDetails(lessonId);
+    public ResponseEntity<? extends BaseResponseBody> getLessonDetails(@PathVariable Long lessonId, @RequestParam String email) {
+        LessonDetailsRes lessonDetailsRes = lessonService.getLessonDetails(lessonId, email);
 
         return ResponseEntity.status(200).body(LessonDetailsRes.of(200, "SUCCESS", lessonDetailsRes));
     }
