@@ -15,7 +15,7 @@ import java.util.Map;
 public interface LessonService {
     void createLesson(Map<String, Object> lessonInfo);
 
-    List<LessonListGetRes> setLessonProfileImgAndScore(List<Lesson> lessonList);
+    List<LessonListGetRes> setLessonProperty(List<Lesson> lessonList);
 
     void createSchedule(OpenLesson requestInfo) throws Exception;
 

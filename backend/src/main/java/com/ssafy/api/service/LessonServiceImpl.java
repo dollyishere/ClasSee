@@ -64,7 +64,7 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public List<LessonListGetRes> setLessonProfileImgAndScore(List<Lesson> lessonList) {
+    public List<LessonListGetRes> setLessonProperty(List<Lesson> lessonList) {
         List<LessonListGetRes> getLessonList = new ArrayList<>();
         // 강의 목록에 대표 이미지랑, 별점 평균 세팅해주기
         lessonList.forEach((lesson) -> {
