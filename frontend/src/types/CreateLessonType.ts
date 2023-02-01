@@ -1,43 +1,43 @@
 export interface StepOneProps {
-  lessonName: string;
-  setLessonName: React.Dispatch<React.SetStateAction<string>>;
-  categorySelect: string;
-  setCategorySelect: React.Dispatch<React.SetStateAction<string>>;
+  lessonNameState: string;
+  setLessonNameState: React.Dispatch<React.SetStateAction<string>>;
+  categorySelectState: string;
+  setCategorySelectState: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export interface StepThreeProps {
-  lessonDescription: string;
-  setLessonDescription: React.Dispatch<React.SetStateAction<string>>;
+  lessonDescState: string;
+  setLessonDescState: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export interface StepFiveProps {
-  curriculumList: string[];
-  setCurriculumList: React.Dispatch<React.SetStateAction<string[]>>;
-  maximum: number;
-  setMaximum: React.Dispatch<React.SetStateAction<number>>;
-  runningtime: number;
-  setRunningtime: React.Dispatch<React.SetStateAction<number>>;
+  curriListState: string[];
+  setCurriListState: React.Dispatch<React.SetStateAction<string[]>>;
+  maximumState: number;
+  setMaximumState: React.Dispatch<React.SetStateAction<number>>;
+  runningtimeState: number;
+  setRunningtimeState: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export interface StepSixProps {
-  basicPrice: number;
-  setBasicPrice: React.Dispatch<React.SetStateAction<number>>;
-  kitPrice: number;
-  setKitPrice: React.Dispatch<React.SetStateAction<number>>;
+  basicPriceState: number;
+  setBasicPriceState: React.Dispatch<React.SetStateAction<number>>;
+  kitPriceState: number;
+  setKitPriceState: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export interface ImageUploadProps {
   limitNumber: number;
-  imgSrcList: string[];
-  setImgSrcList: React.Dispatch<React.SetStateAction<string[]>>;
+  imgSrcListState: string[];
+  setImgSrcListState: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-export interface MaterialDescriptionProps {
-  materialDescription: string;
-  setMaterialDescription: React.Dispatch<React.SetStateAction<string>>;
+export interface MaterialDescProps {
+  materialDescState: string;
+  setMaterialDescState: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export interface CategoryProps {
-  categorySelect: string;
-  setCategorySelect: React.Dispatch<React.SetStateAction<string>>;
+  categorySelectState: string;
+  setCategorySelectState: React.Dispatch<React.SetStateAction<string>>;
 }

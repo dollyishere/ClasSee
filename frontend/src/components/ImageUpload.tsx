@@ -7,7 +7,7 @@ import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 // 부모 컴포넌트 측에서 전달한 Props의 type을 지정함
 import { ImageUploadProps } from '../types/CreateLessonType';
 
-const ImageUpload = ({ limitNumber, imgSrcList, setImgSrcList }: ImageUploadProps) => {
+const ImageUpload = ({ limitNumber, imgSrcListState, setImgSrcListState }: ImageUploadProps) => {
   const fileRef = useRef<HTMLInputElement>(null);
 
   // 만약 사용자가 이미지를 input을 통해 추가했을 시, 이하 함수 실행
@@ -40,34 +40,34 @@ const ImageUpload = ({ limitNumber, imgSrcList, setImgSrcList }: ImageUploadProp
       fileReader.onload = (event: ProgressEvent<FileReader>) => {
         // 파일을 읽은 결과물을 result에 할당함
         const result = event?.target?.result as string;
-        // result를 setImgSrcList를 이용해 imgSrcList에 추가함
-        setImgSrcList([...imgSrcList, result]);
+        // result를 setImgSrcListState를 이용해 imgSrcList에 추가함
+        setImgSrcListState([...imgSrcListState, result]);
       };
     }
   };
 
-  // 마이너스 버튼 클릭 시, 해당하는 이미지는 imgSrcList 내에서 삭제됨
+  // 마이너스 버튼 클릭 시, 해당하는 이미지는 imgSrcListState 내에서 삭제됨
   const handleDeleteImage = (id: number) => {
-    setImgSrcList(imgSrcList.filter((_, index) => index !== id));
+    setImgSrcListState(imgSrcListState.filter((_, index) => index !== id));
   };
 
   return (
     <div>
       <div className="img__container">
         {/* 저장해둔 이미지들을 map을 통해 순회하면서 화면에 이미지 출력 */}
-        {imgSrcList.map((image: string, id: number) => (
+        {imgSrcListState.map((image: string, id: number) => (
           <div>
             <img className="img__item" src={image} alt={`${image}-${id}`} />
             <RemoveCircleOutlineIcon className="img__delete" onClick={() => handleDeleteImage(id)} />
           </div>
         ))}
-        {/* 만약 imgSrcList의 길이가 limitNumber에서 지정된 값 이상이라면, 더 이상 이미지를 추가할 수 없도록 버튼을 숨김 */}
-        {imgSrcList.length < limitNumber ? (
+        {/* 만약 imgSrcListState의 길이가 limitNumber에서 지정된 값 이상이라면, 더 이상 이미지를 추가할 수 없도록 버튼을 숨김 */}
+        {imgSrcListState.length < limitNumber ? (
           <label htmlFor="input-file" className="img-upload__label">
             <input hidden type="file" id="input-file" ref={fileRef} multiple onChange={handleAddImages} />
             <AddCircleOutlineIcon fill="#646F7C" className="img-upload__btn" />
             <p>
-              {imgSrcList.length} / {limitNumber}
+              {imgSrcListState.length} / {limitNumber}
             </p>
           </label>
         ) : null}

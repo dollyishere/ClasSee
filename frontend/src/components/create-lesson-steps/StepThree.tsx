@@ -2,10 +2,10 @@ import React from 'react';
 
 import { StepThreeProps } from '../../types/CreateLessonType';
 
-const StepThree = ({ lessonDescription, setLessonDescription }: StepThreeProps) => {
-  // 해당하는 textarea 값이 변경될 시, onChange, setLessonDescription을 이용해 lessonDescription의 값을 변경함
+const StepThree = ({ lessonDescState, setLessonDescState }: StepThreeProps) => {
+  // 해당하는 textarea 값이 변경될 시, onChange, setLessonDescState을 이용해 lessonDescState의 값을 변경함
   const handleInputLessonName = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setLessonDescription(e.target.value);
+    setLessonDescState(e.target.value);
   };
 
   return (
@@ -16,7 +16,7 @@ const StepThree = ({ lessonDescription, setLessonDescription }: StepThreeProps) 
         cols={30}
         rows={10}
         placeholder="강의 소개를 입력해주세요."
-        value={lessonDescription}
+        value={lessonDescState}
         onChange={handleInputLessonName}
       />
     </div>

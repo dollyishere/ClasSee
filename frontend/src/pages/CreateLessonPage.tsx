@@ -14,23 +14,24 @@ import StepSix from '../components/create-lesson-steps/StepSix';
 const CreateLessonPage = () => {
   // component 전환의 기준이 되는 selectedComponent를 useState로 생성(기본값 1)
   const [selectedComponent, setSelectedComponent] = useState(1);
+
   // Step1의 강의명, 카테고리 선택값을 담기 위한 lessonName, categorySelect 각각 생성
-  const [lessonName, setLessonName] = useState<string>('');
-  const [categorySelect, setCategorySelect] = useState<string>('');
-  // Step2의 강의 사진을 담기 위한 lessonImgList 생성
-  const [lessonImgList, setLessonImgList] = useState<string[]>([]);
-  // Step3의 강의 상세 설명을 담기 위한 lessonDescription 생성
-  const [lessonDescription, setlessonDescription] = useState<string>('');
-  // Step4의 준비물 사진, 묘사를 담기 위한 materialImgList, materialDescription 생성
-  const [materialImgList, setMaterialImgList] = useState<string[]>([]);
-  const [materialDescription, setMaterialDescription] = useState<string>('');
-  // Step5의 커리큘럼 목록, 최대 참여 인원 수, 예상 최대 강의 시간을 담기 위한 curriculumList, maximum, runningtime 생성
-  const [curriculumList, setCurriculumList] = useState<string[]>([]);
-  const [maximum, setMaximum] = useState<number>(0);
-  const [runningtime, setRunningtime] = useState<number>(0);
-  // Step6의 기본 요금, 옵션 추가 시 요금을 담기 위한 basicPrice, kitPrice 생성
-  const [basicPrice, setBasicPrice] = useState<number>(0);
-  const [kitPrice, setKitPrice] = useState<number>(0);
+  const [lessonNameState, setLessonNameState] = useState<string>('');
+  const [categorySelectState, setCategorySelectState] = useState<string>('');
+  // Step2의 강의 사진을 담기 위한 lessonImgListState 생성
+  const [lessonImgListState, setLessonImgListState] = useState<string[]>([]);
+  // Step3의 강의 상세 설명을 담기 위한 lessonDescState 생성
+  const [lessonDescState, setlessonDescState] = useState<string>('');
+  // Step4의 준비물 사진, 묘사를 담기 위한 materialImgListState, materialDescState 생성
+  const [materialImgListState, setMaterialImgListState] = useState<string[]>([]);
+  const [materialDescState, setMaterialDescState] = useState<string>('');
+  // Step5의 커리큘럼 목록, 최대 참여 인원 수, 예상 최대 강의 시간을 담기 위한 curriListState, maximumState, runningtimeState 생성
+  const [curriListState, setCurriListState] = useState<string[]>([]);
+  const [maximumState, setMaximumState] = useState<number>(0);
+  const [runningtimeState, setRunningtimeState] = useState<number>(0);
+  // Step6의 기본 요금, 옵션 추가 시 요금을 담기 위한 basicPriceState, kitPriceState 생성
+  const [basicPriceState, setBasicPriceState] = useState<number>(0);
+  const [kitPriceState, setKitPriceState] = useState<number>(0);
 
   return (
     <div className="container">
@@ -42,43 +43,43 @@ const CreateLessonPage = () => {
       <Card sx={{ minWidth: 275 }}>
         {selectedComponent === 1 && (
           <StepOne
-            lessonName={lessonName}
-            setLessonName={setLessonName}
-            categorySelect={categorySelect}
-            setCategorySelect={setCategorySelect}
+            lessonNameState={lessonNameState}
+            setLessonNameState={setLessonNameState}
+            categorySelectState={categorySelectState}
+            setCategorySelectState={setCategorySelectState}
           />
         )}
         {selectedComponent === 2 && (
-          <StepTwo limitNumber={5} imgSrcList={lessonImgList} setImgSrcList={setLessonImgList} />
+          <StepTwo limitNumber={5} imgSrcListState={lessonImgListState} setImgSrcListState={setLessonImgListState} />
         )}
         {selectedComponent === 3 && (
-          <StepThree lessonDescription={lessonDescription} setLessonDescription={setlessonDescription} />
+          <StepThree lessonDescState={lessonDescState} setLessonDescState={setlessonDescState} />
         )}
         {selectedComponent === 4 && (
           <StepFour
             limitNumber={10}
-            imgSrcList={materialImgList}
-            setImgSrcList={setMaterialImgList}
-            materialDescription={materialDescription}
-            setMaterialDescription={setMaterialDescription}
+            imgSrcListState={materialImgListState}
+            setImgSrcListState={setMaterialImgListState}
+            materialDescState={materialDescState}
+            setMaterialDescState={setMaterialDescState}
           />
         )}
         {selectedComponent === 5 && (
           <StepFive
-            curriculumList={curriculumList}
-            setCurriculumList={setCurriculumList}
-            maximum={maximum}
-            setMaximum={setMaximum}
-            runningtime={runningtime}
-            setRunningtime={setRunningtime}
+            curriListState={curriListState}
+            setCurriListState={setCurriListState}
+            maximumState={maximumState}
+            setMaximumState={setMaximumState}
+            runningtimeState={runningtimeState}
+            setRunningtimeState={setRunningtimeState}
           />
         )}
         {selectedComponent === 6 && (
           <StepSix
-            basicPrice={basicPrice}
-            setBasicPrice={setBasicPrice}
-            kitPrice={kitPrice}
-            setKitPrice={setKitPrice}
+            basicPriceState={basicPriceState}
+            setBasicPriceState={setBasicPriceState}
+            kitPriceState={kitPriceState}
+            setKitPriceState={setKitPriceState}
           />
         )}
         {/* 렌더링되는 컴포넌트가 무엇인지에 따라 버튼의 모습도 변화함 */}

@@ -4,22 +4,22 @@ import { Box, InputLabel, MenuItem, FormControl, Select, SelectChangeEvent } fro
 
 import { CategoryProps } from '../types/CreateLessonType';
 
-const CategorySelectBox = ({ categorySelect, setCategorySelect }: CategoryProps) => {
+const CategorySelectBox = ({ categorySelectState, setCategorySelectState }: CategoryProps) => {
   const handleCategoryChange = (event: SelectChangeEvent) => {
-    setCategorySelect(event.target.value);
+    setCategorySelectState(event.target.value);
   };
 
   return (
     // 각 MenuItem value에 해당하는 강의명을 배정함
     // 이후 선택한 값이 바뀔 시(Select), onChange로 handleCategoryChange 함수를 실행시킴
-    // 이를 통해 categorySelect 값을 해당 event.target.value로 변경해줌
+    // 이를 통해 categorySelectState 값을 해당 event.target.value로 변경해줌
     <Box sx={{ maxWidth: 200, maxHeight: 40 }}>
       <FormControl fullWidth>
         <InputLabel id="demo-simple-select-label">카테고리</InputLabel>
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={categorySelect}
+          value={categorySelectState}
           label="category"
           onChange={handleCategoryChange}
         >
