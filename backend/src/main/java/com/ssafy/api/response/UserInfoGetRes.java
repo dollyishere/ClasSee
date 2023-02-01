@@ -2,6 +2,7 @@ package com.ssafy.api.response;
 
 import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.db.entity.user.User;
+import com.ssafy.db.entity.user.UserRole;
 import io.swagger.annotations.ApiModel;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,9 +17,10 @@ public class UserInfoGetRes extends BaseResponseBody {
     String address;
     String birth;
     String phone;
-    String point;
+    Long point;
     String img;
     String description;
+    UserRole userRole;
 
     public UserInfoGetRes(User user){
         this.name = user.getName();
@@ -26,9 +28,10 @@ public class UserInfoGetRes extends BaseResponseBody {
         this.address = user.getAddress();
         this.birth = user.getBirth();
         this.phone = user.getPhone();
-        this.point = user.getPhone();
+        this.point = user.getPoint();
         this.img = user.getImg();
         this.description = user.getDescription();
+        this.userRole = user.getRole();
     }
 
 }
