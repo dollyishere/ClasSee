@@ -34,6 +34,8 @@ public class PhotocardRepositorySupport {
 
     public void delete(Photocard photocard) { em.remove(photocard); }
 
+    public void likesSave(Likes likes) { em.persist(likes); }
+
     public Photocard findOne(Long id) { return em.find(Photocard.class, id); }
 
     public Lesson findOneLesson(Long id) { return em.find(Lesson.class, id); }
