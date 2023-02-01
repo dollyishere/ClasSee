@@ -14,8 +14,20 @@ const LessonsApi = () => {
     }
     return null;
   };
+  const MyAppliedLessonsMainpageApi = async (userId: string) => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/myappliedlessonsmainpage/${userId}`,
+      );
+      return response.data;
+    } catch (error: any) {
+      console.error(error);
+    }
+    return null;
+  };
   return {
     MyCreatedLessonsMainpageApi,
+    MyAppliedLessonsMainpageApi,
   };
 };
 
