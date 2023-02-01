@@ -3,6 +3,7 @@ export interface SignUpRequest {
   password: string;
   name: string;
   nickname: string;
+  birth: string;
   address: string;
   phone: string;
   salt: string;

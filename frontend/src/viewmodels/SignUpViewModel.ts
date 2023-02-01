@@ -11,8 +11,9 @@ const SignUpViewModel = () => {
     return res;
   };
 
-  const signup = (data: SignUpRequest) => {
-    doSignUp(data);
+  const signup = async (data: SignUpRequest) => {
+    const res = await doSignUp(data);
+    return res;
   };
 
   return {

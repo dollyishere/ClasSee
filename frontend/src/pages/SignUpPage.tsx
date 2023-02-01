@@ -7,6 +7,7 @@ import useViewModel from '../viewmodels/SignUpViewModel';
 import { createSalt, createHashedPassword } from '../utils/Encrypt';
 
 import logo from '../assets/logo.png';
+import { SignUpRequest } from '../types/UserType';
 
 const SignUpPage = () => {
   const emailRef = useRef(null); // 이메일 input에 접근하기 위한 hook
@@ -26,7 +27,7 @@ const SignUpPage = () => {
   const [isValidEmail, setIsValidEmail] = useState<boolean>(false); // 사용 가능한 이메일인지
   const [isValidPassword, setIsValidPassword] = useState<boolean>(false); // 사용 가능한 비밀번호인지
 
-  const { emailDuplicationCheck } = useViewModel();
+  const { emailDuplicationCheck, signup } = useViewModel();
 
   // 지금 날짜, 시간을 나타내는 Date 객체
   const today = new Date();
@@ -100,16 +101,67 @@ const SignUpPage = () => {
       const phoneNumTarget = phoneNumRef.current as HTMLInputElement; // 휴대폰 번호
       const birthday = yearState + monthState + dayState; // 생년월일
 
+      if (!isValidEmail) {
+        alert('이메일 중복 확인 해주세요.');
+        return;
+      }
+
       // 비밀번호와 비밀번호 확인의 입력값이 같은지 확인
       if (pwCheckTarget.value !== pwTarget.value) {
         pwTarget.value = '';
         pwCheckTarget.value = '';
         alert('비밀번호가 다릅니다.');
+        return;
       }
 
+      // 빈 칸이 있는지 확인
+      if (pwTarget.value.length === 0) {
+        alert('비밀번호를 입력해주세요.');
+        return;
+      }
+      if (nameTarget.value.length === 0) {
+        alert('이름을 입력해주세요.');
+        return;
+      }
+      if (nicknameTarget.value.length === 0) {
+        alert('닉네임을 입력해주세요.');
+        return;
+      }
+      if (addressTarget.value.length === 0) {
+        alert('주소를 입력해주세요.');
+        return;
+      }
+      if (
+        yearState.length === 0 ||
+        yearState === '년도' ||
+        monthState.length === 0 ||
+        monthState === '0월' ||
+        dayState.length === 0 ||
+        dayState === '0일'
+      ) {
+        alert('생년월일을 정확히 입력해주세요.');
+        return;
+      }
+      if (phoneNumTarget.value.length === 0) {
+        alert('휴대폰 번호를 입력해주세요.');
+        return;
+      }
       const salt = createSalt();
       const hashedPassword = createHashedPassword(pwTarget.value, salt);
-      console.log(hashedPassword, salt);
+
+      const requestData: SignUpRequest = {
+        email: emailTarget.value,
+        password: hashedPassword,
+        name: nameTarget.value,
+        nickname: nicknameTarget.value,
+        birth: birthday,
+        address: addressTarget.value,
+        phone: phoneNumTarget.value,
+        salt,
+      };
+
+      const res = await signup(requestData);
+      console.log(res);
     }
   };
 
