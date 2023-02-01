@@ -11,4 +11,8 @@
 .applylessons {
   margin-left: 10px;
   width: 50%;
+  .lesson {
+    //여기다가 hover css 적용하면 원하는 데에만 css 적용
+    //하지만 hover event 찾아봐야함
+  }
 }
