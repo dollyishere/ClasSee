@@ -35,6 +35,9 @@ public class LessonRegisterPostReq {
     String category;
     @ApiModelProperty(name="ckls_description", example="준비물 소개")
     String cklsDescription;
+
+    @ApiModelProperty(name="kit_description", example="준비물 소개")
+    String kitDescription;
     @ApiModelProperty(name="runningtime", example="강의 소요 시간")
     Long runningtime;
     @ApiModelProperty(name="maximum", example="강의 수강 인원")
@@ -72,6 +75,7 @@ public class LessonRegisterPostReq {
                 .price(price)
                 .cklsDescription(cklsDescription)
                 .kitPrice(kitPrice)
+                .kitDescription(kitDescription)
                 .user(user)
                 .build();
 
