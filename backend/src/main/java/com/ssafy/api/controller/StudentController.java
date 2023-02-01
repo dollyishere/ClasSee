@@ -1,6 +1,6 @@
 package com.ssafy.api.controller;
 
-import com.ssafy.api.response.LessonListGetRes;
+import com.ssafy.api.dto.LessonInfoDto;
 import com.ssafy.api.service.LessonService;
 import com.ssafy.api.service.StudentService;
 import com.ssafy.api.service.UserService;
@@ -55,11 +55,11 @@ public class StudentController {
 
         if(user == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "사용자 없음"));
 
-        // 해당 유저가 개설한 강의 리스트
-        List<Lesson> lessonList = studentService.getLessonList(user);
+        // 해당 유저가 신청한 강의 리스트
+        List<Lesson> lessonList = studentService.getAttendLessonList(user);
         if(lessonList == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "신청 강의 없음"));
 
-        List<LessonListGetRes> lessonListGetResList =  lessonService.setLessonProfileImgAndScore(lessonList);
+        List<LessonInfoDto> lessonListGetResList =  lessonService.setLessonProperty(lessonList);
         return ResponseEntity.status(200).body(lessonListGetResList);
     }
 }

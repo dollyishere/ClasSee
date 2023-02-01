@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface StudentService {
     List<Lesson> getLessonList(User user);
+
+    List<Lesson> getAttendLessonList(User user);
 }

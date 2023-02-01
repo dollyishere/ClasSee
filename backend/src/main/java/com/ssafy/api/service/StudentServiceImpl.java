@@ -17,4 +17,10 @@ public class StudentServiceImpl implements StudentService{
         List<Lesson> lessons = lessonRepositorySupport.findLessonListByUserId(user);
         return lessons;
     }
+
+    @Override
+    public List<Lesson> getAttendLessonList(User user) {
+        List<Lesson> lessons = lessonRepositorySupport.findAttendLessonListByUserId(user);
+        return null;
+    }
 }
