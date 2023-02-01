@@ -19,9 +19,9 @@ import java.util.Map;
 public class LessonScheduleRegisterPostReq {
     @ApiModelProperty(name="lesson_id", example="강의 아이디")
     Long lessonId;
-    @ApiModelProperty(name="start_time", example="강의 시작 시간")
+    @ApiModelProperty(name="start_time", example="강의 시작 시간[yyyy-MM-dd HH:mm]")
     String startTime;
-    @ApiModelProperty(name="end_time", example="강의 종료 시간")
+    @ApiModelProperty(name="end_time", example="강의 시작 시간[yyyy-MM-dd HH:mm]")
     String endTime;
 
     public OpenLesson getOpenLessonInfoFromReq(LessonScheduleRegisterPostReq requestInfo) {

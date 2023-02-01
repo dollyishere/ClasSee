@@ -43,8 +43,6 @@ public class LessonDetailsRes extends BaseResponseBody {
     String profileImg;
     List<Curriculum> curriculums;
     List<Checklist> checkLists;
-
-    List<OpenLesson> openLessons;
     List<Pamphlet> pamphlets;
 
     double score;

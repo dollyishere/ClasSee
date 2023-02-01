@@ -1,6 +1,7 @@
 package com.ssafy.db.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssafy.api.dto.LessonInfoDto;
 import com.ssafy.db.entity.lesson.*;
 import com.ssafy.db.entity.user.QUser;
 import com.ssafy.db.entity.user.User;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,7 +79,7 @@ public class LessonRepositorySupport {
         return avgScore;
     }
 
-    public List<OpenLesson> findScheduleByLesson(Long lessonId) {
+    public List<OpenLesson> findScheduleByLessonId(Long lessonId) {
         List<OpenLesson> schedules = jpaQueryFactory
                 .selectFrom(qOpenLesson)
                 .where(qOpenLesson.lessonId.eq(lessonId))

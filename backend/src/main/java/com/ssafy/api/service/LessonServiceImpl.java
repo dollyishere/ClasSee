@@ -1,18 +1,20 @@
 package com.ssafy.api.service;
 
 import com.ssafy.api.dto.LessonInfoDto;
-import com.ssafy.api.request.LessonScheduleRegisterPostReq;
+import com.ssafy.api.dto.OpenLessonInfoDto;
 import com.ssafy.api.response.LessonDetailsRes;
+import com.ssafy.api.response.LessonSchedulsRes;
 import com.ssafy.db.entity.lesson.*;
 import com.ssafy.db.entity.user.User;
 import com.ssafy.db.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 public class LessonServiceImpl implements LessonService {
@@ -96,13 +98,14 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public LessonDetailsRes getLessonDetails(Long lessonId) {
+    public LessonDetailsRes getLessonDetails(Long lessonId, String email) {
+        Long userId = userRepositorySupport.findId(email);
         Lesson lesson = lessonRepository.findById(lessonId).get();
-        Long userId = lesson.getUser().getId();
-        User user = userRepositorySupport.findOne(userId);
+
+        User teacher = userRepositorySupport.findOne(lesson.getUser().getId());
+
         List<Curriculum> curriculums = lessonRepositorySupport.findCurriculumByLesson(lessonId);
         List<Checklist> checklists = lessonRepositorySupport.findCheckListByLesson(lessonId);
-        List<OpenLesson> openLessons = lessonRepositorySupport.findScheduleByLesson(lessonId);
         List<Pamphlet> pamphlets = lessonRepositorySupport.findPamphletByLesson(lessonId);
         double score = lessonRepositorySupport.setLessonAvgScore(lesson);
         Long isBookmarked = bookmarkRepository.isBookmarked(userId, lessonId);
@@ -113,15 +116,37 @@ public class LessonServiceImpl implements LessonService {
                 .kitPrice(lesson.getKitPrice())
                 .category(lesson.getCategory())
                 .runningtime(lesson.getRunningtime())
-                .userName(user.getName())
-                .userDesciption(user.getDescription())
-                .profileImg(user.getImg())
+                .userName(teacher.getName())
+                .userDesciption(teacher.getDescription())
+                .profileImg(teacher.getImg())
                 .curriculums(curriculums)
-                .openLessons(openLessons)
                 .checkLists(checklists)
                 .pamphlets(pamphlets)
+                .score(score)
                 .isBookmarked(isBookmarked)
                 .build();
         return lessonDetailsRes;
+    }
+
+    @Override
+    public LessonSchedulsRes getLessonSchedules(Long lessonId, LocalDate regDate) {
+        List<OpenLesson> lessonSchedules = lessonRepositorySupport.findScheduleByLessonId(lessonId);
+        List<OpenLessonInfoDto> lessonSchedulesRes = new ArrayList<>();
+        lessonSchedules.forEach((schedule) ->{
+            if(!regDate.isEqual(schedule.getStartTime().toLocalDate())) return;
+            lessonSchedulesRes.add(
+                    OpenLessonInfoDto.builder()
+                            .openLessonId(schedule.getId())
+                            .lessonId(schedule.getLessonId())
+                            .startTime(schedule.getStartTime())
+                            .endTime(schedule.getEndTime())
+                            .build()
+            );
+        });
+
+        LessonSchedulsRes res = LessonSchedulsRes.builder()
+                .lessonScheduls(lessonSchedulesRes)
+                .build();
+        return res;
     }
 }
