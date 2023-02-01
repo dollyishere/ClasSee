@@ -4,6 +4,8 @@ import { Card, CardContent } from '@mui/material';
 
 import useViewModel from '../viewmodels/SignUpViewModel';
 
+import { createSalt, createHashedPassword } from '../utils/Encrypt';
+
 import logo from '../assets/logo.png';
 
 const SignUpPage = () => {
@@ -76,7 +78,9 @@ const SignUpPage = () => {
   };
 
   // 회원가입 버튼 클릭시 실행할 함수
-  const handleSignUpSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSignUpSubmit = async (
+    event: React.FormEvent<HTMLFormElement>,
+  ) => {
     event.preventDefault();
     if (
       emailRef.current !== null &&
@@ -102,6 +106,10 @@ const SignUpPage = () => {
         pwCheckTarget.value = '';
         alert('비밀번호가 다릅니다.');
       }
+
+      const salt = createSalt();
+      const hashedPassword = createHashedPassword(pwTarget.value, salt);
+      console.log(hashedPassword, salt);
     }
   };
 

@@ -1,23 +1,16 @@
-import util from 'util';
-import crypto from 'crypto';
-
-const randomBytesPromise = util.promisify(crypto.randomBytes);
-const pbkdf2Promise = util.promisify(crypto.pbkdf2);
+import CryptoJS from 'crypto-js';
 
 // salt를 만드는 함수
-export const createSalt = async () => {
-  const buf = await randomBytesPromise(64);
-  return buf.toString('base64');
+export const createSalt = () => {
+  // 256비트 랜덤값 32바이트 결과값
+  return CryptoJS.lib.WordArray.random(256 / 32).toString();
 };
 
 // salt와 평문 비밀번호로 암호화된 비밀번호를 만드는 함수
-export const createHashedPassword = async (
-  plainPassword: string,
-  salt: string,
-) => {
-  // plainPassword를 salt와 함께 707번 암호화, 64바이트 길이로, 사용하는 알고리즘은 sha256
-  const key = await pbkdf2Promise(plainPassword, salt, 707, 64, 'sha512');
-  const hashedPassword = key.toString('base64');
-
-  return hashedPassword;
+export const createHashedPassword = (plainPassword: string, salt: string) => {
+  // 256비트 랜덤값, 32바이트 결과값, 707번 반복
+  return CryptoJS.PBKDF2(plainPassword, salt, {
+    keySize: 256 / 32,
+    iterations: 707,
+  }).toString();
 };
