@@ -7,19 +7,20 @@ import Stack from '@mui/material/Stack';
 import AvTimerIcon from '@mui/icons-material/AvTimer';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
-import { LessonsResponse, Lesson, MyAppliedHover } from '../types/LessonsType';
+import { LessonsResponse, Lesson } from '../types/LessonsType';
 import logo from '../assets/logo.png';
 
-type combinetype = { lesson: Lesson; myapplied: MyAppliedHover };
-
-const LessonCard = ({ lesson, myapplied }: combinetype) => {
+// type combinetype = { lesson: Lesson; myapplied: MyAppliedHover };
+interface Props {
+  lesson: Lesson;
+}
+const LessonCard = ({ lesson }: Props) => {
   const [isBookMarked, setIsBookMarked] = useState(lesson.isBookMarked);
   // 북마크 아이콘 클릭 시 북마크 추가, 삭제 토글 버튼 함수
   const getBookmarkStatus = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
     setIsBookMarked(!isBookMarked);
   };
-  const [isHovered, setIsHovered] = useState(false);
   return (
     <div className="lesson">
       <Link
