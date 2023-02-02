@@ -106,9 +106,11 @@ public class PhotocardServiceImpl implements PhotocardService {
 
     @Override
     public void createLikes(String email, Long id) {
+        Long user_id = userRepositorySupport
+                .findId(email);
+
         User user = userRepositorySupport
-                .findUserByAuth(email)
-                .get();
+                .findOne(user_id);
 
         Photocard photocard = photocardRepositorySupport
                 .findOne(id);
