@@ -1,7 +1,6 @@
 @use '../base/colors';
 
-.container {
-  margin: 5%;
+#create-lesson-page {
 }
 
 .img__container {
@@ -30,7 +29,6 @@
   border-radius: 10px;
   margin: 5%;
   display: block;
-
   white-space: nowrap;
   &:hover {
     cursor: pointer;
