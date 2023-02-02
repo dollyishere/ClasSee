@@ -2,7 +2,10 @@ import React from 'react';
 
 import ImageUpload from '../ImageUpload';
 
-import { ImageUploadProps, MaterialDescProps } from '../../types/CreateLessonType';
+import {
+  ImageUploadProps,
+  MaterialDescProps,
+} from '../../types/CreateLessonType';
 
 // 상의한 Props를 엮어서 CombinedProps라는 새로운 type를 생성함
 type CombinedProps = ImageUploadProps & MaterialDescProps;
@@ -17,7 +20,9 @@ const StepFour = ({
   setMaterialDescState,
 }: CombinedProps) => {
   // 해당하는 textarea의 값이 변화할 시, onChange와 setMaterialDescState을 이용해 materialDescState의 값을 변경함
-  const handleInputMaterialDesc = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleInputMaterialDesc = (
+    e: React.ChangeEvent<HTMLTextAreaElement>,
+  ) => {
     setMaterialDescState(e.target.value);
   };
   return (

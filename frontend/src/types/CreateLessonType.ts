@@ -49,7 +49,9 @@ export interface CategoryProps {
 export interface ChangeComponentProps {
   selectedComponentState: number;
   setSelectedComponentState: React.Dispatch<React.SetStateAction<number>>;
-  handleCreateLessonSubmit: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  handleCreateLessonSubmit: (
+    event: React.MouseEvent<HTMLButtonElement>,
+  ) => void;
 }
 
 export interface CheckListType {
@@ -84,4 +86,5 @@ export interface CreateLessonRequest {
 export interface CreateLessonResponse {
   message: string;
   statusCode: number;
+  lessonId: number;
 }

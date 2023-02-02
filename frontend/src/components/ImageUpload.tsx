@@ -42,7 +42,6 @@ const ImageUpload = ({
       // 해당 주소를 통해 미리보기 기능을 지원 가능함
       fileReader.readAsDataURL(compressedFile);
       setImgFileListState([...imgFileListState, compressedFile]);
-      console.log(imgFileListState);
       // URL.createObjectURL을 통해 해당 파일의 상대경로를 생성, imgSrcListState에 저장함
       const result = URL.createObjectURL(compressedFile);
       setImgSrcListState([...imgSrcListState, result]);
@@ -71,13 +70,23 @@ const ImageUpload = ({
         {imgSrcListState.map((image: string, id: number) => (
           <div>
             <img className="img__item" src={image} alt={`${image}-${id}`} />
-            <RemoveCircleOutlineIcon className="img__delete" onClick={() => handleDeleteImage(id)} />
+            <RemoveCircleOutlineIcon
+              className="img__delete"
+              onClick={() => handleDeleteImage(id)}
+            />
           </div>
         ))}
         {/* 만약 imgFileListState의 길이가 limitNumber에서 지정된 값 이상이라면, 더 이상 이미지를 추가할 수 없도록 버튼을 숨김 */}
         {imgSrcListState.length < limitNumber ? (
           <label htmlFor="input-file" className="img-upload__label">
-            <input hidden type="file" id="input-file" ref={fileRef} multiple onChange={handleAddImages} />
+            <input
+              hidden
+              type="file"
+              id="input-file"
+              ref={fileRef}
+              multiple
+              onChange={handleAddImages}
+            />
             <AddCircleOutlineIcon fill="#646F7C" className="img-upload__btn" />
             <p>
               {imgSrcListState.length} / {limitNumber}

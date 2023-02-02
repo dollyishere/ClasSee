@@ -1,9 +1,14 @@
 import axios from 'axios';
 
-import { CreateLessonRequest, CreateLessonResponse } from '../types/CreateLessonType';
+import {
+  CreateLessonRequest,
+  CreateLessonResponse,
+} from '../types/CreateLessonType';
 
 const CreateLessonApi = () => {
-  const doCreateLesson = async (createLessonRequestBody: CreateLessonRequest) => {
+  const doCreateLesson = async (
+    createLessonRequestBody: CreateLessonRequest,
+  ) => {
     try {
       const response = await axios.post<CreateLessonResponse>(
         `${process.env.REACT_APP_SERVER_URI}/api/v1/lessons`,
