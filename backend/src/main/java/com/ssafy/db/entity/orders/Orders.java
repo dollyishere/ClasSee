@@ -7,6 +7,7 @@ import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,11 +26,13 @@ public class Orders {
 
     @CreatedDate
     @Column(name = "regtime")
-    private Timestamp regTime;
+    private LocalDateTime regTime;
 
     private String phone;
     private String email;
     private String address;
+
+    private Long price;
 
     // 연결
     @ManyToOne(fetch = FetchType.LAZY)
