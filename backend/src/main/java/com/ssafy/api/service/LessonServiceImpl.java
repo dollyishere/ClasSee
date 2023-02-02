@@ -1,5 +1,6 @@
 package com.ssafy.api.service;
 
+import com.ssafy.api.dto.AttendLessonInfoDto;
 import com.ssafy.api.dto.LessonInfoDto;
 import com.ssafy.api.dto.OpenLessonInfoDto;
 import com.ssafy.api.response.LessonDetailsRes;
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class LessonServiceImpl implements LessonService {
@@ -66,7 +68,7 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public List<LessonInfoDto> setLessonProperty(List<Lesson> lessonList) {
+    public List<LessonInfoDto> setLessonProperty(Long userId, List<Lesson> lessonList) {
         List<LessonInfoDto> getLessonList = new ArrayList<>();
         // 강의 목록에 대표 이미지랑, 별점 평균 세팅해주기
         lessonList.forEach((lesson) -> {
@@ -84,6 +86,10 @@ public class LessonServiceImpl implements LessonService {
 
             lessonRes.setScore(
                     lessonRepositorySupport.setLessonAvgScore(lesson)
+            );
+
+            lessonRes.setBookmarked(
+                    (bookmarkRepository.isBookmarked(userId, lesson.getId()) == 0)? false: true
             );
 
             getLessonList.add(lessonRes);
@@ -149,5 +155,35 @@ public class LessonServiceImpl implements LessonService {
                 .lessonScheduls(lessonSchedulesRes)
                 .build();
         return res;
+    }
+
+    @Override
+    public List<AttendLessonInfoDto> getAttendLessonList(Long userId, String query, String type) {
+        List<OpenLesson> openLessonList = new ArrayList<>();
+        if(type.toUpperCase().equals("T")) openLessonList = lessonRepositorySupport.findAttendLessonListByTeacher(userId, query);
+        if(type.toUpperCase().equals("S")) openLessonList = lessonRepositorySupport.findAttendLessonListByStudent(userId, query);
+
+        List<AttendLessonInfoDto> attendLessonList = new ArrayList<>();
+        openLessonList.forEach((openLesson) -> {
+            Optional<Lesson> lesson = lessonRepository.findById(openLesson.getLessonId());
+            if(!lesson.isPresent()) return;
+            attendLessonList.add(
+                    AttendLessonInfoDto.builder()
+                            .lessonId(openLesson.getLessonId())
+                            .openLessonid(openLesson.getId())
+                            .name(lesson.get().getName())
+                            .runningtime(lesson.get().getRunningtime())
+                            .category(lesson.get().getCategory())
+                            .img(lesson.get().getPamphletList().get(0).getImg())
+                            .score(lessonRepositorySupport.setLessonAvgScore(lesson.get()))
+                            .isBookmarked(
+                                    (bookmarkRepository.isBookmarked(userId, lesson.get().getId()) == 0) ? false : true
+                            )
+                            .startTime(openLesson.getStartTime())
+                            .endTime(openLesson.getEndTime())
+                            .build()
+            );
+        });
+        return attendLessonList;
     }
 }
