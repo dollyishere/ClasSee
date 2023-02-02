@@ -7,10 +7,7 @@ import com.ssafy.api.response.OrdersInfoGetRes;
 import com.ssafy.api.service.OrdersService;
 import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.db.entity.board.Notice;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,13 +21,18 @@ public class OrdersController {
     OrdersService ordersService;
 
     @PostMapping()
-    @ApiOperation(value = "주문 정보 등록", notes = "주문 정보 입력 후 주문 생성")
+    @ApiOperation(value = "주문 정보 등록", notes = "주문 정보 입력 후 주문 생성, 잔액 부족 시 403")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "success")
+            @ApiResponse(code = 200, message = "success"),
+            @ApiResponse(code = 403, message = "fail")
     })
-    public ResponseEntity<? extends BaseResponseBody> registOrders(@RequestBody OrdersRegistPostReq ordersRegistPostReq) {
+    public ResponseEntity<? extends BaseResponseBody> registOrders(@RequestBody OrdersRegistPostReq ordersRegistPostReq) throws Exception {
 
-        ordersService.createOrders(ordersRegistPostReq);
+        try{
+            ordersService.createOrders(ordersRegistPostReq);
+        } catch(Exception e){
+            return ResponseEntity.status(403).body(BaseResponseBody.of(403,"fail"));
+        }
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200,"success"));
 
