@@ -1,0 +1,13 @@
+@use '../base/colors';
+
+.applylessons {
+  // margin-left: 10px;
+  width: 50%;
+  .applylessons__title {
+    text-decoration: dashed;
+  }
+  .applylessons__cards {
+    display: flex;
+    justify-content: space-evenly;
+  }
+}

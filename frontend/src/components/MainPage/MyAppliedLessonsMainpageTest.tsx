@@ -3,17 +3,23 @@ import { atom, selector, useRecoilState, useRecoilValue } from 'recoil';
 import axios, { AxiosResponse } from 'axios';
 import { Link } from 'react-router-dom';
 import logo from '../../assets/logo.png';
-import LessonCard from '../LessonCard';
+import LessonCardTest from '../LessonCardTest';
+import MyAppliedTest from '../MyAppliedLessonCardTest';
 import useViewModel from '../../viewmodels/MainPageViewModel';
-import { LessonsResponse, Lesson } from '../../types/LessonsType';
+import {
+  LessonsResponse,
+  Lesson,
+  MyAppliedHover,
+} from '../../types/LessonsType';
 import PrivateInfoState from '../../models/PrivateInfoAtom';
 // 로그인이 되었을 때만 이 컴포넌트가 보여짐
 // 내가 신청한 강의를 get으로 api요청 보냄
 // 강의가 있으면 강의카드를 보여주고
 // 강의가 없다면(빈 배열이라면) 없음을 보여줌
-interface MyApply {
-  hover: number;
-}
+// interface MyApply {
+//   hover: number;
+// }
+
 const MyAppliedLessonsMainpageTest = () => {
   const dummyData = [
     {
@@ -26,6 +32,8 @@ const MyAppliedLessonsMainpageTest = () => {
       category: '수공예',
       rating: 5,
       isBookMarked: true,
+      startTime: '2023-01-31 11:00',
+      endTime: '2023-02-02',
     },
     {
       id: 2,
@@ -37,6 +45,8 @@ const MyAppliedLessonsMainpageTest = () => {
       category: '뷰티',
       rating: 4,
       isBookMarked: true,
+      startTime: '2023-01-31 14:00',
+      endTime: '2023-02-02',
     },
     // {
     //   id: 3,
@@ -65,6 +75,7 @@ const MyAppliedLessonsMainpageTest = () => {
   // const [lessons, setLessons] = useState<LessonsResponse>();
   const [lessons, setLessons] = useState(dummyData);
   const userInfo = useRecoilValue(PrivateInfoState);
+  const [myapplied, setmyapplied] = useState<boolean>(true);
   // useEffect(() => {
   //   if (userInfo.userId)
   //     getMyAppliedLessonsMainpage(userInfo.userId).then(
@@ -74,19 +85,16 @@ const MyAppliedLessonsMainpageTest = () => {
   //       },
   //     );
   // }, []);
-  const apply: MyApply = {
-    hover: 1,
-  };
   return (
     <div className="applylessons">
-      <h1 className="applylesson--title"> 신청한 클래스 </h1>
-      {lessons ? (
-        lessons.map((lesson: Lesson, myapplied: MyApply) => (
-          <LessonCard lesson={lesson} myapplied={myapplied} />
-        ))
-      ) : (
-        <div>no Created</div>
-      )}
+      <h1 className="applylessons__title"> 신청한 클래스 </h1>
+      <div className="applylessons__cards">
+        {lessons ? (
+          lessons.map((lesson: Lesson) => <MyAppliedTest lesson={lesson} />)
+        ) : (
+          <div>no Created</div>
+        )}
+      </div>
     </div>
   );
 };

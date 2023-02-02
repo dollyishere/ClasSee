@@ -45,10 +45,10 @@ const RecommandLessons = () => {
   // 강의 정보를 useState로 받아서 저장
   const [lessons, setlessons] = useState([]);
   return (
-    <div>
-      <h1 className="recommandClass"> 추천 클래스 </h1>
+    <div className="recommandlessons">
+      <h1 className="recommandlessons__title"> 추천 클래스 </h1>
       {/* 강의 하나씩 map으로 돌면서 카드에 적용 */}
-      <div className="lesson">
+      <div className="recommandlessons__cards">
         {lessons.map((lesson) => (
           <LessonCard lesson={lesson} />
         ))}
