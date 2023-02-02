@@ -1,6 +1,7 @@
 package com.ssafy.api.controller;
 
 import com.ssafy.api.request.UserLogoutPostReq;
+import com.ssafy.api.response.UserInfoGetRes;
 import com.ssafy.api.response.UserSaltRes;
 import com.ssafy.api.service.AuthService;
 import com.ssafy.api.service.RedisService;
@@ -69,7 +70,7 @@ public class AuthController {
 		String password = loginInfo.getPassword();
 
 		User user = userService.getUserByAuth(email);
-		if(user == null) return ResponseEntity.status(404).body(UserLoginPostRes.of(404, "USER NOT FOUND", "NULL"));
+		if(user == null) return ResponseEntity.status(404).body(UserLoginPostRes.of(404, "USER NOT FOUND", null));
 
 		// 로그인 요청한 유저로부터 입력된 패스워드 와 디비에 저장된 유저의 암호화된 패스워드가 같은지 확인.(유효한 패스워드인지 여부 확인)
 		if (password.equals(user.getAuth().getPassword())) {
@@ -79,6 +80,15 @@ public class AuthController {
 			String refreshToken = JwtTokenUtil.getToken(JwtTokenUtil.rtkExpirationTime, email);
 			UserLoginPostRes userLoginPostRes = UserLoginPostRes.builder()
 					.email(user.getAuth().getEmail())
+					.name(user.getName())
+					.nickname(user.getNickname())
+					.address(user.getAddress())
+					.birth(user.getBirth())
+					.phone(user.getPhone())
+					.point(user.getPoint())
+					.img(user.getImg())
+					.description(user.getDescription())
+					.userRole(user.getRole())
 					.build();
 
 			/*
@@ -96,7 +106,7 @@ public class AuthController {
 			}
 
 			// 유효한 패스워드가 맞는 경우, 로그인 성공으로 응답.(액세스 토큰을 포함하여 응답값 전달)
-			return ResponseEntity.ok(UserLoginPostRes.of(200, "SUCCESS", userLoginPostRes.getEmail()));
+			return ResponseEntity.ok(UserLoginPostRes.of(200, "SUCCESS", userLoginPostRes));
 		}
 		// 유효하지 않는 패스워드인 경우, 로그인 실패로 응답.
 		return ResponseEntity.status(401).body(BaseResponseBody.of(401, "INVALID"));
@@ -116,7 +126,7 @@ public class AuthController {
 			String accessToken = userInfo.getAccessToken();
 			authService.logout(email, accessToken);
 
-			return ResponseEntity.ok(UserLoginPostRes.of(200, "SUCCESS", "NULL"));
+			return ResponseEntity.ok(UserLoginPostRes.of(200, "SUCCESS", null));
 		} catch (IllegalArgumentException e){
 			return ResponseEntity.status(401).body(BaseResponseBody.of(401, "INVALID"));
 		}
@@ -132,7 +142,7 @@ public class AuthController {
 	})
 	public ResponseEntity<? extends BaseResponseBody> findSalt(@RequestParam String email) {
 		User user = userService.getUserByAuth(email);
-		if(user == null) return ResponseEntity.status(404).body(UserSaltRes.of(404, "USER NOT FOUND", "NULL"));
+		if(user == null) return ResponseEntity.status(404).body(UserSaltRes.of(404, "USER NOT FOUND", null));
 
 		return ResponseEntity.status(200).body(UserSaltRes.of(200, "SUCCESS", user.getAuth().getSalt()));
 	}
@@ -150,6 +160,6 @@ public class AuthController {
 			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
 	})
 	public ResponseEntity<UserLoginPostRes> test() {
-		return ResponseEntity.ok(UserLoginPostRes.of(200, "Success", "test"));
+		return ResponseEntity.ok(UserLoginPostRes.of(200, "Success", null));
 	}
 }
