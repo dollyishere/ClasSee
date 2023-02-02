@@ -198,6 +198,23 @@ const LessonPage = () => {
         }
       });
 
+      // 누가 손을 내렸을 때
+      newSession.on('signal:downHand', (event: SignalEvent) => {
+        if (event.from !== undefined && event.from.stream !== undefined) {
+          const newRaiseHand = raiseHand;
+
+          const index = newRaiseHand.indexOf(
+            event.from.stream.streamManager,
+            0,
+          );
+
+          if (index > -1) {
+            newRaiseHand.splice(index, 1);
+            setRaiseHand([...newRaiseHand]);
+          }
+        }
+      });
+
       // 세션 토큰 api 요청 함수
       getToken(sessionId).then((token: string) => {
         // 해당 토큰으로 세션 연결
@@ -309,13 +326,11 @@ const LessonPage = () => {
             type: 'raiseHand',
           })
           .then(() => {
-            console.log('hand');
+            console.log('raiseHand');
           })
           .catch((error: any) => {
             console.log(error);
           });
-
-        setIsHanded((prev: boolean) => !prev);
       } else {
         session
           .signal({
@@ -324,12 +339,13 @@ const LessonPage = () => {
             type: 'downHand',
           })
           .then(() => {
-            console.log('hand');
+            console.log('downHand');
           })
           .catch((error: any) => {
             console.log(error);
           });
       }
+      setIsHanded((prev: boolean) => !prev);
     }
   };
 
@@ -462,8 +478,13 @@ const LessonPage = () => {
             </button>
           </div>
           <div className="lesson-page__hands">
-            {raiseHand.map((hand: StreamManager, i: number) => (
-              <div>{i}</div>
+            {raiseHand.map((hand: StreamManager) => (
+              <div key={JSON.parse(hand.stream.connection.data).clientData}>
+                <div>
+                  <PanTool />
+                </div>
+                <div>{JSON.parse(hand.stream.connection.data).clientData}</div>
+              </div>
             ))}
           </div>
         </div>
