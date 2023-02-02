@@ -15,5 +15,5 @@ export interface SignUpResponse {
 }
 
 export interface UserInfo {
-  userId: string | null;
+  userId: string;
 }
