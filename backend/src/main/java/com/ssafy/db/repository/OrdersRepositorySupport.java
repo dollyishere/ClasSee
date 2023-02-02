@@ -1,10 +1,7 @@
 package com.ssafy.db.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ssafy.db.entity.lesson.Lesson;
-import com.ssafy.db.entity.lesson.OpenLesson;
-import com.ssafy.db.entity.lesson.QLesson;
-import com.ssafy.db.entity.lesson.QOpenLesson;
+import com.ssafy.db.entity.lesson.*;
 import com.ssafy.db.entity.orders.Orders;
 import com.ssafy.db.entity.orders.QOrders;
 import com.ssafy.db.entity.user.QUser;
@@ -31,6 +28,8 @@ public class OrdersRepositorySupport {
     QLesson qLesson = QLesson.lesson;
 
     public void save(Orders orders) { em.persist(orders); }
+
+    public void saveSchedule(Schedule schedule) { em.persist(schedule); }
 
     public void delete(Orders orders){ em.remove(orders); }
 
