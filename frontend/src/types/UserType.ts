@@ -20,6 +20,10 @@ export interface LoginRequest {
   password: string;
 }
 
+export interface LoginResponse extends Response {
+  email: string;
+}
+
 export interface UserInfo {
   userId: string | null;
 }
