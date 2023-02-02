@@ -15,5 +15,3 @@ export interface Lesson {
 export interface LessonsResponse {
   lessons: Array<Lesson>;
 }
-
-export type MyAppliedHover = boolean;
