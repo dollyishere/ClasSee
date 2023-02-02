@@ -63,14 +63,12 @@ const StepFive = ({
         // 만약 값을 입력하지 않았을 시, 값을 입력해달라는 메세지를 출력함
         console.log('값을 입력해 주세요.');
       }
-      console.log(inputVisiable);
     }
   };
 
   // 만약 삭제 버튼을 누를 시, 해당하는 stage는 삭제됨
   const deleteBtn = (id: number) => {
     setCurriListState(curriListState.filter((_, currentIndex) => currentIndex !== id));
-    console.log(curriListState);
   };
 
   return (

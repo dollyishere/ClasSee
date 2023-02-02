@@ -1,5 +1,5 @@
 import React, { useState, useRef, useMemo, createContext, useContext } from 'react';
-import { useNavigate as navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import '../styles/pages/_create-lesson-page.scss';
 
@@ -24,11 +24,14 @@ const CreateLessonPage = () => {
   const [lessonNameState, setLessonNameState] = useState<string>('');
   const [categorySelectState, setCategorySelectState] = useState<string>('');
   // Step2의 강의 사진을 담기 위한 lessonImgListState 생성
-  const [lessonImgListState, setLessonImgListState] = useState<string[]>([]);
+  const [lessonImgSrcListState, setLessonImgSrcListState] = useState<string[]>([]);
+  const [lessonImgFileListState, setLessonImgFileListState] = useState<object[]>([]);
+
   // Step3의 강의 상세 설명을 담기 위한 lessonDescState 생성
   const [lessonDescState, setlessonDescState] = useState<string>('');
-  // Step4의 준비물 사진, 묘사를 담기 위한 materialImgListState, materialDescState 생성
-  const [materialImgListState, setMaterialImgListState] = useState<string[]>([]);
+  // Step4의 준비물 사진, 묘사를 담기 위한 materialImgSrcListState, materialDescState 생성
+  const [materialImgSrcListState, setMaterialImgSrcListState] = useState<string[]>([]);
+  const [materialImgFileListState, setMaterialImgFileListState] = useState<object[]>([]);
   const [materialDescState, setMaterialDescState] = useState<string>('');
   // Step5의 커리큘럼 목록, 최대 참여 인원 수, 예상 최대 강의 시간을 담기 위한 curriListState, maximumState, runningtimeState 생성
   const [curriListState, setCurriListState] = useState<string[]>([]);
@@ -39,37 +42,39 @@ const CreateLessonPage = () => {
   const [kitDescState, setKitDescState] = useState<string>('');
   const [kitPriceState, setKitPriceState] = useState<number>(0);
 
+  // api 실행할 시 실행될 CreateLessonModel createLesson에 할당
   const { createLesson } = CreateLessonModel();
 
+  // 강의 개설 완료 시 컴포넌트 전환에 필요한 useNavigate 재할당
+  const navigate = useNavigate();
+
   const handleCreateLessonSubmit = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    // 만약 키트 가격이 0일 시, 해당 옵션을 선택하지 않은 것으로 판단하고 키트 설명을 삭제함
     if (kitPriceState === 0) {
       setKitDescState('');
     }
     if (
+      // 만약 필수 조건이 비지 않았다면, 뒤의 코드를 실행함
+      // 만약 입력하지 않은 상태라면, 입력하도록 else if로 예외조건 처리함
       lessonNameState !== '' &&
       categorySelectState !== '' &&
-      // lessonImgListState.length !== 0 &&
-      // lessonDescState !== '' &&
-      // materialImgListState.length !== 0 &&
-      // materialDescState !== '' &&
       curriListState.length !== 0 &&
       maximumState !== 0 &&
-      // runningtimeState !== 0 &&
       basicPriceState !== 0
-      // kitPriceState !== 0
     ) {
-      const checkList: CheckListType[] = lessonImgListState.map((lessonImg: string) => {
+      // array 형태로 넣어야 할 데이터는, 해당 형식에 맞게 다시 재생성함
+      const checkList: CheckListType[] = lessonImgSrcListState.map((lessonImg: string) => {
         return {
           img: lessonImg,
         };
       });
       const curriculumList: CurriculumType[] = curriListState.map((curriculum: string, id: number) => {
         return {
-          stage: id,
-          description: curriculum,
+          stage: id as number,
+          description: curriculum as string,
         };
       });
-      const pamphletList: PamphletType[] = materialImgListState.map((materialImg: string) => {
+      const pamphletList: PamphletType[] = materialImgSrcListState.map((materialImg: string) => {
         return {
           img: materialImg as string,
         };
@@ -92,13 +97,28 @@ const CreateLessonPage = () => {
       };
 
       const res = await createLesson(createLessonRequestBody);
-      console.log(res);
-      // if (res === 'Success') {
-      //   alert('강의가 등록되었습니다.');
-      //   // navigate('/');
-      // }
-    } else {
-      alert('필수 입력값을 모두 입력해주십시오');
+      if (res?.message === 'SUCCESS') {
+        // 만약 강의 개설에 성공했을 시, 등록되었음을 알린 후 메인 페이지로 이동
+        alert('강의가 등록되었습니다.');
+        navigate(`/`);
+      }
+
+      // 예외조건 처리함
+    } else if (lessonNameState === '') {
+      alert('클래스 이름을 입력해주세요.');
+      setSelectedComponent(1);
+    } else if (categorySelectState === '') {
+      alert('카테고리를 선택해주세요.');
+      setSelectedComponent(1);
+    } else if (curriListState.length === 0) {
+      alert('커리큘럼을 하나 이상 등록해주세요.');
+      setSelectedComponent(5);
+    } else if (maximumState === 0) {
+      alert('강의에 참여할 수 있는 최대 인원을 설정해주세요.');
+      setSelectedComponent(5);
+    } else if (basicPriceState === 0) {
+      alert('강의 기본 가격을 설정해주세요.');
+      setSelectedComponent(6);
     }
   };
 
@@ -119,7 +139,13 @@ const CreateLessonPage = () => {
           />
         )}
         {selectedComponent === 2 && (
-          <StepTwo limitNumber={5} imgSrcListState={lessonImgListState} setImgSrcListState={setLessonImgListState} />
+          <StepTwo
+            limitNumber={5}
+            imgFileListState={lessonImgFileListState}
+            setImgFileListState={setLessonImgFileListState}
+            imgSrcListState={lessonImgSrcListState}
+            setImgSrcListState={setLessonImgSrcListState}
+          />
         )}
         {selectedComponent === 3 && (
           <StepThree lessonDescState={lessonDescState} setLessonDescState={setlessonDescState} />
@@ -127,8 +153,10 @@ const CreateLessonPage = () => {
         {selectedComponent === 4 && (
           <StepFour
             limitNumber={10}
-            imgSrcListState={materialImgListState}
-            setImgSrcListState={setMaterialImgListState}
+            imgSrcListState={materialImgSrcListState}
+            setImgSrcListState={setMaterialImgSrcListState}
+            imgFileListState={materialImgFileListState}
+            setImgFileListState={setMaterialImgFileListState}
             materialDescState={materialDescState}
             setMaterialDescState={setMaterialDescState}
           />

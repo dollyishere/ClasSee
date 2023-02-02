@@ -7,8 +7,6 @@ const CreateLessonModel = () => {
 
   const createLesson = async (data: CreateLessonRequest) => {
     const res = await doCreateLesson(data);
-    console.log('MODEL');
-    console.log(res);
     return res;
   };
 

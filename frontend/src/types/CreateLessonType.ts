@@ -32,6 +32,8 @@ export interface ImageUploadProps {
   limitNumber: number;
   imgSrcListState: string[];
   setImgSrcListState: React.Dispatch<React.SetStateAction<string[]>>;
+  imgFileListState: object[];
+  setImgFileListState: React.Dispatch<React.SetStateAction<object[]>>;
 }
 
 export interface MaterialDescProps {

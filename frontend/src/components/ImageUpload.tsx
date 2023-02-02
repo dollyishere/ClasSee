@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import imageCompression from 'browser-image-compression';
 
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
@@ -7,7 +7,13 @@ import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 // 부모 컴포넌트 측에서 전달한 Props의 type을 지정함
 import { ImageUploadProps } from '../types/CreateLessonType';
 
-const ImageUpload = ({ limitNumber, imgSrcListState, setImgSrcListState }: ImageUploadProps) => {
+const ImageUpload = ({
+  limitNumber,
+  imgSrcListState,
+  setImgSrcListState,
+  imgFileListState,
+  setImgFileListState,
+}: ImageUploadProps) => {
   const fileRef = useRef<HTMLInputElement>(null);
 
   // 만약 사용자가 이미지를 input을 통해 추가했을 시, 이하 함수 실행
@@ -35,20 +41,27 @@ const ImageUpload = ({ limitNumber, imgSrcListState, setImgSrcListState }: Image
       // compressedfile을 fileReader를 통해 로컬 내 주소를 불러옴
       // 해당 주소를 통해 미리보기 기능을 지원 가능함
       fileReader.readAsDataURL(compressedFile);
+      setImgFileListState([...imgFileListState, compressedFile]);
+      console.log(imgFileListState);
+      // URL.createObjectURL을 통해 해당 파일의 상대경로를 생성, imgSrcListState에 저장함
+      const result = URL.createObjectURL(compressedFile);
+      setImgSrcListState([...imgSrcListState, result]);
 
-      // 파일을 성공적으로 읽었을 시(on_load가 이를 관장함), 해당 이벤트가 시작됨
-      fileReader.onload = (event: ProgressEvent<FileReader>) => {
-        // 파일을 읽은 결과물을 result에 할당함
-        const result = event?.target?.result as string;
-        // result를 setImgSrcListState를 이용해 imgSrcList에 추가함
-        setImgSrcListState([...imgSrcListState, result]);
-      };
+      // 단순히 미리보기 구현의 경우, 위의 방법이 더 효과적일 것으로 생각되어 이하 방법은 안전성 검증 후 폐기함
+      // // 파일을 성공적으로 읽었을 시(on_load가 이를 관장함), 해당 이벤트가 시작됨
+      // fileReader.onload = (event: ProgressEvent<FileReader>) => {
+      //   // 파일을 읽은 결과물을 result에 할당함
+      //   const result = event?.target?.result as string;
+      //   // result를 setImgFileListState를 이용해 imgSrcList에 추가함
+      //   setImgSrcListState([...imgSrcListState, result]);
+      // };
     }
   };
 
-  // 마이너스 버튼 클릭 시, 해당하는 이미지는 imgSrcListState 내에서 삭제됨
+  // 마이너스 버튼 클릭 시, 해당하는 이미지는 imgFileListState 내에서 삭제됨
   const handleDeleteImage = (id: number) => {
     setImgSrcListState(imgSrcListState.filter((_, index) => index !== id));
+    setImgFileListState(imgFileListState.filter((_, index) => index !== id));
   };
 
   return (
@@ -61,7 +74,7 @@ const ImageUpload = ({ limitNumber, imgSrcListState, setImgSrcListState }: Image
             <RemoveCircleOutlineIcon className="img__delete" onClick={() => handleDeleteImage(id)} />
           </div>
         ))}
-        {/* 만약 imgSrcListState의 길이가 limitNumber에서 지정된 값 이상이라면, 더 이상 이미지를 추가할 수 없도록 버튼을 숨김 */}
+        {/* 만약 imgFileListState의 길이가 limitNumber에서 지정된 값 이상이라면, 더 이상 이미지를 추가할 수 없도록 버튼을 숨김 */}
         {imgSrcListState.length < limitNumber ? (
           <label htmlFor="input-file" className="img-upload__label">
             <input hidden type="file" id="input-file" ref={fileRef} multiple onChange={handleAddImages} />

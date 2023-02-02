@@ -4,13 +4,12 @@ import { CreateLessonRequest, CreateLessonResponse } from '../types/CreateLesson
 
 const CreateLessonApi = () => {
   const doCreateLesson = async (createLessonRequestBody: CreateLessonRequest) => {
-    console.log(createLessonRequestBody);
     try {
       const response = await axios.post<CreateLessonResponse>(
         `${process.env.REACT_APP_SERVER_URI}/api/v1/lessons`,
         createLessonRequestBody,
       );
-      return response.status;
+      return response.data;
     } catch (error: any) {
       console.error(error);
     }

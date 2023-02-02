@@ -11,6 +11,8 @@ const StepFour = ({
   limitNumber,
   imgSrcListState,
   setImgSrcListState,
+  imgFileListState,
+  setImgFileListState,
   materialDescState,
   setMaterialDescState,
 }: CombinedProps) => {
@@ -26,6 +28,8 @@ const StepFour = ({
         limitNumber={limitNumber}
         imgSrcListState={imgSrcListState}
         setImgSrcListState={setImgSrcListState}
+        imgFileListState={imgFileListState}
+        setImgFileListState={setImgFileListState}
       />
       {/* 준비물에 대한 묘사를 작성하는 textarea */}
       <textarea
