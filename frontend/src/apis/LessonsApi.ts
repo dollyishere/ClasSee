@@ -25,9 +25,24 @@ const LessonsApi = () => {
     }
     return null;
   };
+  const deleteMyAppliedLessonsMainpageApi = async (
+    userId: string,
+    lessonId: number,
+  ) => {
+    try {
+      const response = await axios.delete(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/myappliedlessonsmainpage/${userId}/${lessonId}`,
+      );
+      return response.data;
+    } catch (error: any) {
+      console.error(error);
+    }
+    return null;
+  };
   return {
     MyCreatedLessonsMainpageApi,
     MyAppliedLessonsMainpageApi,
+    deleteMyAppliedLessonsMainpageApi,
   };
 };
 
