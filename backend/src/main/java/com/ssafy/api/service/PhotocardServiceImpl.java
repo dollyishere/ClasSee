@@ -83,6 +83,7 @@ public class PhotocardServiceImpl implements PhotocardService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Long likesCount(Photocard photocard) {
 
         Long id = photocard.getId();
@@ -92,6 +93,7 @@ public class PhotocardServiceImpl implements PhotocardService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Boolean likesCheck(String email, Long id) {
         Long user_id = userRepositorySupport.findId(email);
 
