@@ -4,6 +4,7 @@ import com.ssafy.api.dto.OpenLessonInfoDto;
 import com.ssafy.api.request.LessonRegisterPostReq;
 import com.ssafy.api.request.LessonScheduleRegisterPostReq;
 import com.ssafy.api.response.LessonDetailsRes;
+import com.ssafy.api.response.LessonIdRes;
 import com.ssafy.api.response.LessonSchedulsRes;
 import com.ssafy.api.service.LessonService;
 import com.ssafy.api.service.UserService;
@@ -57,9 +58,9 @@ public class LessonController {
         User user = userService.getUserByAuth(requestInfo.getEmail());
         if(user == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "NOT FOUND"));
 
-        lessonService.createLesson(requestInfo.getLessonInfoFromReq(user));
+        Long lessonId = lessonService.createLesson(requestInfo.getLessonInfoFromReq(user));
 
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "SUCCESS"));
+        return ResponseEntity.status(200).body(LessonIdRes.of(200, "SUCCESS", lessonId));
     }
 
     @PostMapping("/schedules")
