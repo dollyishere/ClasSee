@@ -73,7 +73,7 @@ public class TeacherController {
         return ResponseEntity.status(200).body(LessonInfoListRes.of(200, "SUCCESS", res));
     }
 
-    @GetMapping("/lessons/{email}")
+    @GetMapping("/lessons/{email}/")
     @ApiOperation(value = "개설한 강의 목록 조회", notes = "강사가 본인이 개설한 스케줄 목록을 조회한다. 쿼리 : (DONE[완료], TODO[진행예정])")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
@@ -81,7 +81,7 @@ public class TeacherController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends BaseResponseBody> getLessonListInfo(@PathVariable String email, @RequestParam String query, @RequestParam int limit) {
+    public ResponseEntity<? extends BaseResponseBody> getLessonListInfoPaging(@PathVariable String email, @RequestParam String query, @RequestParam int limit, @RequestParam int offset) {
         /*
         리턴 값
         강의 리스트
@@ -96,7 +96,7 @@ public class TeacherController {
         if(user == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "사용자 정보 없음"));
         Long userId = user.getAuth().getId();
 
-        List<AttendLessonInfoDto> lessonList = lessonService.getAttendLessonList(userId, query, "T", limit);
+        List<AttendLessonInfoDto> lessonList = lessonService.getAttendLessonList(userId, query, "T", limit, offset);
         if(lessonList == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "개설 강의 없음"));
 
         AttendLessonInfoListRes res = AttendLessonInfoListRes.builder()
