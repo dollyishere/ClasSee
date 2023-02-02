@@ -190,11 +190,11 @@ const SignUpPage = () => {
       const res = await emailDuplicationCheck(target.value);
       if (res === null) {
         console.log('서버 오류');
-      } else if (res === 201) {
+      } else if (res === 200) {
         setIsValidEmail(true);
         target.readOnly = true;
         alert('사용 가능한 이메일 입니다.');
-      } else if (res === 200) {
+      } else if (res === 409) {
         alert('중복된 이메일입니다.');
         target.value = '';
       }
