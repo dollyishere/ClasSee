@@ -17,7 +17,7 @@ import java.util.Map;
  *	유저 관련 비즈니스 로직 처리를 위한 서비스 인터페이스 정의.
  */
 public interface LessonService {
-    void createLesson(Map<String, Object> lessonInfo);
+    Long createLesson(Map<String, Object> lessonInfo);
 
     List<LessonInfoDto> setLessonProperty(Long userId, List<Lesson> lessonList);
 

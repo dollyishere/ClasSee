@@ -39,7 +39,7 @@ public class LessonServiceImpl implements LessonService {
     PamphletRepositorySupport pamphletRepositorySupport;
 
     @Override
-    public void createLesson(Map<String, Object> lessonInfo) {
+    public Long createLesson(Map<String, Object> lessonInfo) {
         /*
          lessonInfo("LESSON":레슨정보, "CHECKLISTS":준비물정보, "CURRICULUMS": 커리큘럼정보);
          각각의 KEY를 통해 객체 생성 후, DB에 데이터 삽입
@@ -65,6 +65,8 @@ public class LessonServiceImpl implements LessonService {
             pamphlet.setLessonId(lesson.getId());
             pamphletRepositorySupport.save(pamphlet);
         });
+
+        return lesson.getId();
     }
 
     @Override
