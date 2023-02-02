@@ -12,7 +12,7 @@ import StepFour from '../components/create-lesson-steps/StepFour';
 import StepFive from '../components/create-lesson-steps/StepFive';
 import StepSix from '../components/create-lesson-steps/StepSix';
 
-import CreateLessonModel from '../viewmodels/CreateLessonModel';
+import CreateLessonViewModel from '../viewmodels/CreateLessonViewModel';
 
 import { CheckListType, CurriculumType, PamphletType, CreateLessonRequest } from '../types/CreateLessonType';
 
@@ -43,7 +43,7 @@ const CreateLessonPage = () => {
   const [kitPriceState, setKitPriceState] = useState<number>(0);
 
   // api 실행할 시 실행될 CreateLessonModel createLesson에 할당
-  const { createLesson } = CreateLessonModel();
+  const { createLesson } = CreateLessonViewModel();
 
   // 강의 개설 완료 시 컴포넌트 전환에 필요한 useNavigate 재할당
   const navigate = useNavigate();

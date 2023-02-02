@@ -2,7 +2,7 @@ import CreateLessonApi from '../apis/CreateLessonApi';
 
 import { CreateLessonRequest } from '../types/CreateLessonType';
 
-const CreateLessonModel = () => {
+const CreateLessonViewModel = () => {
   const { doCreateLesson } = CreateLessonApi();
 
   const createLesson = async (data: CreateLessonRequest) => {
@@ -15,4 +15,4 @@ const CreateLessonModel = () => {
   };
 };
 
-export default CreateLessonModel;
+export default CreateLessonViewModel;
