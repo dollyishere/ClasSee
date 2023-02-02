@@ -1,10 +1,19 @@
 import { useRecoilState } from 'recoil';
 
 import useApi from '../apis/UserApi';
+import privateInfoState from '../models/PrivateInfoAtom';
+import authTokenState from '../models/AuthTokenAtom';
 
-import { createHashedPassword } from '../utils/Encrypt';
+import {
+  createHashedPassword,
+  encryptToken,
+  decryptToken,
+} from '../utils/Encrypt';
 
+// Login View와 Model을 연결하는 ViewModel
 const LoginViewModel = () => {
+  const [privateInfo, setPrivateInfo] = useRecoilState(privateInfoState);
+  const [authToken, setAuthToken] = useRecoilState(authTokenState);
   const { doGetSalt, doLogin } = useApi();
 
   const login = async (email: string, password: string) => {
@@ -15,11 +24,26 @@ const LoginViewModel = () => {
         email,
         password: hashedPassword,
       });
-
-      console.log(res);
+      if (res?.data.message === 'SUCCESS') {
+        setPrivateInfo({
+          userId: res.data.email,
+        });
+        setAuthToken(res.headers.authtoken);
+        const encryptedToken = encryptToken(
+          res.headers.refreshtoken,
+          res.data.email,
+        );
+        localStorage.setItem('refreshToken', encryptedToken);
+        return {
+          statusCode: 200,
+        };
+      }
     }
 
-    return 'false';
+    // get salt api 응답 코드에 따라 다르게 반환할것
+    return {
+      statusCode: 400,
+    };
   };
   return {
     login,

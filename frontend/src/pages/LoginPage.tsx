@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -17,6 +17,7 @@ import logo from '../assets/logo.png';
 const LoginPage = () => {
   const idInputRef = useRef(null);
   const pwInputRef = useRef(null);
+  const navigate = useNavigate();
 
   const { login } = useViewModel();
 
@@ -47,9 +48,12 @@ const LoginPage = () => {
       // id와 password의 value가 모두 null이 아닐 시, 로그인이 가능
       if (id.value && password.value) {
         const res = await login(id.value, password.value);
-        // 만약 둘 중 하나의 value가 null일 시, 에러를 출력함
+        if (res.statusCode && res.statusCode === 200) {
+          navigate('/');
+        }
+        // 만약 둘 중 하나의 value가 null일 시 alert
       } else {
-        console.log('에러');
+        alert('아이디, 비밀번호를 확인해주세요.');
       }
     }
   };
