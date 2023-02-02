@@ -90,8 +90,10 @@ const StepFive = ({
             value={kitPriceState}
             onChange={handleInputKitPrice}
           />
-          원{/* 만약 아래 삭제 버튼을 누를 시, 추가한 키트 가격이 초기화되고 및 입력 input이 보이지 않게 됨 */}
+          원
+          {/* 만약 아래 삭제 버튼을 누를 시, 추가한 키트 가격이 초기화되고 및 입력 input이 보이지 않게 됨 */}
           <br />
+          <p>* 키트의 경우, 0원 이상일 경우만 등록이 가능합니다.</p>
           {kitPriceState !== 0 ? (
             <textarea
               cols={30}
