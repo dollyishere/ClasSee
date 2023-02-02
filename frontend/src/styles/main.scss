@@ -5,8 +5,11 @@
 @use './components/header';
 @use './components/footer';
 @use './components/custom-carousel';
-@use './components/LessonCard';
-@use './components/CreateApplyLessonCard';
+@use './components/my-applied-lesson-mainpage';
+@use './components/my-applied-lesson-card';
+@use './components/my-create-lesson-mainpage';
+@use './components/recommand-lesson';
+@use './components/lesson-card';
 @use './components/button';
 @use './components/user-video';
 @use './components/chat-box';
