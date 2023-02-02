@@ -66,8 +66,8 @@ const MyCreatedLessonsMainpage = () => {
   // 메인페이지 마운트 시 강의 정보들 요청
 
   useEffect(() => {
-    if (userInfo.userId)
-      getMyCreatedLessonsMainpage(userInfo.userId).then(
+    if (userInfo.email)
+      getMyCreatedLessonsMainpage(userInfo.email).then(
         (res: LessonsResponse) => {
           console.log(res);
           setLessons(res);

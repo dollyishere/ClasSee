@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
-import authToken from '../models/authToken';
+import authTokenState from '../models/AuthTokenAtom';
 import CustomCarousel from '../components/CustomCarousel';
 import RecommandLessons from '../components/MainPage/RecommandLessons';
 import MyCreatedLessonsMainpage from '../components/MainPage/MyCreatedLessonsMainpage';
@@ -9,15 +9,15 @@ import Footer from '../components/Footer';
 import Header from '../components/Header';
 
 const MainPage = () => {
-  const authTokenState = useRecoilValue(authToken);
+  const authToken = useRecoilValue(authTokenState);
 
   return (
     <div className="page">
       <Header />
       <CustomCarousel />
       <div className="create_apply_lessons">
-        {authTokenState ? <MyCreatedLessonsMainpage /> : <p>no lessons</p>}
-        {authTokenState ? <ApplyLessons /> : <p>no lessons</p>}
+        {authToken ? <MyCreatedLessonsMainpage /> : <p>no lessons</p>}
+        {authToken ? <ApplyLessons /> : <p>no lessons</p>}
       </div>
       <RecommandLessons />
       <Footer />
