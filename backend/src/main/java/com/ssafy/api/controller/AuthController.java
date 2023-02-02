@@ -77,7 +77,7 @@ public class AuthController {
 			String accessToken = JwtTokenUtil.getToken(JwtTokenUtil.atkExpirationTime, email);
 			String refreshToken = JwtTokenUtil.getToken(JwtTokenUtil.rtkExpirationTime, email);
 			UserLoginPostRes userLoginPostRes = UserLoginPostRes.builder()
-					.salt(user.getAuth().getSalt())
+					.email(user.getAuth().getEmail())
 					.build();
 
 			/*
@@ -95,7 +95,7 @@ public class AuthController {
 			}
 
 			// 유효한 패스워드가 맞는 경우, 로그인 성공으로 응답.(액세스 토큰을 포함하여 응답값 전달)
-			return ResponseEntity.ok(UserLoginPostRes.of(200, "SUCCESS", userLoginPostRes.getSalt()));
+			return ResponseEntity.ok(UserLoginPostRes.of(200, "SUCCESS", userLoginPostRes.getEmail()));
 		}
 		// 유효하지 않는 패스워드인 경우, 로그인 실패로 응답.
 		return ResponseEntity.status(401).body(BaseResponseBody.of(401, "INVALID"));
