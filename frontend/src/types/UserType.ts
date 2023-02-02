@@ -15,6 +15,11 @@ export interface SaltResponse extends Response {
   salt: string;
 }
 
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
+
 export interface UserInfo {
   userId: string | null;
 }
