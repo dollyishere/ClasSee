@@ -2,7 +2,10 @@ package com.ssafy.db.entity.orders;
 
 import com.ssafy.db.entity.lesson.OpenLesson;
 import com.ssafy.db.entity.user.User;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
@@ -19,6 +22,9 @@ import java.util.List;
 @Entity
 @Getter
 @Table(name = "ORDERS")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
