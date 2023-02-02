@@ -33,6 +33,12 @@ const LessonPage = () => {
   // 수강생 화면을 클릭했는지
   const [isFocused, setIsFocused] = useState<boolean>(false);
 
+  // 내가 손을 들었는지
+  const [isHanded, setIsHanded] = useState<boolean>(false);
+
+  // 손든 수강샌들의 이름을 저장하는 state
+  const [raiseHand, setRaiseHand] = useState<Array<StreamManager>>([]);
+
   // 채팅창을 보이게 할 지
   const [isChatBoxVisible, setChatBoxVisible] = useState<boolean>(false);
 
@@ -182,6 +188,16 @@ const LessonPage = () => {
         }
       });
 
+      // 누가 손을 들었을 때
+      newSession.on('signal:raiseHand', (event: SignalEvent) => {
+        if (event.from !== undefined && event.from.stream !== undefined) {
+          const newRaiseHand = raiseHand;
+
+          newRaiseHand.push(event.from.stream.streamManager);
+          setRaiseHand([...newRaiseHand]);
+        }
+      });
+
       // 세션 토큰 api 요청 함수
       getToken(sessionId).then((token: string) => {
         // 해당 토큰으로 세션 연결
@@ -281,6 +297,42 @@ const LessonPage = () => {
     setChatBoxVisible((prev: boolean) => !prev);
   };
 
+  // 손 들기 버튼 클릭했을 때 실행할 함수
+  const handleHandClick = (e: React.MouseEvent<HTMLElement>) => {
+    if (session !== undefined) {
+      // 손을 들지 않은 상태라면 손 들었다는 signal 보내고 손을 든 상태로 세팅
+      if (!isHanded) {
+        session
+          .signal({
+            data: userName,
+            to: [],
+            type: 'raiseHand',
+          })
+          .then(() => {
+            console.log('hand');
+          })
+          .catch((error: any) => {
+            console.log(error);
+          });
+
+        setIsHanded((prev: boolean) => !prev);
+      } else {
+        session
+          .signal({
+            data: userName,
+            to: [],
+            type: 'downHand',
+          })
+          .then(() => {
+            console.log('hand');
+          })
+          .catch((error: any) => {
+            console.log(error);
+          });
+      }
+    }
+  };
+
   return (
     <div className="page lesson-page">
       {/* 채팅창을 제외한 메인 컨텐츠 영역 */}
@@ -372,7 +424,11 @@ const LessonPage = () => {
         <div className="lesson-page__footer">
           <div className="lesson-page__buttons">
             {/* 손들기 버튼 */}
-            <button type="button" className="lesson-page__button">
+            <button
+              type="button"
+              className="lesson-page__button"
+              onClick={handleHandClick}
+            >
               <PanTool style={{ fontSize: '30px' }} />
             </button>
             {/* 음소거 버튼 */}
@@ -404,6 +460,11 @@ const LessonPage = () => {
             >
               <Message fontSize="large" />
             </button>
+          </div>
+          <div className="lesson-page__hands">
+            {raiseHand.map((hand: StreamManager, i: number) => (
+              <div>{i}</div>
+            ))}
           </div>
         </div>
       </div>
