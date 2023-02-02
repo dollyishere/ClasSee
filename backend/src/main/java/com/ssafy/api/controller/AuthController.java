@@ -1,6 +1,7 @@
 package com.ssafy.api.controller;
 
 import com.ssafy.api.request.UserLogoutPostReq;
+import com.ssafy.api.response.UserSaltRes;
 import com.ssafy.api.service.AuthService;
 import com.ssafy.api.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,7 +78,7 @@ public class AuthController {
 			String accessToken = JwtTokenUtil.getToken(JwtTokenUtil.atkExpirationTime, email);
 			String refreshToken = JwtTokenUtil.getToken(JwtTokenUtil.rtkExpirationTime, email);
 			UserLoginPostRes userLoginPostRes = UserLoginPostRes.builder()
-					.salt(user.getAuth().getSalt())
+					.email(user.getAuth().getEmail())
 					.build();
 
 			/*
@@ -95,7 +96,7 @@ public class AuthController {
 			}
 
 			// 유효한 패스워드가 맞는 경우, 로그인 성공으로 응답.(액세스 토큰을 포함하여 응답값 전달)
-			return ResponseEntity.ok(UserLoginPostRes.of(200, "SUCCESS", userLoginPostRes.getSalt()));
+			return ResponseEntity.ok(UserLoginPostRes.of(200, "SUCCESS", userLoginPostRes.getEmail()));
 		}
 		// 유효하지 않는 패스워드인 경우, 로그인 실패로 응답.
 		return ResponseEntity.status(401).body(BaseResponseBody.of(401, "INVALID"));
@@ -124,16 +125,16 @@ public class AuthController {
 	@GetMapping("/salt")
 	@ApiOperation(value = "salt 요청 api", notes = "사용자의 salt 반환")
 	@ApiResponses({
-			@ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
+			@ApiResponse(code = 200, message = "성공", response = UserSaltRes.class),
 			@ApiResponse(code = 401, message = "인증 실패", response = BaseResponseBody.class),
 			@ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
 			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
 	})
 	public ResponseEntity<? extends BaseResponseBody> findSalt(@RequestParam String email) {
 		User user = userService.getUserByAuth(email);
-		if(user == null) return ResponseEntity.status(404).body(UserLoginPostRes.of(404, "USER NOT FOUND", "NULL"));
+		if(user == null) return ResponseEntity.status(404).body(UserSaltRes.of(404, "USER NOT FOUND", "NULL"));
 
-		return ResponseEntity.status(200).body(UserLoginPostRes.of(200, "SUCCESS", user.getAuth().getSalt()));
+		return ResponseEntity.status(200).body(UserSaltRes.of(200, "SUCCESS", user.getAuth().getSalt()));
 	}
 
 	/*
