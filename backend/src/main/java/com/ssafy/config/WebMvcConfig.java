@@ -24,7 +24,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         configuration.addAllowedOriginPattern("*");
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
-        configuration.addExposedHeader(JwtTokenUtil.HEADER_STRING);
+        configuration.addExposedHeader("*");
         configuration.setAllowCredentials(true);
         configuration.setMaxAge(3600L);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -75,14 +75,5 @@ public class WebMvcConfig implements WebMvcConfigurer {
         FilterRegistrationBean registration = new FilterRegistrationBean(requestLoggingFilter());
         registration.addUrlPatterns("/api/*");
         return registration;
-    }
-
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOriginPatterns()
-//                .allowedOrigins("http://localhost:3000")
-                .exposedHeaders("accessToken","refreshToken")
-                .allowCredentials(true);
     }
 }
