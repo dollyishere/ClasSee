@@ -1,6 +1,9 @@
 package com.ssafy.db.entity.qna;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
@@ -12,6 +15,9 @@ import java.sql.Timestamp;
 @Entity
 @Getter
 @Table(name = "QNA_ANSWER")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class QnaAnswer {
 
     @Id

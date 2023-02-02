@@ -1,5 +1,6 @@
 package com.ssafy.api.service;
 
+import com.ssafy.api.dto.AttendLessonInfoDto;
 import com.ssafy.api.dto.LessonInfoDto;
 import com.ssafy.api.response.LessonDetailsRes;
 import com.ssafy.api.response.LessonSchedulsRes;
@@ -18,11 +19,13 @@ import java.util.Map;
 public interface LessonService {
     Long createLesson(Map<String, Object> lessonInfo);
 
-    List<LessonInfoDto> setLessonProperty(List<Lesson> lessonList);
+    List<LessonInfoDto> setLessonProperty(Long userId, List<Lesson> lessonList);
 
     void createSchedule(OpenLesson requestInfo) throws Exception;
 
     LessonDetailsRes getLessonDetails(Long lessonId, String email);
 
     LessonSchedulsRes getLessonSchedules(Long lessonId, LocalDate regDate);
+
+    List<AttendLessonInfoDto> getAttendLessonList(Long userId, String query, String type);
 }

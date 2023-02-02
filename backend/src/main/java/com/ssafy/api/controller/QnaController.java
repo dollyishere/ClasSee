@@ -1,5 +1,6 @@
 package com.ssafy.api.controller;
 
+import com.ssafy.api.request.QnaAnswerRegistPostReq;
 import com.ssafy.api.request.QnaRegisterPostReq;
 import com.ssafy.api.request.QnaUpdatePutReq;
 import com.ssafy.api.response.NoticeInfoRes;
@@ -37,6 +38,18 @@ public class QnaController {
     public ResponseEntity<? extends BaseResponseBody> registQna(@RequestBody QnaRegisterPostReq qnaRegisterPostReq){
 
         qnaService.createQna(qnaRegisterPostReq);
+
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"success"));
+    }
+
+    @PostMapping("/answer")
+    @ApiOperation(value = "Qna 답변 등록", notes = "내용과 qna_id 입력 후 답변 등록")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "success")
+    })
+    public ResponseEntity<? extends BaseResponseBody> registQna(@RequestBody QnaAnswerRegistPostReq qnaAnswerRegistPostReq){
+
+        qnaService.createQnaAnswer(qnaAnswerRegistPostReq);
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200,"success"));
     }
@@ -95,7 +108,7 @@ public class QnaController {
     })
     public ResponseEntity<? extends BaseResponseBody> updateQna(@RequestBody QnaUpdatePutReq qnaUpdatePutReq) {
 
-            qnaService.updateQna(qnaUpdatePutReq);
+        qnaService.updateQna(qnaUpdatePutReq);
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200,"success"));
 

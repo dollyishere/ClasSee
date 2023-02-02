@@ -1,5 +1,7 @@
 package com.ssafy.db.repository;
 
+import com.fasterxml.jackson.databind.util.ArrayBuilders;
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.api.dto.LessonInfoDto;
 import com.ssafy.db.entity.lesson.*;
@@ -14,6 +16,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * 강의 모델 관련 디비 쿼리 생성을 위한 구현 정의.
@@ -34,6 +37,7 @@ public class LessonRepositorySupport {
 
     QUser qUser = QUser.user;
     QReview qReview = QReview.review;
+    QSchedule qSchedule = QSchedule.schedule;
 
     // 유저를 넣으면 유저를 DB에 저장
     public void save(Lesson lesson) {
@@ -115,9 +119,35 @@ public class LessonRepositorySupport {
         return pamphlets;
     }
 
-    public List<Lesson> findAttendLessonListByUserId(User user) {
-//        List<Lesson> lessons = jpaQueryFactory
-//                .selectFrom(qL)
-        return new ArrayList<>();
+    public List<OpenLesson> findAttendLessonListByStudent(Long userId, String query) {
+        BooleanBuilder builder = new BooleanBuilder();
+        builder.and(qOpenLesson.id.eq(qSchedule.openLesson.id));
+        builder.and(qSchedule.user.id.eq(userId));
+
+        if(query.toUpperCase().equals("DONE")) builder.and(qOpenLesson.startTime.before(LocalDateTime.now()));
+        if(query.toUpperCase().equals("TODO")) builder.and(qOpenLesson.startTime.after(LocalDateTime.now()));
+
+        List<OpenLesson> lessons = jpaQueryFactory
+                .select(qOpenLesson)
+                .from(qOpenLesson, qSchedule)
+                .where(builder)
+                .fetch();
+        return lessons;
+    }
+
+    public List<OpenLesson> findAttendLessonListByTeacher(Long userId, String query) {
+        BooleanBuilder builder = new BooleanBuilder();
+        builder.and(qOpenLesson.lessonId.eq(qLesson.id));
+        builder.and(qLesson.user.auth.id.eq(userId));
+
+        if(query.toUpperCase().equals("DONE")) builder.and(qOpenLesson.startTime.before(LocalDateTime.now()));
+        if(query.toUpperCase().equals("TODO")) builder.and(qOpenLesson.startTime.after(LocalDateTime.now()));
+
+        List<OpenLesson> lessons = jpaQueryFactory
+                .select(qOpenLesson)
+                .from(qOpenLesson, qLesson)
+                .where(builder)
+                .fetch();
+        return lessons;
     }
 }

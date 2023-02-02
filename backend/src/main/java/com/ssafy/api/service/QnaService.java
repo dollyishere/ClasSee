@@ -1,5 +1,6 @@
 package com.ssafy.api.service;
 
+import com.ssafy.api.request.QnaAnswerRegistPostReq;
 import com.ssafy.api.request.QnaRegisterPostReq;
 import com.ssafy.api.request.QnaUpdatePutReq;
 import com.ssafy.db.entity.qna.Qna;
@@ -10,6 +11,8 @@ import java.util.List;
 public interface QnaService {
 
     void createQna(QnaRegisterPostReq qnaRegisterPostReq);
+
+    void createQnaAnswer(QnaAnswerRegistPostReq qnaAnswerRegistPostReq);
 
     void deleteQna(Long id);
 
