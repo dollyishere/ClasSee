@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 
+import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';

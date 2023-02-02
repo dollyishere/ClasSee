@@ -8,7 +8,10 @@ import MainPage from './pages/MainPage';
 import SignUpPage from './pages/SignUpPage';
 import LessonPage from './pages/LessonPage';
 import LoginPage from './pages/LoginPage';
+
 import TestPage from './pages/TestPage';
+
+import Footer from './components/Footer';
 
 const App = () => {
   return (
@@ -19,7 +22,7 @@ const App = () => {
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/lesson/:sessionId/:role" element={<LessonPage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/test" element={<TestPage />} />
+          <Route path="/image" element={<TestPage />} />
         </Routes>
       </div>
     </RecoilRoot>
