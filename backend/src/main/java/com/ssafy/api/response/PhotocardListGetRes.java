@@ -31,7 +31,7 @@ public class PhotocardListGetRes {
         this.regDate = photocard.getRegDate();
         this.user_email = photocard.getUser().getAuth().getEmail();
         this.user_nickname = photocard.getUser().getNickname();
-        this.lesson_name = photocard.getLesson().getName();
+        this.lesson_name = photocard.getLesson_name();
         this.likes_count = likes_count;
         this.likes_click = likes_click;
 

@@ -88,9 +88,9 @@ public class PhotocardController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "success")
     })
-    public ResponseEntity<? extends BaseResponseBody> deletePhotocard(@RequestParam String email, @RequestParam Long id) {
+    public ResponseEntity<? extends BaseResponseBody> deletePhotocard(@RequestParam Long id) {
 
-        photocardService.deletePhotocard(email, id);
+        photocardService.deletePhotocard(id);
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success"));
     }
@@ -102,7 +102,7 @@ public class PhotocardController {
     })
     public ResponseEntity<? extends BaseResponseBody> deleteLikes(@RequestParam String email, @RequestParam Long id) {
 
-        photocardService.deletePhotocard(email, id);
+        photocardService.deleteLikes(email, id);
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success"));
     }

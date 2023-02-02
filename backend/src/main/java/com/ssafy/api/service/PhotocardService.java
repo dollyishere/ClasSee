@@ -10,7 +10,7 @@ public interface PhotocardService {
     void createPhotocard(PhotocardRegistPostReq photocardRegistPostReq);
     List<Photocard> readPhotocardList(int offset, int limit);
     Long photocardCount();
-    void deletePhotocard(String email, Long id);
+    void deletePhotocard(Long id);
     Long likesCount(Photocard photocard);
     Boolean likesCheck(String email, Long id);
     void createLikes(String email, Long id);
