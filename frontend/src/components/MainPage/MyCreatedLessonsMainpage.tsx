@@ -79,7 +79,7 @@ const MyCreatedLessonsMainpage = () => {
     <div className="createlessons">
       <h1 className="createlessons__title"> 개설한 강의 </h1>
       {lessons && lessons.lessons ? (
-        <div className="lesson">
+        <div className="createlessons__cards">
           {lessons.lessons.map((lesson: Lesson) => (
             <LessonCard lesson={lesson} />
           ))}
