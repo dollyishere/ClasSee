@@ -121,7 +121,7 @@ public class LessonRepositorySupport {
         return pamphlets;
     }
 
-    public List<OpenLesson> findAttendLessonListByStudent(Long userId, String query) {
+    public List<OpenLesson> findAttendLessonListByStudent(Long userId, String query, int limit) {
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(qOpenLesson.id.eq(qSchedule.openLesson.id));
         builder.and(qSchedule.user.id.eq(userId));
@@ -129,15 +129,29 @@ public class LessonRepositorySupport {
         if(query.toUpperCase().equals("DONE")) builder.and(qOpenLesson.startTime.before(LocalDateTime.now()));
         if(query.toUpperCase().equals("TODO")) builder.and(qOpenLesson.startTime.after(LocalDateTime.now()));
 
-        List<OpenLesson> lessons = jpaQueryFactory
-                .select(qOpenLesson)
-                .from(qOpenLesson, qSchedule)
-                .where(builder)
-                .fetch();
+        List<OpenLesson> lessons = new ArrayList<>();
+
+        if(limit == 2) {
+            // 메인 페이지용 신청 강의 리스트 ( 임박 순서 )
+            lessons = jpaQueryFactory
+                    .select(qOpenLesson)
+                    .from(qOpenLesson, qSchedule)
+                    .where(builder)
+                    .orderBy(qOpenLesson.startTime.asc())
+                    .limit(2)
+                    .fetch();
+        } else {
+            lessons = jpaQueryFactory
+                    .select(qOpenLesson)
+                    .from(qOpenLesson, qSchedule)
+                    .where(builder)
+                    .orderBy(qOpenLesson.startTime.asc())
+                    .fetch();
+        }
         return lessons;
     }
 
-    public List<OpenLesson> findAttendLessonListByTeacher(Long userId, String query) {
+    public List<OpenLesson> findAttendLessonListByTeacher(Long userId, String query, int limit) {
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(qOpenLesson.lessonId.eq(qLesson.id));
         builder.and(qLesson.user.auth.id.eq(userId));
@@ -145,11 +159,25 @@ public class LessonRepositorySupport {
         if(query.toUpperCase().equals("DONE")) builder.and(qOpenLesson.startTime.before(LocalDateTime.now()));
         if(query.toUpperCase().equals("TODO")) builder.and(qOpenLesson.startTime.after(LocalDateTime.now()));
 
-        List<OpenLesson> lessons = jpaQueryFactory
-                .select(qOpenLesson)
-                .from(qOpenLesson, qLesson)
-                .where(builder)
-                .fetch();
+        List<OpenLesson> lessons = new ArrayList<>();
+        if(limit == 2) {
+            // 메인 화면 리스트용 ( 최근 생성 순 )
+            lessons = jpaQueryFactory
+                    .select(qOpenLesson)
+                    .from(qOpenLesson, qLesson)
+                    .where(builder)
+                    .orderBy(qLesson.id.desc())
+                    .limit(2)
+                    .fetch();
+        } else {
+            // 마이 페이지용 ( 임박순 )
+            lessons = jpaQueryFactory
+                    .select(qOpenLesson)
+                    .from(qOpenLesson, qLesson)
+                    .where(builder)
+                    .orderBy(qOpenLesson.startTime.asc())
+                    .fetch();
+        }
         return lessons;
     }
 

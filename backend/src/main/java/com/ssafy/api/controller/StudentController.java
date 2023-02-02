@@ -34,7 +34,7 @@ public class StudentController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> getLessonListInfo(@PathVariable String email, @RequestParam String query) {
+    public ResponseEntity<?> getLessonListInfo(@PathVariable String email, @RequestParam String query, @RequestParam int limit) {
         /*
         리턴 값
         강의 리스트
@@ -50,7 +50,7 @@ public class StudentController {
         Long userId = user.getAuth().getId();
 
         // 해당 유저가 신청한 강의 리스트
-        List<AttendLessonInfoDto> lessonList = lessonService.getAttendLessonList(userId, query, "S");
+        List<AttendLessonInfoDto> lessonList = lessonService.getAttendLessonList(userId, query, "S", limit);
         if(lessonList == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "신청 강의 없음"));
 
         AttendLessonInfoListRes res = AttendLessonInfoListRes.builder()

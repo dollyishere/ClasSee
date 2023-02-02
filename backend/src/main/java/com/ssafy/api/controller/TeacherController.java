@@ -81,7 +81,7 @@ public class TeacherController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends BaseResponseBody> getLessonListInfo(@PathVariable String email, @RequestParam String query) {
+    public ResponseEntity<? extends BaseResponseBody> getLessonListInfo(@PathVariable String email, @RequestParam String query, @RequestParam int limit) {
         /*
         리턴 값
         강의 리스트
@@ -96,7 +96,7 @@ public class TeacherController {
         if(user == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "사용자 정보 없음"));
         Long userId = user.getAuth().getId();
 
-        List<AttendLessonInfoDto> lessonList = lessonService.getAttendLessonList(userId, query, "T");
+        List<AttendLessonInfoDto> lessonList = lessonService.getAttendLessonList(userId, query, "T", limit);
         if(lessonList == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "개설 강의 없음"));
 
         AttendLessonInfoListRes res = AttendLessonInfoListRes.builder()
