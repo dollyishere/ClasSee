@@ -8,8 +8,12 @@ export interface Lesson {
   category: string;
   rating: number;
   isBookMarked: boolean;
+  startTime: string;
+  endTime: string;
 }
 
 export interface LessonsResponse {
   lessons: Array<Lesson>;
 }
+
+export type MyAppliedHover = boolean;
