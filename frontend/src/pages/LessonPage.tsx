@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import {
-  ConnectionEvent,
   ExceptionEvent,
   OpenVidu,
-  OpenViduError,
-  OpenViduErrorName,
   Session,
   SignalEvent,
   StreamEvent,
   StreamManager,
 } from 'openvidu-browser';
-import PhoneIcon from '@mui/icons-material/Phone';
-import MessageIcon from '@mui/icons-material/Message';
+
+import {
+  Phone,
+  Message,
+  PanTool,
+  Monitor,
+  Videocam,
+  Mic,
+} from '@mui/icons-material';
 
 import useViewModel from '../viewmodels/LessonViewModel';
 import UserVideo from '../components/UserVideo';
@@ -383,13 +387,29 @@ const LessonPage = () => {
         {/* 화상통화에 사용하는 각종 기능 버튼들을 배치할 푸터 */}
         <div className="lesson-page__footer">
           <div className="lesson-page__buttons">
+            {/* 손들기 버튼 */}
+            <button type="button" className="lesson-page__button">
+              <PanTool style={{ fontSize: '30px' }} />
+            </button>
+            {/* 음소거 버튼 */}
+            <button type="button" className="lesson-page__button">
+              <Mic fontSize="large" />
+            </button>
+            {/* 화면공유 버튼 */}
+            <button type="button" className="lesson-page__button">
+              <Monitor fontSize="large" />
+            </button>
+            {/* 캠 변경 버튼 */}
+            <button type="button" className="lesson-page__button">
+              <Videocam fontSize="large" />
+            </button>
             {/* 나가기 버튼 */}
             <button
               type="button"
               className="lesson-page__button lesson-page__button--quit"
               onClick={window.close}
             >
-              <PhoneIcon fontSize="large" />
+              <Phone fontSize="large" />
             </button>
 
             {/* 채팅창 토글 버튼 */}
@@ -398,7 +418,7 @@ const LessonPage = () => {
               className="lesson-page__button lesson-page__button--msg"
               onClick={toggleChatBox}
             >
-              <MessageIcon fontSize="large" />
+              <Message fontSize="large" />
             </button>
           </div>
         </div>
