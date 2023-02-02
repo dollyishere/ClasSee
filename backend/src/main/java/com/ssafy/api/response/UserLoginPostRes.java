@@ -8,6 +8,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
+import java.time.LocalDate;
+
 /**
  * 유저 로그인 API ([POST] /api/v1/auth) 요청에 대한 응답값 정의.
  */
@@ -22,7 +24,7 @@ public class UserLoginPostRes extends BaseResponseBody{
 	String name;
 	String nickname;
 	String address;
-	String birth;
+	LocalDate birth;
 	String phone;
 	Long point;
 	String img;

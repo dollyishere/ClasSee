@@ -7,6 +7,8 @@ import io.swagger.annotations.ApiModel;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @ApiModel("UserInfoGetResponse")
@@ -15,7 +17,7 @@ public class UserInfoGetRes extends BaseResponseBody {
     String name;
     String nickname;
     String address;
-    String birth;
+    LocalDate birth;
     String phone;
     Long point;
     String img;

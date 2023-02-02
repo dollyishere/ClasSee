@@ -51,14 +51,14 @@ public class LessonRegisterPostReq {
 
 
 
-    @ApiModelProperty(name="checklist", example="준비물(img[string]) 리스트")
+    @ApiModelProperty(name="checklist", example="준비물 리스트 [{img:파일명}]")
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
     List<Checklist> checkList;
 
-    @ApiModelProperty(name="pamphlet", example="강의 소개 사진(img[string]) 리스트")
+    @ApiModelProperty(name="pamphlet", example="강의 소개 사진 리스트 [{img:파일명}]")
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
     List<Pamphlet> pamphletList;
-    @ApiModelProperty(name="curriculum", example="커리큘럼(stage[int], description[string]) 리스트")
+    @ApiModelProperty(name="curriculum", example="커리큘럼 리스트 [{stage: 스테이지 숫자, description: 스테이지 설명}]")
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
     List<Curriculum> curriculumList;
 

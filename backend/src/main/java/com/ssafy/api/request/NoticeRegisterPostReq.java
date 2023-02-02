@@ -10,16 +10,16 @@ import lombok.Setter;
 @ApiModel("NoticeCreatePostRequest")
 public class NoticeRegisterPostReq {
 
-    @ApiModelProperty(name="email", example="user_email")
+    @ApiModelProperty(name="email", example="사용자 이메일")
     String email;
 
-    @ApiModelProperty(name="title", example="notice_title")
+    @ApiModelProperty(name="title", example="공지사항 제목")
     String title;
 
-    @ApiModelProperty(name="content", example="notice_content")
+    @ApiModelProperty(name="content", example="공지사항 내용")
     String content;
 
-    @ApiModelProperty(name="img", example="notice_img")
+    @ApiModelProperty(name="img", example="첨부 이미지")
     String img;
 
 
