@@ -62,7 +62,12 @@ const Login = () => {
       {/* 로그인 폼 */}
       <form className="login" onSubmit={handleLoginSubmit}>
         {/* 각각 이메일, 비밀번호 입력 input */}
-        <input type="email" className="login__input" placeholder="이메일" ref={idInputRef} />
+        <input
+          type="email"
+          className="login__input"
+          placeholder="이메일"
+          ref={idInputRef}
+        />
         {/* 만약 visible 값이 false일 시, password로 취급됨 */}
         {/* true일시, password를 확인하는 것이 가능 */}
         <div>
@@ -75,11 +80,19 @@ const Login = () => {
           {/* 비밀번호 입력 체크할 수 있는 버튼 */}
           {/* visible의 값에 따라 표시되는 버튼 이미지에 변경이 있음 */}
           {visible ? (
-            <button type="submit" className="login__show" onClick={showPassword}>
+            <button
+              type="submit"
+              className="login__show"
+              onClick={showPassword}
+            >
               <VisibilityOffIcon />
             </button>
           ) : (
-            <button type="submit" className="login__show" onClick={showPassword}>
+            <button
+              type="submit"
+              className="login__show"
+              onClick={showPassword}
+            >
               <RemoveRedEyeIcon />
             </button>
           )}

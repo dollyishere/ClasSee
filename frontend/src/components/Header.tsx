@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import { Button } from '@mui/material';
 
-import logo from '../assets/logo.png';
+import logo from '../assets/logo2.png';
 
 const Header = () => {
   const searchbarRef = useRef(null); // 검색창을 접근/제어하기 위한 hook
@@ -57,15 +57,22 @@ const Header = () => {
       {/* 버튼 */}
       <ul className="nav">
         <li className="nav__item">
+          <Link to="lesson/test/student" target="_blank">
+            <button type="button" className="nav__button button">
+              테스트
+            </button>
+          </Link>
+        </li>
+        <li className="nav__item">
           <Link to="login">
-            <button type="button" className="nav__button">
+            <button type="button" className="nav__button button">
               로그인
             </button>
           </Link>
         </li>
         <li className="nav__item">
-          <Link to="register">
-            <button type="button" className="nav__button">
+          <Link to="signup">
+            <button type="button" className="nav__button button">
               회원가입
             </button>
           </Link>
