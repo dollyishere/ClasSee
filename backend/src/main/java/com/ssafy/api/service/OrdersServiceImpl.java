@@ -1,8 +1,10 @@
 package com.ssafy.api.service;
 
+import com.ssafy.api.request.OrdersRegistPostReq;
 import com.ssafy.api.response.OrdersInfoGetRes;
 import com.ssafy.db.entity.lesson.Lesson;
 import com.ssafy.db.entity.lesson.OpenLesson;
+import com.ssafy.db.entity.orders.Orders;
 import com.ssafy.db.entity.user.User;
 import com.ssafy.db.repository.LessonRepositorySupport;
 import com.ssafy.db.repository.OrdersRepositorySupport;
@@ -10,6 +12,8 @@ import com.ssafy.db.repository.UserRepositorySupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
 
 @Service
 @Transactional
@@ -40,4 +44,29 @@ public class OrdersServiceImpl implements OrdersService{
 
         return ordersInfoGetRes;
     }
+
+    @Override
+    public void createOrders(OrdersRegistPostReq ordersRegistPostReq) {
+
+        Long user_id = userRepositorySupport.findId(ordersRegistPostReq.getEmail());
+        User user = userRepositorySupport.findOne(user_id);
+
+        OpenLesson openLesson = ordersRepositorySupport.findOneOpenLesson(ordersRegistPostReq.getOpenLesson_id());
+
+        Orders orders = Orders.builder()
+                .regTime(LocalDateTime.now())
+                .phone(ordersRegistPostReq.getPhone())
+                .email(ordersRegistPostReq.getEmail())
+                .address(user.getAddress())
+                .price(ordersRegistPostReq.getPrice())
+                .user(user)
+                .openLesson(openLesson)
+                .build();
+
+        ordersRepositorySupport.save(orders);
+        return;
+
+    }
+
+
 }
