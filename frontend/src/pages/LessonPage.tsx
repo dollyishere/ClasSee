@@ -22,23 +22,7 @@ import useViewModel from '../viewmodels/LessonViewModel';
 import UserVideo from '../components/UserVideo';
 import ChatBox from '../components/ChatBox';
 
-interface Device {
-  deviceId: string;
-  label: string;
-  kind: string;
-}
-
-interface Msg {
-  from: string;
-  role: string;
-  message: string;
-}
-
-interface ConnectionError {
-  code: number | string;
-  message: string;
-  stack?: string;
-}
+import { Device, Msg, ConnectionError } from '../types/OpenviduType';
 
 const LessonPage = () => {
   // 사용자가 강사인지 수강생인지 url로 넘겨받도록 함
