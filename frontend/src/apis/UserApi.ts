@@ -1,7 +1,12 @@
 import axios from 'axios';
 
 import { Response } from '../types/BaseType';
-import { SignUpRequest, SaltResponse, LoginRequest } from '../types/UserType';
+import {
+  SignUpRequest,
+  SaltResponse,
+  LoginRequest,
+  LoginResponse,
+} from '../types/UserType';
 
 const UserApi = () => {
   // salt를 가져오는 함수
@@ -21,7 +26,7 @@ const UserApi = () => {
   // 로그인 함수
   const doLogin = async (loginRequestBody: LoginRequest) => {
     try {
-      const response = await axios.post<Response>(
+      const response = await axios.post<LoginResponse>(
         `${process.env.REACT_APP_SERVER_URI}/api/v1/auth/login`,
         loginRequestBody,
       );
