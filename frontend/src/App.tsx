@@ -9,6 +9,7 @@ import Header from './components/Header';
 import MainPage from './pages/MainPage';
 import SignUpPage from './pages/SignUpPage';
 import LessonPage from './pages/LessonPage';
+import TestPage from './pages/TestPage';
 
 import Footer from './components/Footer';
 
@@ -21,6 +22,7 @@ const App = () => {
           <Route path="/" element={<MainPage />} />
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/lesson/:sessionId/:role" element={<LessonPage />} />
+          <Route path="/image" element={<TestPage />} />
         </Routes>
       </div>
     </RecoilRoot>
