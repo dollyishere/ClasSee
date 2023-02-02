@@ -64,9 +64,6 @@ public class ArticleServiceImpl implements ArticleService{
 
     @Override
     public void updateArticle(ArticleUpdatePutReq articleUpdatePutReq){
-        User user = userRepositorySupport
-                .findUserByAuth(articleUpdatePutReq.getEmail())
-                .get();
 
             articleRepositorySupport.updateArticle(articleUpdatePutReq);
             return;

@@ -31,6 +31,7 @@ public class Photocard {
     private String content;
     private String img;
     private String sign;
+    private String lesson_name;
 
     @Column(name = "regdate")
     private String regDate;
@@ -39,10 +40,6 @@ public class Photocard {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "lesson_id")
-    private Lesson lesson;
 
     @OneToMany(mappedBy = "photocard", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Likes> likesList = new ArrayList<>();

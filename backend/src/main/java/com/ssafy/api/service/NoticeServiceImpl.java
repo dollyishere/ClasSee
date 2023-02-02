@@ -28,9 +28,11 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     public void createNotice(NoticeRegisterPostReq noticeRegisterPostReq) {
 
+        Long user_id = userRepositorySupport
+                .findId(noticeRegisterPostReq.getEmail());
+
         User user = userRepositorySupport
-                .findUserByAuth(noticeRegisterPostReq.getEmail())
-                .get();
+                .findOne(user_id);
 
             Notice notice = Notice.builder()
                     .title(noticeRegisterPostReq.getTitle())

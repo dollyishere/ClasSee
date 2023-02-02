@@ -49,8 +49,8 @@ public class PhotocardServiceImpl implements PhotocardService {
                 .img(photocardRegistPostReq.getImg())
                 .sign(photocardRegistPostReq.getSign())
                 .regDate(LocalDateTime.now().toString())
+                .lesson_name(lesson.getName())
                 .user(user)
-                .lesson(lesson)
                 .build();
 
         photocardRepositorySupport.save(photocard);
@@ -73,14 +73,7 @@ public class PhotocardServiceImpl implements PhotocardService {
     }
 
     @Override
-    public void deletePhotocard(String email, Long id) {
-        User user = User.builder().build();
-
-        if(userRepositorySupport.findUserByAuth(email).isPresent()){
-            user = userRepositorySupport.findUserByAuth(email).get();
-        } else{
-            user = userRepositorySupport.findUserByAuth(email).orElse(null);
-        }
+    public void deletePhotocard(Long id) {
 
         Photocard photocard = photocardRepositorySupport
                 .findOne(id);
@@ -133,7 +126,6 @@ public class PhotocardServiceImpl implements PhotocardService {
         Long user_id = userRepositorySupport.findId(email);
 
         Likes likes = photocardRepositorySupport.findOneLikes(user_id, id);
-
 
         photocardRepositorySupport.deleteLikes(likes);
         return;
