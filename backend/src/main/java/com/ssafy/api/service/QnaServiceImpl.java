@@ -1,8 +1,10 @@
 package com.ssafy.api.service;
 
+import com.ssafy.api.request.QnaAnswerRegistPostReq;
 import com.ssafy.api.request.QnaRegisterPostReq;
 import com.ssafy.api.request.QnaUpdatePutReq;
 import com.ssafy.db.entity.qna.Qna;
+import com.ssafy.db.entity.qna.QnaAnswer;
 import com.ssafy.db.entity.user.User;
 import com.ssafy.db.repository.QnaRepositorySupport;
 import com.ssafy.db.repository.UserRepositorySupport;
@@ -33,6 +35,19 @@ public class QnaServiceImpl implements QnaService {
                 .build();
 
         qnaRepositorySupport.save(qna);
+    }
+
+    @Override
+    public void createQnaAnswer(QnaAnswerRegistPostReq qnaAnswerRegistPostReq) {
+        Qna qna = qnaRepositorySupport.findOne(qnaAnswerRegistPostReq.getQna_id());
+
+        QnaAnswer qnaAnswer = QnaAnswer.builder()
+                .content(qnaAnswerRegistPostReq.getContent())
+                .qna(qna)
+                .build();
+
+        qnaRepositorySupport.saveAnswer(qnaAnswer);
+        return;
     }
 
     @Override

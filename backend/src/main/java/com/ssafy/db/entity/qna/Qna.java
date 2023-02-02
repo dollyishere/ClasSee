@@ -35,6 +35,6 @@ public class Qna {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToOne(mappedBy = "qna", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "qna", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private QnaAnswer qnaAnswer;
 }

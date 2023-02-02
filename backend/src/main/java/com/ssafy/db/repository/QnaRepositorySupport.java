@@ -3,7 +3,9 @@ package com.ssafy.db.repository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.api.request.QnaUpdatePutReq;
 import com.ssafy.db.entity.qna.QQna;
+import com.ssafy.db.entity.qna.QQnaAnswer;
 import com.ssafy.db.entity.qna.Qna;
+import com.ssafy.db.entity.qna.QnaAnswer;
 import com.ssafy.db.entity.user.QUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -20,9 +22,12 @@ public class QnaRepositorySupport {
     private final JPAQueryFactory jpaQueryFactory;
 
     QQna qQna = QQna.qna;
+    QQnaAnswer qQnaAnswer = QQnaAnswer.qnaAnswer;
     QUser qUser = QUser.user;
 
     public void save(Qna qna){ em.persist(qna); }
+
+    public void saveAnswer(QnaAnswer qnaAnswer) { em.persist(qnaAnswer); }
 
     public void delete(Qna qna){ em.remove(qna); }
 
