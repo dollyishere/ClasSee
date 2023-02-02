@@ -19,11 +19,18 @@ const StepOne = ({
       <h2>Step 1. 강의명 입력</h2>
       <div>
         {/* 카테고리 선택의 경우 하위 컴포넌트를 배정하고 그 안에 해당하는 props를 전달하는 것으로 작성함 */}
-        <CategorySelectBox categorySelectState={categorySelectState} setCategorySelectState={setCategorySelectState} />
+        <CategorySelectBox
+          categorySelectState={categorySelectState}
+          setCategorySelectState={setCategorySelectState}
+        />
       </div>
       <div>
         {/* 강의명을 입력하는 input */}
-        <input value={lessonNameState} onChange={handleInputLessonName} placeholder="강의명을 입력해주세요" />
+        <input
+          value={lessonNameState}
+          onChange={handleInputLessonName}
+          placeholder="강의명을 입력해주세요"
+        />
       </div>
     </div>
   );

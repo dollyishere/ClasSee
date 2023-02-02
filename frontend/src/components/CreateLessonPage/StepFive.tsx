@@ -68,7 +68,9 @@ const StepFive = ({
 
   // 만약 삭제 버튼을 누를 시, 해당하는 stage는 삭제됨
   const deleteBtn = (id: number) => {
-    setCurriListState(curriListState.filter((_, currentIndex) => currentIndex !== id));
+    setCurriListState(
+      curriListState.filter((_, currentIndex) => currentIndex !== id),
+    );
   };
 
   return (
@@ -81,18 +83,28 @@ const StepFive = ({
             <li>
               <h3>Step {id + 1}.</h3>
               {stage}
-              <RemoveCircleOutlineIcon type="button" onClick={() => deleteBtn(id)} />
+              <RemoveCircleOutlineIcon
+                type="button"
+                onClick={() => deleteBtn(id)}
+              />
             </li>
           ))}
         </ul>
-      ) : null}
+      ) : (
+        <p>* 커리큘럼을 최소 1개 이상 추가해주세요.</p>
+      )}
       <hr />
       {/* inputVisiable이 true거나 아직 curriListState에 아무 값도 없다면, 커리큘럼을 추가하는 것이 가능함(input 태그가 보임) */}
       {/* 만약 curriListState.length가 0이라면(현재 추가된 커리큘럼이 하나도 없다면), 그 때도 input 태그는 자동으로 보임 */}
       {inputVisiable || curriListState.length === 0 ? (
         <form onSubmit={onCurriSubmit}>
           <h3>Stage {curriListState.length + 1}.</h3>
-          <input ref={curriRef} type="text" placeholder="커리큘럼을 단계별로 입력해주세요" required />
+          <input
+            ref={curriRef}
+            type="text"
+            placeholder="커리큘럼을 단계별로 입력해주세요"
+            required
+          />
           <IconButton type="submit" aria-label="add">
             <AddCircleOutlineIcon />
           </IconButton>
@@ -108,6 +120,7 @@ const StepFive = ({
       {/* 최대 참가 가능 인원 수를 입력하는 input 태그임 */}
       {/* 최저값은 0, 최대 값은 10으로 지정함 */}
       <label htmlFor="number_of_participants">
+        최대 참여 인원
         <input
           id="number_of_participants"
           type="number"
@@ -119,9 +132,14 @@ const StepFive = ({
         />
         명
       </label>
+      {maximumState === 0 ? (
+        <p>클래스 최대 참여 인원은 최소 1명이어야 합니다.</p>
+      ) : null}
+      <br />
       {/* 예상 강의 시간을 입력하는 input 태그임 */}
       {/* 마찬가지로 최저값 0, 최대값 1로 지정 */}
       <label htmlFor="time_of_lesson">
+        예상 강의 시간
         <input
           id="time_of_lesson"
           type="number"

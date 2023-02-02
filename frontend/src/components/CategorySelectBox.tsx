@@ -1,10 +1,20 @@
 import React from 'react';
 
-import { Box, InputLabel, MenuItem, FormControl, Select, SelectChangeEvent } from '@mui/material';
+import {
+  Box,
+  InputLabel,
+  MenuItem,
+  FormControl,
+  Select,
+  SelectChangeEvent,
+} from '@mui/material';
 
 import { CategoryProps } from '../types/CreateLessonType';
 
-const CategorySelectBox = ({ categorySelectState, setCategorySelectState }: CategoryProps) => {
+const CategorySelectBox = ({
+  categorySelectState,
+  setCategorySelectState,
+}: CategoryProps) => {
   const handleCategoryChange = (event: SelectChangeEvent) => {
     setCategorySelectState(event.target.value);
   };

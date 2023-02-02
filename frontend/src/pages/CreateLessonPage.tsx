@@ -1,15 +1,13 @@
-import React, {
-  useState,
-  useRef,
-  useMemo,
-  createContext,
-  useContext,
-} from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-import '../styles/pages/_create-lesson-page.scss';
+import { useRecoilValue } from 'recoil';
 
 import { Button, Card, CardActions } from '@mui/material';
+
+import { ref, uploadBytes } from 'firebase/storage';
+import { storage } from '../utils/Firebase';
+
+import PrivateInfoState from '../models/PrivateInfoAtom';
 
 import StepOne from '../components/CreateLessonPage/StepOne';
 import StepTwo from '../components/CreateLessonPage/StepTwo';
@@ -17,6 +15,7 @@ import StepThree from '../components/CreateLessonPage/StepThree';
 import StepFour from '../components/CreateLessonPage/StepFour';
 import StepFive from '../components/CreateLessonPage/StepFive';
 import StepSix from '../components/CreateLessonPage/StepSix';
+import Header from '../components/Header';
 
 import CreateLessonViewModel from '../viewmodels/CreateLessonViewModel';
 
@@ -61,6 +60,9 @@ const CreateLessonPage = () => {
   const [kitDescState, setKitDescState] = useState<string>('');
   const [kitPriceState, setKitPriceState] = useState<number>(0);
 
+  // 강의 개설을 신청하는 유저의 이메일 정보를 useRecoilValue를 통해 불러옴
+  // const userEmail = useRecoilValue(PrivateInfoState).email;
+
   // api 실행할 시 실행될 CreateLessonModel createLesson에 할당
   const { createLesson } = CreateLessonViewModel();
 
@@ -84,10 +86,18 @@ const CreateLessonPage = () => {
       basicPriceState !== 0
     ) {
       // array 형태로 넣어야 할 데이터는, 해당 형식에 맞게 다시 재생성함
-      const checkList: CheckListType[] = lessonImgSrcListState.map(
-        (lessonImg: string) => {
+      const pamphletList: PamphletType[] = lessonImgFileListState.map(
+        (Img: any) => {
           return {
-            img: lessonImg,
+            img: Img.name as string,
+          };
+        },
+      );
+
+      const checkList: CheckListType[] = materialImgFileListState.map(
+        (Img: any) => {
+          return {
+            img: Img.name,
           };
         },
       );
@@ -99,13 +109,6 @@ const CreateLessonPage = () => {
           };
         },
       );
-      const pamphletList: PamphletType[] = materialImgSrcListState.map(
-        (materialImg: string) => {
-          return {
-            img: materialImg as string,
-          };
-        },
-      );
 
       const createLessonRequestBody: CreateLessonRequest = {
         category: categorySelectState,
@@ -113,6 +116,7 @@ const CreateLessonPage = () => {
         cklsDescription: materialDescState,
         curriculumList: curriculumList as CurriculumType[],
         description: lessonDescState,
+        // email: `${userEmail}`,
         email: 'test1234@gmail.com',
         kitDescription: kitDescState,
         kitPrice: kitPriceState,
@@ -125,12 +129,39 @@ const CreateLessonPage = () => {
 
       const res = await createLesson(createLessonRequestBody);
       if (res?.message === 'SUCCESS') {
-        // 만약 강의 개설에 성공했을 시, 등록되었음을 알린 후 메인 페이지로 이동
+        // 만약 강의 개설에 성공했을 시, 이하 코드를 실행함
+        // 만약 업로드한 이미지 파일이 하나 이상 존재한다면,
+        // 파일을 Firebase에 업로드한 후 해당 이름을 checkListState에 집어넣어줌
+        if (lessonImgFileListState.length !== 0) {
+          lessonImgFileListState.forEach(async (image: any) => {
+            const upLoadedCheckListImage = await uploadBytes(
+              ref(
+                storage,
+                `lesson/${res.lessonId}/pamphlet_images/${image.name}`,
+              ),
+              image,
+            );
+          });
+        }
+        if (materialImgFileListState.length !== 0) {
+          materialImgFileListState.forEach(async (image: any) => {
+            const upLoadedPamphletImage = await uploadBytes(
+              ref(
+                storage,
+                `lesson/${res.lessonId}/checklist_images/${image.name}`,
+              ),
+              image,
+            );
+          });
+        }
+        // 이후 사용자에게 강의가 새로 등록되었음을 알린 후 메인 페이지로 이동
         alert('강의가 등록되었습니다.');
         navigate(`/`);
+      } else {
+        alert('다시 시도해주십시오.');
       }
 
-      // 예외조건 처리함
+      // 필수 입력 항목을 입력하지 않았을 경우 예외조건 처리함
     } else if (lessonNameState === '') {
       alert('클래스 이름을 입력해주세요.');
       setSelectedComponent(1);
@@ -150,7 +181,8 @@ const CreateLessonPage = () => {
   };
 
   return (
-    <div className="container">
+    <div className="page" id="create-lesson-page">
+      <Header />
       {/* 페이지 제목 지정 */}
       <h1>강의 간편 개설하기</h1>
       {/* 카드로 form이 들어갈 영역 지정 */}
