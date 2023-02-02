@@ -7,7 +7,8 @@ import Stack from '@mui/material/Stack';
 import AvTimerIcon from '@mui/icons-material/AvTimer';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
-import { LessonsResponse, Lesson, MyAppliedHover } from '../types/LessonsType';
+import { LessonsResponse, Lesson } from '../types/LessonsType';
+import MyAppliedDeleteModal from './MyAppliedDeleteModal';
 import logo from '../assets/logo.png';
 
 // type combinetype = { lesson: Lesson; myapplied: MyAppliedHover };
@@ -22,6 +23,12 @@ const MyAppliedTest = ({ lesson }: Props) => {
     setIsBookMarked(!isBookMarked);
   };
   const [isHovered, setIsHovered] = useState(false);
+  // 강의 취소 모달 오픈을 위한 flag
+  const [modalOpen, setModalOpen] = useState(false);
+  // 강의 취소 버튼 클릭 시 모달 팝업을 위한 modalopen flag를 ture로 바꿈
+  const showModal = () => {
+    setModalOpen(true);
+  };
   return (
     <div
       className="lesson__card"
@@ -104,15 +111,23 @@ const MyAppliedTest = ({ lesson }: Props) => {
           <div className="applylessons__hover--buttons">
             <div>
               <Link to="/lesson/test/student">
-                <button className="applylessons__hover--partici" type="button">
+                <button
+                  className="applylessons__hover--participantbutton"
+                  type="button"
+                >
                   Participant
                 </button>
               </Link>
             </div>
             <div>
-              <button className="lesson__card-delete-button" type="button">
+              <button
+                className="applylessons__hover--deletebutton"
+                type="button"
+                onClick={showModal}
+              >
                 Delete
               </button>
+              {modalOpen && <MyAppliedDeleteModal lessonId={lesson.id} />}
             </div>
           </div>
         </div>
