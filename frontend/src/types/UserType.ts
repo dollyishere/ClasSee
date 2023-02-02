@@ -25,5 +25,5 @@ export interface LoginResponse extends Response {
 }
 
 export interface UserInfo {
-  userId: string | null;
+  email: string | null;
 }
