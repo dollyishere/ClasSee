@@ -7,5 +7,5 @@ public interface OrdersService {
 
     OrdersInfoGetRes readOrders(String email, Long id);
 
-    void createOrders(OrdersRegistPostReq ordersRegistPostReq);
+    void createOrders(OrdersRegistPostReq ordersRegistPostReq) throws Exception;
 }

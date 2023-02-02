@@ -46,24 +46,32 @@ public class OrdersServiceImpl implements OrdersService{
     }
 
     @Override
-    public void createOrders(OrdersRegistPostReq ordersRegistPostReq) {
+    public void createOrders(OrdersRegistPostReq ordersRegistPostReq) throws Exception {
 
         Long user_id = userRepositorySupport.findId(ordersRegistPostReq.getEmail());
         User user = userRepositorySupport.findOne(user_id);
+        Long user_point = user.getPoint();
 
         OpenLesson openLesson = ordersRepositorySupport.findOneOpenLesson(ordersRegistPostReq.getOpenLesson_id());
 
-        Orders orders = Orders.builder()
-                .regTime(LocalDateTime.now())
-                .phone(ordersRegistPostReq.getPhone())
-                .email(ordersRegistPostReq.getEmail())
-                .address(user.getAddress())
-                .price(ordersRegistPostReq.getPrice())
-                .user(user)
-                .openLesson(openLesson)
-                .build();
+        if(user_point >= ordersRegistPostReq.getPrice()) {
+            Orders orders = Orders.builder()
+                    .regTime(LocalDateTime.now())
+                    .phone(ordersRegistPostReq.getPhone())
+                    .email(ordersRegistPostReq.getEmail())
+                    .address(user.getAddress())
+                    .price(ordersRegistPostReq.getPrice())
+                    .user(user)
+                    .openLesson(openLesson)
+                    .build();
 
-        ordersRepositorySupport.save(orders);
+            user.setPoint(user_point - ordersRegistPostReq.getPrice());
+            userRepositorySupport.save(user);
+            ordersRepositorySupport.save(orders);
+        } else {
+            throw new Exception("포인트가 부족합니다");
+        }
+
         return;
 
     }
