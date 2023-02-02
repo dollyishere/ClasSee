@@ -2,11 +2,15 @@ package com.ssafy.db.entity.orders;
 
 import com.ssafy.db.entity.lesson.OpenLesson;
 import com.ssafy.db.entity.user.User;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +22,9 @@ import java.util.List;
 @Entity
 @Getter
 @Table(name = "ORDERS")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,11 +32,13 @@ public class Orders {
 
     @CreatedDate
     @Column(name = "regtime")
-    private Timestamp regTime;
+    private LocalDateTime regTime;
 
     private String phone;
     private String email;
     private String address;
+
+    private Long price;
 
     // 연결
     @ManyToOne(fetch = FetchType.LAZY)
