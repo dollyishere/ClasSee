@@ -1,12 +1,15 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
-import { Button } from '@mui/material';
+import { useRecoilValue } from 'recoil';
 
+import { Notifications, Person } from '@mui/icons-material';
 import logo from '../assets/logo2.png';
+import privateInfoState from '../models/PrivateInfoAtom';
 
 const Header = () => {
   const searchbarRef = useRef(null); // 검색창을 접근/제어하기 위한 hook
+  const userInfo = useRecoilValue(privateInfoState);
 
   // form 값 제출시 실행할 함수
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -22,7 +25,9 @@ const Header = () => {
       target.value = '';
     }
   };
-
+  useEffect(() => {
+    console.log(userInfo);
+  }, []);
   return (
     <header>
       {/* 로고 */}
@@ -63,20 +68,36 @@ const Header = () => {
             </button>
           </Link>
         </li>
-        <li className="nav__item">
-          <Link to="/login">
+        {userInfo === null ? (
+          <>
+            <li className="nav__item">
+              <Link to="/login">
+                <button type="button" className="nav__button button">
+                  로그인
+                </button>
+              </Link>
+            </li>
+            <li className="nav__item">
+              <Link to="/signup">
+                <button type="button" className="nav__button button">
+                  회원가입
+                </button>
+              </Link>
+            </li>
+          </>
+        ) : (
+          <>
             <button type="button" className="nav__button button">
-              로그인
+              강의 개설
             </button>
-          </Link>
-        </li>
-        <li className="nav__item">
-          <Link to="/signup">
-            <button type="button" className="nav__button button">
-              회원가입
+            <button type="button" className="nav__button--icon">
+              <Notifications fontSize="large" />
             </button>
-          </Link>
-        </li>
+            <button type="button" className="nav__button--icon">
+              <Person fontSize="large" />
+            </button>
+          </>
+        )}
       </ul>
     </header>
   );

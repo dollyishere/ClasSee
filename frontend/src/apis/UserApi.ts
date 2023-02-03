@@ -67,6 +67,18 @@ const UserApi = () => {
     return null;
   };
 
+  const doGetAccessToken = async () => {
+    try {
+      const response = await axios.get<Response>(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/users~`,
+      );
+      console.log(response);
+    } catch (error: any) {
+      console.error(error);
+    }
+    return null;
+  };
+
   return {
     doSignUp,
     doEmailDuplicationCheck,
