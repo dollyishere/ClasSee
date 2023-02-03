@@ -2,10 +2,8 @@ import React from 'react';
 import { atom } from 'recoil';
 import { UserInfo } from '../types/UserType';
 
-const PrivateInfoState = atom<UserInfo>({
+const PrivateInfoState = atom<UserInfo | null>({
   key: 'PrivateInfoData',
-  default: {
-    email: null,
-  },
+  default: null,
 });
 export default PrivateInfoState;
