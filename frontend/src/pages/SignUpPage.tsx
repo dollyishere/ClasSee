@@ -101,7 +101,7 @@ const SignUpPage = () => {
       const nicknameTarget = nicknameRef.current as HTMLInputElement; // 닉네임
       const addressTarget = addressRef.current as HTMLInputElement; // 주소
       const phoneNumTarget = phoneNumRef.current as HTMLInputElement; // 휴대폰 번호
-      const birthday = yearState + monthState + dayState; // 생년월일
+      const birthday = `${yearState}-${monthState}-${dayState}`; // 생년월일
 
       if (!isValidEmail) {
         alert('이메일 중복 확인 해주세요.');
@@ -190,11 +190,11 @@ const SignUpPage = () => {
       const res = await emailDuplicationCheck(target.value);
       if (res === null) {
         console.log('서버 오류');
-      } else if (res === 201) {
+      } else if (res === 200) {
         setIsValidEmail(true);
         target.readOnly = true;
         alert('사용 가능한 이메일 입니다.');
-      } else if (res === 200) {
+      } else if (res === 409) {
         alert('중복된 이메일입니다.');
         target.value = '';
       }

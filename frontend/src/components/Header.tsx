@@ -1,12 +1,18 @@
-import React, { useRef } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useRef, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
-import { Button } from '@mui/material';
+import { useRecoilValue } from 'recoil';
 
+import { Notifications, Person } from '@mui/icons-material';
 import logo from '../assets/logo2.png';
+import privateInfoState from '../models/PrivateInfoAtom';
 
 const Header = () => {
   const searchbarRef = useRef(null); // 검색창을 접근/제어하기 위한 hook
+  const userInfo = useRecoilValue(privateInfoState);
+  const [toggleUserInfo, setToggleUserInfo] = useState<boolean>(false);
+
+  const navigate = useNavigate();
 
   // form 값 제출시 실행할 함수
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -21,6 +27,10 @@ const Header = () => {
       // 검색창을 빈칸으로
       target.value = '';
     }
+  };
+
+  const handleToggleUserInfo = () => {
+    setToggleUserInfo((prev: boolean) => !prev);
   };
 
   return (
@@ -40,7 +50,7 @@ const Header = () => {
           </Link>
         </li>
         <li className="nav__item">
-          <Link to="proud" className="nav__item--link">
+          <Link to="/proud" className="nav__item--link">
             자랑 게시판
           </Link>
         </li>
@@ -57,27 +67,65 @@ const Header = () => {
       {/* 버튼 */}
       <ul className="nav">
         <li className="nav__item">
-          <Link to="lesson/test/student" target="_blank">
+          <Link to="/lesson/test/student" target="_blank">
             <button type="button" className="nav__button button">
               테스트
             </button>
           </Link>
         </li>
-        <li className="nav__item">
-          <Link to="login">
+        {userInfo === null ? (
+          <>
+            <li className="nav__item">
+              <Link to="/login">
+                <button type="button" className="nav__button button">
+                  로그인
+                </button>
+              </Link>
+            </li>
+            <li className="nav__item">
+              <Link to="/signup">
+                <button type="button" className="nav__button button">
+                  회원가입
+                </button>
+              </Link>
+            </li>
+          </>
+        ) : (
+          <>
             <button type="button" className="nav__button button">
-              로그인
+              강의 개설
             </button>
-          </Link>
-        </li>
-        <li className="nav__item">
-          <Link to="signup">
-            <button type="button" className="nav__button button">
-              회원가입
+            <button type="button" className="nav__button--icon">
+              <Notifications fontSize="large" />
             </button>
-          </Link>
-        </li>
+            <button
+              type="button"
+              className="nav__button--icon"
+              onClick={handleToggleUserInfo}
+            >
+              <Person fontSize="large" />
+            </button>
+          </>
+        )}
       </ul>
+      {toggleUserInfo && userInfo !== null ? (
+        <div className="header__user-info">
+          <div>{userInfo.nickname}</div>
+          <div>{userInfo.point} pt</div>
+          <div>
+            <button
+              type="button"
+              className="header__user-info--logout button"
+              onClick={() => navigate('/mypage')}
+            >
+              회원정보
+            </button>
+            <button type="button" className="header__user-info--logout button">
+              로그아웃
+            </button>
+          </div>
+        </div>
+      ) : null}
     </header>
   );
 };
