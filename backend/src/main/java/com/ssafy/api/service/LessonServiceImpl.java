@@ -107,8 +107,7 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public LessonDetailsRes getLessonDetails(Long lessonId, String email) {
-        Long userId = userRepositorySupport.findId(email);
+    public LessonDetailsRes getLessonDetails(Long lessonId) {
         Lesson lesson = lessonRepository.findById(lessonId).get();
 
         User teacher = userRepositorySupport.findOne(lesson.getUser().getId());
@@ -117,9 +116,9 @@ public class LessonServiceImpl implements LessonService {
         List<Checklist> checklists = lessonRepositorySupport.findCheckListByLesson(lessonId);
         List<Pamphlet> pamphlets = lessonRepositorySupport.findPamphletByLesson(lessonId);
         double score = lessonRepositorySupport.setLessonAvgScore(lesson);
-        Long isBookmarked = bookmarkRepository.isBookmarked(userId, lessonId);
 
         LessonDetailsRes lessonDetailsRes = LessonDetailsRes.builder()
+                .userEmail(teacher.getAuth().getEmail())
                 .lessonName(lesson.getName())
                 .cklsDescription(lesson.getCklsDescription())
                 .kitPrice(lesson.getKitPrice())
@@ -133,7 +132,6 @@ public class LessonServiceImpl implements LessonService {
                 .checkLists(checklists)
                 .pamphlets(pamphlets)
                 .score(score)
-                .isBookmarked(isBookmarked)
                 .build();
         return lessonDetailsRes;
     }

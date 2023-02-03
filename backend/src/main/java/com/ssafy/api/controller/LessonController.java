@@ -102,8 +102,8 @@ public class LessonController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends BaseResponseBody> getLessonDetails(@PathVariable Long lessonId, @RequestParam String email) {
-        LessonDetailsRes lessonDetailsRes = lessonService.getLessonDetails(lessonId, email);
+    public ResponseEntity<? extends BaseResponseBody> getLessonDetails(@PathVariable Long lessonId) {
+        LessonDetailsRes lessonDetailsRes = lessonService.getLessonDetails(lessonId);
 
         return ResponseEntity.status(200).body(LessonDetailsRes.of(200, "SUCCESS", lessonDetailsRes));
     }
