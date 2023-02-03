@@ -66,7 +66,7 @@ public class TeacherController {
         List<Lesson> lessonList = teacherService.getLessonList(user);
         if(lessonList == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "개설 강의 없음"));
 
-        List<LessonInfoDto> lessonInfoList =  lessonService.setLessonProperty(userId, lessonList);
+        List<LessonInfoDto> lessonInfoList =  lessonService.setLessonProperty(lessonList);
         LessonInfoListRes res = LessonInfoListRes.builder()
                                                  .lessonInfoList(lessonInfoList)
                                                  .build();

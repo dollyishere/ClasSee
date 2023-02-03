@@ -1,6 +1,7 @@
 package com.ssafy.api.service;
 
 import com.ssafy.api.request.BookmarkRegisterReq;
+import com.ssafy.db.entity.lesson.Lesson;
 
 import java.util.List;
 
@@ -11,5 +12,5 @@ public interface BookmarkService {
     void create(BookmarkRegisterReq requestInfo);
     void delete(String email, Long lessonId);
 
-    List<Long> getBookmarkList(Long userId);
+    List<Lesson> getBookmarkList(Long userId);
 }
