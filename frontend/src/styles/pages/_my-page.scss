@@ -1,0 +1,7 @@
+.my-page {
+  height: 100%;
+  .my-page__contents {
+    height: calc(100% - 80px);
+    display: flex;
+  }
+}

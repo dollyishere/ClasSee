@@ -1,0 +1,32 @@
+@use '../base/colors';
+
+.sidebar {
+  height: 100%;
+  width: 240px;
+  background-color: white;
+  border: colors.$light_gray_color 1px solid;
+  box-sizing: border-box;
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .sidebar__item {
+    background-color: white;
+    width: 100%;
+    padding: 20px 0;
+    font-size: 20px;
+    font-weight: 600;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: colors.$light_gray_color 1px solid;
+    box-sizing: border-box;
+    cursor: pointer;
+  }
+
+  .sidebar__selected {
+    color: white;
+    background-color: colors.$theme_color;
+  }
+}
