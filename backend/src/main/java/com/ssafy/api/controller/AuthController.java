@@ -6,6 +6,7 @@ import com.ssafy.api.service.AuthService;
 import com.ssafy.api.service.BookmarkService;
 import com.ssafy.api.service.RedisService;
 import com.ssafy.db.entity.lesson.Lesson;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -132,14 +133,15 @@ public class AuthController {
 			@ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
 			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
 	})
-	public ResponseEntity<?> logout(@RequestBody @ApiParam(value = "사용자 정보", required = true) UserLogoutPostReq userInfo) {
+	public ResponseEntity<?> logout(@RequestHeader String accessToken, @RequestParam String email) {
 		try {
-			String email = userInfo.getEmail();
-			String accessToken = userInfo.getAccessToken();
+			accessToken = accessToken.substring(7);
 			authService.logout(email, accessToken);
 
-			return ResponseEntity.ok(UserLoginPostRes.of(200, "SUCCESS", null));
-		} catch (IllegalArgumentException e){
+			return ResponseEntity.ok(BaseResponseBody.of(200, "SUCCESS"));
+		} catch (ExpiredJwtException e){
+			return ResponseEntity.status(401).body(BaseResponseBody.of(401, "EXPIRED TOKEN"));
+		} catch (Exception e){
 			return ResponseEntity.status(401).body(BaseResponseBody.of(401, "INVALID"));
 		}
 	}
@@ -169,8 +171,10 @@ public class AuthController {
 	})
 	public ResponseEntity<? extends BaseResponseBody> getAccessToken(@RequestHeader String refreshToken, @RequestParam String email, HttpServletResponse res) {
 		User user = userService.getUserByAuth(email);
-		if(user == null) return ResponseEntity.status(404).body(UserSaltRes.of(404, "USER NOT FOUND", null));
+		if(user == null) return ResponseEntity.status
+				(404).body(BaseResponseBody.of(404, "USER NOT FOUND"));
 
+		refreshToken = refreshToken.substring(7);
 		if (!redisService.getValues(email).equals(refreshToken)) return ResponseEntity.status(401).body(BaseResponseBody.of(401, "INVALID TOKEN"));
 
 		// 프론트로 보내줄 access, refresh token 생성
