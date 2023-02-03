@@ -83,6 +83,42 @@ const LessonPage = () => {
   // chat은 메시지 전송
   const { getToken, chat } = useViewModel();
 
+  // 손들기 시그널 보내는 함수
+  const sendRaiseHandSignal = () => {
+    if (session !== undefined) {
+      session
+        .signal({
+          data: userName,
+          to: [],
+          type: 'raiseHand',
+        })
+        .then(() => {
+          console.log('raiseHand');
+        })
+        .catch((error: any) => {
+          console.log(error);
+        });
+    }
+  };
+
+  // 손 내리기 시그널 보내는 함수
+  const sendDownHandSignal = async () => {
+    if (session !== undefined) {
+      await session
+        .signal({
+          data: userName,
+          to: [],
+          type: 'downHand',
+        })
+        .then(() => {
+          console.log('downHand');
+        })
+        .catch((error: any) => {
+          console.log(error);
+        });
+    }
+  };
+
   // 세션에서 나간 사람을 subscribers에서 제거
   const deleteSubscriber = (streamManager: StreamManager) => {
     // 세션에서 나간 사람의 데이터
@@ -102,10 +138,17 @@ const LessonPage = () => {
     } else if (data.role === 'teacher') {
       setTeacherStreamManager(undefined);
     }
+
+    const newRaiseHand = raiseHand;
+    const index = newRaiseHand.indexOf(streamManager);
+    if (index > -1) {
+      newRaiseHand.splice(index, 1);
+      setRaiseHand([...newRaiseHand]);
+    }
   };
 
   // 세션에서 나갈 때 실행하는 함수
-  const leaveSession = () => {
+  const leaveSession = async () => {
     // 세션 연결을 끊음
     session?.disconnect();
 
@@ -296,14 +339,18 @@ const LessonPage = () => {
   }, []);
 
   // 학생 비디오를 클릭했을 때 실행할 함수
-  const handleVideoClick = (num: number) => {
-    // num은 선택한 subscriber의 인덱스
-    if (num >= 0) {
-      // num이 0보다 크면 studentStreamManager에 등록
-      setStudentStreamManager(subscribers[num]);
-    } else if (studentStreamManager !== undefined) {
-      // num이 -1이면 studnetStreamManager에서 제거
+  const handleVideoClick = (streamManager: StreamManager | null) => {
+    // argument가 null이면 선택된 학생 화면을 원래대로 되돌리도록 동작
+    if (streamManager === null || streamManager === studentStreamManager) {
       setStudentStreamManager(undefined);
+    } else {
+      // null이 아니면 subscribers에서 찾아서 화면을 focus하도록 동작
+      const newSubscribers = subscribers;
+      const index = newSubscribers.indexOf(streamManager);
+
+      if (index > -1) {
+        setStudentStreamManager(streamManager);
+      }
     }
     // isFocused를 반대로
     setIsFocused((prev: boolean) => !prev);
@@ -315,35 +362,13 @@ const LessonPage = () => {
   };
 
   // 손 들기 버튼 클릭했을 때 실행할 함수
-  const handleHandClick = (e: React.MouseEvent<HTMLElement>) => {
+  const handleHandClick = () => {
     if (session !== undefined) {
       // 손을 들지 않은 상태라면 손 들었다는 signal 보내고 손을 든 상태로 세팅
       if (!isHanded) {
-        session
-          .signal({
-            data: userName,
-            to: [],
-            type: 'raiseHand',
-          })
-          .then(() => {
-            console.log('raiseHand');
-          })
-          .catch((error: any) => {
-            console.log(error);
-          });
+        sendRaiseHandSignal();
       } else {
-        session
-          .signal({
-            data: userName,
-            to: [],
-            type: 'downHand',
-          })
-          .then(() => {
-            console.log('downHand');
-          })
-          .catch((error: any) => {
-            console.log(error);
-          });
+        sendDownHandSignal();
       }
       setIsHanded((prev: boolean) => !prev);
     }
@@ -364,7 +389,7 @@ const LessonPage = () => {
                 <div
                   role="presentation"
                   className="lesson-page__student-stream-container"
-                  onClick={() => handleVideoClick(-1)}
+                  onClick={() => handleVideoClick(null)}
                 >
                   <UserVideo streamManager={studentStreamManager} />
                 </div>
@@ -379,7 +404,7 @@ const LessonPage = () => {
                       <div
                         role="presentation"
                         className="lesson-page__stream-container"
-                        onClick={() => handleVideoClick(i)}
+                        onClick={() => handleVideoClick(sub)}
                       >
                         <UserVideo streamManager={sub} />
                       </div>
@@ -392,7 +417,7 @@ const LessonPage = () => {
                       <div
                         role="presentation"
                         className="lesson-page__stream-container"
-                        onClick={() => handleVideoClick(i)}
+                        onClick={() => handleVideoClick(sub)}
                       >
                         <UserVideo streamManager={sub} />
                       </div>
@@ -405,7 +430,7 @@ const LessonPage = () => {
                       <div
                         role="presentation"
                         className="lesson-page__stream-container"
-                        onClick={() => handleVideoClick(i)}
+                        onClick={() => handleVideoClick(sub)}
                       >
                         <UserVideo streamManager={sub} />
                       </div>
@@ -480,8 +505,10 @@ const LessonPage = () => {
           <div className="lesson-page__hands">
             {raiseHand.map((hand: StreamManager) => (
               <div
+                role="presentation"
                 key={JSON.parse(hand.stream.connection.data).clientData}
                 className="lesson-page__hand"
+                onClick={() => handleVideoClick(hand)}
               >
                 <div>
                   <PanTool />
