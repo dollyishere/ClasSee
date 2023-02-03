@@ -8,8 +8,10 @@ const ProfilePage = () => {
         <CardContent>
           <div className="profile-page__header">
             <div className="profile-page__photo">사진</div>
-            <div className="profile-page__nickname">닉네임</div>
-            <div className="profile-page__point">포인트</div>
+            <div className="profile-page__sub-header">
+              <div className="profile-page__nickname">닉네임</div>
+              <div className="profile-page__point">포인트</div>
+            </div>
           </div>
           <div>
             <div>이름</div>
