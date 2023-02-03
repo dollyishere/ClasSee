@@ -3,6 +3,7 @@ package com.ssafy.api.controller;
 import com.ssafy.api.request.UserLogoutPostReq;
 import com.ssafy.api.response.UserSaltRes;
 import com.ssafy.api.service.AuthService;
+import com.ssafy.api.service.BookmarkService;
 import com.ssafy.api.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,6 +25,7 @@ import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.ApiResponse;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * 인증 관련 API 요청 처리를 위한 컨트롤러 정의.
@@ -41,6 +43,8 @@ public class AuthController {
 	Integer rtkExpirationTime;
 	@Autowired
 	UserService userService;
+	@Autowired
+	BookmarkService bookmarkService;
 
 	@Autowired
 	AuthService authService;
@@ -77,6 +81,7 @@ public class AuthController {
 			// 프론트로 보내줄 access, refresh token 생성
 			String accessToken = JwtTokenUtil.getToken(JwtTokenUtil.atkExpirationTime, email);
 			String refreshToken = JwtTokenUtil.getToken(JwtTokenUtil.rtkExpirationTime, email);
+			List<Long> bookmarkList = bookmarkService.getBookmarkList(user.getAuth().getId());
 			UserLoginPostRes userLoginPostRes = UserLoginPostRes.builder()
 					.email(user.getAuth().getEmail())
 					.name(user.getName())
@@ -88,6 +93,7 @@ public class AuthController {
 					.img(user.getImg())
 					.description(user.getDescription())
 					.userRole(user.getRole())
+					.bookmarkList(bookmarkList)
 					.build();
 
 			/*

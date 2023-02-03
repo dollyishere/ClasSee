@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * 유저 로그인 API ([POST] /api/v1/auth) 요청에 대한 응답값 정의.
@@ -31,6 +32,8 @@ public class UserLoginPostRes extends BaseResponseBody{
 	String description;
 	UserRole userRole;
 
+	List<Long> bookmarkList;
+
 	public static UserLoginPostRes of(Integer statusCode, String message, UserLoginPostRes userLoginPostRes) {
 		UserLoginPostRes res = new UserLoginPostRes();
 		res.setStatusCode(statusCode);
@@ -41,10 +44,11 @@ public class UserLoginPostRes extends BaseResponseBody{
 		res.setAddress(userLoginPostRes.getAddress());
 		res.setBirth(userLoginPostRes.getBirth());
 		res.setPhone(userLoginPostRes.getPhone());
-		res.setPhone(userLoginPostRes.getPhone());
+		res.setPoint(userLoginPostRes.getPoint());
 		res.setImg(userLoginPostRes.getImg());
 		res.setDescription(userLoginPostRes.getDescription());
 		res.setUserRole(userLoginPostRes.getUserRole());
+		res.setBookmarkList(userLoginPostRes.bookmarkList);
 		return res;
 	}
 }

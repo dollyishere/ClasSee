@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -26,4 +27,12 @@ public class BookmarkRepositorySupport{
         em.persist(requestInfo);
     }
 
+    public List<Long> findBookmarkList(Long userId) {
+        List<Long> bookmarkList =
+                jpaQueryFactory.select(qBookmark.lessonId)
+                        .from(qBookmark)
+                        .where(qBookmark.userId.eq(userId)).fetch();
+
+        return bookmarkList;
+    }
 }
