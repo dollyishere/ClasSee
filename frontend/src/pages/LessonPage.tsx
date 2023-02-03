@@ -479,7 +479,10 @@ const LessonPage = () => {
           </div>
           <div className="lesson-page__hands">
             {raiseHand.map((hand: StreamManager) => (
-              <div key={JSON.parse(hand.stream.connection.data).clientData}>
+              <div
+                key={JSON.parse(hand.stream.connection.data).clientData}
+                className="lesson-page__hand"
+              >
                 <div>
                   <PanTool />
                 </div>

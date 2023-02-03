@@ -73,7 +73,9 @@
       align-items: center;
       justify-content: center;
       .lesson-page__buttons {
-        width: 20%;
+        position: absolute;
+        margin: 0 auto;
+        width: 400px;
         display: flex;
         justify-content: space-around;
         .lesson-page__button {
@@ -92,6 +94,17 @@
         .lesson-page__button--msg {
           color: colors.$theme-color;
           background-color: rgba(255, 255, 255, 0);
+        }
+      }
+      .lesson-page__hands {
+        position: absolute;
+        right: 0;
+        display: flex;
+        width: 400px;
+        padding: 0 20px;
+        overflow-x: auto;
+        .lesson-page__hand {
+          padding: 20px;
         }
       }
     }
