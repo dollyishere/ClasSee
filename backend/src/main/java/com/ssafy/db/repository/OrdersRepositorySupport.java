@@ -39,4 +39,15 @@ public class OrdersRepositorySupport {
 
     public Lesson findOneLesson(Long id){ return em.find(Lesson.class, id); }
 
+    public void updatePoint(Long user_id, Long point){
+        jpaQueryFactory
+                .update(qUser)
+                .where(qUser.id.eq(user_id))
+                .set(qUser.point, qUser.point.add(point))
+                .execute();
+
+        em.clear();
+        em.flush();
+    }
+
 }
