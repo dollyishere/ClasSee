@@ -12,10 +12,12 @@ const MyPage = () => {
       <Header />
       <div className="my-page__contents">
         <Sidebar />
-        <Routes>
-          <Route path="" element={<ProfilePage />} />
-          <Route path="/test" element={<TestPage />} />
-        </Routes>
+        <div className="my-page__sub-page">
+          <Routes>
+            <Route path="" element={<ProfilePage />} />
+            <Route path="/test" element={<TestPage />} />
+          </Routes>
+        </div>
       </div>
     </div>
   );

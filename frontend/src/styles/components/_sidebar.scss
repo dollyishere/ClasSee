@@ -1,8 +1,10 @@
 @use '../base/colors';
 
+$width: 240px;
+
 .sidebar {
   height: 100%;
-  width: 240px;
+  width: $width;
   background-color: white;
   border: colors.$light_gray_color 1px solid;
   box-sizing: border-box;
