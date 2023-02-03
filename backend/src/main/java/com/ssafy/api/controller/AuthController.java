@@ -1,7 +1,6 @@
 package com.ssafy.api.controller;
 
 import com.ssafy.api.request.UserLogoutPostReq;
-import com.ssafy.api.response.UserInfoGetRes;
 import com.ssafy.api.response.UserSaltRes;
 import com.ssafy.api.service.AuthService;
 import com.ssafy.api.service.RedisService;
@@ -147,6 +146,34 @@ public class AuthController {
 		return ResponseEntity.status(200).body(UserSaltRes.of(200, "SUCCESS", user.getAuth().getSalt()));
 	}
 
+	@GetMapping("/token")
+	@ApiOperation(value = "accessToken 요청 api", notes = "사용자의 accessToken 반환")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "성공", response = UserSaltRes.class),
+			@ApiResponse(code = 401, message = "인증 실패", response = BaseResponseBody.class),
+			@ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
+			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
+	})
+	public ResponseEntity<? extends BaseResponseBody> getAccessToken(@RequestHeader String refreshToken, @RequestParam String email, HttpServletResponse res) {
+		User user = userService.getUserByAuth(email);
+		if(user == null) return ResponseEntity.status(404).body(UserSaltRes.of(404, "USER NOT FOUND", null));
+
+		if (!redisService.getValues(email).equals(refreshToken)) return ResponseEntity.status(401).body(BaseResponseBody.of(401, "INVALID TOKEN"));
+
+		// 프론트로 보내줄 access, refresh token 생성
+		String afterATK = JwtTokenUtil.getToken(JwtTokenUtil.atkExpirationTime, email);
+		String afterRTK = JwtTokenUtil.getToken(JwtTokenUtil.rtkExpirationTime, email);
+
+		redisService.setValues(refreshToken, email);
+		try {
+			res.setHeader("accessToken", afterATK);
+			res.setHeader("refreshToken", afterRTK);
+		} catch (Exception e){
+			return ResponseEntity.status(401).body(BaseResponseBody.of(401, "TOKEN RESPONSE FAILED"));
+		}
+		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "SUCCESS"));
+	}
+
 	/*
 
 		로그인 시에만 접근 가능한 api 테스트용 API
@@ -160,6 +187,6 @@ public class AuthController {
 			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
 	})
 	public ResponseEntity<UserLoginPostRes> test() {
-		return ResponseEntity.ok(UserLoginPostRes.of(200, "Success", null));
+		return ResponseEntity.ok(UserLoginPostRes.of(200, "Success", UserLoginPostRes.builder().build()));
 	}
 }
