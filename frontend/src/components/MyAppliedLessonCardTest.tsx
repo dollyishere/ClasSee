@@ -8,8 +8,6 @@ import AvTimerIcon from '@mui/icons-material/AvTimer';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import { LessonsResponse, Lesson } from '../types/LessonsType';
-import MyAppliedCancelModal from './MainPage/MyAppliedCancelModal';
-import ModalTest from './MainPage/ModalTest';
 import useViewModel from '../viewmodels/MainPageViewModel';
 import PrivateInfoState from '../models/PrivateInfoAtom';
 
@@ -37,11 +35,13 @@ const MyAppliedTest = ({ lesson }: Props) => {
   const showModal = () => {
     // setModalOpen(true);
     if (window.confirm('해당 강의를 정말 취소 하시겠습니까?')) {
-      deleteMyAppliedLessonsMainpage(userInfo.userId, lesson.id).then(
-        (res: string) => {
-          console.log('res', res);
-        },
-      );
+      if (userInfo) {
+        deleteMyAppliedLessonsMainpage(userInfo.email, lesson.id).then(
+          (res: string) => {
+            console.log('res', res);
+          },
+        );
+      }
       console.log('test');
     }
   };
