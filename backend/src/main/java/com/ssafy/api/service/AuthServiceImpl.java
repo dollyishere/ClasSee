@@ -19,7 +19,7 @@ public class AuthServiceImpl implements AuthService{
     RedisService redisService;
 
     @Override
-    public void logout(String email, String accessToken) {
+    public void logout(String email, String accessToken) throws Exception{
         Long expiration = JwtTokenUtil.getExpiration(accessToken); // 현재 로그인된 유저의 엑세스 토큰 유효시간
 
         // redis에 사용자 이메일의 키값이 존재한다면, 해당 레코드를 지운다

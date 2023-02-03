@@ -32,7 +32,8 @@ public class RedisService {
 
     public String getValues(String token){
         ValueOperations<String, String> values = redisTemplate.opsForValue();
-        return values.get(token);
+        String refreshToken = values.get(token);
+        return ( refreshToken == null)? "" : refreshToken;
     }
 
     public void deleteValues(String token){
