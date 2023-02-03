@@ -102,9 +102,9 @@ const LessonPage = () => {
   };
 
   // 손 내리기 시그널 보내는 함수
-  const sendDownHandSignal = async () => {
+  const sendDownHandSignal = () => {
     if (session !== undefined) {
-      await session
+      session
         .signal({
           data: userName,
           to: [],
@@ -200,12 +200,28 @@ const LessonPage = () => {
           // 선생이면 teacherstreamManager에 추가
           setTeacherStreamManager(subscriber);
         }
+        const newMessages = messages;
+        newMessages.push({
+          message: `${data.clientData}님이 참가하셨습니다.`,
+          from: data.clientData,
+          role: data.role,
+        });
+        setMessages([...newMessages]);
       });
 
       // 다른 사용자가 나가서 stream이 제거된 streamDestroyed 이벤트
       newSession.on('streamDestroyed', (event: StreamEvent) => {
+        const subscriber = newSession.subscribe(event.stream, undefined);
+        const data = JSON.parse(subscriber.stream.connection.data);
         // state에서 제거
         deleteSubscriber(event.stream.streamManager);
+        const newMessages = messages;
+        newMessages.push({
+          message: `${data.clientData}님이 나가셨습니다.`,
+          from: data.clientData,
+          role: data.role,
+        });
+        setMessages([...newMessages]);
       });
 
       // 예외가 발생한 경우
