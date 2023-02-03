@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { atom, selector, useRecoilState } from 'recoil';
+import { atom, selector, useRecoilState, useRecoilValue } from 'recoil';
 import { Link } from 'react-router-dom';
 import Rating from '@mui/material/Rating';
 import Avatar from '@mui/material/Avatar';
@@ -8,7 +8,11 @@ import AvTimerIcon from '@mui/icons-material/AvTimer';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import { LessonsResponse, Lesson } from '../types/LessonsType';
-import MyAppliedDeleteModal from './MyAppliedDeleteModal';
+import MyAppliedCancelModal from './MainPage/MyAppliedCancelModal';
+import ModalTest from './MainPage/ModalTest';
+import useViewModel from '../viewmodels/MainPageViewModel';
+import PrivateInfoState from '../models/PrivateInfoAtom';
+
 import logo from '../assets/logo.png';
 
 // type combinetype = { lesson: Lesson; myapplied: MyAppliedHover };
@@ -16,6 +20,8 @@ interface Props {
   lesson: Lesson;
 }
 const MyAppliedTest = ({ lesson }: Props) => {
+  const { deleteMyAppliedLessonsMainpage } = useViewModel();
+
   const [isBookMarked, setIsBookMarked] = useState(lesson.isBookMarked);
   // 북마크 아이콘 클릭 시 북마크 추가, 삭제 토글 버튼 함수
   const getBookmarkStatus = (event: React.MouseEvent<HTMLElement>) => {
@@ -26,8 +32,18 @@ const MyAppliedTest = ({ lesson }: Props) => {
   // 강의 취소 모달 오픈을 위한 flag
   const [modalOpen, setModalOpen] = useState(false);
   // 강의 취소 버튼 클릭 시 모달 팝업을 위한 modalopen flag를 ture로 바꿈
+  const userInfo = useRecoilValue(PrivateInfoState);
+
   const showModal = () => {
-    setModalOpen(true);
+    // setModalOpen(true);
+    if (window.confirm('해당 강의를 정말 취소 하시겠습니까?')) {
+      deleteMyAppliedLessonsMainpage(userInfo.userId, lesson.id).then(
+        (res: string) => {
+          console.log('res', res);
+        },
+      );
+      console.log('test');
+    }
   };
   return (
     <div
@@ -115,7 +131,7 @@ const MyAppliedTest = ({ lesson }: Props) => {
                   className="applylessons__hover--participantbutton"
                   type="button"
                 >
-                  Participant
+                  <p>강의 시작</p>
                 </button>
               </Link>
             </div>
@@ -125,9 +141,10 @@ const MyAppliedTest = ({ lesson }: Props) => {
                 type="button"
                 onClick={showModal}
               >
-                Delete
+                <p>강의 취소</p>
               </button>
-              {modalOpen && <MyAppliedDeleteModal lessonId={lesson.id} />}
+              {/* {} */}
+              {/* <ModalTest lessonId={lesson.id} modalOpen={modalOpen} /> */}
             </div>
           </div>
         </div>
