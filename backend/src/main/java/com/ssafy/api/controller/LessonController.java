@@ -69,6 +69,24 @@ public class LessonController {
         return ResponseEntity.status(200).body(LessonIdRes.of(200, "SUCCESS", lessonId));
     }
 
+    @PutMapping()
+    @ApiOperation(value = "강의 수정", notes = "<strong>강의 정보</strong>를 수정 한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 401, message = "인증 실패"),
+            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<? extends BaseResponseBody> updateLesson(
+            @RequestBody @ApiParam(value = "강의 등록 정보", required = true) LessonRegisterPostReq requestInfo) {
+        User user = userService.getUserByAuth(requestInfo.getEmail());
+        if (user == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "NOT FOUND"));
+
+        Long lessonId = lessonService.updateLesson(requestInfo.getLessonInfoFromReq(user));
+
+        return ResponseEntity.status(200).body(LessonIdRes.of(200, "SUCCESS", lessonId));
+    }
+
     @PostMapping("/schedules")
     @ApiOperation(value = "강의 스케줄 등록", notes = "<strong>강의 진행 정보</strong>를 통해 회원가입 한다.")
     @ApiResponses({

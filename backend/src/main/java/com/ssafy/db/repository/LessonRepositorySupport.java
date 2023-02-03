@@ -175,4 +175,25 @@ public class LessonRepositorySupport {
 
         return lessonList;
     }
+
+    public void update(Lesson lesson) {
+        jpaQueryFactory.
+                update(qLesson)
+                .where(qLesson.id.eq(lesson.getId()))
+                .set(qLesson.cklsDescription, lesson.getCklsDescription())
+                .set(qLesson.description, lesson.getDescription())
+                .set(qLesson.kitDescription, lesson.getKitDescription())
+                .set(qLesson.kitPrice, lesson.getKitPrice())
+                .set(qLesson.category, lesson.getCategory())
+                .set(qLesson.runningtime, lesson.getRunningtime())
+                .set(qLesson.maximum, lesson.getMaximum())
+                .set(qLesson.name, lesson.getName())
+                .set(qLesson.price, lesson.getPrice())
+                .set(qLesson.bookmarkList, lesson.getBookmarkList())
+                .set(qLesson.checkList, lesson.getCheckList())
+                .set(qLesson.curriculumList, lesson.getCurriculumList())
+                .execute();
+        em.clear();
+        em.flush();
+    }
 }
