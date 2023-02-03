@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useRef, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import { useRecoilValue } from 'recoil';
 
@@ -10,6 +10,9 @@ import privateInfoState from '../models/PrivateInfoAtom';
 const Header = () => {
   const searchbarRef = useRef(null); // 검색창을 접근/제어하기 위한 hook
   const userInfo = useRecoilValue(privateInfoState);
+  const [toggleUserInfo, setToggleUserInfo] = useState<boolean>(false);
+
+  const navigate = useNavigate();
 
   // form 값 제출시 실행할 함수
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -25,9 +28,11 @@ const Header = () => {
       target.value = '';
     }
   };
-  useEffect(() => {
-    console.log(userInfo);
-  }, []);
+
+  const handleToggleUserInfo = () => {
+    setToggleUserInfo((prev: boolean) => !prev);
+  };
+
   return (
     <header>
       {/* 로고 */}
@@ -93,12 +98,34 @@ const Header = () => {
             <button type="button" className="nav__button--icon">
               <Notifications fontSize="large" />
             </button>
-            <button type="button" className="nav__button--icon">
+            <button
+              type="button"
+              className="nav__button--icon"
+              onClick={handleToggleUserInfo}
+            >
               <Person fontSize="large" />
             </button>
           </>
         )}
       </ul>
+      {toggleUserInfo && userInfo !== null ? (
+        <div className="header__user-info">
+          <div>{userInfo.nickname}</div>
+          <div>{userInfo.point} pt</div>
+          <div>
+            <button
+              type="button"
+              className="header__user-info--logout button"
+              onClick={() => navigate('/mypage')}
+            >
+              회원정보
+            </button>
+            <button type="button" className="header__user-info--logout button">
+              로그아웃
+            </button>
+          </div>
+        </div>
+      ) : null}
     </header>
   );
 };

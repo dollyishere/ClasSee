@@ -22,8 +22,26 @@ export interface LoginRequest {
 
 export interface LoginResponse extends Response {
   email: string;
+  name: string;
+  nickname: string;
+  address: string;
+  birth: string;
+  img: string;
+  description: string;
+  phone: string;
+  userRole: string;
+  point: number;
 }
 
 export interface UserInfo {
-  email: string | null;
+  email: string;
+  name: string;
+  nickname: string;
+  address: string;
+  birth: string;
+  img: string;
+  description: string;
+  phone: string;
+  userRole: string;
+  point: number;
 }
