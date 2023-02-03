@@ -26,7 +26,7 @@ public class StudentController {
     UserService userService;
     @Autowired
     LessonService lessonService;
-    @GetMapping("/lessons/{email}")
+    @GetMapping("/lessons")
     @ApiOperation(value = "신청한 강의 목록 조회", notes = "수강생이 신청한 강의 목록을 조회한다. 쿼리(DONE[완료], TODO[진행]")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
@@ -34,23 +34,19 @@ public class StudentController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<?> getLessonListInfo(@PathVariable String email, @RequestParam String query) {
-        /*
-        리턴 값
-        강의 리스트
-            - 강의명
-            - 소요시간
-            - 카테고리
-        - 이미지
-        - 별점 평균
-        */
+    public ResponseEntity<?> getLessonListInfo(
+            @RequestParam String email,
+            @RequestParam String query,
+            @RequestParam int limit,
+            @RequestParam int offset
+    ) {
         User user = userService.getUserByAuth(email);
 
         if(user == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "사용자 없음"));
         Long userId = user.getAuth().getId();
 
         // 해당 유저가 신청한 강의 리스트
-        List<AttendLessonInfoDto> lessonList = lessonService.getAttendLessonList(userId, query, "S");
+        List<AttendLessonInfoDto> lessonList = lessonService.getAttendLessonList(userId, query, "S", limit, offset);
         if(lessonList == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "신청 강의 없음"));
 
         AttendLessonInfoListRes res = AttendLessonInfoListRes.builder()

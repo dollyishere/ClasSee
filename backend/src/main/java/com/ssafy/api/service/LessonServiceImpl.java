@@ -1,5 +1,6 @@
 package com.ssafy.api.service;
 
+import com.querydsl.core.Tuple;
 import com.ssafy.api.dto.AttendLessonInfoDto;
 import com.ssafy.api.dto.LessonInfoDto;
 import com.ssafy.api.dto.OpenLessonInfoDto;
@@ -39,7 +40,7 @@ public class LessonServiceImpl implements LessonService {
     PamphletRepositorySupport pamphletRepositorySupport;
 
     @Override
-    public void createLesson(Map<String, Object> lessonInfo) {
+    public Long createLesson(Map<String, Object> lessonInfo) {
         /*
          lessonInfo("LESSON":레슨정보, "CHECKLISTS":준비물정보, "CURRICULUMS": 커리큘럼정보);
          각각의 KEY를 통해 객체 생성 후, DB에 데이터 삽입
@@ -65,6 +66,8 @@ public class LessonServiceImpl implements LessonService {
             pamphlet.setLessonId(lesson.getId());
             pamphletRepositorySupport.save(pamphlet);
         });
+
+        return lesson.getId();
     }
 
     @Override
@@ -89,7 +92,7 @@ public class LessonServiceImpl implements LessonService {
             );
 
             lessonRes.setBookmarked(
-                    (bookmarkRepository.isBookmarked(userId, lesson.getId()) == 0)? false: true
+                    (userId == 0 || bookmarkRepository.isBookmarked(userId, lesson.getId()) == 0)? false: true
             );
 
             getLessonList.add(lessonRes);
@@ -104,8 +107,7 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public LessonDetailsRes getLessonDetails(Long lessonId, String email) {
-        Long userId = userRepositorySupport.findId(email);
+    public LessonDetailsRes getLessonDetails(Long lessonId) {
         Lesson lesson = lessonRepository.findById(lessonId).get();
 
         User teacher = userRepositorySupport.findOne(lesson.getUser().getId());
@@ -114,9 +116,9 @@ public class LessonServiceImpl implements LessonService {
         List<Checklist> checklists = lessonRepositorySupport.findCheckListByLesson(lessonId);
         List<Pamphlet> pamphlets = lessonRepositorySupport.findPamphletByLesson(lessonId);
         double score = lessonRepositorySupport.setLessonAvgScore(lesson);
-        Long isBookmarked = bookmarkRepository.isBookmarked(userId, lessonId);
 
         LessonDetailsRes lessonDetailsRes = LessonDetailsRes.builder()
+                .userEmail(teacher.getAuth().getEmail())
                 .lessonName(lesson.getName())
                 .cklsDescription(lesson.getCklsDescription())
                 .kitPrice(lesson.getKitPrice())
@@ -130,7 +132,6 @@ public class LessonServiceImpl implements LessonService {
                 .checkLists(checklists)
                 .pamphlets(pamphlets)
                 .score(score)
-                .isBookmarked(isBookmarked)
                 .build();
         return lessonDetailsRes;
     }
@@ -157,11 +158,29 @@ public class LessonServiceImpl implements LessonService {
         return res;
     }
 
+
+    /*
+         리뷰 테이블에서
+    */
     @Override
-    public List<AttendLessonInfoDto> getAttendLessonList(Long userId, String query, String type) {
+    public List<Lesson> getPopularLessonList() {
+        List<Lesson> res = new ArrayList<>();
+        List<Long> popularLessonList = lessonRepositorySupport.findPopularLesson();
+
+        popularLessonList.forEach((popularLesson) -> {
+            Optional<Lesson> lesson = lessonRepository.findById(popularLesson);
+            if(!lesson.isPresent()) return;
+            res.add(lesson.get());
+        });
+
+        return res;
+    }
+
+    @Override
+    public List<AttendLessonInfoDto> getAttendLessonList(Long userId, String query, String type, int limit, int offset) {
         List<OpenLesson> openLessonList = new ArrayList<>();
-        if(type.toUpperCase().equals("T")) openLessonList = lessonRepositorySupport.findAttendLessonListByTeacher(userId, query);
-        if(type.toUpperCase().equals("S")) openLessonList = lessonRepositorySupport.findAttendLessonListByStudent(userId, query);
+        if(type.toUpperCase().equals("T")) openLessonList = lessonRepositorySupport.findAttendLessonListByTeacher(userId, query, limit, offset);
+        if(type.toUpperCase().equals("S")) openLessonList = lessonRepositorySupport.findAttendLessonListByStudent(userId, query, limit, offset);
 
         List<AttendLessonInfoDto> attendLessonList = new ArrayList<>();
         openLessonList.forEach((openLesson) -> {

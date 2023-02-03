@@ -1,5 +1,6 @@
 package com.ssafy.api.service;
 
+import com.querydsl.core.Tuple;
 import com.ssafy.api.dto.AttendLessonInfoDto;
 import com.ssafy.api.dto.LessonInfoDto;
 import com.ssafy.api.response.LessonDetailsRes;
@@ -17,15 +18,17 @@ import java.util.Map;
  *	유저 관련 비즈니스 로직 처리를 위한 서비스 인터페이스 정의.
  */
 public interface LessonService {
-    void createLesson(Map<String, Object> lessonInfo);
+    Long createLesson(Map<String, Object> lessonInfo);
 
     List<LessonInfoDto> setLessonProperty(Long userId, List<Lesson> lessonList);
 
     void createSchedule(OpenLesson requestInfo) throws Exception;
 
-    LessonDetailsRes getLessonDetails(Long lessonId, String email);
+    LessonDetailsRes getLessonDetails(Long lessonId);
 
     LessonSchedulsRes getLessonSchedules(Long lessonId, LocalDate regDate);
 
-    List<AttendLessonInfoDto> getAttendLessonList(Long userId, String query, String type);
+    List<AttendLessonInfoDto> getAttendLessonList(Long userId, String query, String type, int limit, int offset);
+
+    List<Lesson> getPopularLessonList();
 }

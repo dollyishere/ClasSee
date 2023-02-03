@@ -1,13 +1,18 @@
 package com.ssafy.api.controller;
 
+import com.querydsl.core.Tuple;
+import com.ssafy.api.dto.LessonInfoDto;
 import com.ssafy.api.dto.OpenLessonInfoDto;
 import com.ssafy.api.request.LessonRegisterPostReq;
 import com.ssafy.api.request.LessonScheduleRegisterPostReq;
 import com.ssafy.api.response.LessonDetailsRes;
+import com.ssafy.api.response.LessonIdRes;
+import com.ssafy.api.response.LessonInfoListRes;
 import com.ssafy.api.response.LessonSchedulsRes;
 import com.ssafy.api.service.LessonService;
 import com.ssafy.api.service.UserService;
 import com.ssafy.common.model.response.BaseResponseBody;
+import com.ssafy.db.entity.lesson.Lesson;
 import com.ssafy.db.entity.lesson.OpenLesson;
 import com.ssafy.db.entity.user.User;
 import io.swagger.annotations.*;
@@ -20,6 +25,7 @@ import javax.swing.text.DateFormatter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 /**
  * 유저 관련 API 요청 처리를 위한 컨트롤러 정의.
@@ -33,6 +39,7 @@ public class LessonController {
 
     @Autowired
     UserService userService;
+
     @PostMapping()
     @ApiOperation(value = "강의 등록", notes = "<strong>강의 정보</strong>를 통해 회원가입 한다.")
     @ApiResponses({
@@ -55,11 +62,11 @@ public class LessonController {
             9. 강의 가격
         */
         User user = userService.getUserByAuth(requestInfo.getEmail());
-        if(user == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "NOT FOUND"));
+        if (user == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "NOT FOUND"));
 
-        lessonService.createLesson(requestInfo.getLessonInfoFromReq(user));
+        Long lessonId = lessonService.createLesson(requestInfo.getLessonInfoFromReq(user));
 
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "SUCCESS"));
+        return ResponseEntity.status(200).body(LessonIdRes.of(200, "SUCCESS", lessonId));
     }
 
     @PostMapping("/schedules")
@@ -95,8 +102,8 @@ public class LessonController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends BaseResponseBody> getLessonDetails(@PathVariable Long lessonId, @RequestParam String email) {
-        LessonDetailsRes lessonDetailsRes = lessonService.getLessonDetails(lessonId, email);
+    public ResponseEntity<? extends BaseResponseBody> getLessonDetails(@PathVariable Long lessonId) {
+        LessonDetailsRes lessonDetailsRes = lessonService.getLessonDetails(lessonId);
 
         return ResponseEntity.status(200).body(LessonDetailsRes.of(200, "SUCCESS", lessonDetailsRes));
     }
@@ -114,5 +121,32 @@ public class LessonController {
         LessonSchedulsRes lessonSchedulsRes = lessonService.getLessonSchedules(lessonId, parseDate);
 
         return ResponseEntity.status(200).body(LessonSchedulsRes.of(200, "SUCCESS", lessonSchedulsRes));
+    }
+
+    @GetMapping("/recommands")
+    @ApiOperation(value = "추천 강의 리스트", notes = "평점이 높은 강의 12개를 반환")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 401, message = "인증 실패"),
+            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<? extends BaseResponseBody> getRecommandList(@RequestParam String email) {
+        User user = userService.getUserByAuth(email);
+        // 비로그인 유저일 경우도 조회할 수 있게..
+        Long userId = 0l;
+        if (user != null) userId = user.getAuth().getId();
+
+
+        // 평점이 가장 높은 상위 12개의 레슨 아이디 리스트
+        List<Lesson> popularLessonList = lessonService.getPopularLessonList();
+
+        // 받아온 레슨 아이디 리스트를 객체로 전환
+        List<LessonInfoDto> lessonList = lessonService.setLessonProperty(userId, popularLessonList);
+
+        LessonInfoListRes res = LessonInfoListRes.builder()
+                                                 .lessonInfoList(lessonList)
+                                                 .build();
+        return ResponseEntity.status(200).body(LessonInfoListRes.of(200, "SUCCESS", res));
     }
 }

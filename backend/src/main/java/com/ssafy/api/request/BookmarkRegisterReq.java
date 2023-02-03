@@ -10,8 +10,8 @@ import lombok.ToString;
 @Setter
 @ApiModel("BookmarkInfoReq")
 public class BookmarkRegisterReq {
-    @ApiModelProperty(name="유저 email", example="email")
+    @ApiModelProperty(example="사용자 이메일")
     String email;
-    @ApiModelProperty(name="강의 id", example="lesson_id")
+    @ApiModelProperty(example="강의 아이디")
     Long lesson_id;
 }

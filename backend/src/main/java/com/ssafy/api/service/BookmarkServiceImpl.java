@@ -6,6 +6,8 @@ import com.ssafy.db.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service("bookmarkService")
 public class BookmarkServiceImpl implements BookmarkService {
     @Autowired
@@ -35,5 +37,10 @@ public class BookmarkServiceImpl implements BookmarkService {
         Long userId = userRepositorySupport.findId(email);
 
         bookmarkRepository.removeBookmark(userId, lessonId);
+    }
+
+    @Override
+    public List<Long> getBookmarkList(Long userId) {
+        return bookmarkRepositorySupport.findBookmarkList(userId);
     }
 }

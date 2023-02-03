@@ -8,8 +8,10 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,22 +23,23 @@ import java.util.Map;
 @Setter
 @ApiModel("UserRegisterPostRequest")
 public class UserRegisterPostReq {
-	@ApiModelProperty(name="유저 email", example="your_email")
+	@ApiModelProperty(name="유저 email", example="사용자 이메일")
 	String email;
-	@ApiModelProperty(name="유저 Password", example="your_password")
+	@ApiModelProperty(name="유저 Password", example="비밀번호")
 	String password;
-	@ApiModelProperty(name="유저 이름", example="your_name")
+	@ApiModelProperty(name="유저 이름", example="사용자 이름")
 	String name;
-	@ApiModelProperty(name="유저 생년월일(YYYY-MM-DD)", example="your_birth")
-	String birth;
-	@ApiModelProperty(name="유저 닉네임", example="your_nickname")
+	@ApiModelProperty(name="유저 생년월일(YYYY-MM-DD)", example="생년월일 [yyyy-MM-dd]")
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+	LocalDate birth;
+	@ApiModelProperty(name="유저 닉네임", example="닉네임")
 	String nickname;
-	@ApiModelProperty(name="유저 주소", example="your_address")
+	@ApiModelProperty(name="유저 주소", example="주소")
 	String address;
-	@ApiModelProperty(name="유저 연락처", example="your_phone")
+	@ApiModelProperty(name="유저 연락처", example="연락처")
 	String phone;
 
-	@ApiModelProperty(name="유저 salt", example="your_salt")
+	@ApiModelProperty(name="유저 salt", example="salt 정보")
 	String salt;
 
 	public Map<String, Object> getUserInfoFromReq(String password) {
@@ -56,6 +59,7 @@ public class UserRegisterPostReq {
 				.name(name)
 				.nickname(nickname)
 				.phone(phone)
+				.point(0l)
 				.role(UserRole.ROLE_USER)
 				.build();
 
