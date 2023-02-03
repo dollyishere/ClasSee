@@ -1,35 +1,19 @@
 package com.ssafy.api.controller;
 
-import com.ssafy.api.dto.LessonInfoDto;
 import com.ssafy.api.request.BookmarkRegisterReq;
-import com.ssafy.api.response.LessonInfoListRes;
-import com.ssafy.api.response.UserSaltRes;
 import com.ssafy.api.service.BookmarkService;
-import com.ssafy.api.service.LessonService;
-import com.ssafy.api.service.UserService;
 import com.ssafy.common.model.response.BaseResponseBody;
-import com.ssafy.common.util.JwtTokenUtil;
-import com.ssafy.db.entity.lesson.Lesson;
-import com.ssafy.db.entity.user.User;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 @Api(value = "북마크 API", tags = {"Bookmark"})
 @RestController
 @RequestMapping("/api/v1/bookmark")
 public class BookmarkController {
     @Autowired
-    UserService userService;
-    @Autowired
     BookmarkService bookmarkService;
-
-    @Autowired
-    LessonService lessonService;
 
     @PostMapping()
     @ApiOperation(value = "북마크 등록", notes = "<strong>회원 정보와 강의 정보</strong>를 통해 북마크를 등록한다.")
@@ -60,27 +44,4 @@ public class BookmarkController {
         return ResponseEntity.status(200).body(BaseResponseBody.of(200,"성공"));
 
     }
-
-    @GetMapping("/{email}")
-    @ApiOperation(value = "북마크 리스트", notes = "사용자의 북마크 리스트")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "성공", response = UserSaltRes.class),
-            @ApiResponse(code = 401, message = "인증 실패", response = BaseResponseBody.class),
-            @ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
-            @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
-    })
-    public ResponseEntity<? extends BaseResponseBody> getBookmarkList(@PathVariable String email) {
-        User user = userService.getUserByAuth(email);
-        if(user == null) return ResponseEntity.status(404).body(UserSaltRes.of(404, "USER NOT FOUND", null));
-
-        List<Lesson> bookmarkList = bookmarkService.getBookmarkList(user.getAuth().getId());
-        List<LessonInfoDto> lessonList = lessonService.setLessonProperty(bookmarkList);
-
-        LessonInfoListRes res = LessonInfoListRes.builder()
-                                                 .lessonInfoList(lessonList)
-                                                 .build();
-
-        return ResponseEntity.status(200).body(LessonInfoListRes.of(200, "SUCCESS", res));
-    }
-
 }

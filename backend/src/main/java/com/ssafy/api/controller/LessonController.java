@@ -142,7 +142,7 @@ public class LessonController {
         List<Lesson> popularLessonList = lessonService.getPopularLessonList();
 
         // 받아온 레슨 아이디 리스트를 객체로 전환
-        List<LessonInfoDto> lessonList = lessonService.setLessonProperty(popularLessonList);
+        List<LessonInfoDto> lessonList = lessonService.setLessonProperty(userId, popularLessonList);
 
         LessonInfoListRes res = LessonInfoListRes.builder()
                                                  .lessonInfoList(lessonList)

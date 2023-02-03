@@ -1,15 +1,12 @@
 package com.ssafy.api.service;
 
 import com.ssafy.api.request.BookmarkRegisterReq;
-import com.ssafy.db.entity.lesson.Lesson;
 import com.ssafy.db.entity.user.Bookmark;
 import com.ssafy.db.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service("bookmarkService")
 public class BookmarkServiceImpl implements BookmarkService {
@@ -23,9 +20,6 @@ public class BookmarkServiceImpl implements BookmarkService {
 
     @Autowired
     LessonRepositorySupport lessonRepositorySupport;
-
-    @Autowired
-    LessonRepository lessonRepository;
 
     @Override
     public void create(BookmarkRegisterReq requestInfo) {
@@ -46,16 +40,7 @@ public class BookmarkServiceImpl implements BookmarkService {
     }
 
     @Override
-    public List<Lesson> getBookmarkList(Long userId) {
-        List<Long> lessonIdList = bookmarkRepositorySupport.findBookmarkList(userId);
-        List<Lesson> lessonList = new ArrayList<>();
-
-        lessonIdList.forEach((lessonId) -> {
-            Optional<Lesson> lesson = lessonRepository.findById(lessonId);
-            if(!lesson.isPresent()) return;
-            lessonList.add(lesson.get());
-        });
-
-        return lessonList;
+    public List<Long> getBookmarkList(Long userId) {
+        return bookmarkRepositorySupport.findBookmarkList(userId);
     }
 }

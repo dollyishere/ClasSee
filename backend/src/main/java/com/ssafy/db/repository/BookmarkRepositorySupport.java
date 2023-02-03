@@ -1,7 +1,6 @@
 package com.ssafy.db.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ssafy.db.entity.lesson.Lesson;
 import com.ssafy.db.entity.user.Bookmark;
 import com.ssafy.db.entity.user.QBookmark;
 import lombok.RequiredArgsConstructor;
