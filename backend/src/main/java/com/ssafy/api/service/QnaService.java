@@ -16,6 +16,8 @@ public interface QnaService {
 
     void deleteQna(Long id);
 
+    void deleteQnaAnswer(Long id);
+
     Qna readQna(Long id);
 
     Long qnaCount();

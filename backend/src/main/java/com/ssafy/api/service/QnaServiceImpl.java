@@ -53,10 +53,19 @@ public class QnaServiceImpl implements QnaService {
     @Override
     public void deleteQna(Long id) {
 
-        Qna qna = qnaRepositorySupport
-                .findOne(id);
+        Qna qna = qnaRepositorySupport.findOne(id);
 
-            qnaRepositorySupport.delete(qna);
+        qnaRepositorySupport.delete(qna);
+
+    }
+
+    @Override
+    public void deleteQnaAnswer(Long id) {
+
+        QnaAnswer qnaAnswer = qnaRepositorySupport.findOneAnswer(id);
+
+        qnaRepositorySupport.deleteAnswer(qnaAnswer);
+
 
     }
 

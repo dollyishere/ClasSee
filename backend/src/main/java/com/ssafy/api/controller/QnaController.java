@@ -59,6 +59,19 @@ public class QnaController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "success")
     })
+    public ResponseEntity<? extends BaseResponseBody> deleteQnaAnswer(@RequestParam Long id) {
+
+
+        qnaService.deleteQna(id);
+
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success"));
+    }
+
+    @DeleteMapping("/answer")
+    @ApiOperation(value = "Qna 답변 삭제", notes = "Qna 아이디와 로그인한 사람의 이메일을 받아, 비교한 뒤 삭제")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "success")
+    })
     public ResponseEntity<? extends BaseResponseBody> deleteQna(@RequestParam Long id) {
 
 
@@ -66,6 +79,8 @@ public class QnaController {
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success"));
     }
+
+
 
     @GetMapping()
     @ApiOperation(value = "qna 상세 조회", notes = "qna를 클릭했을 때, qna id를 입력받아 공지 상세정보 반환")
