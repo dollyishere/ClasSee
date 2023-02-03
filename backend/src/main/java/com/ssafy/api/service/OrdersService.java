@@ -8,4 +8,8 @@ public interface OrdersService {
     OrdersInfoGetRes readOrders(String email, Long id);
 
     void createOrders(OrdersRegistPostReq ordersRegistPostReq) throws Exception;
+
+    void chargePoint(String email, Long point);
+
+    void deleteOrders(String email, Long openLesson_id);
 }

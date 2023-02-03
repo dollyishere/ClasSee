@@ -31,7 +31,11 @@ public class QnaRepositorySupport {
 
     public void delete(Qna qna){ em.remove(qna); }
 
+    public void deleteAnswer(QnaAnswer qnaAnswer) { em.remove(qnaAnswer); }
+
     public Qna findOne(Long id){ return em.find(Qna.class, id);}
+
+    public QnaAnswer findOneAnswer(Long id) { return em.find(QnaAnswer.class, id); }
 
     public List<Qna> findAll(){
         return jpaQueryFactory
