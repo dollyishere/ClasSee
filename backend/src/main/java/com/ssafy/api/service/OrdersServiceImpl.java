@@ -92,5 +92,14 @@ public class OrdersServiceImpl implements OrdersService{
 
     }
 
+    @Override
+    public void deleteOrders(String email, Long openLesson_id) {
+
+        Long user_id = userRepositorySupport.findId(email);
+        ordersRepositorySupport.deleteOrders(user_id, openLesson_id);
+
+        return;
+    }
+
 
 }
