@@ -35,8 +35,20 @@ public class OrdersController {
         }
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200,"success"));
-
     }
+
+    @PutMapping("/point")
+    @ApiOperation(value = "포인트 충전", notes = "유저 이메일과 금액 입력 후 포인트 충전")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "success")
+    })
+    public ResponseEntity<? extends BaseResponseBody> chargePoint(@RequestParam String email, @RequestParam Long point){
+
+        ordersService.chargePoint(email, point);
+
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"success"));
+    }
+
 
     @GetMapping()
     @ApiOperation(value = "주문페이지 정보", notes = "주문 페이지에 들어왔을 때, 필요한 정보들을 반환")
@@ -50,5 +62,16 @@ public class OrdersController {
         return ResponseEntity.status(200).body(ordersInfoGetRes);
     }
 
+    @DeleteMapping()
+    @ApiOperation(value = "주문페이지 정보", notes = "주문 페이지에 들어왔을 때, 필요한 정보들을 반환")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "success")
+    })
+    public ResponseEntity<?> deleteOrders(@RequestParam String user_email, @RequestParam Long openLesson_id){
+
+        OrdersInfoGetRes ordersInfoGetRes = ordersService.readOrders(user_email, openLesson_id);
+
+        return ResponseEntity.status(200).body(ordersInfoGetRes);
+    }
 
 }
