@@ -11,12 +11,15 @@
 @use './components/user-video';
 @use './components/chat-box';
 @use './components/message';
+@use './components/sidebar';
 
 // pages
 @use './pages/signup-page';
 @use './pages/lesson-page';
 @use './pages/login-page';
 @use './pages/create-lesson-page';
+@use './pages/my-page';
+@use './pages/profile-page';
 
 html,
 body,

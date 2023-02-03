@@ -9,6 +9,7 @@ import SignUpPage from './pages/SignUpPage';
 import CreateLessonPage from './pages/CreateLessonPage';
 import LessonPage from './pages/LessonPage';
 import LoginPage from './pages/LoginPage';
+import MyPage from './pages/MyPage';
 
 import TestPage from './pages/TestPage';
 
@@ -25,6 +26,7 @@ const App = () => {
           <Route path="/lesson/:sessionId/:role" element={<LessonPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/image" element={<TestPage />} />
+          <Route path="/mypage/*" element={<MyPage />} />
         </Routes>
       </div>
     </RecoilRoot>
