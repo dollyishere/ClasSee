@@ -12,9 +12,9 @@ import lombok.Setter;
 @Setter
 @ApiModel("UserLogoutPostRequest")
 public class UserLogoutPostReq {
-    @ApiModelProperty(name = "유저 email", example = "classee_email")
+    @ApiModelProperty(name = "유저 email", example = "사용자 이메일")
     String email;
 
-    @ApiModelProperty(name = "엑세스 토큰", example = "classee_access_token")
+    @ApiModelProperty(name = "엑세스 토큰", example = "엑세스 토큰")
     String accessToken;
 }

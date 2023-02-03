@@ -121,7 +121,7 @@ public class LessonRepositorySupport {
         return pamphlets;
     }
 
-    public List<OpenLesson> findAttendLessonListByStudent(Long userId, String query) {
+    public List<OpenLesson> findAttendLessonListByStudent(Long userId, String query, int limit, int offset) {
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(qOpenLesson.id.eq(qSchedule.openLesson.id));
         builder.and(qSchedule.user.id.eq(userId));
@@ -133,11 +133,14 @@ public class LessonRepositorySupport {
                 .select(qOpenLesson)
                 .from(qOpenLesson, qSchedule)
                 .where(builder)
+                .orderBy(qOpenLesson.startTime.asc())
+                .offset(offset)
+                .limit(limit)
                 .fetch();
         return lessons;
     }
 
-    public List<OpenLesson> findAttendLessonListByTeacher(Long userId, String query) {
+    public List<OpenLesson> findAttendLessonListByTeacher(Long userId, String query, int limit, int offset) {
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(qOpenLesson.lessonId.eq(qLesson.id));
         builder.and(qLesson.user.auth.id.eq(userId));
@@ -145,11 +148,16 @@ public class LessonRepositorySupport {
         if(query.toUpperCase().equals("DONE")) builder.and(qOpenLesson.startTime.before(LocalDateTime.now()));
         if(query.toUpperCase().equals("TODO")) builder.and(qOpenLesson.startTime.after(LocalDateTime.now()));
 
+        // 임박 순서
         List<OpenLesson> lessons = jpaQueryFactory
                 .select(qOpenLesson)
                 .from(qOpenLesson, qLesson)
                 .where(builder)
+                .orderBy(qOpenLesson.startTime.asc())
+                .offset(offset)
+                .limit(limit)
                 .fetch();
+
         return lessons;
     }
 

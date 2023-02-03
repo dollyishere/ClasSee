@@ -12,6 +12,7 @@ import com.ssafy.db.entity.orders.Orders;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 @Builder
@@ -29,7 +30,7 @@ public class User {
     private String name;
     private String nickname;
     private String address;
-    private String birth;
+    private LocalDate birth;
     private String phone;
     private Long point;
     private String img;
@@ -38,7 +39,6 @@ public class User {
     private UserRole role;
 
     private String createdAt;
-//    private Long authId;
 
     // 연결
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

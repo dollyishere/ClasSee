@@ -179,10 +179,10 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public List<AttendLessonInfoDto> getAttendLessonList(Long userId, String query, String type) {
+    public List<AttendLessonInfoDto> getAttendLessonList(Long userId, String query, String type, int limit, int offset) {
         List<OpenLesson> openLessonList = new ArrayList<>();
-        if(type.toUpperCase().equals("T")) openLessonList = lessonRepositorySupport.findAttendLessonListByTeacher(userId, query);
-        if(type.toUpperCase().equals("S")) openLessonList = lessonRepositorySupport.findAttendLessonListByStudent(userId, query);
+        if(type.toUpperCase().equals("T")) openLessonList = lessonRepositorySupport.findAttendLessonListByTeacher(userId, query, limit, offset);
+        if(type.toUpperCase().equals("S")) openLessonList = lessonRepositorySupport.findAttendLessonListByStudent(userId, query, limit, offset);
 
         List<AttendLessonInfoDto> attendLessonList = new ArrayList<>();
         openLessonList.forEach((openLesson) -> {
