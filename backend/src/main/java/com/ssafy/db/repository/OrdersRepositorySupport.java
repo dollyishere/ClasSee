@@ -27,6 +27,8 @@ public class OrdersRepositorySupport {
 
     QLesson qLesson = QLesson.lesson;
 
+    QSchedule qSchedule = QSchedule.schedule;
+
     public void save(Orders orders) { em.persist(orders); }
 
     public void saveSchedule(Schedule schedule) { em.persist(schedule); }
@@ -48,6 +50,23 @@ public class OrdersRepositorySupport {
 
         em.clear();
         em.flush();
+    }
+
+    public void deleteOrders(Long user_id, Long openLesson_id){
+
+        Schedule schedule = jpaQueryFactory
+                .selectFrom(qSchedule)
+                .where(qSchedule.user.id.eq(user_id), qSchedule.openLesson.id.eq(openLesson_id))
+                .fetchOne();
+
+        em.remove(schedule);
+
+        Orders orders = jpaQueryFactory
+                .selectFrom(qOrders)
+                .where(qOrders.user.id.eq(user_id), qOrders.openLesson.id.eq(openLesson_id))
+                .fetchOne();
+
+        em.remove(orders);
     }
 
 }
