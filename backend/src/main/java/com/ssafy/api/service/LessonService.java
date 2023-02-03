@@ -24,7 +24,7 @@ public interface LessonService {
 
     void createSchedule(OpenLesson requestInfo) throws Exception;
 
-    LessonDetailsRes getLessonDetails(Long lessonId, String email);
+    LessonDetailsRes getLessonDetails(Long lessonId);
 
     LessonSchedulsRes getLessonSchedules(Long lessonId, LocalDate regDate);
 
