@@ -73,21 +73,39 @@
       align-items: center;
       justify-content: center;
       .lesson-page__buttons {
+        position: absolute;
+        margin: 0 auto;
+        width: 400px;
         display: flex;
+        justify-content: space-around;
         .lesson-page__button {
           border: none;
           border-radius: 50%;
           width: 48px;
           height: 48px;
+          background-color: colors.$theme-color;
           color: white;
           cursor: pointer;
         }
+
         .lesson-page__button--quit {
           background-color: #ff4d4d;
         }
         .lesson-page__button--msg {
           color: colors.$theme-color;
           background-color: rgba(255, 255, 255, 0);
+        }
+      }
+      .lesson-page__hands {
+        position: absolute;
+        right: 0;
+        display: flex;
+        width: 400px;
+        padding: 0 20px;
+        overflow-x: auto;
+        .lesson-page__hand {
+          padding: 20px;
+          cursor: pointer;
         }
       }
     }
