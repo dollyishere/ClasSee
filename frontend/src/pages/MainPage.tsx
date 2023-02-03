@@ -17,16 +17,8 @@ const MainPage = () => {
       <Header />
       <CustomCarousel />
       <div className="create_apply_lessons">
-        {privateInfo !== null ? (
-          <MyCreatedLessonsMainpage />
-        ) : (
-          <p>no lessons</p>
-        )}
-        {privateInfo !== null ? (
-          <MyAppliedLessonsMainpageTest />
-        ) : (
-          <p>no lessons</p>
-        )}
+        {privateInfo !== null ? <MyCreatedLessonsMainpage /> : null}
+        {privateInfo !== null ? <MyAppliedLessonsMainpageTest /> : null}
       </div>
       <RecommandLessons />
       <Footer />
