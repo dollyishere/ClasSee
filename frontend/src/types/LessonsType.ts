@@ -1,3 +1,5 @@
+import { Response } from './BaseType';
+
 export interface Lesson {
   id: number;
   lessonImage: string;
@@ -12,8 +14,8 @@ export interface Lesson {
   endTime: string;
 }
 
-export interface LessonsResponse {
-  lessons: Array<Lesson>;
+export interface LessonsResponse extends Response {
+  lessonInfoList: Array<Lesson>;
 }
 
 export type MyAppliedHover = boolean;
