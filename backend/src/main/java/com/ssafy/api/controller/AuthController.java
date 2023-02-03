@@ -5,6 +5,7 @@ import com.ssafy.api.response.UserSaltRes;
 import com.ssafy.api.service.AuthService;
 import com.ssafy.api.service.BookmarkService;
 import com.ssafy.api.service.RedisService;
+import com.ssafy.db.entity.lesson.Lesson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,7 @@ import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.ApiResponse;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -81,7 +83,12 @@ public class AuthController {
 			// 프론트로 보내줄 access, refresh token 생성
 			String accessToken = JwtTokenUtil.getToken(JwtTokenUtil.atkExpirationTime, email);
 			String refreshToken = JwtTokenUtil.getToken(JwtTokenUtil.rtkExpirationTime, email);
-			List<Long> bookmarkList = bookmarkService.getBookmarkList(user.getAuth().getId());
+			List<Lesson> lessonList = bookmarkService.getBookmarkList(user.getAuth().getId());
+			List<Long> bookmarkList = new ArrayList<>();
+			lessonList.forEach((lesson) -> {
+				bookmarkList.add(lesson.getId());
+			});
+
 			UserLoginPostRes userLoginPostRes = UserLoginPostRes.builder()
 					.email(user.getAuth().getEmail())
 					.name(user.getName())

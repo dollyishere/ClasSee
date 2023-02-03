@@ -20,7 +20,4 @@ public class LessonInfoDto {
     String category;
     String img;
     double score;
-
-    boolean isBookmarked;
-
 }
