@@ -1,5 +1,6 @@
 package com.ssafy.api.service;
 
+import com.querydsl.core.Tuple;
 import com.ssafy.api.dto.AttendLessonInfoDto;
 import com.ssafy.api.dto.LessonInfoDto;
 import com.ssafy.api.response.LessonDetailsRes;
@@ -27,5 +28,7 @@ public interface LessonService {
 
     LessonSchedulsRes getLessonSchedules(Long lessonId, LocalDate regDate);
 
-    List<AttendLessonInfoDto> getAttendLessonList(Long userId, String query, String type);
+    List<AttendLessonInfoDto> getAttendLessonList(Long userId, String query, String type, int limit, int offset);
+
+    List<Lesson> getPopularLessonList();
 }

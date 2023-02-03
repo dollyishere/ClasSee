@@ -2,6 +2,7 @@ package com.ssafy.db.repository;
 
 import com.fasterxml.jackson.databind.util.ArrayBuilders;
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.api.dto.LessonInfoDto;
 import com.ssafy.db.entity.lesson.*;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -119,7 +121,7 @@ public class LessonRepositorySupport {
         return pamphlets;
     }
 
-    public List<OpenLesson> findAttendLessonListByStudent(Long userId, String query) {
+    public List<OpenLesson> findAttendLessonListByStudent(Long userId, String query, int limit, int offset) {
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(qOpenLesson.id.eq(qSchedule.openLesson.id));
         builder.and(qSchedule.user.id.eq(userId));
@@ -131,11 +133,14 @@ public class LessonRepositorySupport {
                 .select(qOpenLesson)
                 .from(qOpenLesson, qSchedule)
                 .where(builder)
+                .orderBy(qOpenLesson.startTime.asc())
+                .offset(offset)
+                .limit(limit)
                 .fetch();
         return lessons;
     }
 
-    public List<OpenLesson> findAttendLessonListByTeacher(Long userId, String query) {
+    public List<OpenLesson> findAttendLessonListByTeacher(Long userId, String query, int limit, int offset) {
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(qOpenLesson.lessonId.eq(qLesson.id));
         builder.and(qLesson.user.auth.id.eq(userId));
@@ -143,11 +148,31 @@ public class LessonRepositorySupport {
         if(query.toUpperCase().equals("DONE")) builder.and(qOpenLesson.startTime.before(LocalDateTime.now()));
         if(query.toUpperCase().equals("TODO")) builder.and(qOpenLesson.startTime.after(LocalDateTime.now()));
 
+        // 임박 순서
         List<OpenLesson> lessons = jpaQueryFactory
                 .select(qOpenLesson)
                 .from(qOpenLesson, qLesson)
                 .where(builder)
+                .orderBy(qOpenLesson.startTime.asc())
+                .offset(offset)
+                .limit(limit)
                 .fetch();
+
         return lessons;
+    }
+
+    /*
+         리뷰 테이블에서 평점이 가장 높은 12개의 강의 아이디를 반환
+     */
+    public List<Long> findPopularLesson() {
+        List<Long> lessonList = jpaQueryFactory
+                .select(qReview.lesson.id)
+                .from(qReview)
+                .groupBy(qReview.lesson.id)
+                .orderBy(qReview.score.avg().desc())
+                .limit(12)
+                .fetch();
+
+        return lessonList;
     }
 }

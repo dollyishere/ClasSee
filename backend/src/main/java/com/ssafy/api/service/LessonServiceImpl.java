@@ -1,5 +1,6 @@
 package com.ssafy.api.service;
 
+import com.querydsl.core.Tuple;
 import com.ssafy.api.dto.AttendLessonInfoDto;
 import com.ssafy.api.dto.LessonInfoDto;
 import com.ssafy.api.dto.OpenLessonInfoDto;
@@ -91,7 +92,7 @@ public class LessonServiceImpl implements LessonService {
             );
 
             lessonRes.setBookmarked(
-                    (bookmarkRepository.isBookmarked(userId, lesson.getId()) == 0)? false: true
+                    (userId == 0 || bookmarkRepository.isBookmarked(userId, lesson.getId()) == 0)? false: true
             );
 
             getLessonList.add(lessonRes);
@@ -159,11 +160,29 @@ public class LessonServiceImpl implements LessonService {
         return res;
     }
 
+
+    /*
+         리뷰 테이블에서
+    */
     @Override
-    public List<AttendLessonInfoDto> getAttendLessonList(Long userId, String query, String type) {
+    public List<Lesson> getPopularLessonList() {
+        List<Lesson> res = new ArrayList<>();
+        List<Long> popularLessonList = lessonRepositorySupport.findPopularLesson();
+
+        popularLessonList.forEach((popularLesson) -> {
+            Optional<Lesson> lesson = lessonRepository.findById(popularLesson);
+            if(!lesson.isPresent()) return;
+            res.add(lesson.get());
+        });
+
+        return res;
+    }
+
+    @Override
+    public List<AttendLessonInfoDto> getAttendLessonList(Long userId, String query, String type, int limit, int offset) {
         List<OpenLesson> openLessonList = new ArrayList<>();
-        if(type.toUpperCase().equals("T")) openLessonList = lessonRepositorySupport.findAttendLessonListByTeacher(userId, query);
-        if(type.toUpperCase().equals("S")) openLessonList = lessonRepositorySupport.findAttendLessonListByStudent(userId, query);
+        if(type.toUpperCase().equals("T")) openLessonList = lessonRepositorySupport.findAttendLessonListByTeacher(userId, query, limit, offset);
+        if(type.toUpperCase().equals("S")) openLessonList = lessonRepositorySupport.findAttendLessonListByStudent(userId, query, limit, offset);
 
         List<AttendLessonInfoDto> attendLessonList = new ArrayList<>();
         openLessonList.forEach((openLesson) -> {
