@@ -101,7 +101,7 @@ const SignUpPage = () => {
       const nicknameTarget = nicknameRef.current as HTMLInputElement; // 닉네임
       const addressTarget = addressRef.current as HTMLInputElement; // 주소
       const phoneNumTarget = phoneNumRef.current as HTMLInputElement; // 휴대폰 번호
-      const birthday = yearState + monthState + dayState; // 생년월일
+      const birthday = `${yearState}-${monthState}-${dayState}`; // 생년월일
 
       if (!isValidEmail) {
         alert('이메일 중복 확인 해주세요.');
