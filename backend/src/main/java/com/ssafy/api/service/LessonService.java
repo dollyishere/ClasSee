@@ -20,7 +20,7 @@ import java.util.Map;
 public interface LessonService {
     Long createLesson(Map<String, Object> lessonInfo);
 
-    List<LessonInfoDto> setLessonProperty(Long userId, List<Lesson> lessonList);
+    List<LessonInfoDto> setLessonProperty(List<Lesson> lessonList);
 
     void createSchedule(OpenLesson requestInfo) throws Exception;
 

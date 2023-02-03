@@ -131,18 +131,12 @@ public class LessonController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends BaseResponseBody> getRecommandList(@RequestParam String email) {
-        User user = userService.getUserByAuth(email);
-        // 비로그인 유저일 경우도 조회할 수 있게..
-        Long userId = 0l;
-        if (user != null) userId = user.getAuth().getId();
-
-
+    public ResponseEntity<? extends BaseResponseBody> getRecommandList() {
         // 평점이 가장 높은 상위 12개의 레슨 아이디 리스트
         List<Lesson> popularLessonList = lessonService.getPopularLessonList();
 
         // 받아온 레슨 아이디 리스트를 객체로 전환
-        List<LessonInfoDto> lessonList = lessonService.setLessonProperty(userId, popularLessonList);
+        List<LessonInfoDto> lessonList = lessonService.setLessonProperty(popularLessonList);
 
         LessonInfoListRes res = LessonInfoListRes.builder()
                                                  .lessonInfoList(lessonList)
