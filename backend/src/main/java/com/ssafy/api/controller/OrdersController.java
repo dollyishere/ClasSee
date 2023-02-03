@@ -63,15 +63,15 @@ public class OrdersController {
     }
 
     @DeleteMapping()
-    @ApiOperation(value = "주문페이지 정보", notes = "주문 페이지에 들어왔을 때, 필요한 정보들을 반환")
+    @ApiOperation(value = "주문 취소", notes = "주문 ID ")
     @ApiResponses({
             @ApiResponse(code = 200, message = "success")
     })
-    public ResponseEntity<?> deleteOrders(@RequestParam String user_email, @RequestParam Long openLesson_id){
+    public ResponseEntity<? extends BaseResponseBody> deleteOrders(@RequestParam String user_email, @RequestParam Long openLesson_id){
 
-        OrdersInfoGetRes ordersInfoGetRes = ordersService.readOrders(user_email, openLesson_id);
+        ordersService.deleteOrders(user_email, openLesson_id);
 
-        return ResponseEntity.status(200).body(ordersInfoGetRes);
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"success"));
     }
 
 }
