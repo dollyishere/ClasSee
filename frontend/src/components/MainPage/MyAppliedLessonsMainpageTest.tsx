@@ -70,8 +70,7 @@ const MyAppliedLessonsMainpageTest = () => {
     //   rating: 3,
     //   isBookMarked: false,
   ];
-  const [hover, setHover] = useState();
-  const { getMyAppliedLessonsMainpage } = useViewModel();
+  // const { getMyAppliedLessonsMainpage } = useViewModel();
   // const [lessons, setLessons] = useState<LessonsResponse>();
   const [lessons, setLessons] = useState(dummyData);
   const userInfo = useRecoilValue(PrivateInfoState);
