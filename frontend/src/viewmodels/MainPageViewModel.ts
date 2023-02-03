@@ -4,11 +4,16 @@ import { LessonsResponse } from '../types/LessonsType';
 
 const MainPageViewModel = () => {
   const {
+    getRecommandLessonsApi,
     MyCreatedLessonsMainpageApi,
     MyAppliedLessonsMainpageApi,
     deleteMyAppliedLessonsMainpageApi,
   } = useApi();
+  const getRecommandLessons = async () => {
+    const res = await getRecommandLessonsApi();
 
+    return res;
+  };
   const getMyCreatedLessonsMainpage = async (userId: string) => {
     const res = await MyCreatedLessonsMainpageApi(userId);
 
@@ -28,6 +33,7 @@ const MainPageViewModel = () => {
     return res;
   };
   return {
+    getRecommandLessons,
     getMyCreatedLessonsMainpage,
     getMyAppliedLessonsMainpage,
     deleteMyAppliedLessonsMainpage,
