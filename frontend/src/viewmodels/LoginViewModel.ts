@@ -27,6 +27,15 @@ const LoginViewModel = () => {
       if (res?.data.message === 'SUCCESS') {
         setPrivateInfo({
           email: res.data.email,
+          name: res.data.name,
+          nickname: res.data.nickname,
+          address: res.data.address,
+          birth: res.data.birth,
+          img: res.data.img,
+          description: res.data.description,
+          phone: res.data.phone,
+          userRole: res.data.userRole,
+          point: res.data.point,
         });
         setAuthToken(res.headers.authtoken);
         const encryptedToken = encryptToken(
