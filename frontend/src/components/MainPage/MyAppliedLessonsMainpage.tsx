@@ -59,23 +59,23 @@ const MyAppliedLessonsMainpage = () => {
   // },
 
   const { getMyAppliedLessonsMainpage } = useViewModel();
-  const [lessons, setLessons] = useState<LessonsResponse>();
+  const [lessons, setLessons] = useState<Lesson[]>();
   const userInfo = useRecoilValue(PrivateInfoState);
   useEffect(() => {
-    if (userInfo.userId)
-      getMyAppliedLessonsMainpage(userInfo.userId).then(
+    if (userInfo && userInfo.email)
+      getMyAppliedLessonsMainpage(userInfo.email).then(
         (res: LessonsResponse) => {
-          console.log(res);
-          setLessons(res);
+          console.log('내가신청한 강의', res.lessonInfoList);
+          setLessons(res.lessonInfoList);
         },
       );
   }, []);
   return (
     <div className="applylessons">
       <h1 className="applylesson--title"> 신청한 클래스 </h1>
-      {lessons && lessons.lessons ? (
+      {lessons ? (
         <div className="lesson">
-          {lessons.lessons.map((lesson: Lesson) => (
+          {lessons.map((lesson: Lesson) => (
             <LessonCard lesson={lesson} />
           ))}
         </div>

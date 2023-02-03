@@ -61,7 +61,7 @@ const MyCreatedLessonsMainpage = () => {
   // ];
   // 내가 개설한 강의 2개 가져오는 함수
   const { getMyCreatedLessonsMainpage } = useViewModel();
-  const [lessons, setLessons] = useState<LessonsResponse>();
+  const [lessons, setLessons] = useState<Lesson[]>();
   const userInfo = useRecoilValue(PrivateInfoState);
   // 메인페이지 마운트 시 강의 정보들 요청
 
@@ -69,8 +69,8 @@ const MyCreatedLessonsMainpage = () => {
     if (userInfo !== null && userInfo.email)
       getMyCreatedLessonsMainpage(userInfo.email).then(
         (res: LessonsResponse) => {
-          console.log(res);
-          setLessons(res);
+          console.log('내가 개설한 강의', res.lessonInfoList);
+          setLessons(res.lessonInfoList);
         },
       );
   }, []);
@@ -78,9 +78,9 @@ const MyCreatedLessonsMainpage = () => {
   return (
     <div className="createlessons">
       <h1 className="createlessons__title"> 개설한 강의 </h1>
-      {lessons && lessons.lessons ? (
+      {lessons ? (
         <div className="createlessons__cards">
-          {lessons.lessons.map((lesson: Lesson) => (
+          {lessons.map((lesson: Lesson) => (
             <LessonCard lesson={lesson} />
           ))}
         </div>
