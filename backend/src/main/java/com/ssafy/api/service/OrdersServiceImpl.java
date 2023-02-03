@@ -80,6 +80,15 @@ public class OrdersServiceImpl implements OrdersService{
         }
 
         return;
+    }
+
+    @Override
+    public void chargePoint(String email, Long point) {
+
+        Long user_id = userRepositorySupport.findId(email);
+        ordersRepositorySupport.updatePoint(user_id, point);
+
+        return;
 
     }
 
