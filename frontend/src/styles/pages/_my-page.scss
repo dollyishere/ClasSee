@@ -1,0 +1,14 @@
+@use '../components/sidebar';
+
+.my-page {
+  height: 100%;
+  .my-page__contents {
+    width: 100%;
+    height: calc(100% - 80px);
+    display: flex;
+
+    .my-page__sub-page {
+      width: calc(100% - sidebar.$width);
+    }
+  }
+}

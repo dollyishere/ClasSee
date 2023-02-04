@@ -1,0 +1,29 @@
+.profile-page {
+  width: 100%;
+  .profile-page__card {
+    width: 60%;
+    margin: 80px auto;
+
+    .profile-page__header {
+      display: flex;
+      .profile-page__photo {
+        background-color: green;
+        width: 33%;
+        height: 300px;
+      }
+      .profile-page__sub-header {
+        display: flex;
+        flex-wrap: wrap;
+        width: 77%;
+        .profile-page__nickname {
+          background-color: blue;
+          width: 100%;
+        }
+        .profile-page__point {
+          background-color: red;
+          width: 100%;
+        }
+      }
+    }
+  }
+}
