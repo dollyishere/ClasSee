@@ -3,10 +3,10 @@ import CreateLessonApi from '../apis/CreateLessonApi';
 import { CreateLessonRequest } from '../types/CreateLessonType';
 
 const CreateLessonViewModel = () => {
-  const { doCreateLesson } = CreateLessonApi();
+  const { DoCreateLesson } = CreateLessonApi();
 
   const createLesson = async (data: CreateLessonRequest) => {
-    const res = await doCreateLesson(data);
+    const res = await DoCreateLesson(data);
     return res;
   };
 

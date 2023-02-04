@@ -6,7 +6,7 @@ import {
 } from '../types/CreateLessonType';
 
 const CreateLessonApi = () => {
-  const doCreateLesson = async (
+  const DoCreateLesson = async (
     createLessonRequestBody: CreateLessonRequest,
   ) => {
     try {
@@ -21,7 +21,7 @@ const CreateLessonApi = () => {
     return null;
   };
   return {
-    doCreateLesson,
+    DoCreateLesson,
   };
 };
 
