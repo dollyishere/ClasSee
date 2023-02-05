@@ -38,34 +38,34 @@ import java.util.stream.Collectors;
         return ResponseEntity.status(200).body(BaseResponseBody.of(200,"success"));
     }
 
-    @DeleteMapping()
+    @DeleteMapping("/{noticeId}")
     @ApiOperation(value = "공지사항 삭제", notes = "사용자 이메일로 권한 확인 후, id로 해당 공지 삭제")
     @ApiResponses({
             @ApiResponse(code = 200, message = "success")
     })
-    public ResponseEntity<? extends BaseResponseBody> deleteNotice(@RequestParam String email, @RequestParam Long id){
+    public ResponseEntity<? extends BaseResponseBody> deleteNotice(@RequestParam String email, @PathVariable Long noticeId){
 
-        noticeService.deleteNotice(email, id);
+        noticeService.deleteNotice(email, noticeId);
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success"));
 
     }
 
-    @GetMapping()
+    @GetMapping("/{noticeId}")
     @ApiOperation(value = "공지 상세 조회", notes = "공지를 클릭했을 때, 공지의 id를 입력받아 공지 상세정보 반환")
     @ApiResponses({
             @ApiResponse(code = 200, message = "success")
     })
-    public ResponseEntity<?> getNoticeInfo(@RequestParam Long id){
+    public ResponseEntity<?> getNoticeInfo(@PathVariable Long noticeId){
 
-        Notice notice = noticeService.readNotice(id);
+        Notice notice = noticeService.readNotice(noticeId);
         NoticeInfoRes noticeInfoRes = new NoticeInfoRes(notice);
 
         return ResponseEntity.status(200).body(noticeInfoRes);
 
     }
 
-    @GetMapping("/list")
+    @GetMapping()
     @ApiOperation(value = "공지 리스트 조회", notes = "limit는 가져올 갯수, offset은 시작 위치(0부터 시작), count는 총 개수")
     @ApiResponses({
             @ApiResponse(code = 200, message = "success")
@@ -84,14 +84,14 @@ import java.util.stream.Collectors;
 
     }
 
-    @PutMapping()
+    @PutMapping("/{noticeId}")
     @ApiOperation(value = "공지사항 수정", notes = "유저 권한 확인 후 수정")
     @ApiResponses({
             @ApiResponse(code = 200, message = "success")
     })
-    public ResponseEntity<?> noticeUpdate(@RequestBody NoticeUpdatePutReq noticeUpdatePutReq){
+    public ResponseEntity<?> noticeUpdate(@PathVariable Long noticeId, @RequestBody NoticeUpdatePutReq noticeUpdatePutReq){
 
-        noticeService.updateNotice(noticeUpdatePutReq);
+        noticeService.updateNotice(noticeId, noticeUpdatePutReq);
 
         return ResponseEntity.status(200).body("success");
 

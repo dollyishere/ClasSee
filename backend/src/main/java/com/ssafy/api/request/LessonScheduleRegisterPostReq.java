@@ -24,12 +24,12 @@ public class LessonScheduleRegisterPostReq {
     @ApiModelProperty(name="end_time", example="강의 시작 시간[yyyy-MM-dd HH:mm]")
     String endTime;
 
-    public OpenLesson getOpenLessonInfoFromReq(LessonScheduleRegisterPostReq requestInfo) {
+    public OpenLesson getOpenLessonInfoFromReq(Long lessonId, LessonScheduleRegisterPostReq requestInfo) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime startTime = LocalDateTime.parse(requestInfo.getStartTime(), formatter);
         LocalDateTime endTime = LocalDateTime.parse(requestInfo.getEndTime(), formatter);
         OpenLesson openLesson = OpenLesson.builder()
-                .lessonId(requestInfo.lessonId)
+                .lessonId(lessonId)
                 .startTime(startTime).endTime(endTime)
                 .build();
 

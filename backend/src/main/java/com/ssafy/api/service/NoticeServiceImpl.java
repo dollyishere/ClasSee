@@ -68,13 +68,13 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
-    public void updateNotice(NoticeUpdatePutReq noticeUpdatePutReq) {
+    public void updateNotice(Long noticeId, NoticeUpdatePutReq noticeUpdatePutReq) {
 
         User user = userRepositorySupport
                 .findUserByAuth(noticeUpdatePutReq.getEmail())
                         .get();
 
-            noticeRepositorySupport.updateNotice(noticeUpdatePutReq);
+            noticeRepositorySupport.updateNotice(noticeId, noticeUpdatePutReq);
 
     }
 

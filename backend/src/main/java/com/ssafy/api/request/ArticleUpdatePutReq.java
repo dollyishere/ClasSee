@@ -13,9 +13,6 @@ public class ArticleUpdatePutReq {
     @ApiModelProperty(example="사용자 이메일")
     String email;
 
-    @ApiModelProperty(example="글 아이디")
-    Long id;
-
     @ApiModelProperty(example="글 제목")
     String title;
 

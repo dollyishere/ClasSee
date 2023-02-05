@@ -21,7 +21,7 @@ import java.util.List;
 
 @Api(value = "북마크 API", tags = {"Bookmark"})
 @RestController
-@RequestMapping("/api/v1/bookmark")
+@RequestMapping("/api/v1/bookmarks")
 public class BookmarkController {
     @Autowired
     UserService userService;
@@ -31,7 +31,7 @@ public class BookmarkController {
     @Autowired
     LessonService lessonService;
 
-    @PostMapping()
+    @PostMapping("/{email}/{lessonId}")
     @ApiOperation(value = "북마크 등록", notes = "<strong>회원 정보와 강의 정보</strong>를 통해 북마크를 등록한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
@@ -39,14 +39,13 @@ public class BookmarkController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends BaseResponseBody> registerBookmark(
-            @RequestBody @ApiParam(value = "사용자 이메일과 강의 아이디", required = true) BookmarkRegisterReq requestInfo) {
+    public ResponseEntity<? extends BaseResponseBody> registerBookmark(@PathVariable String email, @PathVariable Long lessonId) {
 
-        bookmarkService.create(requestInfo);
+        bookmarkService.create(email, lessonId);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 
-    @DeleteMapping()
+    @DeleteMapping("/{email}/{lessonId}")
     @ApiOperation(value = "북마크 삭제", notes = "<strong>회원 정보와 강의 정보</strong>를 통해 북마크를 삭제한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
@@ -54,7 +53,7 @@ public class BookmarkController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends BaseResponseBody> deleteBookmark(@RequestParam Long lessonId, @RequestParam String email) {
+    public ResponseEntity<? extends BaseResponseBody> deleteBookmark(@PathVariable String email, @PathVariable Long lessonId) {
         bookmarkService.delete(email, lessonId);
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200,"성공"));

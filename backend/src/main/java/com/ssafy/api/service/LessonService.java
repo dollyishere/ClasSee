@@ -19,7 +19,7 @@ import java.util.Map;
  */
 public interface LessonService {
     Long createLesson(Map<String, Object> lessonInfo);
-    Long updateLesson(Map<String, Object> lessonInfo);
+    void updateLesson(Map<String, Object> lessonInfo);
 
     List<LessonInfoDto> setLessonProperty(List<Lesson> lessonList);
 

@@ -28,11 +28,11 @@ public class BookmarkServiceImpl implements BookmarkService {
     LessonRepository lessonRepository;
 
     @Override
-    public void create(BookmarkRegisterReq requestInfo) {
+    public void create(String email, Long lessonId) {
         Bookmark bookmark = Bookmark.builder()
-                                    .lessonId(requestInfo.getLesson_id())
+                                    .lessonId(lessonId)
                                     .userId(
-                                            userRepositorySupport.findId(requestInfo.getEmail())
+                                            userRepositorySupport.findId(email)
                                     )
                                     .build();
         bookmarkRepositorySupport.save(bookmark);

@@ -44,8 +44,4 @@ public class OpenLesson {
 
     @OneToMany(mappedBy = "openLesson")
     private List<Orders> ordersList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "openLesson")
-    private List<Schedule> scheduleList = new ArrayList<>();
-
 }

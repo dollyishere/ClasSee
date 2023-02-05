@@ -71,7 +71,7 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public Long updateLesson(Map<String, Object> lessonInfo) {
+    public void updateLesson(Map<String, Object> lessonInfo) {
         Lesson lesson = (Lesson) lessonInfo.get("LESSON");
         List<Checklist> checkLists = (List<Checklist>) lessonInfo.get("CHECKLISTS");
         List<Curriculum> curriculums = (List<Curriculum>) lessonInfo.get("CURRICULUMS");
@@ -90,8 +90,6 @@ public class LessonServiceImpl implements LessonService {
         pamphlets.forEach((pamphlet) -> {
             pamphletRepositorySupport.update(pamphlet);
         });
-
-        return lesson.getId();
     }
 
     @Override

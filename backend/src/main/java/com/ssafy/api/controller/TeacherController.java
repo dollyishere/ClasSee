@@ -39,41 +39,41 @@ public class TeacherController {
 
 
 
-    @GetMapping("/lessons")
-    @ApiOperation(value = "개설한 강의 목록 조회", notes = "강사가 본인이 개설한 강의 목록을 조회한다.")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "성공"),
-            @ApiResponse(code = 401, message = "인증 실패"),
-            @ApiResponse(code = 404, message = "사용자 없음"),
-            @ApiResponse(code = 500, message = "서버 오류")
-    })
-    public ResponseEntity<? extends BaseResponseBody> getLessonListInfo(@RequestParam String email) {
-        /*
-        리턴 값
-        강의 리스트
-            - 강의명
-            - 소요시간
-            - 카테고리
-        - 이미지
-        - 별점 평균
-        */
-        User user = userService.getUserByAuth(email);
+//    @GetMapping("/{email}/lessons")
+//    @ApiOperation(value = "개설한 강의 목록 조회", notes = "강사가 본인이 개설한 강의 목록을 조회한다.")
+//    @ApiResponses({
+//            @ApiResponse(code = 200, message = "성공"),
+//            @ApiResponse(code = 401, message = "인증 실패"),
+//            @ApiResponse(code = 404, message = "사용자 없음"),
+//            @ApiResponse(code = 500, message = "서버 오류")
+//    })
+//    public ResponseEntity<? extends BaseResponseBody> getLessonListInfo(@PathVariable String email) {
+//        /*
+//        리턴 값
+//        강의 리스트
+//            - 강의명
+//            - 소요시간
+//            - 카테고리
+//        - 이미지
+//        - 별점 평균
+//        */
+//        User user = userService.getUserByAuth(email);
+//
+//        if(user == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "사용자 정보 없음"));
+//        Long userId = user.getAuth().getId();
+//
+//        // 해당 유저가 개설한 강의 리스트
+//        List<Lesson> lessonList = teacherService.getLessonList(user);
+//        if(lessonList == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "개설 강의 없음"));
+//
+//        List<LessonInfoDto> lessonInfoList =  lessonService.setLessonProperty(lessonList);
+//        LessonInfoListRes res = LessonInfoListRes.builder()
+//                                                 .lessonInfoList(lessonInfoList)
+//                                                 .build();
+//        return ResponseEntity.status(200).body(LessonInfoListRes.of(200, "SUCCESS", res));
+//    }
 
-        if(user == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "사용자 정보 없음"));
-        Long userId = user.getAuth().getId();
-
-        // 해당 유저가 개설한 강의 리스트
-        List<Lesson> lessonList = teacherService.getLessonList(user);
-        if(lessonList == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "개설 강의 없음"));
-
-        List<LessonInfoDto> lessonInfoList =  lessonService.setLessonProperty(lessonList);
-        LessonInfoListRes res = LessonInfoListRes.builder()
-                                                 .lessonInfoList(lessonInfoList)
-                                                 .build();
-        return ResponseEntity.status(200).body(LessonInfoListRes.of(200, "SUCCESS", res));
-    }
-
-    @GetMapping("/lessons/{email}/")
+    @GetMapping("/{email}/lessons")
     @ApiOperation(value = "개설한 강의 목록 조회", notes = "강사가 본인이 개설한 스케줄 목록을 조회한다. 쿼리 : (DONE[완료], TODO[진행예정])")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),

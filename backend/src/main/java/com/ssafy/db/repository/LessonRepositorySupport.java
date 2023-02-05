@@ -6,6 +6,7 @@ import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.api.dto.LessonInfoDto;
 import com.ssafy.db.entity.lesson.*;
+import com.ssafy.db.entity.orders.QOrders;
 import com.ssafy.db.entity.user.QUser;
 import com.ssafy.db.entity.user.User;
 import lombok.RequiredArgsConstructor;
@@ -34,12 +35,12 @@ public class LessonRepositorySupport {
     QLesson qLesson = QLesson.lesson;
     QChecklist qChecklist = QChecklist.checklist;
     QOpenLesson qOpenLesson = QOpenLesson.openLesson;
+    QOrders qOrders = QOrders.orders;
     QPamphlet qPamplet = QPamphlet.pamphlet;
     QCurriculum qCurriculum = QCurriculum.curriculum;
 
     QUser qUser = QUser.user;
     QReview qReview = QReview.review;
-    QSchedule qSchedule = QSchedule.schedule;
 
     // 유저를 넣으면 유저를 DB에 저장
     public void save(Lesson lesson) {
@@ -123,15 +124,15 @@ public class LessonRepositorySupport {
 
     public List<OpenLesson> findAttendLessonListByStudent(Long userId, String query, int limit, int offset) {
         BooleanBuilder builder = new BooleanBuilder();
-        builder.and(qOpenLesson.id.eq(qSchedule.openLesson.id));
-        builder.and(qSchedule.user.id.eq(userId));
+        builder.and(qOpenLesson.id.eq(qOrders.openLesson.id));
+        builder.and(qOrders.user.id.eq(userId));
 
         if(query.toUpperCase().equals("DONE")) builder.and(qOpenLesson.startTime.before(LocalDateTime.now()));
         if(query.toUpperCase().equals("TODO")) builder.and(qOpenLesson.startTime.after(LocalDateTime.now()));
 
         List<OpenLesson> lessons = jpaQueryFactory
                 .select(qOpenLesson)
-                .from(qOpenLesson, qSchedule)
+                .from(qOpenLesson, qOrders)
                 .where(builder)
                 .orderBy(qOpenLesson.startTime.asc())
                 .offset(offset)
@@ -176,24 +177,23 @@ public class LessonRepositorySupport {
         return lessonList;
     }
 
-    public void update(Lesson lesson) {
-        jpaQueryFactory.
+    public Long update(Lesson lesson) {
+        Long count = jpaQueryFactory.
                 update(qLesson)
-                .where(qLesson.id.eq(lesson.getId()))
                 .set(qLesson.cklsDescription, lesson.getCklsDescription())
                 .set(qLesson.description, lesson.getDescription())
-                .set(qLesson.kitDescription, lesson.getKitDescription())
                 .set(qLesson.kitPrice, lesson.getKitPrice())
+                .set(qLesson.kitDescription, lesson.getKitDescription())
                 .set(qLesson.category, lesson.getCategory())
                 .set(qLesson.runningtime, lesson.getRunningtime())
                 .set(qLesson.maximum, lesson.getMaximum())
                 .set(qLesson.name, lesson.getName())
                 .set(qLesson.price, lesson.getPrice())
-                .set(qLesson.bookmarkList, lesson.getBookmarkList())
-                .set(qLesson.checkList, lesson.getCheckList())
-                .set(qLesson.curriculumList, lesson.getCurriculumList())
+                .where(qLesson.id.eq(lesson.getId()))
                 .execute();
         em.clear();
         em.flush();
+
+        return count;
     }
 }
