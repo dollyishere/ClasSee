@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
@@ -24,6 +25,26 @@ public class ReviewRepositorySupport {
     public void save(Review review) { em.persist(review); }
 
     public void delete(Review review) { em.remove(review); }
+
+    public Review findOne(Long id) { return em.find(Review.class, id); }
+
+    public Long reviewCount(){
+        return jpaQueryFactory
+                .select(qReview.count())
+                .from(qReview)
+                .fetchOne();
+    }
+
+    public List<Review> findList(Long lesson_id, int offset, int limit){
+        return jpaQueryFactory
+                .select(qReview)
+                .from(qReview)
+                .where(qReview.lesson.id.eq(lesson_id))
+                .orderBy(qReview.id.desc())
+                .offset(offset)
+                .limit(limit)
+                .fetch();
+    }
 
 
 
