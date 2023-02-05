@@ -6,31 +6,71 @@
     width: 60%;
     margin: 80px auto;
 
+    .profile-page__button {
+      color: colors.$gray_color;
+      background-color: colors.$beige-color;
+      font-size: 16px;
+      margin: 5px 0;
+    }
+
     .profile-page__header {
       display: flex;
       .profile-page__photo {
-        background-color: green;
         width: 33%;
         height: 300px;
+        flex-wrap: wrap;
+        .profile-page__photo--not {
+          margin: 20px auto;
+          width: 220px;
+          height: 220px;
+          background-color: colors.$light_gray_color;
+          border-radius: 50%;
+        }
+        .photo-page__photo--change {
+          padding: 0 20px 0 0;
+          text-align: right;
+          color: colors.$theme_color;
+          label {
+            cursor: pointer;
+            input {
+              display: none;
+            }
+          }
+        }
       }
       .profile-page__sub-header {
         display: flex;
         flex-wrap: wrap;
         width: 77%;
-        .profile-page__nickname {
+        .profile-page__section--nickname {
           font-size: 32px;
           padding: 20px;
           text-align: left;
           font-weight: 600;
-          span {
-            color: colors.$theme_color;
+          display: flex;
+          align-items: flex-end;
+          height: 50%;
+          .profile-page__nickname {
+            width: 80%;
+            height: 100%;
+            span {
+              color: colors.$theme_color;
+            }
           }
-          background-color: blue;
           width: 100%;
         }
-        .profile-page__point {
-          background-color: red;
+        .profile-page__section--point {
           width: 100%;
+          display: flex;
+          .profile-page__point {
+            width: 80%;
+            font-weight: 600;
+            font-size: 32px;
+            text-align: right;
+            span {
+              color: colors.$theme_color;
+            }
+          }
         }
       }
     }
