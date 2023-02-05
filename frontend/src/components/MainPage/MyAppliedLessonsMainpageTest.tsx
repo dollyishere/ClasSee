@@ -6,11 +6,7 @@ import logo from '../../assets/logo.png';
 import LessonCardTest from '../LessonCardTest';
 import MyAppliedTest from '../MyAppliedLessonCardTest';
 import useViewModel from '../../viewmodels/MainPageViewModel';
-import {
-  LessonsResponse,
-  Lesson,
-  MyAppliedHover,
-} from '../../types/LessonsType';
+import { LessonsResponse, Lesson } from '../../types/LessonsType';
 import PrivateInfoState from '../../models/PrivateInfoAtom';
 // 로그인이 되었을 때만 이 컴포넌트가 보여짐
 // 내가 신청한 강의를 get으로 api요청 보냄
@@ -74,7 +70,7 @@ const MyAppliedLessonsMainpageTest = () => {
   // const [lessons, setLessons] = useState<LessonsResponse>();
   const [lessons, setLessons] = useState(dummyData);
   const userInfo = useRecoilValue(PrivateInfoState);
-  const [myapplied, setmyapplied] = useState<boolean>(true);
+
   // useEffect(() => {
   //   if (userInfo.userId)
   //     getMyAppliedLessonsMainpage(userInfo.userId).then(
