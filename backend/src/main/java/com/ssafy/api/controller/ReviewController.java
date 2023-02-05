@@ -62,5 +62,17 @@ public class ReviewController {
         return ResponseEntity.status(200).body(reviewPage);
     }
 
+    @DeleteMapping()
+    @ApiOperation(value = "포토 카드 삭제", notes = "포토 카드 id를 입력 받아 삭제")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "success")
+    })
+    public ResponseEntity<? extends BaseResponseBody> deleteReview(@PathVariable Long id) {
+
+        reviewService.deleteReview(id);
+
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success"));
+    }
+
 
 }
