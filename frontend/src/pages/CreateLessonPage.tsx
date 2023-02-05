@@ -137,7 +137,7 @@ const CreateLessonPage = () => {
             const upLoadedCheckListImage = await uploadBytes(
               ref(
                 storage,
-                `lesson/${res.lessonId}/pamphlet_images/${image.name}`,
+                `lessons/${res.lessonId}/pamphlet_images/${image.name}`,
               ),
               image,
             );
@@ -148,7 +148,7 @@ const CreateLessonPage = () => {
             const upLoadedPamphletImage = await uploadBytes(
               ref(
                 storage,
-                `lesson/${res.lessonId}/checklist_images/${image.name}`,
+                `lessons/${res.lessonId}/checklist_images/${image.name}`,
               ),
               image,
             );
