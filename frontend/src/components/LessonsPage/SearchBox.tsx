@@ -2,6 +2,8 @@ import { Card, CardContent } from '@mui/material';
 import React from 'react';
 
 const SearchBox = () => {
+  const hours = [...new Array(25)].map((_, i: number) => i);
+
   return (
     <div className="search-box">
       <Card className="search-box__card">
@@ -34,16 +36,24 @@ const SearchBox = () => {
             <div className="search-box__label">시작 시간</div>
             <div>
               최소
-              <select>
-                <option value="0">0</option>
+              <select className="search-box__input">
+                {hours.map((hour: number) => (
+                  <option value={hour}>
+                    {String(hour).padStart(2, '0')} : 00
+                  </option>
+                ))}
               </select>
               시
             </div>
             <div>~</div>
             <div>
               최대
-              <select>
-                <option value="0">0</option>
+              <select className="search-box__input">
+                {hours.map((hour: number) => (
+                  <option value={hour}>
+                    {String(hour).padStart(2, '0')} : 00
+                  </option>
+                ))}
               </select>
               시
             </div>
@@ -52,12 +62,22 @@ const SearchBox = () => {
             <div className="search-box__label">금액</div>
             <div>
               최소
-              <input type="text" placeholder="10,000" />P
+              <input
+                type="text"
+                placeholder="10,000"
+                className="search-box__input"
+              />
+              P
             </div>
             <div>~</div>
             <div>
               최대
-              <input type="text" placeholder="10,000" />P
+              <input
+                type="text"
+                placeholder="10,000"
+                className="search-box__input"
+              />
+              P
             </div>
           </div>
           <div className="search-box__row">

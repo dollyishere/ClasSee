@@ -12,7 +12,15 @@
       display: flex;
       width: 100%;
       .search-box__label {
-        width: 10%;
+        width: 12%;
+      }
+      .search-box__input {
+        width: 130px;
+        text-align: right;
+        box-sizing: border-box;
+        border-radius: 10px;
+        font-size: 20px;
+        padding: 8px;
       }
       .search-box__button--day {
         background-color: colors.$beige_color;
