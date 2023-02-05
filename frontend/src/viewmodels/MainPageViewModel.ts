@@ -8,6 +8,8 @@ const MainPageViewModel = () => {
     MyCreatedLessonsMainpageApi,
     MyAppliedLessonsMainpageApi,
     deleteMyAppliedLessonsMainpageApi,
+    deleteBookmarkApi,
+    addBookmarkApi,
   } = useApi();
   const getRecommandLessons = async () => {
     const res = await getRecommandLessonsApi();
@@ -32,11 +34,23 @@ const MainPageViewModel = () => {
 
     return res;
   };
+  const deleteBookmark = async (userId: string, lessonId: number) => {
+    const res = await deleteBookmarkApi(userId, lessonId);
+
+    return res;
+  };
+  const addBookmark = async (userId: string, lessonId: number) => {
+    const res = await addBookmarkApi(userId, lessonId);
+
+    return res;
+  };
   return {
     getRecommandLessons,
     getMyCreatedLessonsMainpage,
     getMyAppliedLessonsMainpage,
     deleteMyAppliedLessonsMainpage,
+    deleteBookmark,
+    addBookmark,
   };
 };
 
