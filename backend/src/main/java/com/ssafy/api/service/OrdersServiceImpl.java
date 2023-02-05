@@ -4,7 +4,6 @@ import com.ssafy.api.request.OrdersRegistPostReq;
 import com.ssafy.api.response.OrdersInfoGetRes;
 import com.ssafy.db.entity.lesson.Lesson;
 import com.ssafy.db.entity.lesson.OpenLesson;
-import com.ssafy.db.entity.lesson.Schedule;
 import com.ssafy.db.entity.orders.Orders;
 import com.ssafy.db.entity.user.User;
 import com.ssafy.db.repository.LessonRepositorySupport;
@@ -66,14 +65,8 @@ public class OrdersServiceImpl implements OrdersService{
                     .openLesson(openLesson)
                     .build();
 
-            Schedule schedule = Schedule.builder()
-                    .user(user)
-                    .openLesson(openLesson)
-                    .build();
-
             user.setPoint(user_point - ordersRegistPostReq.getPrice());
             userRepositorySupport.save(user);
-            ordersRepositorySupport.saveSchedule(schedule);
             ordersRepositorySupport.save(orders);
         } else {
             throw new Exception("포인트가 부족합니다");

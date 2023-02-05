@@ -25,8 +25,6 @@ public class OrdersRepositorySupport {
 
     public void save(Orders orders) { em.persist(orders); }
 
-    public void saveSchedule(Schedule schedule) { em.persist(schedule); }
-
     public void delete(Orders orders){ em.remove(orders); }
 
     public Orders findOne(Long id){ return em.find(Orders.class, id); }

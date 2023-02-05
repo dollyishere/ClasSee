@@ -7,7 +7,6 @@ import com.ssafy.db.entity.board.Article;
 import com.ssafy.db.entity.board.Photocard;
 import com.ssafy.db.entity.lesson.Lesson;
 import com.ssafy.db.entity.lesson.Review;
-import com.ssafy.db.entity.lesson.Schedule;
 import com.ssafy.db.entity.orders.Orders;
 import lombok.*;
 
@@ -72,9 +71,6 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Orders> ordersList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user")
-    private List<Schedule> scheduleList = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     private List<Notice> noticeList = new ArrayList<>();

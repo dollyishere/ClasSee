@@ -65,18 +65,18 @@ public class UserController {
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 
-    @DeleteMapping()
+    @DeleteMapping("/{email}")
     @ApiOperation(value = "유저 삭제", notes = "유저 정보를 삭제(회원탈퇴)")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공")
     })
-    public ResponseEntity<Boolean> withdrawalUser(@RequestParam String email){
+    public ResponseEntity<Boolean> withdrawalUser(@PathVariable String email){
         userService.deleteUser(email);
 
         return ResponseEntity.status(200).body(true);
     }
 
-    @GetMapping()
+    @GetMapping("/{email}")
     @ApiOperation(value = "회원 본인 정보 조회", notes = "로그인한 회원 본인의 정보를 응답한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
@@ -84,7 +84,7 @@ public class UserController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<UserInfoGetRes> getUserInfo(@RequestParam String email) {
+    public ResponseEntity<UserInfoGetRes> getUserInfo(@PathVariable String email) {
         /**
          * 요청 헤더 액세스 토큰이 포함된 경우에만 실행되는 인증 처리이후, 리턴되는 인증 정보 객체(authentication) 통해서 요청한 유저 식별.
          * 액세스 토큰이 없이 요청하는 경우, 403 에러({"error": "Forbidden", "message": "Access Denied"}) 발생.
@@ -126,7 +126,7 @@ public class UserController {
         return ResponseEntity.status(409).body(BaseResponseBody.of(409, "invalid"));
     }
 
-    @GetMapping("/check")
+    @GetMapping("/{email}/check")
     @ApiOperation(value = "비밀번호 찾기", notes = "<strong>이름과 이메알</strong>을 통해 비밀번호 찾는 메서드.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
@@ -134,7 +134,12 @@ public class UserController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends BaseResponseBody> checkUser(@ApiParam(value = "이름, 이메일 정보", required = true) UserFindPwPostReq userInfo) throws Exception {
+    public ResponseEntity<? extends BaseResponseBody> checkUser(@ApiParam(value = "이름, 이메일 정보", required = true) @PathVariable String email, @RequestParam String name) throws Exception {
+        UserFindPwPostReq userInfo = UserFindPwPostReq.builder()
+                .email(email)
+                .name(name)
+                .build();
+
         Optional<Auth> auth = userService.getUserByEmailAndName(userInfo);
 
         // 입력받은 이메일과 이름으로 찾은 사용자 정보가 없다면 401 return
@@ -146,7 +151,7 @@ public class UserController {
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, code));
     }
 
-    @PutMapping("/password")
+    @PutMapping("/{email}/password")
     @ApiOperation(value = "비밀번호 변경", notes = "<strong>새로운 비밀번호</strong>을 통해 비밀번호 변경 하는 메서드.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
@@ -154,55 +159,59 @@ public class UserController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends BaseResponseBody> changePw(@RequestBody @ApiParam(value = "이름, 이메일 정보", required = true) UserEmailPwDto userInfo) {
+    public ResponseEntity<? extends BaseResponseBody> changePw(@PathVariable String email, @RequestParam String password) {
+        UserEmailPwDto userInfo = UserEmailPwDto.builder()
+                                                .email(email)
+                                                .password(password)
+                                                .build();
         try {
             userService.updatePassword(userInfo);
             // 입력받은 이메일과 이름으로 찾은 사용자 정보가 없다면 401 return
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "SUCCESS"));
         } catch (Exception e){
-			return ResponseEntity.status(401).body(BaseResponseBody.of(405, "SERVER ERROR"));
-		}
+            return ResponseEntity.status(401).body(BaseResponseBody.of(405, "SERVER ERROR"));
+        }
     }
 
-    @PutMapping("/nickname")
+    @PutMapping("/{email}/nickname")
     @ApiOperation(value = "유저 닉네임 업데이트", notes = "유저 정보를 수정")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공")
     })
-    public ResponseEntity<? extends  BaseResponseBody> updateUserNickname(@RequestParam String email, @RequestParam String nickname) {
+    public ResponseEntity<? extends  BaseResponseBody> updateUserNickname(@PathVariable String email, @RequestParam String nickname) {
         userService.updateUserNickname(email, nickname);
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200,"수정 완료"));
     }
 
-    @PutMapping("/address")
+    @PutMapping("/{email}/address")
     @ApiOperation(value = "유저 주소 업데이트", notes = "유저 정보를 수정")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공")
     })
-    public ResponseEntity<? extends BaseResponseBody> updateUserAddress(@RequestParam String email, @RequestParam String address) {
+    public ResponseEntity<? extends BaseResponseBody> updateUserAddress(@PathVariable String email, @RequestParam String address) {
         userService.updateUserAddress(email, address);
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200,"수정 완료"));
     }
 
-    @PutMapping("/phone")
+    @PutMapping("/{email}/phone")
     @ApiOperation(value = "유저 폰번호 업데이트", notes = "유저 정보를 수정")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공")
     })
-    public ResponseEntity<? extends BaseResponseBody> updateUserPhone(@RequestParam String email, @RequestParam String phone) {
+    public ResponseEntity<? extends BaseResponseBody> updateUserPhone(@PathVariable String email, @RequestParam String phone) {
         userService.updateUserPhone(email, phone);
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200,"수정 완료"));
     }
 
-    @PutMapping("/description")
+    @PutMapping("/{email}/description")
     @ApiOperation(value = "유저 자기소개 업데이트", notes = "유저 정보를 수정")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공")
     })
-    public ResponseEntity<? extends BaseResponseBody> updateUserDescription(@RequestParam String email, @RequestParam String description) {
+    public ResponseEntity<? extends BaseResponseBody> updateUserDescription(@PathVariable String email, @RequestParam String description) {
         userService.updateUserDescription(email, description);
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200,"수정 완료"));
