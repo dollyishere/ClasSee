@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
 public class ReviewServiceImpl implements ReviewService {
@@ -56,8 +58,16 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public void readReview() {
+    public List<Review> readReview(Long lesson_id, int offset, int limit) {
 
+        return reviewRepositorySupport
+                .findList(lesson_id, offset, limit);
+
+    }
+
+    @Override
+    public Long countReview() {
+        return reviewRepositorySupport.reviewCount();
     }
 
     @Override
