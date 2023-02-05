@@ -89,7 +89,7 @@ public class ArticleController {
         return ResponseEntity.status(200).body(articlePage);
     }
 
-    @PutMapping("/{articleId}/")
+    @PutMapping("/{articleId}")
     @ApiOperation(value = "게시글 수정", notes = "게시글 수정 내용을 받아 수정")
     @ApiResponses({
             @ApiResponse(code = 200, message = "success")
