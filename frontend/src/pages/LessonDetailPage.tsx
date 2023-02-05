@@ -20,6 +20,7 @@ import LessonDetailViewModel from '../viewmodels/LessonDetailViewModel';
 import PrivateInfoState from '../models/PrivateInfoAtom';
 
 import BasicRating from '../components/Rating';
+import CheckSchedule from '../components/CheckSchedule';
 
 const LessonDetailPage = () => {
   // url(Router) 통해서 입력된 lessonId를 useParams로 받아옴
@@ -104,13 +105,13 @@ const LessonDetailPage = () => {
   }, []);
   return (
     <div className="lesson-detail-page__container">
-      <div className="lesson-detail__header">
-        <div className="lesson-detail-img-slider">
+      <div className="lesson-detail-page__header">
+        <div className="lesson-detail-page-img-slider">
           {pamphletsImgState.map((image: any) => (
             <img src={image} alt={image} />
           ))}
         </div>
-        <div className="lesson-detail__info">
+        <div className="lesson-detail-page__info">
           <h1>{lessonDetailState.lessonName}</h1>
           <p>
             {lessonDetailState.runningtime === 0
@@ -130,9 +131,9 @@ const LessonDetailPage = () => {
           <div>{lessonDetailState.category}</div>
         </div>
       </div>
-      <div className="lesson-detail__body">
-        <div className="lesson-detail__content">
-          <div className="lesson-detail__button">
+      <div className="lesson-detail-page__body">
+        <div className="lesson-detail-page__content">
+          <div className="lesson-detail-page__button">
             <Stack spacing={2} direction="row">
               <Button
                 variant={changeVisiable ? 'outlined' : 'contained'}
@@ -149,13 +150,13 @@ const LessonDetailPage = () => {
             </Stack>
           </div>
           {!changeVisiable ? (
-            <div className="lesson-detail__lesson-detail">
+            <div className="lesson-detail-page__box">
               <h2>강의 소개</h2>
-              <div className="lesson-detail__lesson-description">
+              <div className="lesson-detail-page__lesson-description">
                 <p>넣을 예정임~</p>
               </div>
               <h2>커리큘럼</h2>
-              <div className="lesson-detail__curriculum">
+              <div className="lesson-detail-page__curriculum">
                 {lessonDetailState.curriculums.map((curri: any) => (
                   <h3>
                     Step{curri.stage + 1}. {curri.description}
@@ -163,32 +164,33 @@ const LessonDetailPage = () => {
                 ))}
               </div>
               <h2>준비물</h2>
-              <div className="lesson-detail__checklist">
+              <div className="lesson-detail-page__checklist">
                 {checkListImgState.map((image: any) => (
                   <img src={image} alt={image} />
                 ))}
                 <div>{lessonDetailState.cklsDescription}</div>
               </div>
               <h2>강사 소개</h2>
-              <div className="lesson-detail__teacher">
+              <div className="lesson-detail-page__teacher">
                 {lessonDetailState.profileImg ? (
                   // 해당 파트 프로필 이미지 구현되었을 때 firebase로 데이터 불러오는 것과 함께 구현
                   <img src={lessonDetailState.profileImg} alt="profileImg" />
                 ) : null}
-                <div className="lesson-detail__teacher-text">
+                <div className="lesson-detail-page__teacher-text">
                   <h3>{lessonDetailState.userName}</h3>
                   <p>{lessonDetailState.userDesciption}</p>
                 </div>
               </div>
             </div>
           ) : (
-            <div className="lesson-detail__review">
+            <div className="lesson-detail-page__review">
               <h2>강의 후기</h2>
             </div>
           )}
         </div>
-        <div className="lesson-detail__reservation">
-          <h1>달력 들어올 곳!</h1>
+        <div className="lesson-detail-page__reservation">
+          {/* <CheckSchedule lessonId={Number(lessonId.lessonId)} /> */}
+          <CheckSchedule />
         </div>
       </div>
     </div>
