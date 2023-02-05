@@ -3,6 +3,7 @@ package com.ssafy.api.service;
 import com.querydsl.core.Tuple;
 import com.ssafy.api.dto.AttendLessonInfoDto;
 import com.ssafy.api.dto.LessonInfoDto;
+import com.ssafy.api.dto.LessonSearchFilterDto;
 import com.ssafy.api.dto.OpenLessonInfoDto;
 import com.ssafy.api.response.LessonDetailsRes;
 import com.ssafy.api.response.LessonSchedulsRes;
@@ -222,5 +223,11 @@ public class LessonServiceImpl implements LessonService {
             );
         });
         return attendLessonList;
+    }
+
+    @Override
+    public List<Lesson> getLessonListByFilter(LessonSearchFilterDto requestInfo) {
+
+        return lessonRepositorySupport.findLessonListByFilter(requestInfo);
     }
 }

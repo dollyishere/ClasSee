@@ -3,6 +3,7 @@ package com.ssafy.api.service;
 import com.querydsl.core.Tuple;
 import com.ssafy.api.dto.AttendLessonInfoDto;
 import com.ssafy.api.dto.LessonInfoDto;
+import com.ssafy.api.dto.LessonSearchFilterDto;
 import com.ssafy.api.response.LessonDetailsRes;
 import com.ssafy.api.response.LessonSchedulsRes;
 import com.ssafy.db.entity.lesson.Lesson;
@@ -32,4 +33,6 @@ public interface LessonService {
     List<AttendLessonInfoDto> getAttendLessonList(Long userId, String query, String type, int limit, int offset);
 
     List<Lesson> getPopularLessonList();
+
+    List<Lesson> getLessonListByFilter(LessonSearchFilterDto requestInfo);
 }

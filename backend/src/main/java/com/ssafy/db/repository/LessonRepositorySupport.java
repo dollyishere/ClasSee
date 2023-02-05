@@ -3,8 +3,10 @@ package com.ssafy.db.repository;
 import com.fasterxml.jackson.databind.util.ArrayBuilders;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.SubQueryExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.api.dto.LessonInfoDto;
+import com.ssafy.api.dto.LessonSearchFilterDto;
 import com.ssafy.db.entity.lesson.*;
 import com.ssafy.db.entity.orders.QOrders;
 import com.ssafy.db.entity.user.QUser;
@@ -18,6 +20,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -195,5 +198,38 @@ public class LessonRepositorySupport {
         em.flush();
 
         return count;
+    }
+
+    public List<Lesson> findLessonListByFilter(LessonSearchFilterDto requestInfo) {
+        // requestinfo ( (min, max) startTime, price, dayofweek, category )
+        BooleanBuilder builder = new BooleanBuilder();
+        builder.and(qLesson.id.eq(qOpenLesson.lessonId));
+
+        if(requestInfo.getCategory() != null) builder.and(qLesson.category.eq(requestInfo.getCategory()));
+        if(requestInfo.getMinPrice() != null) builder.and(qLesson.price.goe(requestInfo.getMinPrice()));
+        if(requestInfo.getMaxPrice() != null) builder.and(qLesson.price.loe(requestInfo.getMaxPrice()));
+        if(requestInfo.getMinStartTime() != null) builder.and(qOpenLesson.startTime.hour().goe(requestInfo.getMinStartTime()));
+        if(requestInfo.getMaxStartTime() != null) builder.and(qOpenLesson.startTime.hour().loe(requestInfo.getMaxStartTime()));
+        if(requestInfo.getDayOfWeek() != null) {
+            String[] reqDays = requestInfo.getDayOfWeek().split(",");
+            List<Integer> parseDays = new ArrayList<>();
+            Arrays.stream(reqDays).forEach((day) -> {
+                parseDays.add(
+                        Integer.parseInt(day)
+                );
+            });
+            // 1(SUN) ~ 7(SAT)
+            builder.and(qOpenLesson.startTime.dayOfWeek().in(parseDays.toArray(new Integer[0])));
+        }
+
+        List<Lesson> lessonList = jpaQueryFactory
+                .select(qLesson).distinct()
+                .from(qLesson, qOpenLesson)
+                .where(builder)
+                .offset(requestInfo.getOffset())
+                .limit(requestInfo.getLimit())
+                .fetch();
+
+        return lessonList;
     }
 }
