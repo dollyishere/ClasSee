@@ -50,11 +50,35 @@ const LessonsApi = () => {
     }
     return null;
   };
+  const deleteBookmarkApi = async (userId: string, lessonId: number) => {
+    try {
+      const response = await axios.delete(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/deleteBookmark/${userId}/${lessonId}`,
+      );
+      return response.data;
+    } catch (error: any) {
+      console.error(error);
+    }
+    return null;
+  };
+  const addBookmarkApi = async (userId: string, lessonId: number) => {
+    try {
+      const response = await axios.delete(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/addBookmark/${userId}/${lessonId}`,
+      );
+      return response.data;
+    } catch (error: any) {
+      console.error(error);
+    }
+    return null;
+  };
   return {
     getRecommandLessonsApi,
     MyCreatedLessonsMainpageApi,
     MyAppliedLessonsMainpageApi,
     deleteMyAppliedLessonsMainpageApi,
+    deleteBookmarkApi,
+    addBookmarkApi,
   };
 };
 
