@@ -1,0 +1,16 @@
+@use '../components/sidebar';
+@use '../components/header';
+
+.lessons-page {
+  height: 100%;
+  .lessons-page__contents {
+    height: calc(100% - header.$height);
+    width: 100%;
+    height: calc(100% - 80px);
+    display: flex;
+
+    .lessons-page__sub-page {
+      width: calc(100% - sidebar.$width);
+    }
+  }
+}
