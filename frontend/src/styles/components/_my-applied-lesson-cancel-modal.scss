@@ -1,0 +1,39 @@
+@use '../base/colors';
+
+.applylessons__cancelmodal {
+  width: 300px;
+  height: 200px;
+
+  z-index: 999;
+
+  /* 중앙 배치 */
+  /* top, bottom, left, right 는 브라우저 기준으로 작동한다. */
+  /* translate는 본인의 크기 기준으로 작동한다. */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  /* 모달창 디자인 */
+  background-color: gray;
+  border: 1px solid black;
+  border-radius: 8px;
+  /* 모달창 내부 신청취소 버튼 */
+}
+.applylessons__cancelmodal--button {
+  position: absolute;
+  right: 39%;
+  top: 50%;
+}
+
+// .applylessons__cancelmodal {
+//   position: absolute;
+//   top: 50%;
+//   left: 50%;
+//   transform: translate(-50%, -50%);
+//   width: 400;
+//   background-color: background.paper;
+//   border: 2px solid #000;
+//   box-shadow: 24;
+//   p: 4;
+// }

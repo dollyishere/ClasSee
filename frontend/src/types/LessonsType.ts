@@ -1,3 +1,5 @@
+import { Response } from './BaseType';
+
 export interface Lesson {
   id: number;
   lessonImage: string;
@@ -8,8 +10,10 @@ export interface Lesson {
   category: string;
   rating: number;
   isBookMarked: boolean;
+  startTime: string;
+  endTime: string;
 }
 
-export interface LessonsResponse {
-  lessons: Array<Lesson>;
+export interface LessonsResponse extends Response {
+  lessonInfoList: Array<Lesson>;
 }
