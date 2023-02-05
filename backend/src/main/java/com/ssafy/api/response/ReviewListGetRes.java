@@ -12,6 +12,7 @@ import java.sql.Timestamp;
 @ApiModel("ReviewListGetRes")
 public class ReviewListGetRes {
 
+    Long id;
     String title;
     String content;
     Timestamp regtime;
@@ -22,6 +23,7 @@ public class ReviewListGetRes {
 
     public ReviewListGetRes(Review review){
 
+        this.id = review.getId();
         this.title = review.getTitle();
         this.content = review.getContent();
         this.regtime = review.getRegtime();
