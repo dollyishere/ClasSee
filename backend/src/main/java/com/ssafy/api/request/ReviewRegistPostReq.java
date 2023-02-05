@@ -29,7 +29,7 @@ public class ReviewRegistPostReq {
     @ApiModelProperty(name="유저 email", example="사용자 이메일")
     String user_email;
 
-    @ApiModelProperty(name="유저 email", example="사용자 이메일")
+    @ApiModelProperty(name="열린 강의 id", example="openLesson_id")
     Long openLesson_id;
 
 
