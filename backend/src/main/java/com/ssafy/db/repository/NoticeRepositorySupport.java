@@ -53,9 +53,9 @@ public class NoticeRepositorySupport {
                 .fetchOne();
     }
 
-    public void updateNotice(NoticeUpdatePutReq noticeUpdatePutReq) {
+    public void updateNotice(Long noticeId, NoticeUpdatePutReq noticeUpdatePutReq) {
         jpaQueryFactory.update(qNotice)
-                .where(qNotice.id.eq(noticeUpdatePutReq.getId()))
+                .where(qNotice.id.eq(noticeId))
                 .set(qNotice.title, noticeUpdatePutReq.getTitle())
                 .set(qNotice.content, noticeUpdatePutReq.getContent())
                 .set(qNotice.img, noticeUpdatePutReq.getImg())

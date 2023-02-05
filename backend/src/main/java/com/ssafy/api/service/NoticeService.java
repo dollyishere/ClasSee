@@ -13,7 +13,7 @@ public interface NoticeService {
     Notice readNotice(Long id);
     List<Notice> readNoticeList(int offset, int limit);
     Long noticeCount();
-    void updateNotice(NoticeUpdatePutReq noticeUpdatePutReq);
+    void updateNotice(Long noticeId, NoticeUpdatePutReq noticeUpdatePutReq);
     void deleteNotice(String email, Long id);
 
 }

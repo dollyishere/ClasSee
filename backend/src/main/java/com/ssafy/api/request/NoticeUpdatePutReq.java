@@ -9,10 +9,6 @@ import lombok.Setter;
 @Setter
 @ApiModel("NoticeUpdatePutRequest")
 public class NoticeUpdatePutReq {
-
-    @ApiModelProperty(name="id", example="공지사항 아이디")
-    Long id;
-
     @ApiModelProperty(name="email", example="사용자 이메일")
     String email;
 
