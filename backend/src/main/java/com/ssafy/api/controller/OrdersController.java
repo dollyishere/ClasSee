@@ -11,6 +11,7 @@ import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import retrofit2.http.Path;
 
 @Api(value = "주문 API", tags = {"Orders"})
 @RestController
@@ -37,12 +38,12 @@ public class OrdersController {
         return ResponseEntity.status(200).body(BaseResponseBody.of(200,"success"));
     }
 
-    @PutMapping("/point")
+    @PutMapping("/{email}/point")
     @ApiOperation(value = "포인트 충전", notes = "유저 이메일과 금액 입력 후 포인트 충전")
     @ApiResponses({
             @ApiResponse(code = 200, message = "success")
     })
-    public ResponseEntity<? extends BaseResponseBody> chargePoint(@RequestParam String email, @RequestParam Long point){
+    public ResponseEntity<? extends BaseResponseBody> chargePoint(@PathVariable String email, @RequestParam Long point){
 
         ordersService.chargePoint(email, point);
 
@@ -62,14 +63,14 @@ public class OrdersController {
         return ResponseEntity.status(200).body(ordersInfoGetRes);
     }
 
-    @DeleteMapping()
+    @DeleteMapping("/{ordersId}")
     @ApiOperation(value = "주문 취소", notes = "주문 ID ")
     @ApiResponses({
             @ApiResponse(code = 200, message = "success")
     })
-    public ResponseEntity<? extends BaseResponseBody> deleteOrders(@RequestParam String user_email, @RequestParam Long openLesson_id){
+    public ResponseEntity<? extends BaseResponseBody> deleteOrders(@PathVariable Long ordersId){
 
-        ordersService.deleteOrders(user_email, openLesson_id);
+        ordersService.deleteOrders(ordersId);
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200,"success"));
     }
