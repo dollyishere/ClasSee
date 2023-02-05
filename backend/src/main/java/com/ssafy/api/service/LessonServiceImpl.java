@@ -227,7 +227,19 @@ public class LessonServiceImpl implements LessonService {
 
     @Override
     public List<Lesson> getLessonListByFilter(LessonSearchFilterDto requestInfo) {
-
         return lessonRepositorySupport.findLessonListByFilter(requestInfo);
+    }
+
+    @Override
+    public int deleteLesson(Long lessonId) {
+        Optional<Lesson> lesson = lessonRepository.findById(lessonId);
+        if(!lesson.isPresent()) return 0;
+
+        Long attendUserCnt = lessonRepositorySupport.existsAttendUser(lessonId);
+        if(attendUserCnt >= 1) return 0;
+
+        lessonRepository.delete(lesson.get());
+        lessonRepositorySupport.deleteOpenLesson(lessonId);
+        return 1;
     }
 }

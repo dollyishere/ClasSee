@@ -232,4 +232,24 @@ public class LessonRepositorySupport {
 
         return lessonList;
     }
+
+    public Long existsAttendUser(Long lessonId) {
+        Long cnt = jpaQueryFactory
+                .select(qLesson.count())
+                .from(qLesson, qOpenLesson)
+                .where(
+                        qLesson.id.eq(qOpenLesson.lessonId),
+                        qLesson.id.eq(lessonId)
+                )
+                .fetchOne();
+
+        return cnt;
+    }
+
+    public void deleteOpenLesson(Long lessonId) {
+        jpaQueryFactory
+                .delete(qOpenLesson)
+                .where(qOpenLesson.lessonId.eq(lessonId))
+                .execute();
+    }
 }

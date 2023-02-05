@@ -104,4 +104,21 @@ public class TeacherController {
                 .build();
         return ResponseEntity.status(200).body(AttendLessonInfoListRes.of(200, "SUCCESS", res));
     }
+
+    @DeleteMapping("/{email}/lessons/{lessonId}")
+    @ApiOperation(value = "강의 삭제", notes = "등록한 강의를 삭제")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "SUCCESS"),
+            @ApiResponse(code = 401, message = "FAILED_CAUSE_EXISTS_STUDENT")
+            @ApiResponse(code = 404, message = "NOT FOUND"),
+    })
+    public ResponseEntity<? extends BaseResponseBody> deleteLesson(@PathVariable String email, @PathVariable Long lessonId){
+        User user = userService.getUserByAuth(email);
+        if(user == null) return ResponseEntity.status(200).body(BaseResponseBody.of(404, "NOT FOUND"));
+
+        int isDelete = lessonService.deleteLesson(lessonId);
+
+
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "SUCCESS"));
+    }
 }
