@@ -40,27 +40,27 @@ public class ArticleController {
 
     }
 
-    @DeleteMapping()
+    @DeleteMapping("/{articleId}")
     @ApiOperation(value = "게시글 삭제", notes = "게시글 ID로 삭제")
     @ApiResponses({
             @ApiResponse(code = 200, message = "success")
     })
-    public ResponseEntity<? extends BaseResponseBody> deleteArticle(@RequestParam Long id) {
+    public ResponseEntity<? extends BaseResponseBody> deleteArticle(@PathVariable Long articleId) {
 
-            articleService.deleteArticle(id);
+            articleService.deleteArticle(articleId);
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200,"success"));
 
     }
 
-    @GetMapping()
+    @GetMapping("/{articleId}")
     @ApiOperation(value = "게시글 상세 조회", notes = "게시글id를 넘겨받아 게시글에 대한 상세 정보를 넘겨줌")
     @ApiResponses({
             @ApiResponse(code = 200, message = "success")
     })
-    public ResponseEntity<?> getArticleInfo(@RequestParam Long id){
+    public ResponseEntity<?> getArticleInfo(@PathVariable Long articleId){
 
-        Article article = articleService.readArticle(id);
+        Article article = articleService.readArticle(articleId);
         ArticleInfoGetRes articleInfoGetRes = new ArticleInfoGetRes(article);
 
         return ResponseEntity.status(200).body(articleInfoGetRes);
@@ -68,7 +68,7 @@ public class ArticleController {
     }
 
 
-    @GetMapping("/list")
+    @GetMapping()
     @ApiOperation(value = "게시글 목록 조회", notes = "limit는 가져올 갯수, offset은 시작 위치(0부터 시작), count는 총 개수")
     @ApiResponses({
             @ApiResponse(code = 200, message = "success")
@@ -89,14 +89,14 @@ public class ArticleController {
         return ResponseEntity.status(200).body(articlePage);
     }
 
-    @PutMapping()
+    @PutMapping("/{articleId}/")
     @ApiOperation(value = "게시글 수정", notes = "게시글 수정 내용을 받아 수정")
     @ApiResponses({
             @ApiResponse(code = 200, message = "success")
     })
-    public ResponseEntity<?> updateArticle(@RequestBody ArticleUpdatePutReq articleUpdatePutReq){
+    public ResponseEntity<?> updateArticle(@PathVariable Long articleId, @RequestBody ArticleUpdatePutReq articleUpdatePutReq){
 
-        articleService.updateArticle(articleUpdatePutReq);
+        articleService.updateArticle(articleId, articleUpdatePutReq);
 
         return ResponseEntity.status(200).body("success");
 

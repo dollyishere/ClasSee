@@ -65,11 +65,11 @@ public class ArticleRepositorySupport {
         em.flush();
     }
 
-    public void updateArticle(ArticleUpdatePutReq articleUpdatePutReq) {
+    public void updateArticle(Long articleId, ArticleUpdatePutReq articleUpdatePutReq) {
 
         jpaQueryFactory
                 .update(qArticle)
-                .where(qArticle.id.eq(articleUpdatePutReq.getId()))
+                .where(qArticle.id.eq(articleId))
                 .set(qArticle.title, articleUpdatePutReq.getTitle())
                 .set(qArticle.content, articleUpdatePutReq.getContent())
                 .set(qArticle.img, articleUpdatePutReq.getImg())
