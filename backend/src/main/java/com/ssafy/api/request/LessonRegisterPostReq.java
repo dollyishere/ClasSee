@@ -63,6 +63,34 @@ public class LessonRegisterPostReq {
     List<Curriculum> curriculumList;
 
 
+    public Map<String, Object> getLessonInfoFromReq(User user, Long lessonId) {
+        Map<String, Object> lessonInfo = new HashMap<>();
+
+        Lesson lesson = Lesson.builder()
+                .id(lessonId)
+                .name(name)
+                .description(description)
+                .category(category)
+                .maximum(maximum)
+                .runningtime(runningtime)
+                .price(price)
+                .cklsDescription(cklsDescription)
+                .kitPrice(kitPrice)
+                .kitDescription(kitDescription)
+                .user(user)
+                .build();
+
+        List<Checklist> checklists = this.checkList;
+        List<Pamphlet> pamphlets = this.pamphletList;
+        List<Curriculum> curriculums = this.curriculumList;
+
+        lessonInfo.put("LESSON", lesson);
+        lessonInfo.put("CHECKLISTS", checklists);
+        lessonInfo.put("PAMPHLET", pamphlets);
+        lessonInfo.put("CURRICULUMS", curriculums);
+        return lessonInfo;
+    }
+
     public Map<String, Object> getLessonInfoFromReq(User user) {
         Map<String, Object> lessonInfo = new HashMap<>();
 
