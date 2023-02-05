@@ -1,8 +1,10 @@
 @use '../components/sidebar';
+@use '../components/header';
 
 .my-page {
   height: 100%;
   .my-page__contents {
+    height: calc(100% - header.$height);
     width: 100%;
     height: calc(100% - 80px);
     display: flex;

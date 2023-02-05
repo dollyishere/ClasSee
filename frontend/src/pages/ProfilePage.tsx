@@ -18,6 +18,7 @@ const ProfilePage = () => {
     point: 0,
     name: 'kotaejin',
     email: '12@12.com',
+    phone: '01012345678',
     pasword: '1234',
     address: 'house',
     description: 'test',
@@ -94,13 +95,70 @@ const ProfilePage = () => {
                 </div>
               </div>
             </div>
-            <div>
-              <div>이름</div>
-              <div>이메일</div>
-              <div>비밀번호</div>
-              <div>주소</div>
-              <div>소개</div>
+            <div className="profile-page__info">
+              <div className="profile-page__section">
+                <div className="profile-page__section--label">이름</div>
+                <div className="profile-page__section--content">
+                  {userInfo.name}
+                </div>
+              </div>
+              <div className="profile-page__section">
+                <div className="profile-page__section--label">이메일</div>
+                <div className="profile-page__section--content">
+                  {userInfo.email}
+                </div>
+                <div className="profile-page__buttons">
+                  <button type="button" className="button profile-page__button">
+                    이메일 변경
+                  </button>
+                </div>
+              </div>
+              <div className="profile-page__section">
+                <div className="profile-page__section--label">비밀번호</div>
+                <div className="profile-page__section--content">******</div>
+                <div className="profile-page__buttons">
+                  <button type="button" className="button profile-page__button">
+                    비밀번호 변경
+                  </button>
+                </div>
+              </div>
+              <div className="profile-page__section">
+                <div className="profile-page__section--label">전화번호</div>
+                <div className="profile-page__section--content">
+                  {userInfo.phone}
+                </div>
+                <div className="profile-page__buttons">
+                  <button type="button" className="button profile-page__button">
+                    전화번호 변경
+                  </button>
+                </div>
+              </div>
+              <div className="profile-page__section">
+                <div className="profile-page__section--label">주소</div>
+                <div className="profile-page__section--content">
+                  {userInfo.address}
+                </div>
+                <div className="profile-page__buttons">
+                  <button type="button" className="button profile-page__button">
+                    주소 변경
+                  </button>
+                </div>
+              </div>
+              <div className="profile-page__section">
+                <div className="profile-page__section--label">소개</div>
+                <div className="profile-page__section--content">
+                  <textarea placeholder={userInfo.description} />
+                </div>
+                <div className="profile-page__buttons">
+                  <button type="button" className="button profile-page__button">
+                    소개 변경
+                  </button>
+                </div>
+              </div>
             </div>
+            <button type="button" className="button profile-page__withdrawl">
+              회원탈퇴
+            </button>
           </CardContent>
         </Card>
       ) : null}
