@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import BasicRating from '../Rating';
 
 interface Props {
   username: string;
@@ -21,10 +22,11 @@ const Reviews: React.FC<Props> = ({ username, rating, onSubmit }: Props) => {
   return (
     <form onSubmit={handleSubmit}>
       <h3>{username}</h3>
-      <p>Rating: {rating}/5</p>
-      <p>{text}</p>
+      {/* <p>Rating: {rating}</p> */}
+      <BasicRating />
+
       <input type="text" value={text} onChange={handleChange} />
-      <button type="submit">Submit Review</button>
+      <button type="submit"> 등록 </button>
     </form>
   );
 };
