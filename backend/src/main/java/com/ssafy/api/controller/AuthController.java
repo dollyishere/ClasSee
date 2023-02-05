@@ -76,7 +76,7 @@ public class AuthController {
 		String password = loginInfo.getPassword();
 
 		User user = userService.getUserByAuth(email);
-		if(user == null) return ResponseEntity.status(404).body(UserLoginPostRes.of(404, "USER NOT FOUND", null));
+		if(user == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "USER NOT FOUND"));
 
 		// 로그인 요청한 유저로부터 입력된 패스워드 와 디비에 저장된 유저의 암호화된 패스워드가 같은지 확인.(유효한 패스워드인지 여부 확인)
 		if (password.equals(user.getAuth().getPassword())) {
@@ -156,7 +156,7 @@ public class AuthController {
 	})
 	public ResponseEntity<? extends BaseResponseBody> findSalt(@RequestParam String email) {
 		User user = userService.getUserByAuth(email);
-		if(user == null) return ResponseEntity.status(404).body(UserSaltRes.of(404, "USER NOT FOUND", null));
+		if(user == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "USER NOT FOUND"));
 
 		return ResponseEntity.status(200).body(UserSaltRes.of(200, "SUCCESS", user.getAuth().getSalt()));
 	}
@@ -181,11 +181,12 @@ public class AuthController {
 		String afterATK = JwtTokenUtil.getToken(JwtTokenUtil.atkExpirationTime, email);
 		String afterRTK = JwtTokenUtil.getToken(JwtTokenUtil.rtkExpirationTime, email);
 
-		redisService.setValues(refreshToken, email);
+		redisService.setValues(afterRTK, email);
 		try {
 			res.setHeader("accessToken", afterATK);
 			res.setHeader("refreshToken", afterRTK);
 		} catch (Exception e){
+			System.out.println(e.getStackTrace());
 			return ResponseEntity.status(401).body(BaseResponseBody.of(401, "TOKEN RESPONSE FAILED"));
 		}
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "SUCCESS"));

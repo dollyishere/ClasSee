@@ -71,6 +71,30 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
+    public Long updateLesson(Map<String, Object> lessonInfo) {
+        Lesson lesson = (Lesson) lessonInfo.get("LESSON");
+        List<Checklist> checkLists = (List<Checklist>) lessonInfo.get("CHECKLISTS");
+        List<Curriculum> curriculums = (List<Curriculum>) lessonInfo.get("CURRICULUMS");
+        List<Pamphlet> pamphlets = (List<Pamphlet>) lessonInfo.get("PAMPHLET");
+
+        lessonRepositorySupport.update(lesson);
+
+        checkLists.forEach((checklist) -> {
+            checkListRepositorySupport.update(checklist);
+        });
+
+        curriculums.forEach((curriculum) -> {
+            curriculumRepositorySupport.update(curriculum);
+        });
+
+        pamphlets.forEach((pamphlet) -> {
+            pamphletRepositorySupport.update(pamphlet);
+        });
+
+        return lesson.getId();
+    }
+
+    @Override
     public List<LessonInfoDto> setLessonProperty(List<Lesson> lessonList) {
         List<LessonInfoDto> getLessonList = new ArrayList<>();
         // 강의 목록에 대표 이미지랑, 별점 평균 세팅해주기
@@ -115,6 +139,7 @@ public class LessonServiceImpl implements LessonService {
         LessonDetailsRes lessonDetailsRes = LessonDetailsRes.builder()
                 .userEmail(teacher.getAuth().getEmail())
                 .lessonName(lesson.getName())
+                .lessonDescription(lesson.getDescription())
                 .cklsDescription(lesson.getCklsDescription())
                 .kitPrice(lesson.getKitPrice())
                 .kitDescription(lesson.getKitDescription())

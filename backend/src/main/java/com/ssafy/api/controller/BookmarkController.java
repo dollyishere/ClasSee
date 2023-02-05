@@ -71,7 +71,7 @@ public class BookmarkController {
     })
     public ResponseEntity<? extends BaseResponseBody> getBookmarkList(@PathVariable String email) {
         User user = userService.getUserByAuth(email);
-        if(user == null) return ResponseEntity.status(404).body(UserSaltRes.of(404, "USER NOT FOUND", null));
+        if(user == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "USER NOT FOUND"));
 
         List<Lesson> bookmarkList = bookmarkService.getBookmarkList(user.getAuth().getId());
         List<LessonInfoDto> lessonList = lessonService.setLessonProperty(bookmarkList);
