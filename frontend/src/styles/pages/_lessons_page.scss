@@ -1,8 +1,10 @@
+@use '../base/colors';
 @use '../components/sidebar';
 @use '../components/header';
 
 .lessons-page {
   height: 100%;
+  background-color: colors.$theme_color_light;
   .lessons-page__contents {
     height: calc(100% - header.$height);
     width: 100%;

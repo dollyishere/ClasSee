@@ -1,0 +1,32 @@
+@use '../base/colors';
+
+.search-box {
+  padding: 40px;
+  .search-box__card {
+    font-size: 20px;
+    padding: 20px 110px;
+    .search-box__row {
+      margin: 14px 0;
+      justify-content: center;
+      align-items: center;
+      display: flex;
+      width: 100%;
+      .search-box__label {
+        width: 10%;
+      }
+      .search-box__button--day {
+        background-color: colors.$beige_color;
+        font-size: 16px;
+        width: 80px;
+        margin: 0 10px;
+        color: colors.$gray_color;
+      }
+      .search-box__button {
+        background-color: colors.$theme_color;
+        color: white;
+        width: 100px;
+        margin: 0 16px;
+      }
+    }
+  }
+}

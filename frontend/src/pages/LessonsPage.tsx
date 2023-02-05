@@ -2,6 +2,7 @@ import React from 'react';
 
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
+import SearchBox from '../components/LessonsPage/SearchBox';
 
 const LessonsPage = () => {
   const sidebarItems = [
@@ -19,7 +20,10 @@ const LessonsPage = () => {
       <Header />
       <div className="lessons-page__contents">
         <Sidebar items={sidebarItems} />
-        <div className="lessons-page__sub-page">서브페이지</div>
+        <div className="lessons-page__sub-page">
+          <SearchBox />
+          서브페이지
+        </div>
       </div>
     </div>
   );
