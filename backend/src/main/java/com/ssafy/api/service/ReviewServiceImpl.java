@@ -76,7 +76,11 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public void deleteReview() {
+    public void deleteReview(Long id) {
 
+        Review review = reviewRepositorySupport.findOne(id);
+        reviewRepositorySupport.delete(review);
+
+        return;
     }
 }
