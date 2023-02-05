@@ -17,5 +17,3 @@ export interface Lesson {
 export interface LessonsResponse extends Response {
   lessonInfoList: Array<Lesson>;
 }
-
-export type MyAppliedHover = boolean;
