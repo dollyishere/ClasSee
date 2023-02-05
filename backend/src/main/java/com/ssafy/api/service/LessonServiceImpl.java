@@ -235,11 +235,20 @@ public class LessonServiceImpl implements LessonService {
         Optional<Lesson> lesson = lessonRepository.findById(lessonId);
         if(!lesson.isPresent()) return 0;
 
-        Long attendUserCnt = lessonRepositorySupport.existsAttendUser(lessonId);
+        Long attendUserCnt = lessonRepositorySupport.existsUserInLesson(lessonId);
         if(attendUserCnt >= 1) return 0;
 
+        lessonRepositorySupport.deleteOpenLessonByLessonId(lessonId);
         lessonRepository.delete(lesson.get());
-        lessonRepositorySupport.deleteOpenLesson(lessonId);
+        return 1;
+    }
+
+    @Override
+    public int deleteOpenLesson(Long openLessonId) {
+        Long attendUserCnt = lessonRepositorySupport.existsUserInOpenLesson(openLessonId);
+        if(attendUserCnt >= 1) return 0;
+
+        lessonRepositorySupport.deleteOpenLesson(openLessonId);
         return 1;
     }
 }

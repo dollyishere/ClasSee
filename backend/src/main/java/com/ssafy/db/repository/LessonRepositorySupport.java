@@ -233,12 +233,13 @@ public class LessonRepositorySupport {
         return lessonList;
     }
 
-    public Long existsAttendUser(Long lessonId) {
+    public Long existsUserInLesson(Long lessonId) {
         Long cnt = jpaQueryFactory
                 .select(qLesson.count())
-                .from(qLesson, qOpenLesson)
+                .from(qLesson, qOpenLesson, qOrders)
                 .where(
                         qLesson.id.eq(qOpenLesson.lessonId),
+                        qOrders.openLesson.lessonId.eq(lessonId),
                         qLesson.id.eq(lessonId)
                 )
                 .fetchOne();
@@ -246,10 +247,25 @@ public class LessonRepositorySupport {
         return cnt;
     }
 
-    public void deleteOpenLesson(Long lessonId) {
+    public void deleteOpenLessonByLessonId(Long lessonId) {
         jpaQueryFactory
                 .delete(qOpenLesson)
                 .where(qOpenLesson.lessonId.eq(lessonId))
                 .execute();
+    }
+
+    public void deleteOpenLesson(Long openLessonId) {
+        jpaQueryFactory
+                .delete(qOpenLesson)
+                .where(qOpenLesson.id.eq(openLessonId))
+                .execute();
+    }
+
+    public Long existsUserInOpenLesson(Long openLessonId) {
+        return jpaQueryFactory
+                .select(qOrders.count())
+                .from(qOrders)
+                .where(qOrders.openLesson.id.eq(openLessonId))
+                .fetchOne();
     }
 }

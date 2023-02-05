@@ -37,4 +37,6 @@ public interface LessonService {
     List<Lesson> getLessonListByFilter(LessonSearchFilterDto requestInfo);
 
     int deleteLesson(Long lessonId);
+
+    int deleteOpenLesson(Long openLessonId);
 }
