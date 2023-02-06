@@ -225,8 +225,8 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public List<Lesson> getLessonListByFilter(LessonSearchFilterDto requestInfo) {
-        return lessonRepositorySupport.findLessonListByFilter(requestInfo);
+    public List<Lesson> getLessonListByFilter(LessonSearchFilterDto requestInfo, int offset, int limit) {
+        return lessonRepositorySupport.findLessonListByFilter(requestInfo, offset, limit);
     }
 
     @Override

@@ -172,8 +172,8 @@ public class LessonController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends BaseResponseBody> getLessonListByFilter(@ModelAttribute LessonSearchFilterDto requestInfo) {
-        List<Lesson> lessonIdList = lessonService.getLessonListByFilter(requestInfo);
+    public ResponseEntity<? extends BaseResponseBody> getLessonListByFilter(@ModelAttribute LessonSearchFilterDto requestInfo, @RequestParam int offset, @RequestParam int limit) {
+        List<Lesson> lessonIdList = lessonService.getLessonListByFilter(requestInfo, offset, limit);
 
         if(lessonIdList == null) return ResponseEntity.status(200).body(BaseResponseBody.of(404, "검색에 맞는 강의가 없습니다."));
 
