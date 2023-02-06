@@ -157,10 +157,9 @@ public class LessonServiceImpl implements LessonService {
 
     @Override
     public LessonSchedulsRes getLessonSchedules(Long lessonId, LocalDate regDate) {
-        List<OpenLesson> lessonSchedules = lessonRepositorySupport.findScheduleByLessonId(lessonId);
+        List<OpenLesson> lessonSchedules = lessonRepositorySupport.findScheduleByLessonId(lessonId, regDate);
         List<OpenLessonInfoDto> lessonSchedulesRes = new ArrayList<>();
         lessonSchedules.forEach((schedule) ->{
-            if(!regDate.isEqual(schedule.getStartTime().toLocalDate())) return;
             lessonSchedulesRes.add(
                     OpenLessonInfoDto.builder()
                             .openLessonId(schedule.getId())

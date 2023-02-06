@@ -135,8 +135,9 @@ public class LessonController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends BaseResponseBody> getLessonSchedules(@PathVariable Long lessonId, @ApiParam(example = "yyyy-MM-dd") @RequestParam String regDate) {
-        LocalDate parseDate = LocalDate.parse(regDate, DateTimeFormatter.ISO_DATE);
+    public ResponseEntity<? extends BaseResponseBody> getLessonSchedules(@PathVariable Long lessonId, String regDate) {
+        LocalDate parseDate = null;
+        if(regDate != null) parseDate = LocalDate.parse(regDate, DateTimeFormatter.ISO_DATE);
         LessonSchedulsRes lessonSchedulsRes = lessonService.getLessonSchedules(lessonId, parseDate);
 
         return ResponseEntity.status(200).body(LessonSchedulsRes.of(200, "SUCCESS", lessonSchedulsRes));
@@ -172,8 +173,6 @@ public class LessonController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<? extends BaseResponseBody> getLessonListByFilter(@ModelAttribute LessonSearchFilterDto requestInfo) {
-        // 평점이 가장 높은 상위 12개의 레슨 아이디 리스트
-        System.out.println(requestInfo.getDayOfWeek());
         List<Lesson> lessonIdList = lessonService.getLessonListByFilter(requestInfo);
 
         if(lessonIdList == null) return ResponseEntity.status(200).body(BaseResponseBody.of(404, "검색에 맞는 강의가 없습니다."));
