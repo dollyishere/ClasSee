@@ -79,8 +79,8 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional(readOnly = true)
-    public Long countReview() {
-        return reviewRepositorySupport.reviewCount();
+    public Long countReview(Long lesson_id) {
+        return reviewRepositorySupport.countReview(lesson_id);
     }
 
     @Override
@@ -88,7 +88,7 @@ public class ReviewServiceImpl implements ReviewService {
     public Long countMyReview(String email) {
         Long user_id = userRepositorySupport.findId(email);
 
-        return reviewRepositorySupport.myReviewCount(user_id);
+        return reviewRepositorySupport.countMyReview(user_id);
     }
 
     @Override
