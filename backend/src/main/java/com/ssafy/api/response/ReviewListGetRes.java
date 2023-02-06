@@ -18,11 +18,13 @@ public class ReviewListGetRes {
     Timestamp regtime;
     String img;
     Long score;
+    String user_email;
     String user_nickname;
     String user_img;
 
     public ReviewListGetRes(Review review){
 
+        this.user_email = review.getUser().getAuth().getEmail();
         this.id = review.getId();
         this.title = review.getTitle();
         this.content = review.getContent();
