@@ -1,7 +1,9 @@
 package com.ssafy.api.controller;
 
 import com.ssafy.api.request.QnaRegisterPostReq;
+import com.ssafy.api.request.QnaUpdatePutReq;
 import com.ssafy.api.request.ReviewRegistPostReq;
+import com.ssafy.api.request.ReviewUpdatePutReq;
 import com.ssafy.api.response.PageGetRes;
 import com.ssafy.api.response.ReviewListGetRes;
 import com.ssafy.api.service.ReviewService;
@@ -63,7 +65,7 @@ public class ReviewController {
     }
 
     @DeleteMapping()
-    @ApiOperation(value = "포토 카드 삭제", notes = "포토 카드 id를 입력 받아 삭제")
+    @ApiOperation(value = "리뷰 삭제", notes = "리뷰 id를 입력 받아 삭제")
     @ApiResponses({
             @ApiResponse(code = 200, message = "success")
     })
@@ -72,6 +74,19 @@ public class ReviewController {
         reviewService.deleteReview(id);
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success"));
+    }
+
+    @PutMapping()
+    @ApiOperation(value = "리뷰 수정", notes = "내가 한 리뷰 수정")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "success")
+    })
+    public ResponseEntity<? extends BaseResponseBody> updateQna(@RequestBody ReviewUpdatePutReq reviewUpdatePutReq) {
+
+        reviewService.updateReview(reviewUpdatePutReq);
+
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"success"));
+
     }
 
 
