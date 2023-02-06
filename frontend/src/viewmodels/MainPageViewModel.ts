@@ -16,13 +16,23 @@ const MainPageViewModel = () => {
 
     return res;
   };
-  const getMyCreatedLessonsMainpage = async (userId: string) => {
-    const res = await MyCreatedLessonsMainpageApi(userId);
+  const getMyCreatedLessonsMainpage = async (
+    email: string,
+    limit: number,
+    offset: number,
+    query: string,
+  ) => {
+    const res = await MyCreatedLessonsMainpageApi(email, limit, offset, query);
 
     return res;
   };
-  const getMyAppliedLessonsMainpage = async (userId: string) => {
-    const res = await MyAppliedLessonsMainpageApi(userId);
+  const getMyAppliedLessonsMainpage = async (
+    email: string,
+    limit: number,
+    offset: number,
+    query: string,
+  ) => {
+    const res = await MyAppliedLessonsMainpageApi(email, limit, offset, query);
 
     return res;
   };
