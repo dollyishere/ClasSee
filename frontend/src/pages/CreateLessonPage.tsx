@@ -7,7 +7,7 @@ import { Button, Card, CardActions } from '@mui/material';
 import { ref, uploadBytes } from 'firebase/storage';
 import { storage } from '../utils/Firebase';
 
-import PrivateInfoState from '../models/PrivateInfoAtom';
+import privateInfoState from '../models/PrivateInfoAtom';
 
 import StepOne from '../components/CreateLessonPage/StepOne';
 import StepTwo from '../components/CreateLessonPage/StepTwo';
@@ -61,7 +61,7 @@ const CreateLessonPage = () => {
   const [kitPriceState, setKitPriceState] = useState<number>(0);
 
   // 강의 개설을 신청하는 유저의 이메일 정보를 useRecoilValue를 통해 불러옴
-  // const userEmail = useRecoilValue(PrivateInfoState).email;
+  // const userEmail = useRecoilValue(privateInfoState).email;
 
   // api 실행할 시 실행될 CreateLessonModel createLesson에 할당
   const { createLesson } = CreateLessonViewModel();
@@ -116,7 +116,8 @@ const CreateLessonPage = () => {
         cklsDescription: materialDescState,
         curriculumList: curriculumList as CurriculumType[],
         description: lessonDescState,
-        email: 'test1234@gmail.com',
+        email: 'test@ssafy.com',
+        // email: 'test1234@gmail.com',
         // email: `${userEmail}`,
         kitDescription: kitDescState,
         kitPrice: kitPriceState,
@@ -137,7 +138,7 @@ const CreateLessonPage = () => {
             const upLoadedCheckListImage = await uploadBytes(
               ref(
                 storage,
-                `lesson/${res.lessonId}/pamphlet_images/${image.name}`,
+                `lessons/${res.lessonId}/pamphlet_images/${image.name}`,
               ),
               image,
             );
@@ -148,7 +149,7 @@ const CreateLessonPage = () => {
             const upLoadedPamphletImage = await uploadBytes(
               ref(
                 storage,
-                `lesson/${res.lessonId}/checklist_images/${image.name}`,
+                `lessons/${res.lessonId}/checklist_images/${image.name}`,
               ),
               image,
             );
