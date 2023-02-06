@@ -117,7 +117,8 @@ const CreateLessonPage = () => {
         cklsDescription: materialDescState,
         curriculumList: curriculumList as CurriculumType[],
         description: lessonDescState,
-        email: userInfo?.email,
+        // email: userInfo?.email,
+        email: 'ttest@gmail.com',
         kitDescription: kitDescState,
         kitPrice: kitPriceState,
         maximum: maximumState,
@@ -265,7 +266,7 @@ const CreateLessonPage = () => {
               variant="contained"
               onClick={handleCreateLessonSubmit}
             >
-              강의 생성
+              강의 수정
             </Button>
           ) : (
             <Button

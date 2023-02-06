@@ -20,8 +20,23 @@ const CreateLessonApi = () => {
     }
     return null;
   };
+  const doUpdateLesson = async (
+    createLessonRequestBody: CreateLessonRequest,
+  ) => {
+    try {
+      const response = await axios.put<CreateLessonResponse>(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/lessons`,
+        createLessonRequestBody,
+      );
+      return response.data;
+    } catch (error: any) {
+      console.error(error);
+    }
+    return null;
+  };
   return {
     DoCreateLesson,
+    doUpdateLesson,
   };
 };
 

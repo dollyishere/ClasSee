@@ -34,7 +34,7 @@ import {
   PamphletsType,
 } from '../types/LessonDetailType';
 
-const CreateLessonPage = () => {
+const UpdateLessonPage = () => {
   // url(Router) 통해서 입력된 lessonId를 useParams로 받아옴
   const lessonId = useParams();
 
@@ -115,13 +115,20 @@ const CreateLessonPage = () => {
         setBasicPriceState(res.kitPrice);
         setKitDescState(res.kitDescription);
         setKitPriceState(res.kitPrice);
+
         // firebase의 해당 강의가 저장된 폴더의 url에 접근하여 해당하는 이미지 파일을 각각 다운받음
         // 강의 관련 사진 다운로드해서 pamphletsImgState에 저장
+        // res.curriculums.map((item: object) => {
+        //   const curriDesc = item.description as string
+        //   setCurriListState[...curriListState, curriDesc]});
+
         if (lessonImgFileListState) {
           listAll(pamphletsImgRef).then((response: any) => {
             response.items.forEach((item: any) => {
               getDownloadURL(item).then((url) => {
+                console.log(url);
                 setLessonImgFileListState((prev: any) => [...prev, url]);
+                setLessonImgSrcListState((prev: any) => [...prev, url]);
               });
             });
           });
@@ -131,7 +138,9 @@ const CreateLessonPage = () => {
           listAll(checkListImgRef).then((response: any) => {
             response.items.forEach((item: any) => {
               getDownloadURL(item).then((url) => {
+                console.log(url);
                 setMaterialImgFileListState((prev: any) => [...prev, url]);
+                setMaterialImgSrcListState((prev: any) => [...prev, url]);
               });
             });
           });
@@ -354,4 +363,4 @@ const CreateLessonPage = () => {
     </div>
   );
 };
-export default CreateLessonPage;
+export default UpdateLessonPage;
