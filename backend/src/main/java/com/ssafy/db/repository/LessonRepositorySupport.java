@@ -89,10 +89,17 @@ public class LessonRepositorySupport {
         return avgScore;
     }
 
-    public List<OpenLesson> findScheduleByLessonId(Long lessonId) {
+    public List<OpenLesson> findScheduleByLessonId(Long lessonId, LocalDate regTime) {
+        BooleanBuilder builder = new BooleanBuilder();
+        builder.and(qOpenLesson.lessonId.eq(lessonId));
+        if(regTime != null) {
+            builder.and(qOpenLesson.startTime.month().eq(regTime.getMonth().getValue()));
+            builder.and(qOpenLesson.startTime.dayOfMonth().eq(regTime.getDayOfMonth()));
+
+        }
         List<OpenLesson> schedules = jpaQueryFactory
                 .selectFrom(qOpenLesson)
-                .where(qOpenLesson.lessonId.eq(lessonId))
+                .where(builder)
                 .fetch();
 
         return schedules;
