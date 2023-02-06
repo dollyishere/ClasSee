@@ -3,6 +3,7 @@ import { useRecoilState } from 'recoil';
 import useApi from '../apis/UserApi';
 import privateInfoState from '../models/PrivateInfoAtom';
 import authTokenState from '../models/AuthTokenAtom';
+import BookMarkedState from '../models/BookMarkedAtom';
 
 import {
   createHashedPassword,
@@ -14,9 +15,16 @@ import {
 const LoginViewModel = () => {
   const [privateInfo, setPrivateInfo] = useRecoilState(privateInfoState);
   const [authToken, setAuthToken] = useRecoilState(authTokenState);
-  const { doGetSalt, doLogin } = useApi();
+  const [bookMarked, setbookMarked] = useRecoilState(BookMarkedState);
+  const { doGetSalt, doLogin, getBookMarked } = useApi();
 
   const login = async (email: string, password: string) => {
+    // 로그인 시 회원의 북마크 강의 리스트를 받아온다
+    const bookmark = await getBookMarked(email);
+    if (bookmark) {
+      console.log('북마크', bookmark);
+      setbookMarked(bookmark);
+    }
     const salt = await doGetSalt(email);
     if (salt !== null) {
       const hashedPassword = createHashedPassword(password, salt);
