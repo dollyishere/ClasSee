@@ -2,11 +2,12 @@ import React, { useState, useRef } from 'react';
 
 import { Stack, TextField, Button } from '@mui/material/';
 
-import CreateScheduleViewModel from '../viewmodels/CreateScheduleViewModel';
+import ScheduleViewModel from '../viewmodels/ScheduleViewModel';
 
 import {
   CreateScheduleProps,
   CreateScheduleRequest,
+  RequestInfo,
 } from '../types/ScheduleType';
 
 const CreateScheduleComponent = ({
@@ -18,7 +19,7 @@ const CreateScheduleComponent = ({
   const [startTime, setStartTime] = useState<string>('');
   const [endTime, setEndTime] = useState<string>('');
 
-  const { createSchedule } = CreateScheduleViewModel();
+  const { createSchedule } = ScheduleViewModel();
 
   // 시간 input 값 변경 시, endTime값도 함께 수정(runningTime이 0보다 높을 때 효력 발생함)
   const handleStartTimeChange = (
@@ -62,11 +63,9 @@ const CreateScheduleComponent = ({
         // 해당 T까지 DB에 보내면 안되기 때문에, sclice로 해당 부분만 제거해서 데이터를 담아줌
         const createScheduleRequestBody: CreateScheduleRequest = {
           endTime: `${endTime.slice(0, 10)} ${endTime.slice(-5)}`,
-          lessonId,
           startTime: `${startTime.slice(0, 10)} ${startTime.slice(-5)}`,
         };
-
-        const res = await createSchedule(createScheduleRequestBody);
+        const res = await createSchedule(createScheduleRequestBody, lessonId);
         if (res?.message === 'SUCCESS') {
           alert('스케줄이 등록되었습니다');
           setScheduleInputState(false);

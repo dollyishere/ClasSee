@@ -1,3 +1,10 @@
+import { Response } from './BaseType';
+
+export interface RequestInfo {
+  endTime: string;
+  startTime: string;
+}
+
 export interface CreateScheduleProps {
   runningtime: number;
   lessonId: number;
@@ -7,7 +14,6 @@ export interface CreateScheduleProps {
 
 export interface CreateScheduleRequest {
   endTime: string;
-  lessonId: number;
   startTime: string;
 }
 
@@ -16,7 +22,18 @@ export interface CreateScheduleResponse {
   statusCode: number;
 }
 
-export interface CheckScheduleRequest {
-  regDate: string;
+export interface LessonSchedulesType {
+  openLessonId: number;
+  lessonId: number;
+  startTime: string;
+  endTime: string;
+}
+
+export interface GetScheduleResponse extends Response {
+  lessonSchedules: LessonSchedulesType[];
+}
+
+export interface GetScheduleRequest {
+  regDate: string | null;
   lessonId: number;
 }
