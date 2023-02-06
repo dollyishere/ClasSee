@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void createUser(Map<String, Object> userRegisterInfo) {
 		Auth auth = (Auth) userRegisterInfo.get("AUTH");
-		auth.setPassword(auth.getPassword());
+		if(auth.getType() != UserType.KAKAO) auth.setPassword(auth.getPassword());
 		authRepositorySupport.save(auth);
 
 		User user = (User) userRegisterInfo.get("USER");

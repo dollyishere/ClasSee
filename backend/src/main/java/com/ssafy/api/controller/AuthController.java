@@ -5,6 +5,9 @@ import com.ssafy.api.request.UserLogoutPostReq;
 import com.ssafy.api.response.UserSaltRes;
 import com.ssafy.api.service.*;
 import com.ssafy.db.entity.lesson.Lesson;
+import com.ssafy.db.entity.user.Auth;
+import com.ssafy.db.entity.user.UserRole;
+import com.ssafy.db.entity.user.UserType;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,7 +29,9 @@ import io.swagger.annotations.ApiResponse;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 인증 관련 API 요청 처리를 위한 컨트롤러 정의.
@@ -207,9 +212,33 @@ public class AuthController {
 			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
 	})
 	public ResponseEntity<? extends BaseResponseBody> getKakaoCode(@RequestParam String code) {
-		System.out.println(code);
-		KakaoUserDto kakaoUserDto = kakaoService.getKakaoInfo(code);
+		KakaoUserDto reqUser = kakaoService.getKakaoInfo(code);
+		HashMap<String, Object> kakaoUser = kakaoService.getUserInfo(reqUser.getAccessToken());
 
+		if(kakaoUser == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "USER NOT FOUND"));
+		String email = kakaoUser.get("email").toString();
+
+		User isExist = userService.getUserByAuth(email);
+
+		// 카카오 유저 이메일로 가입된 유저가 없다면.
+		if(isExist == null) {
+			Auth auth = Auth.builder()
+					.email((String)kakaoUser.get("email"))
+					.type(UserType.KAKAO)
+					.build();
+			User user = User
+					.builder()
+					.name((String)kakaoUser.get("nickname"))
+					.auth(auth)
+					.point(0l)
+					.role(UserRole.ROLE_USER)
+					.build();
+			Map<String, Object> userInfo = new HashMap<>();
+			userInfo.put("AUTH", auth);
+			userInfo.put("USER", user);
+
+			userService.createUser(userInfo);
+		}
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "SUCCESS"));
 	}
 }
