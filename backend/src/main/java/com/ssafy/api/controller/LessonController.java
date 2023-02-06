@@ -1,30 +1,25 @@
 package com.ssafy.api.controller;
 
-import com.querydsl.core.Tuple;
 import com.ssafy.api.dto.LessonInfoDto;
 import com.ssafy.api.dto.LessonSearchFilterDto;
-import com.ssafy.api.dto.OpenLessonInfoDto;
 import com.ssafy.api.request.LessonRegisterPostReq;
 import com.ssafy.api.request.LessonScheduleRegisterPostReq;
 import com.ssafy.api.response.LessonDetailsRes;
 import com.ssafy.api.response.LessonIdRes;
 import com.ssafy.api.response.LessonInfoListRes;
-import com.ssafy.api.response.LessonSchedulsRes;
+import com.ssafy.api.response.LessonSchedulesRes;
 import com.ssafy.api.service.LessonService;
 import com.ssafy.api.service.UserService;
 import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.db.entity.lesson.Lesson;
-import com.ssafy.db.entity.lesson.OpenLesson;
 import com.ssafy.db.entity.user.User;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.DateFormatter;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -106,8 +101,12 @@ public class LessonController {
         */
         try {
             lessonService.createSchedule(requestInfo.getOpenLessonInfoFromReq(lessonId, requestInfo));
+        } catch (DataIntegrityViolationException e){
+            e.printStackTrace();
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404, "LESSON NOT FOUND"));
         } catch (Exception e) {
-            return ResponseEntity.status(500).body(BaseResponseBody.of(500, "SERVER ERROR"));
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(BaseResponseBody.of(404, "SERVER ERROR"));
         }
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "SUCCESS"));
@@ -123,6 +122,7 @@ public class LessonController {
     })
     public ResponseEntity<? extends BaseResponseBody> getLessonDetails(@PathVariable Long lessonId) {
         LessonDetailsRes lessonDetailsRes = lessonService.getLessonDetails(lessonId);
+        if(lessonDetailsRes == null) return ResponseEntity.status(200).body(LessonDetailsRes.of(404, "LESSON NOT FOUND", lessonDetailsRes));
 
         return ResponseEntity.status(200).body(LessonDetailsRes.of(200, "SUCCESS", lessonDetailsRes));
     }
@@ -138,9 +138,9 @@ public class LessonController {
     public ResponseEntity<? extends BaseResponseBody> getLessonSchedules(@PathVariable Long lessonId, String regDate) {
         LocalDate parseDate = null;
         if(regDate != null) parseDate = LocalDate.parse(regDate, DateTimeFormatter.ISO_DATE);
-        LessonSchedulsRes lessonSchedulsRes = lessonService.getLessonSchedules(lessonId, parseDate);
+        LessonSchedulesRes lessonSchedulesRes = lessonService.getLessonSchedules(lessonId, parseDate);
 
-        return ResponseEntity.status(200).body(LessonSchedulsRes.of(200, "SUCCESS", lessonSchedulsRes));
+        return ResponseEntity.status(200).body(LessonSchedulesRes.of(200, "SUCCESS", lessonSchedulesRes));
     }
 
     @GetMapping("/recommands")
@@ -172,8 +172,8 @@ public class LessonController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends BaseResponseBody> getLessonListByFilter(@ModelAttribute LessonSearchFilterDto requestInfo) {
-        List<Lesson> lessonIdList = lessonService.getLessonListByFilter(requestInfo);
+    public ResponseEntity<? extends BaseResponseBody> getLessonListByFilter(@ModelAttribute LessonSearchFilterDto requestInfo, @RequestParam int offset, @RequestParam int limit) {
+        List<Lesson> lessonIdList = lessonService.getLessonListByFilter(requestInfo, offset, limit);
 
         if(lessonIdList == null) return ResponseEntity.status(200).body(BaseResponseBody.of(404, "검색에 맞는 강의가 없습니다."));
 

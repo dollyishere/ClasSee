@@ -11,12 +11,11 @@ import java.util.List;
 @Getter
 @Setter
 public class LessonSearchFilterDto {
+    String name;
     Long minPrice;
     Long maxPrice;
     Long minStartTime;
     Long maxStartTime;
     String category;
     String dayOfWeek;
-    int offset;
-    int limit;
 }

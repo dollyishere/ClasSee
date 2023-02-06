@@ -13,14 +13,14 @@ import java.util.List;
 @Getter
 @Setter
 @ApiModel("LessonSchedulesResponse")
-public class LessonSchedulsRes extends BaseResponseBody {
-    List<OpenLessonInfoDto> lessonScheduls;
+public class LessonSchedulesRes extends BaseResponseBody {
+    List<OpenLessonInfoDto> lessonSchedules;
 
-    public static LessonSchedulsRes of(Integer statusCode, String message, LessonSchedulsRes lessonSchedulsRes) {
-        LessonSchedulsRes res = new LessonSchedulsRes();
+    public static LessonSchedulesRes of(Integer statusCode, String message, LessonSchedulesRes lessonSchedulsRes) {
+        LessonSchedulesRes res = new LessonSchedulesRes();
         res.setStatusCode(statusCode);
         res.setMessage(message);
-        res.setLessonScheduls(lessonSchedulsRes.getLessonScheduls());
+        res.setLessonSchedules(lessonSchedulsRes.getLessonSchedules());
         return res;
     }
 }
