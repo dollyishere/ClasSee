@@ -217,4 +217,15 @@ public class UserController {
         return ResponseEntity.status(200).body(BaseResponseBody.of(200,"수정 완료"));
     }
 
+    @PutMapping("/{email}/img")
+    @ApiOperation(value = "유저 이미지 업데이트", notes = "유저 정보를 수정")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공")
+    })
+    public ResponseEntity<? extends BaseResponseBody> updateUserImg(@PathVariable String email, @RequestParam String img) {
+        userService.updateUserDescription(email, img);
+
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"수정 완료"));
+    }
+
 }
