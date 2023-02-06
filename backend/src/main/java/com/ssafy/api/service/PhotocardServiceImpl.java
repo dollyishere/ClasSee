@@ -66,6 +66,7 @@ public class PhotocardServiceImpl implements PhotocardService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Photocard> readMyPhotocardList(int offset, int limit, String email) {
 
         Long user_id = userRepositorySupport.findId(email);
@@ -82,6 +83,7 @@ public class PhotocardServiceImpl implements PhotocardService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Long myPhotocardCount(String email) {
         Long user_id = userRepositorySupport.findId(email);
         return photocardRepositorySupport.myPhotocardCount(user_id);
