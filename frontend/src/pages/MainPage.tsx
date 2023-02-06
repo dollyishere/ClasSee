@@ -8,6 +8,7 @@ import MyAppliedLessonsMainpage from '../components/MainPage/MyAppliedLessonsMai
 import MyAppliedLessonsMainpageTest from '../components/MainPage/MyAppliedLessonsMainpageTest';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
+// import ReviewsInput from '../components/LessonDetailPage/ReviewsInput';
 
 const MainPage = () => {
   const privateInfo = useRecoilValue(privateInfoState);
@@ -17,6 +18,7 @@ const MainPage = () => {
       <Header />
       <CustomCarousel />
       <div className="create_apply_lessons">
+        {/* <ReviewsInput /> */}
         {privateInfo !== null ? <MyCreatedLessonsMainpage /> : null}
         {privateInfo !== null ? <MyAppliedLessonsMainpageTest /> : null}
       </div>

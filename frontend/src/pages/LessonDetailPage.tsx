@@ -17,7 +17,7 @@ import {
 
 import LessonDetailViewModel from '../viewmodels/LessonDetailViewModel';
 
-import PrivateInfoState from '../models/PrivateInfoAtom';
+import privateInfoState from '../models/PrivateInfoAtom';
 
 import BasicRating from '../components/Rating';
 
@@ -50,7 +50,7 @@ const LessonDetailPage = () => {
   const { getLessonDetail } = LessonDetailViewModel();
 
   // 강의 개설을 신청하는 유저의 이메일 정보를 useRecoilValue를 통해 불러옴
-  // const userEmail = useRecoilValue(PrivateInfoState).email;
+  // const userEmail = useRecoilValue(privateInfoState).email;
 
   // 강의 소개 & 준비물 이미지 파일을 담을 State 각각 생성
   const [pamphletsImgState, setPamphletsImgState] = useState<any>([]);
@@ -62,11 +62,11 @@ const LessonDetailPage = () => {
   // firebase storage의 이 경로에 있는 파일들을 가져옴
   const checkListImgRef = ref(
     storage,
-    `lesson/${lessonId.lessonId}/checklist_images`,
+    `lessons/${lessonId.lessonId}/checklist_images`,
   );
   const pamphletsImgRef = ref(
     storage,
-    `lesson/${lessonId.lessonId}/pamphlet_images`,
+    `lessons/${lessonId.lessonId}/pamphlet_images`,
   );
 
   // useEffect로 해당 페이지 렌더링 시 강의 상세 정보를 받아오도록 내부 함수 실행

@@ -6,7 +6,7 @@ import logo from '../../assets/logo.png';
 import LessonCard from '../LessonCard';
 import useViewModel from '../../viewmodels/MainPageViewModel';
 import { LessonsResponse, Lesson } from '../../types/LessonsType';
-import PrivateInfoState from '../../models/PrivateInfoAtom';
+import privateInfoState from '../../models/PrivateInfoAtom';
 // 로그인이 되었을 때만 이 컴포넌트가 보여짐
 // 내가 신청한 강의를 get으로 api요청 보냄
 // 강의가 있으면 강의카드를 보여주고
@@ -14,58 +14,58 @@ import PrivateInfoState from '../../models/PrivateInfoAtom';
 const MyAppliedLessonsMainpage = () => {
   // const dummyData = [
   //   {
-  //     id: 1,
+  //     lessonId: 1,
   //     lessonImage: 'lessonImage1.jpg',
   //     teacher: 'jinho',
   //     teacherImage: 'teacherImage1.jpg',
   //     name: '김친절 선생님과 함께하는 뜨개질',
   //     runningTime: '4',
   //     category: '수공예',
-  //     rating: 5,
+  //     score: 5,
   //     isBookMarked: true,
   //   },
   //   {
-  //     id: 2,
+  //     lessonId: 2,
   //     lessonImage: 'lessonImage2.jpg',
   //     teacher: 'jinho',
   //     teacherImage: 'teacherImage2.jpg',
   //     name: 'Advanced JavaScript',
   //     runningTime: '3',
   //     category: '뷰티',
-  //     rating: 4,
+  //     score: 4,
   //     isBookMarked: true,
   //   },
   // {
-  //   id: 3,
+  //   lessonId: 3,
   //   lessonImage: 'lessonImage3.jpg',
   //   teacher: 'jinho',
   //   teacherImage: 'teacherImage3.jpg',
   //   name: 'Node.js for Beginners',
   //   runningTime: '3.5',
   //   category: '요리',
-  //   rating: 3.5,
+  //   score: 3.5,
   //   isBookMarked: false,
   // },
   // {
-  //   id: 4,
+  //   lessonId: 4,
   //   lessonImage: 'lessonImage3.jpg',
   //   teacher: 'jinho',
   //   teacherImage: 'teacherImage3.jpg',
   //   name: 'React for Beginners',
   //   runningTime: '1',
   //   category: '프로그래밍',
-  //   rating: 3,
+  //   score: 3,
   //   isBookMarked: false,
   // },
 
   const { getMyAppliedLessonsMainpage } = useViewModel();
   const [lessons, setLessons] = useState<Lesson[]>();
-  const userInfo = useRecoilValue(PrivateInfoState);
+  const userInfo = useRecoilValue(privateInfoState);
   useEffect(() => {
     if (userInfo && userInfo.email)
-      getMyAppliedLessonsMainpage(userInfo.email).then(
+      getMyAppliedLessonsMainpage(userInfo.email, 2, 0, 'TODO').then(
         (res: LessonsResponse) => {
-          console.log('내가신청한 강의', res.lessonInfoList);
+          console.log('내가 신청한 강의', res.lessonInfoList);
           setLessons(res.lessonInfoList);
         },
       );

@@ -14,10 +14,15 @@ const LessonsApi = () => {
     return null;
   };
   // 내가 개설한 강의 2개 불러오는 함수
-  const MyCreatedLessonsMainpageApi = async (userId: string) => {
+  const MyCreatedLessonsMainpageApi = async (
+    email: string,
+    limit: number,
+    offset: number,
+    query: string,
+  ) => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_SERVER_URI}/api/v1/mycreatedlessonsmainpage/${userId}`,
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/teachers/${email}/lessons?limit=${limit}&offset=${offset}&query=${query}`,
       );
       return response.data;
     } catch (error: any) {
@@ -25,10 +30,15 @@ const LessonsApi = () => {
     }
     return null;
   };
-  const MyAppliedLessonsMainpageApi = async (userId: string) => {
+  const MyAppliedLessonsMainpageApi = async (
+    email: string,
+    limit: number,
+    offset: number,
+    query: string,
+  ) => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_SERVER_URI}/api/v1/myappliedlessonsmainpage/${userId}`,
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/students${email}/lessons?limit=${limit}&offset=${offset}&query=${query}`,
       );
       return response.data;
     } catch (error: any) {

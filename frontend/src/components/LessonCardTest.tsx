@@ -8,7 +8,7 @@ import AvTimerIcon from '@mui/icons-material/AvTimer';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import { LessonsResponse, Lesson } from '../types/LessonsType';
-import PrivateInfoState from '../models/PrivateInfoAtom';
+import privateInfoState from '../models/PrivateInfoAtom';
 import useViewModel from '../viewmodels/MainPageViewModel';
 
 import logo from '../assets/logo.png';
@@ -19,7 +19,7 @@ interface Props {
 }
 const LessonCard = ({ lesson }: Props) => {
   const [isBookMarked, setIsBookMarked] = useState(lesson.isBookMarked);
-  const userInfo = useRecoilValue(PrivateInfoState);
+  const userInfo = useRecoilValue(privateInfoState);
 
   const { deleteBookmark, addBookmark } = useViewModel();
   // 북마크 아이콘 클릭 시 북마크 추가, 삭제 토글 버튼 함수
@@ -27,9 +27,9 @@ const LessonCard = ({ lesson }: Props) => {
     event.preventDefault();
     if (userInfo) {
       if (isBookMarked) {
-        deleteBookmark(userInfo.email, lesson.id);
+        deleteBookmark(userInfo.email, lesson.lessonId);
       } else {
-        addBookmark(userInfo.email, lesson.id);
+        addBookmark(userInfo.email, lesson.lessonId);
       }
     } else {
       window.confirm('로그인 후 사용 가능합니다');
@@ -38,9 +38,9 @@ const LessonCard = ({ lesson }: Props) => {
   return (
     <div className="lesson">
       <Link
-        to={`/lessons/${lesson.id}`}
+        to={`/lesson/${lesson.lessonId}`}
         className="lesson__card"
-        key={lesson.id}
+        key={lesson.lessonId}
       >
         {/* 강의 대표이미지와 북마크 버튼 담는 div */}
         <div className="lesson__backImg">
@@ -89,12 +89,12 @@ const LessonCard = ({ lesson }: Props) => {
             <Rating
               className="lesson__rating--star"
               name="half-rating-read"
-              value={lesson.rating}
+              value={lesson.score}
               precision={0.5}
               readOnly
             />
             {/* 별점 숫자 */}
-            <p className="lesson__rating--number"> {lesson.rating}</p>
+            <p className="lesson__rating--number"> {lesson.score}</p>
           </div>
           {/* 소요시간 */}
           <p className="lesson__time">
