@@ -6,7 +6,7 @@ import com.ssafy.api.dto.LessonInfoDto;
 import com.ssafy.api.dto.LessonSearchFilterDto;
 import com.ssafy.api.dto.OpenLessonInfoDto;
 import com.ssafy.api.response.LessonDetailsRes;
-import com.ssafy.api.response.LessonSchedulsRes;
+import com.ssafy.api.response.LessonSchedulesRes;
 import com.ssafy.db.entity.lesson.*;
 import com.ssafy.db.entity.user.User;
 import com.ssafy.db.repository.*;
@@ -126,24 +126,24 @@ public class LessonServiceImpl implements LessonService {
 
     @Override
     public LessonDetailsRes getLessonDetails(Long lessonId) {
-        Lesson lesson = lessonRepository.findById(lessonId).get();
-
-        User teacher = userRepositorySupport.findOne(lesson.getUser().getId());
+        Optional<Lesson> lesson = lessonRepository.findById(lessonId);
+        if(!lesson.isPresent()) return null;
+        User teacher = userRepositorySupport.findOne(lesson.get().getUser().getId());
 
         List<Curriculum> curriculums = lessonRepositorySupport.findCurriculumByLesson(lessonId);
         List<Checklist> checklists = lessonRepositorySupport.findCheckListByLesson(lessonId);
         List<Pamphlet> pamphlets = lessonRepositorySupport.findPamphletByLesson(lessonId);
-        double score = lessonRepositorySupport.setLessonAvgScore(lesson);
+        double score = lessonRepositorySupport.setLessonAvgScore(lesson.get());
 
         LessonDetailsRes lessonDetailsRes = LessonDetailsRes.builder()
                 .userEmail(teacher.getAuth().getEmail())
-                .lessonName(lesson.getName())
-                .lessonDescription(lesson.getDescription())
-                .cklsDescription(lesson.getCklsDescription())
-                .kitPrice(lesson.getKitPrice())
-                .kitDescription(lesson.getKitDescription())
-                .category(lesson.getCategory())
-                .runningtime(lesson.getRunningtime())
+                .lessonName(lesson.get().getName())
+                .lessonDescription(lesson.get().getDescription())
+                .cklsDescription(lesson.get().getCklsDescription())
+                .kitPrice(lesson.get().getKitPrice())
+                .kitDescription(lesson.get().getKitDescription())
+                .category(lesson.get().getCategory())
+                .runningtime(lesson.get().getRunningtime())
                 .userName(teacher.getName())
                 .userDesciption(teacher.getDescription())
                 .profileImg(teacher.getImg())
@@ -156,7 +156,7 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public LessonSchedulsRes getLessonSchedules(Long lessonId, LocalDate regDate) {
+    public LessonSchedulesRes getLessonSchedules(Long lessonId, LocalDate regDate) {
         List<OpenLesson> lessonSchedules = lessonRepositorySupport.findScheduleByLessonId(lessonId, regDate);
         List<OpenLessonInfoDto> lessonSchedulesRes = new ArrayList<>();
         lessonSchedules.forEach((schedule) ->{
@@ -170,8 +170,8 @@ public class LessonServiceImpl implements LessonService {
             );
         });
 
-        LessonSchedulsRes res = LessonSchedulsRes.builder()
-                .lessonScheduls(lessonSchedulesRes)
+        LessonSchedulesRes res = LessonSchedulesRes.builder()
+                .lessonSchedules(lessonSchedulesRes)
                 .build();
         return res;
     }

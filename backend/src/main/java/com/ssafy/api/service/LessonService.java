@@ -5,7 +5,7 @@ import com.ssafy.api.dto.AttendLessonInfoDto;
 import com.ssafy.api.dto.LessonInfoDto;
 import com.ssafy.api.dto.LessonSearchFilterDto;
 import com.ssafy.api.response.LessonDetailsRes;
-import com.ssafy.api.response.LessonSchedulsRes;
+import com.ssafy.api.response.LessonSchedulesRes;
 import com.ssafy.db.entity.lesson.Lesson;
 import com.ssafy.db.entity.lesson.OpenLesson;
 import org.apache.tomcat.jni.Local;
@@ -28,7 +28,7 @@ public interface LessonService {
 
     LessonDetailsRes getLessonDetails(Long lessonId);
 
-    LessonSchedulsRes getLessonSchedules(Long lessonId, LocalDate regDate);
+    LessonSchedulesRes getLessonSchedules(Long lessonId, LocalDate regDate);
 
     List<AttendLessonInfoDto> getAttendLessonList(Long userId, String query, String type, int limit, int offset);
 
