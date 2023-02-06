@@ -25,6 +25,7 @@ import {
   PamphletType,
   CreateLessonRequest,
 } from '../types/CreateLessonType';
+import { UserInfo } from '../types/UserType';
 
 const CreateLessonPage = () => {
   // component 전환의 기준이 되는 selectedComponent를 useState로 생성(기본값 1)
@@ -60,8 +61,8 @@ const CreateLessonPage = () => {
   const [kitDescState, setKitDescState] = useState<string>('');
   const [kitPriceState, setKitPriceState] = useState<number>(0);
 
-  // 강의 개설을 신청하는 유저의 이메일 정보를 useRecoilValue를 통해 불러옴
-  // const userEmail = useRecoilValue(PrivateInfoState).email;
+  // 강의 개설을 신청하는 유저의 정보를 useRecoilValue를 통해 불러옴
+  const userInfo = useRecoilValue(PrivateInfoState);
 
   // api 실행할 시 실행될 CreateLessonModel createLesson에 할당
   const { createLesson } = CreateLessonViewModel();
@@ -116,8 +117,7 @@ const CreateLessonPage = () => {
         cklsDescription: materialDescState,
         curriculumList: curriculumList as CurriculumType[],
         description: lessonDescState,
-        email: 'test1234@gmail.com',
-        // email: `${userEmail}`,
+        email: userInfo?.email,
         kitDescription: kitDescState,
         kitPrice: kitPriceState,
         maximum: maximumState,

@@ -17,7 +17,7 @@ const MyPage = () => {
           <Routes>
             <Route path="" element={<ProfilePage />} />
             <Route
-              path="/created_lesson/:lessonId"
+              path="/created-lesson/:lessonId"
               element={<MyCreatedLessonDetailPage />}
             />
             <Route path="/test" element={<TestPage />} />

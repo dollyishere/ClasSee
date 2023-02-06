@@ -19,6 +19,7 @@ import LessonDetailViewModel from '../viewmodels/LessonDetailViewModel';
 
 import PrivateInfoState from '../models/PrivateInfoAtom';
 
+import Header from '../components/Header';
 import BasicRating from '../components/Rating';
 import CheckSchedule from '../components/CheckSchedule';
 
@@ -31,8 +32,10 @@ const LessonDetailPage = () => {
     useState<LessonDetailResponse>({
       message: '' as string,
       statusCode: 0 as number,
+      userEmail: '' as string,
       lessonName: '' as string,
       cklsDescription: '' as string,
+      lessonDescription: '' as string,
       kitPrice: 0 as number,
       kitDescription: '' as string,
       category: '' as string,
@@ -44,14 +47,13 @@ const LessonDetailPage = () => {
       checkLists: [] as CheckListsType[],
       pamphlets: [] as PamphletsType[],
       score: 0 as number,
-      isBookmarked: 0 as number,
     });
 
   // api 실행할 시 실행될 CreateLessonModel createLesson에 할당
   const { getLessonDetail } = LessonDetailViewModel();
 
   // 강의 개설을 신청하는 유저의 이메일 정보를 useRecoilValue를 통해 불러옴
-  // const userEmail = useRecoilValue(PrivateInfoState).email;
+  // const userInfo = useRecoilValue(privateInfoState);
 
   // 강의 소개 & 준비물 이미지 파일을 담을 State 각각 생성
   const [pamphletsImgState, setPamphletsImgState] = useState<any>([]);
@@ -63,11 +65,11 @@ const LessonDetailPage = () => {
   // firebase storage의 이 경로에 있는 파일들을 가져옴
   const checkListImgRef = ref(
     storage,
-    `lesson/${lessonId.lessonId}/checklist_images`,
+    `lessons/${lessonId.lessonId}/checklist_images`,
   );
   const pamphletsImgRef = ref(
     storage,
-    `lesson/${lessonId.lessonId}/pamphlet_images`,
+    `lessons/${lessonId.lessonId}/pamphlet_images`,
   );
 
   // useEffect로 해당 페이지 렌더링 시 강의 상세 정보를 받아오도록 내부 함수 실행
@@ -82,21 +84,25 @@ const LessonDetailPage = () => {
         setLessonDetailState(res);
         // firebase의 해당 강의가 저장된 폴더의 url에 접근하여 해당하는 이미지 파일을 각각 다운받음
         // 강의 관련 사진 다운로드해서 pamphletsImgState에 저장
-        listAll(pamphletsImgRef).then((response: any) => {
-          response.items.forEach((item: any) => {
-            getDownloadURL(item).then((url) => {
-              setPamphletsImgState((prev: any) => [...prev, url]);
+        if (lessonDetailState.pamphlets) {
+          listAll(pamphletsImgRef).then((response: any) => {
+            response.items.forEach((item: any) => {
+              getDownloadURL(item).then((url) => {
+                setPamphletsImgState((prev: any) => [...prev, url]);
+              });
             });
           });
-        });
+        }
         // 준비물 이미지 다운로드해서 checkListImgState에 저장
-        listAll(checkListImgRef).then((response: any) => {
-          response.items.forEach((item: any) => {
-            getDownloadURL(item).then((url) => {
-              setCheckListImgState((prev: any) => [...prev, url]);
+        if (lessonDetailState.checkLists) {
+          listAll(checkListImgRef).then((response: any) => {
+            response.items.forEach((item: any) => {
+              getDownloadURL(item).then((url) => {
+                setCheckListImgState((prev: any) => [...prev, url]);
+              });
             });
           });
-        });
+        }
       } else {
         alert(res?.message);
       }
@@ -105,6 +111,7 @@ const LessonDetailPage = () => {
   }, []);
   return (
     <div className="lesson-detail-page__container">
+      <Header />
       <div className="lesson-detail-page__header">
         <div className="lesson-detail-page-img-slider">
           {pamphletsImgState.map((image: any) => (
@@ -127,7 +134,7 @@ const LessonDetailPage = () => {
           <p>
             <BasicRating />
           </p>
-          {/* <p>{lessonDetailState.score ? <BasicRating /> : '평가가 없어요'}</p> */}
+          <p>{lessonDetailState.score ? <BasicRating /> : '평가가 없어요'}</p>
           <div>{lessonDetailState.category}</div>
         </div>
       </div>
@@ -153,7 +160,7 @@ const LessonDetailPage = () => {
             <div className="lesson-detail-page__box">
               <h2>강의 소개</h2>
               <div className="lesson-detail-page__lesson-description">
-                <p>넣을 예정임~</p>
+                <p>{lessonDetailState.lessonDescription}</p>
               </div>
               <h2>커리큘럼</h2>
               <div className="lesson-detail-page__curriculum">
@@ -189,7 +196,6 @@ const LessonDetailPage = () => {
           )}
         </div>
         <div className="lesson-detail-page__reservation">
-          {/* <CheckSchedule lessonId={Number(lessonId.lessonId)} /> */}
           <CheckSchedule />
         </div>
       </div>

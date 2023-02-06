@@ -73,7 +73,7 @@ export interface CreateLessonRequest {
   cklsDescription: string;
   curriculumList: CurriculumType[];
   description: string;
-  email: string;
+  email: string | undefined;
   kitDescription: string;
   kitPrice: number;
   maximum: number;

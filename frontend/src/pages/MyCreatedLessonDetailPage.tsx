@@ -31,8 +31,10 @@ const MyCreatedLessonDetailPage = () => {
     useState<LessonDetailResponse>({
       message: '' as string,
       statusCode: 0 as number,
+      userEmail: '' as string,
       lessonName: '' as string,
       cklsDescription: '' as string,
+      lessonDescription: '' as string,
       kitPrice: 0 as number,
       kitDescription: '' as string,
       category: '' as string,
@@ -44,14 +46,13 @@ const MyCreatedLessonDetailPage = () => {
       checkLists: [] as CheckListsType[],
       pamphlets: [] as PamphletsType[],
       score: 0 as number,
-      isBookmarked: 0 as number,
     });
 
-  // api 실행할 시 실행될 CreateLessonModel createLesson에 할당
+  // api 실행할 시 실행될 CreateLessonViewModel createLesson에 할당
   const { getLessonDetail } = LessonDetailViewModel();
 
   // 강의 개설을 신청하는 유저의 이메일 정보를 useRecoilValue를 통해 불러옴
-  // const userEmail = useRecoilValue(PrivateInfoState).email;
+  const userInfo = useRecoilValue(PrivateInfoState);
 
   // 강의 소개 & 준비물 이미지 파일을 담을 State 각각 생성
   const [pamphletsImgState, setPamphletsImgState] = useState<any>([]);
@@ -67,46 +68,52 @@ const MyCreatedLessonDetailPage = () => {
   // firebase storage의 이 경로에 있는 파일들을 가져옴
   const checkListImgRef = ref(
     storage,
-    `lesson/${lessonId.lessonId}/checklist_images`,
+    `lessons/${lessonId.lessonId}/checklist_images`,
   );
   const pamphletsImgRef = ref(
     storage,
-    `lesson/${lessonId.lessonId}/pamphlet_images`,
+    `lessons/${lessonId.lessonId}/pamphlet_images`,
   );
 
+  // const handleLessonDelete = (event: React.MouseEvent<HTMLButtonElement>) => {};
   // useEffect로 해당 페이지 렌더링 시 강의 상세 정보를 받아오도록 내부 함수 실행
-  // useEffect(() => {
-  //   const getLessonDetailRequestBody: LessonDetailRequest = {
-  //     lessonId: Number(lessonId.lessonId),
-  //   };
-  //   const fetchData = async () => {
-  //     const res = await getLessonDetail(getLessonDetailRequestBody);
-  //     if (res?.message === 'SUCCESS') {
-  //       // 만약 강의 상세 정보를 db에서 받아오는 것에 성공했다면, lessonDetailState에 해당 정보를 저장
-  //       setLessonDetailState(res);
-  //       // firebase의 해당 강의가 저장된 폴더의 url에 접근하여 해당하는 이미지 파일을 각각 다운받음
-  //       // 강의 관련 사진 다운로드해서 pamphletsImgState에 저장
-  //       listAll(pamphletsImgRef).then((response: any) => {
-  //         response.items.forEach((item: any) => {
-  //           getDownloadURL(item).then((url) => {
-  //             setPamphletsImgState((prev: any) => [...prev, url]);
-  //           });
-  //         });
-  //       });
-  //       // 준비물 이미지 다운로드해서 checkListImgState에 저장
-  //       listAll(checkListImgRef).then((response: any) => {
-  //         response.items.forEach((item: any) => {
-  //           getDownloadURL(item).then((url) => {
-  //             setCheckListImgState((prev: any) => [...prev, url]);
-  //           });
-  //         });
-  //       });
-  //     } else {
-  //       alert(res?.message);
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
+  useEffect(() => {
+    const getLessonDetailRequestBody: LessonDetailRequest = {
+      lessonId: Number(lessonId.lessonId),
+    };
+    const fetchData = async () => {
+      const res = await getLessonDetail(getLessonDetailRequestBody);
+      if (res?.message === 'SUCCESS') {
+        // 만약 강의 상세 정보를 db에서 받아오는 것에 성공했다면, lessonDetailState에 해당 정보를 저장
+        setLessonDetailState(res);
+        // firebase의 해당 강의가 저장된 폴더의 url에 접근하여 해당하는 이미지 파일을 각각 다운받음
+        // 강의 관련 사진 다운로드해서 pamphletsImgState에 저장
+        if (lessonDetailState.pamphlets) {
+          listAll(pamphletsImgRef).then((response: any) => {
+            response.items.forEach((item: any) => {
+              getDownloadURL(item).then((url) => {
+                setPamphletsImgState((prev: any) => [...prev, url]);
+              });
+            });
+          });
+        }
+        // 준비물 이미지 다운로드해서 checkListImgState에 저장
+        if (lessonDetailState.checkLists) {
+          listAll(checkListImgRef).then((response: any) => {
+            response.items.forEach((item: any) => {
+              getDownloadURL(item).then((url) => {
+                setCheckListImgState((prev: any) => [...prev, url]);
+              });
+            });
+          });
+        }
+      } else {
+        alert(res?.message);
+      }
+    };
+    fetchData();
+  }, []);
+
   return (
     <div className="profile-page">
       <Card className="profile-page__card">
@@ -166,7 +173,6 @@ const MyCreatedLessonDetailPage = () => {
               {schedulesListState.map((schedule: any) => (
                 <ScheduleDetail />
               ))}
-              <ScheduleDetail />
               {scheduleInputState ? (
                 <CreateScheduleComponent
                   runningtime={lessonDetailState.runningtime}
