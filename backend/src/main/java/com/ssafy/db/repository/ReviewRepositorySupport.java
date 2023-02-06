@@ -1,6 +1,7 @@
 package com.ssafy.db.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssafy.api.request.ReviewUpdatePutReq;
 import com.ssafy.db.entity.lesson.QLesson;
 import com.ssafy.db.entity.lesson.QReview;
 import com.ssafy.db.entity.lesson.Review;
@@ -44,6 +45,20 @@ public class ReviewRepositorySupport {
                 .offset(offset)
                 .limit(limit)
                 .fetch();
+    }
+
+    public void updateReview(ReviewUpdatePutReq reviewUpdatePutReq){
+        jpaQueryFactory
+                .update(qReview)
+                .where(qReview.id.eq(reviewUpdatePutReq.getId()))
+                .set(qReview.title, reviewUpdatePutReq.getTitle())
+                .set(qReview.content, reviewUpdatePutReq.getContent())
+                .set(qReview.img, reviewUpdatePutReq.getImg())
+                .set(qReview.score, reviewUpdatePutReq.getScore())
+                .execute();
+
+        em.clear();
+        em.flush();
     }
 
 
