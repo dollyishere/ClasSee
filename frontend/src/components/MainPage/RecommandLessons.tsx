@@ -6,7 +6,7 @@ import logo from '../../assets/logo.png';
 import LessonCard from '../LessonCard';
 import useViewModel from '../../viewmodels/MainPageViewModel';
 import { LessonsResponse, Lesson } from '../../types/LessonsType';
-import PrivateInfoState from '../../models/PrivateInfoAtom';
+import privateInfoState from '../../models/PrivateInfoAtom';
 
 const RecommandLessons = () => {
   // dummy data
@@ -47,7 +47,7 @@ const RecommandLessons = () => {
   // ];
   const { getRecommandLessons } = useViewModel();
   const [lessons, setLessons] = useState<Lesson[]>();
-  const userInfo = useRecoilValue(PrivateInfoState);
+  const userInfo = useRecoilValue(privateInfoState);
   useEffect(() => {
     getRecommandLessons().then((res: LessonsResponse) => {
       console.log('추천강의', res.lessonInfoList);

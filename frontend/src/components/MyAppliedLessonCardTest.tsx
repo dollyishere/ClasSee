@@ -9,7 +9,7 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import { LessonsResponse, Lesson } from '../types/LessonsType';
 import useViewModel from '../viewmodels/MainPageViewModel';
-import PrivateInfoState from '../models/PrivateInfoAtom';
+import privateInfoState from '../models/PrivateInfoAtom';
 
 import logo from '../assets/logo.png';
 
@@ -30,7 +30,7 @@ const MyAppliedTest = ({ lesson }: Props) => {
   // 강의 취소 모달 오픈을 위한 flag
   const [modalOpen, setModalOpen] = useState(false);
   // 강의 취소 버튼 클릭 시 모달 팝업을 위한 modalopen flag를 ture로 바꿈
-  const userInfo = useRecoilValue(PrivateInfoState);
+  const userInfo = useRecoilValue(privateInfoState);
 
   const showModal = () => {
     // setModalOpen(true);

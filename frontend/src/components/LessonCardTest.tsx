@@ -8,7 +8,7 @@ import AvTimerIcon from '@mui/icons-material/AvTimer';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import { LessonsResponse, Lesson } from '../types/LessonsType';
-import PrivateInfoState from '../models/PrivateInfoAtom';
+import privateInfoState from '../models/PrivateInfoAtom';
 import useViewModel from '../viewmodels/MainPageViewModel';
 
 import logo from '../assets/logo.png';
@@ -19,7 +19,7 @@ interface Props {
 }
 const LessonCard = ({ lesson }: Props) => {
   const [isBookMarked, setIsBookMarked] = useState(lesson.isBookMarked);
-  const userInfo = useRecoilValue(PrivateInfoState);
+  const userInfo = useRecoilValue(privateInfoState);
 
   const { deleteBookmark, addBookmark } = useViewModel();
   // 북마크 아이콘 클릭 시 북마크 추가, 삭제 토글 버튼 함수
