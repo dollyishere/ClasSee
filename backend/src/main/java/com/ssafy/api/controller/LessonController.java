@@ -2,6 +2,7 @@ package com.ssafy.api.controller;
 
 import com.querydsl.core.Tuple;
 import com.ssafy.api.dto.LessonInfoDto;
+import com.ssafy.api.dto.LessonSearchFilterDto;
 import com.ssafy.api.dto.OpenLessonInfoDto;
 import com.ssafy.api.request.LessonRegisterPostReq;
 import com.ssafy.api.request.LessonScheduleRegisterPostReq;
@@ -159,6 +160,31 @@ public class LessonController {
         LessonInfoListRes res = LessonInfoListRes.builder()
                                                  .lessonInfoList(lessonList)
                                                  .build();
+        return ResponseEntity.status(200).body(LessonInfoListRes.of(200, "SUCCESS", res));
+    }
+
+    @GetMapping("/search")
+    @ApiOperation(value = "검색 강의 리스트", notes = "필터링 된 강의 리스트 반환")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 401, message = "인증 실패"),
+            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<? extends BaseResponseBody> getLessonListByFilter(@ModelAttribute LessonSearchFilterDto requestInfo) {
+        // 평점이 가장 높은 상위 12개의 레슨 아이디 리스트
+        System.out.println(requestInfo.getDayOfWeek());
+        List<Lesson> lessonIdList = lessonService.getLessonListByFilter(requestInfo);
+
+        if(lessonIdList == null) return ResponseEntity.status(200).body(BaseResponseBody.of(404, "검색에 맞는 강의가 없습니다."));
+
+        // 받아온 레슨 아이디 리스트를 객체로 전환
+        List<LessonInfoDto> lessonList = lessonService.setLessonProperty(lessonIdList);
+
+        LessonInfoListRes res = LessonInfoListRes.builder()
+                .lessonInfoList(lessonList)
+                .build();
+
         return ResponseEntity.status(200).body(LessonInfoListRes.of(200, "SUCCESS", res));
     }
 }

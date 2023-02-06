@@ -36,43 +36,6 @@ public class TeacherController {
     UserService userService;
     @Autowired
     LessonService lessonService;
-
-
-
-//    @GetMapping("/{email}/lessons")
-//    @ApiOperation(value = "개설한 강의 목록 조회", notes = "강사가 본인이 개설한 강의 목록을 조회한다.")
-//    @ApiResponses({
-//            @ApiResponse(code = 200, message = "성공"),
-//            @ApiResponse(code = 401, message = "인증 실패"),
-//            @ApiResponse(code = 404, message = "사용자 없음"),
-//            @ApiResponse(code = 500, message = "서버 오류")
-//    })
-//    public ResponseEntity<? extends BaseResponseBody> getLessonListInfo(@PathVariable String email) {
-//        /*
-//        리턴 값
-//        강의 리스트
-//            - 강의명
-//            - 소요시간
-//            - 카테고리
-//        - 이미지
-//        - 별점 평균
-//        */
-//        User user = userService.getUserByAuth(email);
-//
-//        if(user == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "사용자 정보 없음"));
-//        Long userId = user.getAuth().getId();
-//
-//        // 해당 유저가 개설한 강의 리스트
-//        List<Lesson> lessonList = teacherService.getLessonList(user);
-//        if(lessonList == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "개설 강의 없음"));
-//
-//        List<LessonInfoDto> lessonInfoList =  lessonService.setLessonProperty(lessonList);
-//        LessonInfoListRes res = LessonInfoListRes.builder()
-//                                                 .lessonInfoList(lessonInfoList)
-//                                                 .build();
-//        return ResponseEntity.status(200).body(LessonInfoListRes.of(200, "SUCCESS", res));
-//    }
-
     @GetMapping("/{email}/lessons")
     @ApiOperation(value = "개설한 강의 목록 조회", notes = "강사가 본인이 개설한 스케줄 목록을 조회한다. 쿼리 : (DONE[완료], TODO[진행예정])")
     @ApiResponses({
@@ -103,5 +66,37 @@ public class TeacherController {
                 .lessonInfoList(lessonList)
                 .build();
         return ResponseEntity.status(200).body(AttendLessonInfoListRes.of(200, "SUCCESS", res));
+    }
+
+    @DeleteMapping("/{email}/lessons/{lessonId}")
+    @ApiOperation(value = "강의 삭제", notes = "등록한 강의를 삭제")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "SUCCESS"),
+            @ApiResponse(code = 401, message = "FAILED_CAUSE_EXISTS_STUDENT"),
+            @ApiResponse(code = 404, message = "NOT FOUND"),
+    })
+    public ResponseEntity<? extends BaseResponseBody> deleteLesson(@PathVariable String email, @PathVariable Long lessonId){
+        User user = userService.getUserByAuth(email);
+        if(user == null) return ResponseEntity.status(200).body(BaseResponseBody.of(404, "NOT FOUND"));
+
+        int isDelete = lessonService.deleteLesson(lessonId);
+        if(isDelete == 0) return ResponseEntity.status(200).body(BaseResponseBody.of(401, "FAILED_CAUSE_EXISTS_STUDENT"));
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "SUCCESS"));
+    }
+
+    @DeleteMapping("/{email}/lessons/{lessonId}/{openLessonId}")
+    @ApiOperation(value = "강의 스케줄 삭제", notes = "강의 스케줄을 삭제")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "SUCCESS"),
+            @ApiResponse(code = 401, message = "FAILED_CAUSE_EXISTS_STUDENT"),
+            @ApiResponse(code = 404, message = "NOT FOUND"),
+    })
+    public ResponseEntity<? extends BaseResponseBody> deleteOpenLesson(@PathVariable String email, @PathVariable Long openLessonId){
+        User user = userService.getUserByAuth(email);
+        if(user == null) return ResponseEntity.status(200).body(BaseResponseBody.of(404, "NOT FOUND"));
+
+        int isDelete = lessonService.deleteOpenLesson(openLessonId);
+        if(isDelete == 0) return ResponseEntity.status(200).body(BaseResponseBody.of(401, "FAILED_CAUSE_EXISTS_STUDENT"));
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "SUCCESS"));
     }
 }

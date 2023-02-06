@@ -1,5 +1,6 @@
 package com.ssafy.api.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.db.entity.lesson.OpenLesson;
 import com.ssafy.db.entity.user.User;
 import io.swagger.annotations.ApiModel;
@@ -17,7 +18,7 @@ import java.util.Map;
 @Setter
 @ApiModel("LessonScheduleRegisterPostReq")
 public class LessonScheduleRegisterPostReq {
-    @ApiModelProperty(name="lesson_id", example="강의 아이디")
+    @JsonIgnore
     Long lessonId;
     @ApiModelProperty(name="start_time", example="강의 시작 시간[yyyy-MM-dd HH:mm]")
     String startTime;

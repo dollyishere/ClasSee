@@ -3,6 +3,7 @@ package com.ssafy.api.service;
 import com.querydsl.core.Tuple;
 import com.ssafy.api.dto.AttendLessonInfoDto;
 import com.ssafy.api.dto.LessonInfoDto;
+import com.ssafy.api.dto.LessonSearchFilterDto;
 import com.ssafy.api.dto.OpenLessonInfoDto;
 import com.ssafy.api.response.LessonDetailsRes;
 import com.ssafy.api.response.LessonSchedulsRes;
@@ -222,5 +223,32 @@ public class LessonServiceImpl implements LessonService {
             );
         });
         return attendLessonList;
+    }
+
+    @Override
+    public List<Lesson> getLessonListByFilter(LessonSearchFilterDto requestInfo) {
+        return lessonRepositorySupport.findLessonListByFilter(requestInfo);
+    }
+
+    @Override
+    public int deleteLesson(Long lessonId) {
+        Optional<Lesson> lesson = lessonRepository.findById(lessonId);
+        if(!lesson.isPresent()) return 0;
+
+        Long attendUserCnt = lessonRepositorySupport.existsUserInLesson(lessonId);
+        if(attendUserCnt >= 1) return 0;
+
+        lessonRepositorySupport.deleteOpenLessonByLessonId(lessonId);
+        lessonRepository.delete(lesson.get());
+        return 1;
+    }
+
+    @Override
+    public int deleteOpenLesson(Long openLessonId) {
+        Long attendUserCnt = lessonRepositorySupport.existsUserInOpenLesson(openLessonId);
+        if(attendUserCnt >= 1) return 0;
+
+        lessonRepositorySupport.deleteOpenLesson(openLessonId);
+        return 1;
     }
 }
