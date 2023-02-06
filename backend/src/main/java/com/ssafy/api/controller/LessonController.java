@@ -69,7 +69,25 @@ public class LessonController {
         return ResponseEntity.status(200).body(LessonIdRes.of(200, "SUCCESS", lessonId));
     }
 
-    @PostMapping("/schedules")
+    @PutMapping("/{lessonId}")
+    @ApiOperation(value = "강의 수정", notes = "<strong>강의 정보</strong>를 수정 한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 401, message = "인증 실패"),
+            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<? extends BaseResponseBody> updateLesson(@PathVariable Long lessonId,
+            @RequestBody @ApiParam(value = "강의 등록 정보", required = true) LessonRegisterPostReq requestInfo) {
+        User user = userService.getUserByAuth(requestInfo.getEmail());
+        if (user == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "NOT FOUND"));
+
+        lessonService.updateLesson(requestInfo.getLessonInfoFromReq(user, lessonId));
+
+        return ResponseEntity.status(200).body(LessonIdRes.of(200, "SUCCESS", lessonId));
+    }
+
+    @PostMapping("/{lessonId}/schedules")
     @ApiOperation(value = "강의 스케줄 등록", notes = "<strong>강의 진행 정보</strong>를 통해 회원가입 한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
@@ -77,7 +95,7 @@ public class LessonController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends BaseResponseBody> registerSchedule(
+    public ResponseEntity<? extends BaseResponseBody> registerSchedule(@PathVariable Long lessonId,
             @RequestBody @ApiParam(value = "강의 등록 정보", required = true) LessonScheduleRegisterPostReq requestInfo) {
         /*[requestInfo]
             1. 강의 아이디(lessonId)
@@ -86,7 +104,7 @@ public class LessonController {
             4. 강의 종료 시간(endTime)
         */
         try {
-            lessonService.createSchedule(requestInfo.getOpenLessonInfoFromReq(requestInfo));
+            lessonService.createSchedule(requestInfo.getOpenLessonInfoFromReq(lessonId, requestInfo));
         } catch (Exception e) {
             return ResponseEntity.status(500).body(BaseResponseBody.of(500, "SERVER ERROR"));
         }
@@ -94,7 +112,7 @@ public class LessonController {
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "SUCCESS"));
     }
 
-    @GetMapping("/details/{lessonId}")
+    @GetMapping("/{lessonId}")
     @ApiOperation(value = "강의 상세 화면", notes = "강의정보, 강사정보, 강의 일정 정보를 반환한다")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
@@ -108,7 +126,7 @@ public class LessonController {
         return ResponseEntity.status(200).body(LessonDetailsRes.of(200, "SUCCESS", lessonDetailsRes));
     }
 
-    @GetMapping("/details/{lessonId}/schedules/{regDate}")
+    @GetMapping("/{lessonId}/schedules")
     @ApiOperation(value = "강의 스케줄 조회", notes = "강의 아이디와 날짜(yyyy-MM-dd)를 통해 개설 강의 리스트 조회")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
@@ -116,7 +134,7 @@ public class LessonController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends BaseResponseBody> getLessonSchedules(@PathVariable Long lessonId, @ApiParam(example = "yyyy-MM-dd") @PathVariable String regDate) {
+    public ResponseEntity<? extends BaseResponseBody> getLessonSchedules(@PathVariable Long lessonId, @ApiParam(example = "yyyy-MM-dd") @RequestParam String regDate) {
         LocalDate parseDate = LocalDate.parse(regDate, DateTimeFormatter.ISO_DATE);
         LessonSchedulsRes lessonSchedulsRes = lessonService.getLessonSchedules(lessonId, parseDate);
 
@@ -131,18 +149,12 @@ public class LessonController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends BaseResponseBody> getRecommandList(@RequestParam String email) {
-        User user = userService.getUserByAuth(email);
-        // 비로그인 유저일 경우도 조회할 수 있게..
-        Long userId = 0l;
-        if (user != null) userId = user.getAuth().getId();
-
-
+    public ResponseEntity<? extends BaseResponseBody> getRecommandList() {
         // 평점이 가장 높은 상위 12개의 레슨 아이디 리스트
         List<Lesson> popularLessonList = lessonService.getPopularLessonList();
 
         // 받아온 레슨 아이디 리스트를 객체로 전환
-        List<LessonInfoDto> lessonList = lessonService.setLessonProperty(userId, popularLessonList);
+        List<LessonInfoDto> lessonList = lessonService.setLessonProperty(popularLessonList);
 
         LessonInfoListRes res = LessonInfoListRes.builder()
                                                  .lessonInfoList(lessonList)

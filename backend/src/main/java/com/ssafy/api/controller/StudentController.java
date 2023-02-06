@@ -26,7 +26,7 @@ public class StudentController {
     UserService userService;
     @Autowired
     LessonService lessonService;
-    @GetMapping("/lessons")
+    @GetMapping("/{email}/lessons")
     @ApiOperation(value = "신청한 강의 목록 조회", notes = "수강생이 신청한 강의 목록을 조회한다. 쿼리(DONE[완료], TODO[진행]")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
@@ -35,7 +35,7 @@ public class StudentController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<?> getLessonListInfo(
-            @RequestParam String email,
+            @PathVariable String email,
             @RequestParam String query,
             @RequestParam int limit,
             @RequestParam int offset

@@ -71,7 +71,29 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public List<LessonInfoDto> setLessonProperty(Long userId, List<Lesson> lessonList) {
+    public void updateLesson(Map<String, Object> lessonInfo) {
+        Lesson lesson = (Lesson) lessonInfo.get("LESSON");
+        List<Checklist> checkLists = (List<Checklist>) lessonInfo.get("CHECKLISTS");
+        List<Curriculum> curriculums = (List<Curriculum>) lessonInfo.get("CURRICULUMS");
+        List<Pamphlet> pamphlets = (List<Pamphlet>) lessonInfo.get("PAMPHLET");
+
+        lessonRepositorySupport.update(lesson);
+
+        checkLists.forEach((checklist) -> {
+            checkListRepositorySupport.update(checklist);
+        });
+
+        curriculums.forEach((curriculum) -> {
+            curriculumRepositorySupport.update(curriculum);
+        });
+
+        pamphlets.forEach((pamphlet) -> {
+            pamphletRepositorySupport.update(pamphlet);
+        });
+    }
+
+    @Override
+    public List<LessonInfoDto> setLessonProperty(List<Lesson> lessonList) {
         List<LessonInfoDto> getLessonList = new ArrayList<>();
         // 강의 목록에 대표 이미지랑, 별점 평균 세팅해주기
         lessonList.forEach((lesson) -> {
@@ -90,11 +112,6 @@ public class LessonServiceImpl implements LessonService {
             lessonRes.setScore(
                     lessonRepositorySupport.setLessonAvgScore(lesson)
             );
-
-            lessonRes.setBookmarked(
-                    (userId == 0 || bookmarkRepository.isBookmarked(userId, lesson.getId()) == 0)? false: true
-            );
-
             getLessonList.add(lessonRes);
         });
 
@@ -120,6 +137,7 @@ public class LessonServiceImpl implements LessonService {
         LessonDetailsRes lessonDetailsRes = LessonDetailsRes.builder()
                 .userEmail(teacher.getAuth().getEmail())
                 .lessonName(lesson.getName())
+                .lessonDescription(lesson.getDescription())
                 .cklsDescription(lesson.getCklsDescription())
                 .kitPrice(lesson.getKitPrice())
                 .kitDescription(lesson.getKitDescription())

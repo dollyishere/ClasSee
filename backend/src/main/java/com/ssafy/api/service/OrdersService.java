@@ -11,5 +11,5 @@ public interface OrdersService {
 
     void chargePoint(String email, Long point);
 
-    void deleteOrders(String email, Long openLesson_id);
+    void deleteOrders(Long ordersId);
 }

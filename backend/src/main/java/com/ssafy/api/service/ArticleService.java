@@ -12,7 +12,7 @@ public interface ArticleService {
     Article readArticle(Long id);
     List<Article> readArticleList(int offset, int limit);
     Long articleCount();
-    void updateArticle(ArticleUpdatePutReq articleUpdatePutReq);
+    void updateArticle(Long articleId, ArticleUpdatePutReq articleUpdatePutReq);
     void deleteArticle(Long id);
 
 }

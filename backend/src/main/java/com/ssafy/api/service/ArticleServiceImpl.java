@@ -63,9 +63,9 @@ public class ArticleServiceImpl implements ArticleService{
     }
 
     @Override
-    public void updateArticle(ArticleUpdatePutReq articleUpdatePutReq){
+    public void updateArticle(Long articleId, ArticleUpdatePutReq articleUpdatePutReq){
 
-            articleRepositorySupport.updateArticle(articleUpdatePutReq);
+            articleRepositorySupport.updateArticle(articleId, articleUpdatePutReq);
             return;
     }
 

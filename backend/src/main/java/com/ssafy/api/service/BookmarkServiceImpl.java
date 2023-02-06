@@ -1,12 +1,15 @@
 package com.ssafy.api.service;
 
 import com.ssafy.api.request.BookmarkRegisterReq;
+import com.ssafy.db.entity.lesson.Lesson;
 import com.ssafy.db.entity.user.Bookmark;
 import com.ssafy.db.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service("bookmarkService")
 public class BookmarkServiceImpl implements BookmarkService {
@@ -21,12 +24,15 @@ public class BookmarkServiceImpl implements BookmarkService {
     @Autowired
     LessonRepositorySupport lessonRepositorySupport;
 
+    @Autowired
+    LessonRepository lessonRepository;
+
     @Override
-    public void create(BookmarkRegisterReq requestInfo) {
+    public void create(String email, Long lessonId) {
         Bookmark bookmark = Bookmark.builder()
-                                    .lessonId(requestInfo.getLesson_id())
+                                    .lessonId(lessonId)
                                     .userId(
-                                            userRepositorySupport.findId(requestInfo.getEmail())
+                                            userRepositorySupport.findId(email)
                                     )
                                     .build();
         bookmarkRepositorySupport.save(bookmark);
@@ -40,7 +46,16 @@ public class BookmarkServiceImpl implements BookmarkService {
     }
 
     @Override
-    public List<Long> getBookmarkList(Long userId) {
-        return bookmarkRepositorySupport.findBookmarkList(userId);
+    public List<Lesson> getBookmarkList(Long userId) {
+        List<Long> lessonIdList = bookmarkRepositorySupport.findBookmarkList(userId);
+        List<Lesson> lessonList = new ArrayList<>();
+
+        lessonIdList.forEach((lessonId) -> {
+            Optional<Lesson> lesson = lessonRepository.findById(lessonId);
+            if(!lesson.isPresent()) return;
+            lessonList.add(lesson.get());
+        });
+
+        return lessonList;
     }
 }
