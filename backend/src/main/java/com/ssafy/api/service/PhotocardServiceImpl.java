@@ -36,11 +36,11 @@ public class PhotocardServiceImpl implements PhotocardService {
     public void createPhotocard(PhotocardRegistPostReq photocardRegistPostReq) {
 
         User user = userRepositorySupport
-                .findUserByAuth(photocardRegistPostReq.getUser_email())
+                .findUserByAuth(photocardRegistPostReq.getUserEmail())
                 .get();
 
         Lesson lesson = photocardRepositorySupport
-                .findOneLesson(photocardRegistPostReq.getLesson_id());
+                .findOneLesson(photocardRegistPostReq.getLessonId());
 
 
         Photocard photocard = Photocard.builder()

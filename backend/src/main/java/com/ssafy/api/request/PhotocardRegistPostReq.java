@@ -23,9 +23,9 @@ public class PhotocardRegistPostReq {
     String sign;
 
     @ApiModelProperty(name="user_email", example="사용자 이메일")
-    String user_email;
+    String userEmail;
 
     @ApiModelProperty(name="lesson_id", example="강의 아이디")
-    Long lesson_id;
+    Long lessonId;
 
 }

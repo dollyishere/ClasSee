@@ -20,7 +20,7 @@ public class NoticeInfoRes {
 
     String regtime;
 
-    String user_nickname;
+    String userNickname;
 
     public NoticeInfoRes(Notice notice){
         this.id = notice.getId();
@@ -28,7 +28,7 @@ public class NoticeInfoRes {
         this.content = notice.getContent();
         this.img = notice.getImg();
         this.regtime = notice.getRegtime();
-        this.user_nickname = notice.getUser().getNickname();
+        this.userNickname = notice.getUser().getNickname();
     }
 
 

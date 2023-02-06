@@ -32,13 +32,13 @@ public class ReviewServiceImpl implements ReviewService {
     public void createReview(ReviewRegistPostReq reviewRegistPostReq) {
 
         Long user_id = userRepositorySupport
-                .findId(reviewRegistPostReq.getUser_email());
+                .findId(reviewRegistPostReq.getUserEmail());
 
         User user = userRepositorySupport
                 .findOne(user_id);
 
         OpenLesson openLesson = ordersRepositorySupport
-                .findOneOpenLesson(reviewRegistPostReq.getOpenLesson_id());
+                .findOneOpenLesson(reviewRegistPostReq.getOpenLessonId());
 
         Lesson lesson = ordersRepositorySupport
                 .findOneLesson(openLesson.getLessonId());

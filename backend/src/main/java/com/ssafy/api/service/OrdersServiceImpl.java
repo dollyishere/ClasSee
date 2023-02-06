@@ -40,7 +40,7 @@ public class OrdersServiceImpl implements OrdersService{
         String lesson_img = lessonRepositorySupport.findLessonProfileImg(lesson);
 
         OrdersInfoGetRes ordersInfoGetRes = new OrdersInfoGetRes(openLesson, lesson, user);
-        ordersInfoGetRes.setLesson_img(lesson_img);
+        ordersInfoGetRes.setLessonImg(lesson_img);
 
         return ordersInfoGetRes;
     }
