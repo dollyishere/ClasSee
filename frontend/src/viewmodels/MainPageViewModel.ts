@@ -44,13 +44,13 @@ const MainPageViewModel = () => {
 
     return res;
   };
-  const deleteBookmark = async (userId: string, lessonId: number) => {
-    const res = await deleteBookmarkApi(userId, lessonId);
+  const deleteBookmark = async (email: string, lessonId: number) => {
+    const res = await deleteBookmarkApi(email, lessonId);
 
     return res;
   };
-  const addBookmark = async (userId: string, lessonId: number) => {
-    const res = await addBookmarkApi(userId, lessonId);
+  const addBookmark = async (email: string, lessonId: number) => {
+    const res = await addBookmarkApi(email, lessonId);
 
     return res;
   };
