@@ -12,13 +12,12 @@ import java.time.LocalDateTime;
 @Setter
 public class AttendLessonInfoDto{
     Long lessonId;
-    Long openLessonid; // 레슨 아이디
+    Long openLessonId; // 레슨 아이디
     String name;
-    Long runningtime;
+    Long runningTime;
     String category;
     String img;
     double score;
-    boolean isBookmarked;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     LocalDateTime startTime;
     @DateTimeFormat(pattern = "yyyy-MM-dd")

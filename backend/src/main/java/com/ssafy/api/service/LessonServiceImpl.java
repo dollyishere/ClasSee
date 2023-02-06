@@ -207,15 +207,12 @@ public class LessonServiceImpl implements LessonService {
             attendLessonList.add(
                     AttendLessonInfoDto.builder()
                             .lessonId(openLesson.getLessonId())
-                            .openLessonid(openLesson.getId())
+                            .openLessonId(openLesson.getId())
                             .name(lesson.get().getName())
-                            .runningtime(lesson.get().getRunningtime())
+                            .runningTime(lesson.get().getRunningtime())
                             .category(lesson.get().getCategory())
                             .img(lesson.get().getPamphletList().get(0).getImg())
                             .score(lessonRepositorySupport.setLessonAvgScore(lesson.get()))
-                            .isBookmarked(
-                                    (bookmarkRepository.isBookmarked(userId, lesson.get().getId()) == 0) ? false : true
-                            )
                             .startTime(openLesson.getStartTime())
                             .endTime(openLesson.getEndTime())
                             .build()

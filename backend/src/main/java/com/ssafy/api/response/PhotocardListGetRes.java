@@ -16,11 +16,11 @@ public class PhotocardListGetRes {
     String img;
     String sign;
     String regDate;
-    String user_email;
-    String user_nickname;
-    String lesson_name;
-    Long likes_count;
-    Boolean likes_click;
+    String userEmail;
+    String userNickname;
+    String lessonName;
+    Long likesCount;
+    Boolean likesClick;
 
     public PhotocardListGetRes(Photocard photocard, Long likes_count, Boolean likes_click){
         this.id = photocard.getId();
@@ -29,11 +29,11 @@ public class PhotocardListGetRes {
         this.img = photocard.getImg();
         this.sign = photocard.getSign();
         this.regDate = photocard.getRegDate();
-        this.user_email = photocard.getUser().getAuth().getEmail();
-        this.user_nickname = photocard.getUser().getNickname();
-        this.lesson_name = photocard.getLesson_name();
-        this.likes_count = likes_count;
-        this.likes_click = likes_click;
+        this.userEmail = photocard.getUser().getAuth().getEmail();
+        this.userNickname = photocard.getUser().getNickname();
+        this.lessonName = photocard.getLesson_name();
+        this.likesCount = likes_count;
+        this.likesClick = likes_click;
 
     }
 

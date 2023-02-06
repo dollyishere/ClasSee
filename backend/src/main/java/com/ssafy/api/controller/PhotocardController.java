@@ -69,8 +69,8 @@ public class PhotocardController {
                 photocardList
                         .stream()
                         .map(p -> new PhotocardListGetRes(p,
-                                photocardService.likesCount(p),
-                                photocardService.likesCheck(email, p.getId())))
+                                photocardService.countLikes(p),
+                                photocardService.checkLikes(email, p.getId())))
                         .collect(Collectors.toList());
 
         Long photocardCount = photocardService.photocardCount();
@@ -99,8 +99,8 @@ public class PhotocardController {
                 photocardList
                         .stream()
                         .map(p -> new PhotocardListGetRes(p,
-                                photocardService.likesCount(p),
-                                photocardService.likesCheck(email, p.getId())))
+                                photocardService.countLikes(p),
+                                photocardService.checkLikes(email, p.getId())))
                         .collect(Collectors.toList());
 
         Long photocardCount = photocardService.myPhotocardCount(email);

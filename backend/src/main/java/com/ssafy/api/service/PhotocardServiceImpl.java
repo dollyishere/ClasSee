@@ -36,11 +36,11 @@ public class PhotocardServiceImpl implements PhotocardService {
     public void createPhotocard(PhotocardRegistPostReq photocardRegistPostReq) {
 
         User user = userRepositorySupport
-                .findUserByAuth(photocardRegistPostReq.getUser_email())
+                .findUserByAuth(photocardRegistPostReq.getUserEmail())
                 .get();
 
         Lesson lesson = photocardRepositorySupport
-                .findOneLesson(photocardRegistPostReq.getLesson_id());
+                .findOneLesson(photocardRegistPostReq.getLessonId());
 
 
         Photocard photocard = Photocard.builder()
@@ -101,20 +101,20 @@ public class PhotocardServiceImpl implements PhotocardService {
 
     @Override
     @Transactional(readOnly = true)
-    public Long likesCount(Photocard photocard) {
+    public Long countLikes(Photocard photocard) {
 
         Long id = photocard.getId();
 
         return photocardRepositorySupport
-                .likesCount(id);
+                .countLikes(id);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Boolean likesCheck(String email, Long id) {
+    public Boolean checkLikes(String email, Long id) {
         Long user_id = userRepositorySupport.findId(email);
 
-        if(photocardRepositorySupport.likesCheck(id, user_id) == null){
+        if(photocardRepositorySupport.checkLikes(id, user_id) == null){
             return false;
         } else{
             return true;

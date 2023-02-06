@@ -14,17 +14,17 @@ public class QnaListGetRes {
 
     String title;
 
-    String user_email;
+    String userEmail;
 
-    String user_nickname;
+    String userNickname;
 
     String regtime;
 
     public QnaListGetRes(Qna qna){
         this.id = qna.getId();
         this.title = qna.getTitle();
-        this.user_email = qna.getUser().getAuth().getEmail();
-        this.user_nickname = qna.getUser().getNickname();
+        this.userEmail = qna.getUser().getAuth().getEmail();
+        this.userNickname = qna.getUser().getNickname();
         this.regtime = qna.getRegTime();
     }
 }

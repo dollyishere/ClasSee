@@ -91,7 +91,7 @@ public class PhotocardRepositorySupport {
                 .fetchOne();
     }
 
-    public Long likesCount(Long id){
+    public Long countLikes(Long id){
         return jpaQueryFactory
                 .select(qLikes.count())
                 .from(qLikes)
@@ -99,7 +99,7 @@ public class PhotocardRepositorySupport {
                 .fetchOne();
     };
 
-    public Likes likesCheck(Long photocard_id, Long user_id){
+    public Likes checkLikes(Long photocard_id, Long user_id){
         return jpaQueryFactory
                 .select(qLikes)
                 .from(qLikes)

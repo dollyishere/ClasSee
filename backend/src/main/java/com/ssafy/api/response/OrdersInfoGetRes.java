@@ -14,40 +14,40 @@ import java.time.LocalDateTime;
 @ApiModel("OrdersInfoGetRes")
 public class OrdersInfoGetRes {
 
-    String lesson_img;
+    String lessonImg;
 
-    String lesson_name;
+    String lessonName;
 
-    String lesson_teacherName;
+    String lessonTeacherName;
 
-    LocalDateTime lesson_startTime;
+    LocalDateTime lessonStartTime;
 
-    String user_name;
+    String userName;
 
-    String user_nickname;
+    String userNickname;
 
-    String user_phone;
+    String userPhone;
 
-    String user_email;
+    String userEmail;
 
-    String user_address;
+    String userAddress;
 
-    Long lesson_price;
+    Long lessonPrice;
 
-    Long kit_price;
+    Long kitPrice;
 
     public OrdersInfoGetRes(OpenLesson openLesson, Lesson lesson, User user){
 
-        this.lesson_name = lesson.getName();
-        this.lesson_teacherName = lesson.getUser().getName();
-        this.lesson_startTime = openLesson.getStartTime();
-        this.user_name = user.getName();
-        this.user_nickname = user.getNickname();
-        this.user_phone = user.getPhone();
-        this.user_email = user.getAuth().getEmail();
-        this.user_address = user.getAddress();
-        this.lesson_price = lesson.getPrice();
-        this.kit_price = lesson.getKitPrice();
+        this.lessonName = lesson.getName();
+        this.lessonTeacherName = lesson.getUser().getName();
+        this.lessonStartTime = openLesson.getStartTime();
+        this.userName = user.getName();
+        this.userNickname = user.getNickname();
+        this.userPhone = user.getPhone();
+        this.userEmail = user.getAuth().getEmail();
+        this.userAddress = user.getAddress();
+        this.lessonPrice = lesson.getPrice();
+        this.kitPrice = lesson.getKitPrice();
 
     }
 }

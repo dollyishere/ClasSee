@@ -18,20 +18,20 @@ public class QnaInfoGetRes {
 
     String regTime;
 
-    String user_email;
+    String userEmail;
 
-    String user_nickname;
+    String userNickname;
 
-    String user_img;
+    String userImg;
 
     public QnaInfoGetRes(Qna qna){
         this.id = qna.getId();
         this.title = qna.getTitle();
         this.content = qna.getContent();
         this.regTime = qna.getRegTime();
-        this.user_email = qna.getUser().getAuth().getEmail();
-        this.user_nickname = qna.getUser().getNickname();
-        this.user_img = qna.getUser().getImg();
+        this.userEmail = qna.getUser().getAuth().getEmail();
+        this.userNickname = qna.getUser().getNickname();
+        this.userImg = qna.getUser().getImg();
     }
 
 }

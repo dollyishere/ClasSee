@@ -14,7 +14,7 @@ public interface ReviewService {
 
     List<Review> readMyReview(String email, int offset, int limit);
 
-    Long countReview();
+    Long countReview(Long lesson_id);
 
     Long countMyReview(String email);
 

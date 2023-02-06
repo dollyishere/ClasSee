@@ -29,14 +29,15 @@ public class ReviewRepositorySupport {
 
     public Review findOne(Long id) { return em.find(Review.class, id); }
 
-    public Long reviewCount(){
+    public Long countReview(Long lesson_id){
         return jpaQueryFactory
                 .select(qReview.count())
                 .from(qReview)
+                .where(qReview.lesson.id.eq(lesson_id))
                 .fetchOne();
     }
 
-    public Long myReviewCount(Long user_id){
+    public Long countMyReview(Long user_id){
         return jpaQueryFactory
                 .select(qReview.count())
                 .from(qReview)

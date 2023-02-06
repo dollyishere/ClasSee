@@ -32,13 +32,13 @@ public class ReviewServiceImpl implements ReviewService {
     public void createReview(ReviewRegistPostReq reviewRegistPostReq) {
 
         Long user_id = userRepositorySupport
-                .findId(reviewRegistPostReq.getUser_email());
+                .findId(reviewRegistPostReq.getUserEmail());
 
         User user = userRepositorySupport
                 .findOne(user_id);
 
         OpenLesson openLesson = ordersRepositorySupport
-                .findOneOpenLesson(reviewRegistPostReq.getOpenLesson_id());
+                .findOneOpenLesson(reviewRegistPostReq.getOpenLessonId());
 
         Lesson lesson = ordersRepositorySupport
                 .findOneLesson(openLesson.getLessonId());
@@ -79,8 +79,8 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional(readOnly = true)
-    public Long countReview() {
-        return reviewRepositorySupport.reviewCount();
+    public Long countReview(Long lesson_id) {
+        return reviewRepositorySupport.countReview(lesson_id);
     }
 
     @Override
@@ -88,7 +88,7 @@ public class ReviewServiceImpl implements ReviewService {
     public Long countMyReview(String email) {
         Long user_id = userRepositorySupport.findId(email);
 
-        return reviewRepositorySupport.myReviewCount(user_id);
+        return reviewRepositorySupport.countMyReview(user_id);
     }
 
     @Override

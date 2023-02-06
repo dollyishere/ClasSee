@@ -40,7 +40,7 @@ public class OrdersServiceImpl implements OrdersService{
         String lesson_img = lessonRepositorySupport.findLessonProfileImg(lesson);
 
         OrdersInfoGetRes ordersInfoGetRes = new OrdersInfoGetRes(openLesson, lesson, user);
-        ordersInfoGetRes.setLesson_img(lesson_img);
+        ordersInfoGetRes.setLessonImg(lesson_img);
 
         return ordersInfoGetRes;
     }
@@ -53,6 +53,10 @@ public class OrdersServiceImpl implements OrdersService{
         Long user_point = user.getPoint();
 
         OpenLesson openLesson = ordersRepositorySupport.findOneOpenLesson(ordersRegistPostReq.getOpenLesson_id());
+        Lesson lesson = ordersRepositorySupport.findOneLesson(openLesson.getLessonId());
+
+        Long teacher_id = lesson.getUser().getId();
+        User teacher = userRepositorySupport.findOne(teacher_id);
 
         if(user_point >= ordersRegistPostReq.getPrice()) {
             Orders orders = Orders.builder()
@@ -66,6 +70,7 @@ public class OrdersServiceImpl implements OrdersService{
                     .build();
 
             user.setPoint(user_point - ordersRegistPostReq.getPrice());
+            teacher.setPoint(teacher.getPoint() + ordersRegistPostReq.getPrice());
             userRepositorySupport.save(user);
             ordersRepositorySupport.save(orders);
         } else {

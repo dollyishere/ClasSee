@@ -13,8 +13,8 @@ public interface PhotocardService {
     Long photocardCount();
     Long myPhotocardCount(String email);
     void deletePhotocard(Long id);
-    Long likesCount(Photocard photocard);
-    Boolean likesCheck(String email, Long id);
+    Long countLikes(Photocard photocard);
+    Boolean checkLikes(String email, Long id);
     void createLikes(String email, Long id);
     void deleteLikes(String email, Long id);
 

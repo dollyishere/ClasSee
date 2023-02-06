@@ -55,7 +55,7 @@ public class ReviewController {
                         .map(r -> new ReviewListGetRes(r))
                         .collect(Collectors.toList());
 
-        Long reviewCount = reviewService.countReview();
+        Long reviewCount = reviewService.countReview(lesson_id);
 
         PageGetRes reviewPage = new PageGetRes();
         reviewPage.setCount(reviewCount);
