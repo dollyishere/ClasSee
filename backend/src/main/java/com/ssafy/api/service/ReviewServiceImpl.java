@@ -1,6 +1,7 @@
 package com.ssafy.api.service;
 
 import com.ssafy.api.request.ReviewRegistPostReq;
+import com.ssafy.api.request.ReviewUpdatePutReq;
 import com.ssafy.db.entity.lesson.Lesson;
 import com.ssafy.db.entity.lesson.OpenLesson;
 import com.ssafy.db.entity.lesson.Review;
@@ -71,8 +72,12 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public void updateReview() {
+    public void updateReview(ReviewUpdatePutReq reviewUpdatePutReq) {
 
+        reviewRepositorySupport
+                .updateReview(reviewUpdatePutReq);
+
+        return;
     }
 
     @Override

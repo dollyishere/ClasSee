@@ -1,6 +1,7 @@
 package com.ssafy.api.service;
 
 import com.ssafy.api.request.ReviewRegistPostReq;
+import com.ssafy.api.request.ReviewUpdatePutReq;
 import com.ssafy.db.entity.lesson.Review;
 
 import java.util.List;
@@ -13,7 +14,7 @@ public interface ReviewService {
 
     Long countReview();
 
-    void updateReview();
+    void updateReview(ReviewUpdatePutReq reviewUpdatePutReq);
 
     void deleteReview(Long id);
 
