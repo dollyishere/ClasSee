@@ -2,6 +2,7 @@ package com.ssafy.api.service;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import com.ssafy.api.dto.KakaoUserDto;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -11,9 +12,12 @@ import java.net.URL;
 @Service
 public class KakaoService {
 
-    public void getKakaoInfo(String code) {
+    public KakaoUserDto getKakaoInfo(String code) {
         String access_Token = "";
         String refresh_Token = "";
+        Long refreshTokenExpiresIn = 0l;
+        Long expiresIn = 0l;
+        KakaoUserDto kakaoUser = KakaoUserDto.builder().build();
         String reqURL = "https://kauth.kakao.com/oauth/token";
 
         try {
@@ -54,14 +58,20 @@ public class KakaoService {
 
             access_Token = element.getAsJsonObject().get("access_token").getAsString();
             refresh_Token = element.getAsJsonObject().get("refresh_token").getAsString();
+            expiresIn = element.getAsJsonObject().get("expires_in").getAsLong();
+            refreshTokenExpiresIn = element.getAsJsonObject().get("refresh_token_expires_in").getAsLong();
 
-            System.out.println("access_token : " + access_Token);
-            System.out.println("refresh_token : " + refresh_Token);
+            kakaoUser.setAccessToken(access_Token);
+            kakaoUser.setRefreshToken(refresh_Token);
+            kakaoUser.setRefreshTokenExpiresIn(refreshTokenExpiresIn);
+            kakaoUser.setExpiresIn(expiresIn);
 
             br.close();
             bw.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        return kakaoUser;
     }
 }

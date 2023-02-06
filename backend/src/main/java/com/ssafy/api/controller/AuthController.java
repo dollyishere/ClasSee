@@ -1,5 +1,6 @@
 package com.ssafy.api.controller;
 
+import com.ssafy.api.dto.KakaoUserDto;
 import com.ssafy.api.request.UserLogoutPostReq;
 import com.ssafy.api.response.UserSaltRes;
 import com.ssafy.api.service.*;
@@ -207,7 +208,7 @@ public class AuthController {
 	})
 	public ResponseEntity<? extends BaseResponseBody> getKakaoCode(@RequestParam String code) {
 		System.out.println(code);
-		kakaoService.getKakaoInfo(code);
+		KakaoUserDto kakaoUserDto = kakaoService.getKakaoInfo(code);
 
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "SUCCESS"));
 	}
