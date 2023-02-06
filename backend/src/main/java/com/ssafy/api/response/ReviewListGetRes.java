@@ -21,6 +21,8 @@ public class ReviewListGetRes {
     String user_email;
     String user_nickname;
     String user_img;
+    Long lesson_id;
+    String lesson_name;
 
     public ReviewListGetRes(Review review){
 
@@ -33,6 +35,8 @@ public class ReviewListGetRes {
         this.score = review.getScore();
         this.user_nickname = review.getUser().getNickname();
         this.user_img = review.getUser().getImg();
+        this.lesson_id = review.getLesson().getId();
+        this.lesson_name = review.getLesson().getName();
 
     }
 

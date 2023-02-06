@@ -66,10 +66,28 @@ public class PhotocardRepositorySupport {
                 .fetch();
     }
 
+    public List<Photocard> findMyList(int offset, int limit, Long user_id) {
+        return jpaQueryFactory
+                .selectFrom(qPhotocard)
+                .where(qPhotocard.user.id.eq(user_id))
+                .orderBy(qPhotocard.id.desc())
+                .offset(offset)
+                .limit(limit)
+                .fetch();
+    }
+
     public Long photocardCount(){
         return jpaQueryFactory
                 .select(qPhotocard.count())
                 .from(qPhotocard)
+                .fetchOne();
+    }
+
+    public Long myPhotocardCount(Long user_id){
+        return jpaQueryFactory
+                .select(qPhotocard.count())
+                .from(qPhotocard)
+                .where(qPhotocard.user.id.eq(user_id))
                 .fetchOne();
     }
 

@@ -36,11 +36,30 @@ public class ReviewRepositorySupport {
                 .fetchOne();
     }
 
+    public Long myReviewCount(Long user_id){
+        return jpaQueryFactory
+                .select(qReview.count())
+                .from(qReview)
+                .where(qReview.user.id.eq(user_id))
+                .fetchOne();
+    }
+
     public List<Review> findList(Long lesson_id, int offset, int limit){
         return jpaQueryFactory
                 .select(qReview)
                 .from(qReview)
                 .where(qReview.lesson.id.eq(lesson_id))
+                .orderBy(qReview.id.desc())
+                .offset(offset)
+                .limit(limit)
+                .fetch();
+    }
+
+    public List<Review> findMyList(Long user_id, int offset, int limit){
+        return jpaQueryFactory
+                .select(qReview)
+                .from(qReview)
+                .where(qReview.user.id.eq(user_id))
                 .orderBy(qReview.id.desc())
                 .offset(offset)
                 .limit(limit)

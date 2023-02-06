@@ -12,7 +12,11 @@ public interface ReviewService {
 
     List<Review> readReview(Long lesson_id, int offset, int limit);
 
+    List<Review> readMyReview(String email, int offset, int limit);
+
     Long countReview();
+
+    Long countMyReview(String email);
 
     void updateReview(ReviewUpdatePutReq reviewUpdatePutReq);
 

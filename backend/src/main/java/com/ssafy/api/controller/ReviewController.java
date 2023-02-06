@@ -40,8 +40,8 @@ public class ReviewController {
         return ResponseEntity.status(200).body(BaseResponseBody.of(200,"success"));
     }
 
-    @GetMapping("/{lesson_id}")
-    @ApiOperation(value = "리뷰 목록 조회", notes = "리뷰를 볼 lesson id와 limit(가져올 수), offset(시작지점)을 입력하면 목록을 반환")
+    @GetMapping("/list/{lesson_id}")
+    @ApiOperation(value = "강의 리뷰 목록 조회", notes = "리뷰를 볼 lesson id와 limit(가져올 수), offset(시작지점)을 입력하면 목록을 반환")
     @ApiResponses({
             @ApiResponse(code = 200, message = "success")
     })
@@ -56,6 +56,30 @@ public class ReviewController {
                         .collect(Collectors.toList());
 
         Long reviewCount = reviewService.countReview();
+
+        PageGetRes reviewPage = new PageGetRes();
+        reviewPage.setCount(reviewCount);
+        reviewPage.setPage(reviewListGetResList);
+
+        return ResponseEntity.status(200).body(reviewPage);
+    }
+
+    @GetMapping("/mylist/{email}")
+    @ApiOperation(value = "내가 쓴 리뷰 목록 조회", notes = "내 email과 limit(가져올 수), offset(시작지점)을 입력하면 목록을 반환")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "success")
+    })
+    public ResponseEntity<?> reviewList(@PathVariable String email, @RequestParam int offset, @RequestParam int limit){
+
+        List<Review> myReviewList = reviewService.readMyReview(email, offset, limit);
+
+        List<ReviewListGetRes> reviewListGetResList =
+                myReviewList
+                        .stream()
+                        .map(r -> new ReviewListGetRes(r))
+                        .collect(Collectors.toList());
+
+        Long reviewCount = reviewService.countMyReview(email);
 
         PageGetRes reviewPage = new PageGetRes();
         reviewPage.setCount(reviewCount);

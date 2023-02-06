@@ -117,6 +117,11 @@ public class UserServiceImpl implements UserService {
 		userRepositorySupport.updateDescription(email, description);
 	}
 
+	@Override
+	public void updateUserImg(String email, String img) {
+		userRepositorySupport.updateImg(email, img);
+	}
+
 	// 유저 닉네임, 비밀번호, 전화번호, 주소, 소개 업데이트 끝
 
 	@Override

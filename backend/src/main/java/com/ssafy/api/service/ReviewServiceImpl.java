@@ -59,6 +59,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Review> readReview(Long lesson_id, int offset, int limit) {
 
         return reviewRepositorySupport
@@ -67,8 +68,27 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public List<Review> readMyReview(String email, int offset, int limit) {
+        Long user_id = userRepositorySupport.findId(email);
+
+        return reviewRepositorySupport
+                .findMyList(user_id, offset, limit);
+
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public Long countReview() {
         return reviewRepositorySupport.reviewCount();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Long countMyReview(String email) {
+        Long user_id = userRepositorySupport.findId(email);
+
+        return reviewRepositorySupport.myReviewCount(user_id);
     }
 
     @Override

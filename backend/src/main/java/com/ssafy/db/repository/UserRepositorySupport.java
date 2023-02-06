@@ -85,6 +85,9 @@ public class UserRepositorySupport {
 
         jpaQueryFactory.update(qUser).where(qUser.id.eq(id))
                 .set(qUser.nickname, nickname).execute();
+
+        em.clear();
+        em.flush();
     }
 
 //    public void updatePassword(String email, String password) {
@@ -97,6 +100,9 @@ public class UserRepositorySupport {
 
         jpaQueryFactory.update(qUser).where(qUser.id.eq(id))
                 .set(qUser.phone, phone).execute();
+
+        em.clear();
+        em.flush();
     }
 
     public void updateAddress(String email, String address) {
@@ -104,6 +110,9 @@ public class UserRepositorySupport {
 
         jpaQueryFactory.update(qUser).where(qUser.id.eq(id))
                 .set(qUser.address, address).execute();
+
+        em.clear();
+        em.flush();
     }
 
     public void updateDescription(String email, String description) {
@@ -111,6 +120,19 @@ public class UserRepositorySupport {
 
         jpaQueryFactory.update(qUser).where(qUser.id.eq(id))
                 .set(qUser.description, description).execute();
+
+        em.clear();
+        em.flush();
+    }
+
+    public void updateImg(String email, String img){
+        Long id = findId(email);
+
+        jpaQueryFactory.update(qUser).where(qUser.id.eq(id))
+                .set(qUser.img, img).execute();
+
+        em.clear();
+        em.flush();
     }
 
     // 업데이트 끝
