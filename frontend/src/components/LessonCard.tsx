@@ -12,14 +12,14 @@ import logo from '../assets/logo.png';
 
 interface Props {
   lesson: {
-    id: number;
+    lessonId: number;
     lessonImage: string;
     teacher: string;
     teacherImage: string;
     name: string;
-    runningTime: string;
+    runningTime: number;
     category: string;
-    rating: number;
+    score: number;
     isBookMarked: boolean;
   };
 }
@@ -35,9 +35,9 @@ const LessonCard = ({ lesson }: Props) => {
   return (
     <div className="lesson">
       <Link
-        to={`/lessons/${lesson.id}`}
+        to={`/lesson/${lesson.lessonId}`}
         className="lesson__card"
-        key={lesson.id}
+        key={lesson.lessonId}
       >
         {/* 강의 대표이미지와 북마크 버튼 담는 div */}
         <div className="lesson__backImg">
@@ -86,12 +86,12 @@ const LessonCard = ({ lesson }: Props) => {
             <Rating
               className="lesson__rating--star"
               name="half-rating-read"
-              value={lesson.rating}
+              value={lesson.score}
               precision={0.5}
               readOnly
             />
             {/* 별점 숫자 */}
-            <p className="lesson__rating--number"> {lesson.rating}</p>
+            <p className="lesson__rating--number"> {lesson.score}</p>
           </div>
           {/* 소요시간 */}
           <p className="lesson__time">

@@ -36,7 +36,7 @@ const MyAppliedTest = ({ lesson }: Props) => {
     // setModalOpen(true);
     if (window.confirm('해당 강의를 정말 취소 하시겠습니까?')) {
       if (userInfo) {
-        deleteMyAppliedLessonsMainpage(userInfo.email, lesson.id).then(
+        deleteMyAppliedLessonsMainpage(userInfo.email, lesson.lessonId).then(
           (res: string) => {
             console.log('res', res);
           },
@@ -102,12 +102,12 @@ const MyAppliedTest = ({ lesson }: Props) => {
           <Rating
             className="lesson__rating--star"
             name="half-rating-read"
-            value={lesson.rating}
+            value={lesson.score}
             precision={0.5}
             readOnly
           />
           {/* 별점 숫자 */}
-          <p className="lesson__rating--number"> {lesson.rating}</p>
+          <p className="lesson__rating--number"> {lesson.score}</p>
         </div>
         {/* 소요시간 */}
         <p className="lesson__time">

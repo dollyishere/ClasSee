@@ -3,11 +3,11 @@ import BasicRating from '../Rating';
 
 interface Props {
   username: string;
-  rating: number;
-  onSubmit: (username: string, rating: number, text: string) => void;
+  score: number;
+  onSubmit: (username: string, score: number, text: string) => void;
 }
 
-const Reviews: React.FC<Props> = ({ username, rating, onSubmit }: Props) => {
+const Reviews: React.FC<Props> = ({ username, score, onSubmit }: Props) => {
   // const Reviews = () => {
   const [text, setText] = useState('');
 
@@ -16,7 +16,7 @@ const Reviews: React.FC<Props> = ({ username, rating, onSubmit }: Props) => {
   };
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    onSubmit(username, rating, text);
+    onSubmit(username, score, text);
   };
 
   return (
