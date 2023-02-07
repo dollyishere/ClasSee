@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
 import { Stack, Button, Card, CardContent } from '@mui/material';
@@ -53,16 +53,18 @@ const MyCreatedLessonDetailPage = () => {
   // api 실행할 시 실행될 CreateLessonViewModel createLesson에 할당
   const { getLessonDetail } = LessonDetailViewModel();
 
+  // 컴포넌트 전환에 필요한 useNavigate 재할당
+  const navigate = useNavigate();
+
   // 강의 개설을 신청하는 유저의 이메일 정보를 useRecoilValue를 통해 불러옴
   const userInfo = useRecoilValue(PrivateInfoState);
 
   // 강의 소개 & 준비물 이미지 파일을 담을 State 각각 생성
   const [pamphletsImgState, setPamphletsImgState] = useState<any>([]);
   const [checkListImgState, setCheckListImgState] = useState<any>([]);
-  const [teacherImgState, setTeacherImgState] = useState<any>();
 
   // 스케줄 목록을 담을 State 생성
-  const [schedulesListState, setScheduleListState] = useState<any>([]);
+  const [schedulesListState, setSchedulesListState] = useState<any>([]);
 
   // 강의 스케줄 추가 input 여부 확인할 state 생성
   const [scheduleInputState, setScheduleInputState] = useState(false);
@@ -133,7 +135,21 @@ const MyCreatedLessonDetailPage = () => {
             <div className="created-lesson-detail-page__lesson-name">
               <h3>클래스 명:</h3>
               <p>{lessonDetailState.lessonName}</p>
-              <p>상세 페이지 바로 가기</p>
+              <span
+                role="button"
+                tabIndex={0}
+                onClick={() =>
+                  navigate(`/lessons/${Number(lessonId.lessonId)}`)
+                }
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    navigate(`/lessons/${Number(lessonId.lessonId)}`);
+                  }
+                }}
+              >
+                상세 페이지 바로 가기
+              </span>
             </div>
             <div className="created-lesson-detail-page__runningtime">
               <h3>소요 시간:</h3>

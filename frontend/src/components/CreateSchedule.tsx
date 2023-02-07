@@ -65,6 +65,7 @@ const CreateScheduleComponent = ({
           endTime: `${endTime.slice(0, 10)} ${endTime.slice(-5)}`,
           startTime: `${startTime.slice(0, 10)} ${startTime.slice(-5)}`,
         };
+        console.log(createScheduleRequestBody);
         const res = await createSchedule(createScheduleRequestBody, lessonId);
         if (res?.message === 'SUCCESS') {
           alert('스케줄이 등록되었습니다');
