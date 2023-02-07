@@ -23,7 +23,7 @@ import java.util.Optional;
 @Service
 public class LessonServiceImpl implements LessonService {
     @Autowired
-    BookmarkRepository bookmarkRepository;
+    BookmarkRepositorySupport bookmarkRepositorySupport;
     @Autowired
     LessonRepositorySupport lessonRepositorySupport;
 
@@ -125,7 +125,7 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public LessonDetailsRes getLessonDetails(Long lessonId) {
+    public LessonDetailsRes getLessonDetails(Long lessonId, User user) {
         Optional<Lesson> lesson = lessonRepository.findById(lessonId);
         if(!lesson.isPresent()) return null;
         User teacher = userRepositorySupport.findOne(lesson.get().getUser().getId());
@@ -134,22 +134,25 @@ public class LessonServiceImpl implements LessonService {
         List<Checklist> checklists = lessonRepositorySupport.findCheckListByLesson(lessonId);
         List<Pamphlet> pamphlets = lessonRepositorySupport.findPamphletByLesson(lessonId);
         double score = lessonRepositorySupport.setLessonAvgScore(lesson.get());
+        Long isBookMarked = bookmarkRepositorySupport.bookmarkedCheck(lessonId, user);
 
         LessonDetailsRes lessonDetailsRes = LessonDetailsRes.builder()
-                .userEmail(teacher.getAuth().getEmail())
+                .teacherEmail(teacher.getAuth().getEmail())
                 .lessonName(lesson.get().getName())
                 .lessonDescription(lesson.get().getDescription())
                 .cklsDescription(lesson.get().getCklsDescription())
                 .kitPrice(lesson.get().getKitPrice())
                 .kitDescription(lesson.get().getKitDescription())
                 .category(lesson.get().getCategory())
-                .runningtime(lesson.get().getRunningtime())
+                .runningTime(lesson.get().getRunningtime())
                 .userName(teacher.getName())
                 .userDesciption(teacher.getDescription())
-                .profileImg(teacher.getImg())
+                .teacherImage(teacher.getImg())
                 .curriculums(curriculums)
+                .maximum(lesson.get().getMaximum())
                 .checkLists(checklists)
                 .pamphlets(pamphlets)
+                .isBookMarked((isBookMarked == 0) ? false: true)
                 .score(score)
                 .build();
         return lessonDetailsRes;

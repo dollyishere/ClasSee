@@ -120,9 +120,14 @@ public class LessonController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends BaseResponseBody> getLessonDetails(@PathVariable Long lessonId) {
-        LessonDetailsRes lessonDetailsRes = lessonService.getLessonDetails(lessonId);
-        if(lessonDetailsRes == null) return ResponseEntity.status(200).body(LessonDetailsRes.of(404, "LESSON NOT FOUND", lessonDetailsRes));
+    public ResponseEntity<? extends BaseResponseBody> getLessonDetails(@PathVariable Long lessonId, String email) {
+        User user = null;
+        if(email != null) {
+            user = userService.getUserByAuth(email);
+            if (user == null) return ResponseEntity.status(200).body(BaseResponseBody.of(404, "USER NOT FOUND"));
+        }
+        LessonDetailsRes lessonDetailsRes = lessonService.getLessonDetails(lessonId, user);
+        if(lessonDetailsRes == null) return ResponseEntity.status(200).body(BaseResponseBody.of(404, "LESSON NOT FOUND"));
 
         return ResponseEntity.status(200).body(LessonDetailsRes.of(200, "SUCCESS", lessonDetailsRes));
     }
