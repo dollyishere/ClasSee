@@ -160,6 +160,18 @@ const UserApi = () => {
     return null;
   };
 
+  const doWithdrawl = async (email: string) => {
+    try {
+      const response = await axios.delete<Response>(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/users/${email}`,
+      );
+      return response.data.statusCode;
+    } catch (error: any) {
+      console.error(error);
+    }
+    return null;
+  };
+
   return {
     doSignUp,
     doEmailDuplicationCheck,
@@ -172,6 +184,7 @@ const UserApi = () => {
     doUpdateAddress,
     doUpdateDescription,
     doUpdatePassword,
+    doWithdrawl,
   };
 };
 
