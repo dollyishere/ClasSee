@@ -32,7 +32,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/swagger-ui/**",
             "/swagger-resources/**",
             "/api/v1/article",
-            "/api/v1/auth/login",
             "/api/v1/lessons/**",
             "/api/v1/mails/confirm/**",
             "/api/v1/photocard/list",
@@ -82,6 +81,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .authorizeRequests()
                     .antMatchers("/api/v1/auth/login").permitAll()       //인증이 필요한 URL과 필요하지 않은 URL에 대하여 설정
                     .antMatchers("/api/v1/auth/kakao").permitAll()       //인증이 필요한 URL과 필요하지 않은 URL에 대하여 설정
+                    .antMatchers("/api/v1/auth/salt").permitAll()       //인증이 필요한 URL과 필요하지 않은 URL에 대하여 설정
                     .antMatchers(HttpMethod.GET, OPEN_API_PATH).permitAll()       //인증이 필요한 URL과 필요하지 않은 URL에 대하여 설정
 //                    .antMatchers("/api/v1/users/me", "/api/v1/auth/test").authenticated()       //인증이 필요한 URL과 필요하지 않은 URL에 대하여 설정
                     .anyRequest().authenticated()

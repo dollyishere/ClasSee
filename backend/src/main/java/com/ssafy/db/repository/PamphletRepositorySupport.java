@@ -32,4 +32,8 @@ public class PamphletRepositorySupport {
         em.clear();
         em.flush();
     }
+
+    public void delete(Long lessonId) {
+        jpaQueryFactory.delete(qPamphlet).where(qPamphlet.lessonId.eq(lessonId));
+    }
 }

@@ -35,4 +35,10 @@ public class CheckListRepositorySupport {
         em.clear();
         em.flush();
     }
+
+    public void delete(Long lessonId){
+        jpaQueryFactory.delete(qChecklist)
+                .where(qChecklist.lessonId.eq(lessonId))
+                .execute();
+    }
 }
