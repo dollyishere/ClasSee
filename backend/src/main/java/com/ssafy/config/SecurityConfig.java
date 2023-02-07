@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -26,6 +27,19 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    private static String[] OPEN_API_PATH = new String[] {
+            "/v2/api-docs/**",
+            "/swagger-ui/**",
+            "/swagger-resources/**",
+            "/api/v1/article",
+            "/api/v1/auth/login",
+            "/api/v1/lessons/**",
+            "/api/v1/mails/confirm/**",
+            "/api/v1/photocard/list",
+            "/api/v1/review/list/**",
+            "/api/v1/users",
+            "/api/v1/users/duplicate/**"
+    };
     @Autowired
     private SsafyUserDetailService ssafyUserDetailService;
 
@@ -66,20 +80,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .addFilter(new JwtAuthenticationFilter(authenticationManager(), userService, redisTemplate)) //HTTP 요청에 JWT 토큰 인증 필터를 거치도록 필터를 추가
                     .authorizeRequests()
-                    .antMatchers(
-                            "/v2/api-docs/**",
-                            "/swagger-ui/",
-                            "/swagger-ui/**",
-                            "/swagger-resources/**",
-                            "/api/v1/article",
-                            "/api/v1/auth/login",
-                            "/api/v1/lessons/**",
-                            "/api/v1/mails/confirm/**",
-                            "/api/v1/photocard/list",
-                            "/api/v1/review/list/**",
-                            "/api/v1/users",
-                            "/api/v1/users/duplicate/**"
-                    ).permitAll()       //인증이 필요한 URL과 필요하지 않은 URL에 대하여 설정
+                    .antMatchers(HttpMethod.GET, OPEN_API_PATH).permitAll()       //인증이 필요한 URL과 필요하지 않은 URL에 대하여 설정
 //                    .antMatchers("/api/v1/users/me", "/api/v1/auth/test").authenticated()       //인증이 필요한 URL과 필요하지 않은 URL에 대하여 설정
                     .anyRequest().authenticated()
                 .and().cors();
