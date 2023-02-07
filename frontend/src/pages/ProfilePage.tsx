@@ -12,13 +12,21 @@ const ProfilePage = () => {
   const navigate = useNavigate();
   const userInfo = useRecoilValue(privateInfoState);
 
-  const { uploadProfileImage, getProfileImage } = useViewModel();
+  const { uploadProfileImage, getProfileImage, updateNickName } =
+    useViewModel();
 
   const upload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.currentTarget.files !== null && userInfo !== null) {
       await uploadProfileImage(e.currentTarget.files[0]);
       const uploadedImage = await getProfileImage(userInfo.email);
       setImage(uploadedImage);
+    }
+  };
+
+  const handleUpdateNickName = async () => {
+    const nickname = prompt('변경할 닉네임을 입력하세요.');
+    if (nickname !== null) {
+      updateNickName(nickname);
     }
   };
 
@@ -79,6 +87,7 @@ const ProfilePage = () => {
                     <button
                       type="button"
                       className="button profile-page__button"
+                      onClick={handleUpdateNickName}
                     >
                       닉네임 변경
                     </button>
@@ -116,11 +125,6 @@ const ProfilePage = () => {
                 <div className="profile-page__section--label">이메일</div>
                 <div className="profile-page__section--content">
                   {userInfo.email}
-                </div>
-                <div className="profile-page__buttons">
-                  <button type="button" className="button profile-page__button">
-                    이메일 변경
-                  </button>
                 </div>
               </div>
               <div className="profile-page__section">
