@@ -12,7 +12,7 @@ const ProfilePage = () => {
   const navigate = useNavigate();
   const userInfo = useRecoilValue(privateInfoState);
 
-  const { uploadProfileImage, getProfileImage, updateNickName } =
+  const { uploadProfileImage, getProfileImage, updateNickName, updatePhone } =
     useViewModel();
 
   const upload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -24,9 +24,20 @@ const ProfilePage = () => {
   };
 
   const handleUpdateNickName = async () => {
-    const nickname = prompt('변경할 닉네임을 입력하세요.');
-    if (nickname !== null) {
-      updateNickName(nickname);
+    if (userInfo !== null) {
+      const nickname = prompt('변경할 닉네임을 입력하세요.', userInfo.name);
+      if (nickname !== null) {
+        updateNickName(nickname);
+      }
+    }
+  };
+
+  const handleUpdatePhone = async () => {
+    if (userInfo !== null) {
+      const phone = prompt('변경할 전화번호를 입력하세요.', userInfo.phone);
+      if (phone !== null) {
+        updatePhone(phone);
+      }
     }
   };
 
@@ -142,7 +153,11 @@ const ProfilePage = () => {
                   {userInfo.phone}
                 </div>
                 <div className="profile-page__buttons">
-                  <button type="button" className="button profile-page__button">
+                  <button
+                    type="button"
+                    className="button profile-page__button"
+                    onClick={handleUpdatePhone}
+                  >
                     전화번호 변경
                   </button>
                 </div>

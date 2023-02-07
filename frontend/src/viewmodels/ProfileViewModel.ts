@@ -15,7 +15,7 @@ import useInfoState from '../models/PrivateInfoAtom';
 const ProfileViewModel = () => {
   const [userInfo, setUserInfo] = useRecoilState(useInfoState);
   const authToken = useRecoilValue(authTokenState);
-  const { doUpdateProfileImage, doUpdateNickName } = useApi();
+  const { doUpdateProfileImage, doUpdateNickName, doUpdatePhone } = useApi();
 
   const getProfileImage = async (email: string) => {
     const imageRef = ref(storage, `profiles/${encodeURI(email)}/`);
@@ -66,10 +66,23 @@ const ProfileViewModel = () => {
     }
   };
 
+  const updatePhone = async (phone: string) => {
+    if (userInfo !== null) {
+      const response = await doUpdatePhone(userInfo.email, phone);
+      if (response === 200) {
+        setUserInfo({
+          ...userInfo,
+          phone,
+        });
+      }
+    }
+  };
+
   return {
     updateNickName,
     uploadProfileImage,
     getProfileImage,
+    updatePhone,
   };
 };
 
