@@ -105,6 +105,18 @@ const UserApi = () => {
     return null;
   };
 
+  const doUpdatePhone = async (email: string, phone: string) => {
+    try {
+      const response = await axios.put<Response>(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/users/${email}/phone?phone=${phone}`,
+      );
+      return response.data.statusCode;
+    } catch (error: any) {
+      console.error(error);
+    }
+    return null;
+  };
+
   return {
     doSignUp,
     doEmailDuplicationCheck,
@@ -113,6 +125,7 @@ const UserApi = () => {
     doUpdateProfileImage,
     doGetAccessToken,
     doUpdateNickName,
+    doUpdatePhone,
   };
 };
 
