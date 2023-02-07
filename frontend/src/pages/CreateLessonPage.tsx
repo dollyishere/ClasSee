@@ -7,7 +7,7 @@ import { Button, Card, CardActions } from '@mui/material';
 import { ref, uploadBytes } from 'firebase/storage';
 import { storage } from '../utils/Firebase';
 
-import PrivateInfoState from '../models/PrivateInfoAtom';
+import privateInfoState from '../models/PrivateInfoAtom';
 
 import StepOne from '../components/CreateLessonPage/StepOne';
 import StepTwo from '../components/CreateLessonPage/StepTwo';

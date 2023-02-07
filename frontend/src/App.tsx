@@ -16,6 +16,7 @@ import UpdateLessonPage from './pages/UpdateLessonPage';
 import TestPage from './pages/TestPage';
 
 import Footer from './components/Footer';
+import LessonsPage from './pages/LessonsPage';
 
 const App = () => {
   return (
@@ -34,6 +35,7 @@ const App = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/image" element={<TestPage />} />
           <Route path="/mypage/*" element={<MyPage />} />
+          <Route path="/lessons/*" element={<LessonsPage />} />
         </Routes>
       </div>
     </RecoilRoot>

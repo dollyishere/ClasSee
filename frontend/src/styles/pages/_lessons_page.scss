@@ -1,15 +1,17 @@
+@use '../base/colors';
 @use '../components/sidebar';
 @use '../components/header';
 
-.my-page {
+.lessons-page {
   height: 100%;
-  .my-page__contents {
+  background-color: colors.$theme_color_light;
+  .lessons-page__contents {
     height: calc(100% - header.$height);
     width: 100%;
     height: calc(100% - 80px);
     display: flex;
 
-    .my-page__sub-page {
+    .lessons-page__sub-page {
       width: calc(100% - sidebar.$width);
     }
   }

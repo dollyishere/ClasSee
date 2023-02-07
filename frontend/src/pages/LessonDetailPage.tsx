@@ -17,7 +17,7 @@ import {
 
 import LessonDetailViewModel from '../viewmodels/LessonDetailViewModel';
 
-import PrivateInfoState from '../models/PrivateInfoAtom';
+import privateInfoState from '../models/PrivateInfoAtom';
 
 import Header from '../components/Header';
 import BasicRating from '../components/Rating';

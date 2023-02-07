@@ -46,6 +46,8 @@
         color: colors.$gray_color;
         border-width: 0;
         padding: 0 0px;
+        margin-left: -25px;
+        position: relative; left: -20px; top: 7px;
         &:hover {
           cursor: pointer;
           color: black;
@@ -68,6 +70,12 @@
       }
     }
 
+    .login__find{
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
     .login__button {
       padding: 10px 10px;
       color: white;
@@ -78,7 +86,7 @@
       background-color: colors.$theme_color;
       box-shadow: 0 2px 4px gray;
       transition: 0.1s;
-      font-size: 20px;
+      font-size: 13px;
       font-weight: bold;
       line-height: 20px;
       border: 0;
@@ -86,16 +94,26 @@
       margin: 5px;
       &:hover {
         cursor: pointer;
-        font-size: 28px;
+        font-size: 15px;
         background-color: colors.$theme_color_focus;
       }
     }
     .social-login {
       background-color: #ffe100;
       color: #3c1e1e;
+      line-height: 0px;
       &:hover {
         background-color: #e4d104;
       }
+
+    }
+    .kakao__icon{
+      float: left;
+    }
+    .kakao__text {
+      line-height: 25px;
+      
+      position: relative; left: -10px;
     }
   }
 }
