@@ -255,29 +255,27 @@ const ProfilePage = () => {
         aria-describedby="modal-modal-description"
       >
         <div className="profile-page__modal">
-          <div className="profile-page__modal--row">
-            <div className="profile-page__modal--label">비밀번호</div>
-            <input
-              type="password"
-              className="profile-page__input"
-              ref={passwordRef}
-            />
-          </div>
-          <div className="profile-page__modal--row">
-            <div className="profile-page__modal--label">비밀번호</div>
-            <input
-              type="password"
-              className="profile-page__input"
-              ref={passwordCheckRef}
-            />
-          </div>
-          <button
-            type="button"
-            className="button"
-            onClick={handleUpdatePassword}
-          >
-            비밀변호 변경
-          </button>
+          <form onSubmit={handleUpdatePassword}>
+            <div className="profile-page__modal--row">
+              <div className="profile-page__modal--label">비밀번호</div>
+              <input
+                type="password"
+                className="profile-page__input"
+                ref={passwordRef}
+              />
+            </div>
+            <div className="profile-page__modal--row">
+              <div className="profile-page__modal--label">비밀번호</div>
+              <input
+                type="password"
+                className="profile-page__input"
+                ref={passwordCheckRef}
+              />
+            </div>
+            <button type="submit" className="button">
+              비밀변호 변경
+            </button>
+          </form>
         </div>
       </Modal>
     </div>
