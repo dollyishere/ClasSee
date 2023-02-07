@@ -1,3 +1,4 @@
+import { Email } from '@mui/icons-material';
 import axios from 'axios';
 
 import { Response } from '../types/BaseType';
@@ -85,8 +86,19 @@ const UserApi = () => {
         `${process.env.REACT_APP_SERVER_URI}/api/v1/users/${email}/img?img=${url}`,
       );
 
-      console.log(response);
-      return response.status;
+      return response.data.statusCode;
+    } catch (error: any) {
+      console.error(error);
+    }
+    return null;
+  };
+
+  const doUpdateNickName = async (email: string, nickname: string) => {
+    try {
+      const response = await axios.put<Response>(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/users/${email}/nickname?nickname=${nickname}`,
+      );
+      return response.data.statusCode;
     } catch (error: any) {
       console.error(error);
     }
@@ -99,6 +111,8 @@ const UserApi = () => {
     doGetSalt,
     doLogin,
     doUpdateProfileImage,
+    doGetAccessToken,
+    doUpdateNickName,
   };
 };
 
