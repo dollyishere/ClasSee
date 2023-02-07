@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { atom, selector, useRecoilState, useRecoilValue } from 'recoil';
+
 import { Link } from 'react-router-dom';
 import Rating from '@mui/material/Rating';
 import Avatar from '@mui/material/Avatar';
@@ -7,31 +8,45 @@ import Stack from '@mui/material/Stack';
 import AvTimerIcon from '@mui/icons-material/AvTimer';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import { ref, uploadBytes, getDownloadURL, listAll } from 'firebase/storage';
+import { storage } from '../utils/Firebase';
 import { LessonsResponse, Lesson } from '../types/LessonsType';
 import privateInfoState from '../models/PrivateInfoAtom';
 import useViewModel from '../viewmodels/MainPageViewModel';
-
+import useLessonCardViewModel from '../viewmodels/LessonCardViewModel';
 import logo from '../assets/logo.png';
 
 interface Props {
   lesson: Lesson;
 }
 const LessonCard = ({ lesson }: Props) => {
-  const [isBookMarked, setIsBookMarked] = useState(lesson.bookMarked);
   const userInfo = useRecoilValue(privateInfoState);
+  const { getLessonImage } = useLessonCardViewModel();
+  const [image, setImage] = useState<string>();
 
+  useEffect(() => {
+    if (userInfo) {
+      console.log(lesson.lessonId);
+      const getImage = async () => {
+        const imageUrl = await getLessonImage(lesson.lessonId);
+        setImage(imageUrl);
+      };
+      getImage();
+    }
+  });
+
+  const [isBookMarked, setIsBookMarked] = useState(lesson.bookMarked);
   const { deleteBookmark, addBookmark } = useViewModel();
+
   // 북마크 아이콘 클릭 시 북마크 추가, 삭제 토글 버튼 함수
   const getBookmarkStatus = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
     if (userInfo) {
       if (isBookMarked) {
         const res = deleteBookmark(userInfo.email, lesson.lessonId);
-        console.log('지웠어', res);
         setIsBookMarked(false);
       } else {
         const res = addBookmark(userInfo.email, lesson.lessonId);
-        console.log('넣었어', res);
         setIsBookMarked(true);
       }
     } else {
@@ -47,7 +62,7 @@ const LessonCard = ({ lesson }: Props) => {
       >
         {/* 강의 대표이미지와 북마크 버튼 담는 div */}
         <div className="lesson__backImg">
-          <img className="lesson__img" src={logo} alt={lesson.name} />
+          <img className="lesson__img" src={image} alt={lesson.name} />
           {/* 북마크 버튼 클릭 시 true, false 값변경으로 아이콘 변경 */}
           <button
             type="button"
