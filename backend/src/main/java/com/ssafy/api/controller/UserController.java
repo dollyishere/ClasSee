@@ -2,6 +2,7 @@ package com.ssafy.api.controller;
 
 import com.ssafy.api.dto.UserEmailPwDto;
 import com.ssafy.api.request.UserFindPwPostReq;
+import com.ssafy.api.request.UserUpdatePwPutReq;
 import com.ssafy.api.response.UserInfoGetRes;
 import com.ssafy.api.service.AuthService;
 import com.ssafy.api.service.EmailService;
@@ -70,10 +71,10 @@ public class UserController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공")
     })
-    public ResponseEntity<Boolean> withdrawalUser(@PathVariable String email){
+    public ResponseEntity<? extends BaseResponseBody> withdrawalUser(@PathVariable String email){
         userService.deleteUser(email);
 
-        return ResponseEntity.status(200).body(true);
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"성공"));
     }
 
     @GetMapping("/{email}")
@@ -159,10 +160,10 @@ public class UserController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends BaseResponseBody> changePw(@PathVariable String email, @RequestParam String password) {
+    public ResponseEntity<? extends BaseResponseBody> changePw(@PathVariable String email, @RequestBody UserUpdatePwPutReq userUpdatePwPutReq) {
         UserEmailPwDto userInfo = UserEmailPwDto.builder()
                                                 .email(email)
-                                                .password(password)
+                                                .password(userUpdatePwPutReq.getPassword())
                                                 .build();
         try {
             userService.updatePassword(userInfo);
@@ -223,7 +224,7 @@ public class UserController {
             @ApiResponse(code = 200, message = "성공")
     })
     public ResponseEntity<? extends BaseResponseBody> updateUserImg(@PathVariable String email, @RequestParam String img) {
-        userService.updateUserDescription(email, img);
+        userService.updateUserImg(email, img);
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200,"수정 완료"));
     }

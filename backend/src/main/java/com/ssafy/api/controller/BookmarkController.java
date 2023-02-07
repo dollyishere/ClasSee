@@ -73,7 +73,7 @@ public class BookmarkController {
         if(user == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "USER NOT FOUND"));
 
         List<Lesson> bookmarkList = bookmarkService.getBookmarkList(user.getAuth().getId());
-        List<LessonInfoDto> lessonList = lessonService.setLessonProperty(bookmarkList);
+        List<LessonInfoDto> lessonList = lessonService.setLessonProperty(bookmarkList, user);
 
         LessonInfoListRes res = LessonInfoListRes.builder()
                                                  .lessonInfoList(lessonList)
