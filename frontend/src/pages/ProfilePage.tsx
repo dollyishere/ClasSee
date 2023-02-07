@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
-import { Card, CardContent } from '@mui/material';
+import { Card, CardContent, Modal, Box } from '@mui/material';
 import { PersonOutline } from '@mui/icons-material';
 
 import privateInfoState from '../models/PrivateInfoAtom';
@@ -12,6 +12,9 @@ const ProfilePage = () => {
   const navigate = useNavigate();
   const userInfo = useRecoilValue(privateInfoState);
   const descriptionRef = useRef<HTMLTextAreaElement>(null);
+  const [isPwModalOpen, setIsPwModalOpen] = useState<boolean>(false);
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const passwordCheckRef = useRef<HTMLInputElement>(null);
 
   const {
     uploadProfileImage,
@@ -20,6 +23,7 @@ const ProfilePage = () => {
     updatePhone,
     updateAddress,
     updateDescription,
+    updatePassword,
   } = useViewModel();
 
   const upload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,8 +62,24 @@ const ProfilePage = () => {
   };
 
   const handleUpdateDescription = async () => {
-    if (userInfo !== null && descriptionRef.current !== null) {
+    if (descriptionRef.current !== null) {
       updateDescription(descriptionRef.current.value);
+    }
+  };
+
+  const openPwModal = () => setIsPwModalOpen(true);
+  const closePwModal = () => setIsPwModalOpen(false);
+
+  const handleUpdatePassword = async () => {
+    if (passwordRef.current !== null && passwordCheckRef.current !== null) {
+      if (passwordRef.current.value === passwordCheckRef.current.value) {
+        updatePassword(passwordRef.current.value);
+        closePwModal();
+      } else {
+        alert('비밀번호가 일치하지 않습니다.');
+        passwordRef.current.value = '';
+        passwordCheckRef.current.value = '';
+      }
     }
   };
 
@@ -164,7 +184,11 @@ const ProfilePage = () => {
                 <div className="profile-page__section--label">비밀번호</div>
                 <div className="profile-page__section--content">******</div>
                 <div className="profile-page__buttons">
-                  <button type="button" className="button profile-page__button">
+                  <button
+                    type="button"
+                    className="button profile-page__button"
+                    onClick={openPwModal}
+                  >
                     비밀번호 변경
                   </button>
                 </div>
@@ -224,6 +248,38 @@ const ProfilePage = () => {
           </CardContent>
         </Card>
       ) : null}
+      <Modal
+        open={isPwModalOpen}
+        onClose={closePwModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <div className="profile-page__modal">
+          <div className="profile-page__modal--row">
+            <div className="profile-page__modal--label">비밀번호</div>
+            <input
+              type="password"
+              className="profile-page__input"
+              ref={passwordRef}
+            />
+          </div>
+          <div className="profile-page__modal--row">
+            <div className="profile-page__modal--label">비밀번호</div>
+            <input
+              type="password"
+              className="profile-page__input"
+              ref={passwordCheckRef}
+            />
+          </div>
+          <button
+            type="button"
+            className="button"
+            onClick={handleUpdatePassword}
+          >
+            비밀변호 변경
+          </button>
+        </div>
+      </Modal>
     </div>
   );
 };

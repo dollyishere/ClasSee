@@ -1,8 +1,36 @@
 @use '../base/colors';
 
+.profile-page__modal {
+  background-color: white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-wrap: wrap;
+  width: 400px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  padding: 10px;
+  .profile-page__modal--row {
+    font-size: 20px;
+    width: 300px;
+    display: flex;
+    padding: 10px;
+    .profile-page__modal--label {
+      width: 30%;
+    }
+    .profile-page__modal--input {
+      width: 70%;
+    }
+  }
+}
+
 .profile-page {
   height: 100%;
   overflow: auto;
+
   .profile-page__card {
     width: 60%;
     margin: 80px auto;
@@ -85,6 +113,7 @@
       .profile-page__section {
         display: flex;
         padding: 2px 0;
+
         .profile-page__section--label {
           width: 100px;
           font-weight: 600;

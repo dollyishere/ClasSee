@@ -6,11 +6,13 @@ import {
   listAll,
   deleteObject,
 } from 'firebase/storage';
+import { Email } from '@mui/icons-material';
 import { storage } from '../utils/Firebase';
 
 import useApi from '../apis/UserApi';
 import authTokenState from '../models/AuthTokenAtom';
 import useInfoState from '../models/PrivateInfoAtom';
+import { createHashedPassword } from '../utils/Encrypt';
 
 const ProfileViewModel = () => {
   const [userInfo, setUserInfo] = useRecoilState(useInfoState);
@@ -21,6 +23,8 @@ const ProfileViewModel = () => {
     doUpdatePhone,
     doUpdateAddress,
     doUpdateDescription,
+    doUpdatePassword,
+    doGetSalt,
   } = useApi();
 
   const getProfileImage = async (email: string) => {
@@ -108,6 +112,17 @@ const ProfileViewModel = () => {
     }
   };
 
+  const updatePassword = async (password: string) => {
+    if (userInfo !== null) {
+      const salt = await doGetSalt(userInfo.email);
+      if (salt !== null) {
+        const hashedPassword = createHashedPassword(password, salt);
+        const response = await doUpdatePassword(userInfo.email, hashedPassword);
+        console.log(response);
+      }
+    }
+  };
+
   return {
     updateNickName,
     uploadProfileImage,
@@ -115,6 +130,7 @@ const ProfileViewModel = () => {
     updatePhone,
     updateAddress,
     updateDescription,
+    updatePassword,
   };
 };
 
