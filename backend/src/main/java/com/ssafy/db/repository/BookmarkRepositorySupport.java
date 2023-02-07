@@ -44,7 +44,10 @@ public class BookmarkRepositorySupport{
         return jpaQueryFactory.
                 select(qBookmark.count())
                 .from(qBookmark)
-                .where(qBookmark.userId.eq(user.getAuth().getId())).fetchOne();
+                .where(
+                        qBookmark.userId.eq(user.getAuth().getId()),
+                        qBookmark.lessonId.eq(lessonId)
+                ).fetchOne();
     }
 
 }

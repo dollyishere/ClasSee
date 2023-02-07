@@ -94,7 +94,7 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public List<LessonInfoDto> setLessonProperty(List<Lesson> lessonList) {
+    public List<LessonInfoDto> setLessonProperty(List<Lesson> lessonList, User user) {
         List<LessonInfoDto> getLessonList = new ArrayList<>();
         // 강의 목록에 대표 이미지랑, 별점 평균 세팅해주기
         lessonList.forEach((lesson) -> {
@@ -103,11 +103,18 @@ public class LessonServiceImpl implements LessonService {
                     .id(lesson.getId())
                     .name(lesson.getName())
                     .category(lesson.getCategory())
-                    .runningtime(lesson.getRunningtime())
+                    .runningTime(lesson.getRunningtime())
                     .build();
+            lessonRes.setTeacherImage(
+                    lesson.getUser().getImg()
+            );
 
-            lessonRes.setImg(
+            lessonRes.setLessonImage(
                     lessonRepositorySupport.findLessonProfileImg(lesson)
+            );
+
+            lessonRes.setBookMarked(
+                    (bookmarkRepositorySupport.bookmarkedCheck(lesson.getId(), user) == 0) ? false: true
             );
 
             lessonRes.setScore(

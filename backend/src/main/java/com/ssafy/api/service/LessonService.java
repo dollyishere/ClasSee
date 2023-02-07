@@ -23,7 +23,7 @@ public interface LessonService {
     Long createLesson(Map<String, Object> lessonInfo);
     void updateLesson(Map<String, Object> lessonInfo);
 
-    List<LessonInfoDto> setLessonProperty(List<Lesson> lessonList);
+    List<LessonInfoDto> setLessonProperty(List<Lesson> lessonList, User user);
 
     void createSchedule(OpenLesson requestInfo) throws Exception;
 

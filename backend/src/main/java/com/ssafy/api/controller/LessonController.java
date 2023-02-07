@@ -156,12 +156,17 @@ public class LessonController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends BaseResponseBody> getRecommandList() {
+    public ResponseEntity<? extends BaseResponseBody> getRecommandList(String email) {
+        User user = null;
+        if(email != null) {
+            user = userService.getUserByAuth(email);
+            if (user == null) return ResponseEntity.status(200).body(BaseResponseBody.of(404, "USER NOT FOUND"));
+        }
         // 평점이 가장 높은 상위 12개의 레슨 아이디 리스트
         List<Lesson> popularLessonList = lessonService.getPopularLessonList();
 
         // 받아온 레슨 아이디 리스트를 객체로 전환
-        List<LessonInfoDto> lessonList = lessonService.setLessonProperty(popularLessonList);
+        List<LessonInfoDto> lessonList = lessonService.setLessonProperty(popularLessonList, user);
 
         LessonInfoListRes res = LessonInfoListRes.builder()
                                                  .lessonInfoList(lessonList)
@@ -177,13 +182,19 @@ public class LessonController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends BaseResponseBody> getLessonListByFilter(@ModelAttribute LessonSearchFilterDto requestInfo, @RequestParam int offset, @RequestParam int limit) {
+    public ResponseEntity<? extends BaseResponseBody> getLessonListByFilter(@ModelAttribute LessonSearchFilterDto requestInfo, @RequestParam int offset, @RequestParam int limit, String email) {
+        User user = null;
+        if(email != null) {
+            user = userService.getUserByAuth(email);
+            if (user == null) return ResponseEntity.status(200).body(BaseResponseBody.of(404, "USER NOT FOUND"));
+        }
+
         List<Lesson> lessonIdList = lessonService.getLessonListByFilter(requestInfo, offset, limit);
 
         if(lessonIdList == null) return ResponseEntity.status(200).body(BaseResponseBody.of(404, "검색에 맞는 강의가 없습니다."));
 
         // 받아온 레슨 아이디 리스트를 객체로 전환
-        List<LessonInfoDto> lessonList = lessonService.setLessonProperty(lessonIdList);
+        List<LessonInfoDto> lessonList = lessonService.setLessonProperty(lessonIdList, user);
 
         LessonInfoListRes res = LessonInfoListRes.builder()
                 .lessonInfoList(lessonList)
