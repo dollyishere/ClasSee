@@ -211,8 +211,10 @@ public class LessonServiceImpl implements LessonService {
         if(type.toUpperCase().equals("S")) openLessonList = lessonRepositorySupport.findAttendLessonListByStudent(userId, query, limit, offset);
 
         List<AttendLessonInfoDto> attendLessonList = new ArrayList<>();
+
         openLessonList.forEach((openLesson) -> {
             Optional<Lesson> lesson = lessonRepository.findById(openLesson.getLessonId());
+            List<Pamphlet> pamphletList = lesson.get().getPamphletList();
             if(!lesson.isPresent()) return;
             attendLessonList.add(
                     AttendLessonInfoDto.builder()
@@ -221,10 +223,16 @@ public class LessonServiceImpl implements LessonService {
                             .name(lesson.get().getName())
                             .runningTime(lesson.get().getRunningtime())
                             .category(lesson.get().getCategory())
-                            .img(lesson.get().getPamphletList().get(0).getImg())
+                            .lessonImage(
+                                    ((pamphletList == null) ? pamphletList.get(0).getImg(): null)
+                            )
+                            .teacherImage(lesson.get().getUser().getImg())
                             .score(lessonRepositorySupport.setLessonAvgScore(lesson.get()))
                             .startTime(openLesson.getStartTime())
                             .endTime(openLesson.getEndTime())
+                            .isBookMarked(
+                                    (bookmarkRepositorySupport.bookmarkedCheck(lesson.get().getId(), userRepositorySupport.findOne(userId))) == 0 ? false: true
+                            )
                             .build()
             );
         });
