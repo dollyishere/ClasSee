@@ -141,6 +141,21 @@ const UserApi = () => {
     return null;
   };
 
+  const doUpdatePassword = async (email: string, hashedPassword: string) => {
+    try {
+      const response = await axios.put<Response>(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/users/${email}/password`,
+        {
+          password: hashedPassword,
+        },
+      );
+      return response.data.statusCode;
+    } catch (error: any) {
+      console.error(error);
+    }
+    return null;
+  };
+
   return {
     doSignUp,
     doEmailDuplicationCheck,
@@ -152,6 +167,7 @@ const UserApi = () => {
     doUpdatePhone,
     doUpdateAddress,
     doUpdateDescription,
+    doUpdatePassword,
   };
 };
 
