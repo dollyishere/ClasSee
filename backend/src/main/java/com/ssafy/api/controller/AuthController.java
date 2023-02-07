@@ -1,11 +1,13 @@
 package com.ssafy.api.controller;
 
+import com.ssafy.api.dto.KakaoUserDto;
 import com.ssafy.api.request.UserLogoutPostReq;
 import com.ssafy.api.response.UserSaltRes;
-import com.ssafy.api.service.AuthService;
-import com.ssafy.api.service.BookmarkService;
-import com.ssafy.api.service.RedisService;
+import com.ssafy.api.service.*;
 import com.ssafy.db.entity.lesson.Lesson;
+import com.ssafy.db.entity.user.Auth;
+import com.ssafy.db.entity.user.UserRole;
+import com.ssafy.db.entity.user.UserType;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import com.ssafy.api.request.UserLoginPostReq;
 import com.ssafy.api.response.UserLoginPostRes;
-import com.ssafy.api.service.UserService;
 import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.common.util.JwtTokenUtil;
 import com.ssafy.db.entity.user.User;
@@ -28,7 +29,9 @@ import io.swagger.annotations.ApiResponse;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 인증 관련 API 요청 처리를 위한 컨트롤러 정의.
@@ -58,7 +61,8 @@ public class AuthController {
 	@Autowired
 	JwtTokenUtil jwtTokenUtil;
 
-
+	@Autowired
+	KakaoService kakaoService;
 
 
 	@PostMapping("/login")
@@ -67,7 +71,6 @@ public class AuthController {
 			@ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
 			@ApiResponse(code = 401, message = "인증 실패", response = BaseResponseBody.class),
 			@ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
-			@ApiResponse(code = 409, message = "이메일 중복", response = BaseResponseBody.class),
 			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
 	})
 	public ResponseEntity<? extends BaseResponseBody> login(
@@ -79,50 +82,48 @@ public class AuthController {
 		if(user == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "USER NOT FOUND"));
 
 		// 로그인 요청한 유저로부터 입력된 패스워드 와 디비에 저장된 유저의 암호화된 패스워드가 같은지 확인.(유효한 패스워드인지 여부 확인)
-		if (password.equals(user.getAuth().getPassword())) {
+		// 유효하지 않는 패스워드인 경우, 로그인 실패로 응답.
+		if (!password.equals(user.getAuth().getPassword())) return ResponseEntity.status(401).body(BaseResponseBody.of(401, "INVALID"));
 
-			// 프론트로 보내줄 access, refresh token 생성
-			String accessToken = JwtTokenUtil.getToken(JwtTokenUtil.atkExpirationTime, email);
-			String refreshToken = JwtTokenUtil.getToken(JwtTokenUtil.rtkExpirationTime, email);
-			List<Lesson> lessonList = bookmarkService.getBookmarkList(user.getAuth().getId());
-			List<Long> bookmarkList = new ArrayList<>();
-			lessonList.forEach((lesson) -> {
-				bookmarkList.add(lesson.getId());
-			});
+		// 프론트로 보내줄 access, refresh token 생성
+		String accessToken = JwtTokenUtil.getToken(JwtTokenUtil.atkExpirationTime, email);
+		String refreshToken = JwtTokenUtil.getToken(JwtTokenUtil.rtkExpirationTime, email);
+		List<Lesson> lessonList = bookmarkService.getBookmarkList(user.getAuth().getId());
+		List<Long> bookmarkList = new ArrayList<>();
+		lessonList.forEach((lesson) -> {
+			bookmarkList.add(lesson.getId());
+		});
 
-			UserLoginPostRes userLoginPostRes = UserLoginPostRes.builder()
-					.email(user.getAuth().getEmail())
-					.name(user.getName())
-					.nickname(user.getNickname())
-					.address(user.getAddress())
-					.birth(user.getBirth())
-					.phone(user.getPhone())
-					.point(user.getPoint())
-					.img(user.getImg())
-					.description(user.getDescription())
-					.userRole(user.getRole())
-					.bookmarkList(bookmarkList)
-					.build();
+		UserLoginPostRes userLoginPostRes = UserLoginPostRes.builder()
+				.email(user.getAuth().getEmail())
+				.name(user.getName())
+				.nickname(user.getNickname())
+				.address(user.getAddress())
+				.birth(user.getBirth())
+				.phone(user.getPhone())
+				.point(user.getPoint())
+				.img(user.getImg())
+				.description(user.getDescription())
+				.userRole(user.getRole())
+				.bookmarkList(bookmarkList)
+				.build();
 
 			/*
 				redis db에 저장
 				KEY: 사용자 이메일
 				VALUE: refresh_token
 			*/
-			redisService.setValues(refreshToken, user.getAuth().getEmail());
+		redisService.setValues(refreshToken, user.getAuth().getEmail());
 
-			try {
-				res.setHeader("accessToken", accessToken);
-				res.setHeader("refreshToken", refreshToken);
-			} catch (Exception e){
-				return ResponseEntity.status(401).body(BaseResponseBody.of(401, "TOKEN RESPONSE FAILED"));
-			}
-
-			// 유효한 패스워드가 맞는 경우, 로그인 성공으로 응답.(액세스 토큰을 포함하여 응답값 전달)
-			return ResponseEntity.ok(UserLoginPostRes.of(200, "SUCCESS", userLoginPostRes));
+		try {
+			res.setHeader("accessToken", accessToken);
+			res.setHeader("refreshToken", refreshToken);
+		} catch (Exception e){
+			return ResponseEntity.status(401).body(BaseResponseBody.of(401, "TOKEN RESPONSE FAILED"));
 		}
-		// 유효하지 않는 패스워드인 경우, 로그인 실패로 응답.
-		return ResponseEntity.status(401).body(BaseResponseBody.of(401, "INVALID"));
+
+		// 유효한 패스워드가 맞는 경우, 로그인 성공으로 응답.(액세스 토큰을 포함하여 응답값 전달)
+		return ResponseEntity.ok(UserLoginPostRes.of(200, "SUCCESS", userLoginPostRes));
 	}
 
 	@PostMapping("/logout")
@@ -135,14 +136,13 @@ public class AuthController {
 	})
 	public ResponseEntity<?> logout(@RequestHeader String accessToken, @RequestParam String email) {
 		try {
-			accessToken = accessToken.substring(7);
-			authService.logout(email, accessToken);
-
+			authService.logout(email, accessToken.substring(7));
 			return ResponseEntity.ok(BaseResponseBody.of(200, "SUCCESS"));
 		} catch (ExpiredJwtException e){
 			return ResponseEntity.status(401).body(BaseResponseBody.of(401, "EXPIRED TOKEN"));
 		} catch (Exception e){
-			return ResponseEntity.status(401).body(BaseResponseBody.of(401, "INVALID"));
+			e.printStackTrace();
+			return ResponseEntity.status(401).body(BaseResponseBody.of(500, "SERVER ERROR"));
 		}
 	}
 
@@ -150,7 +150,6 @@ public class AuthController {
 	@ApiOperation(value = "salt 요청 api", notes = "사용자의 salt 반환")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공", response = UserSaltRes.class),
-			@ApiResponse(code = 401, message = "인증 실패", response = BaseResponseBody.class),
 			@ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
 			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
 	})
@@ -166,16 +165,13 @@ public class AuthController {
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공", response = UserSaltRes.class),
 			@ApiResponse(code = 401, message = "인증 실패", response = BaseResponseBody.class),
-			@ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
-			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
+			@ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class)
 	})
 	public ResponseEntity<? extends BaseResponseBody> getAccessToken(@RequestHeader String refreshToken, @RequestParam String email, HttpServletResponse res) {
 		User user = userService.getUserByAuth(email);
-		if(user == null) return ResponseEntity.status
-				(404).body(BaseResponseBody.of(404, "USER NOT FOUND"));
+		if(user == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "USER NOT FOUND"));
 
-		refreshToken = refreshToken.substring(7);
-		if (!redisService.getValues(email).equals(refreshToken)) return ResponseEntity.status(401).body(BaseResponseBody.of(401, "INVALID TOKEN"));
+		if (!redisService.getValues(email).equals(refreshToken.substring(7))) return ResponseEntity.status(401).body(BaseResponseBody.of(401, "INVALID TOKEN"));
 
 		// 프론트로 보내줄 access, refresh token 생성
 		String afterATK = JwtTokenUtil.getToken(JwtTokenUtil.atkExpirationTime, email);
@@ -206,5 +202,43 @@ public class AuthController {
 	})
 	public ResponseEntity<UserLoginPostRes> test() {
 		return ResponseEntity.ok(UserLoginPostRes.of(200, "Success", UserLoginPostRes.builder().build()));
+	}
+
+	@GetMapping("/kakao")
+	@ApiOperation(value = "Kakao login api", notes = "code 반환")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "성공", response = UserSaltRes.class),
+			@ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
+			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
+	})
+	public ResponseEntity<? extends BaseResponseBody> getKakaoCode(@RequestParam String code) {
+		KakaoUserDto reqUser = kakaoService.getKakaoInfo(code);
+		HashMap<String, Object> kakaoUser = kakaoService.getUserInfo(reqUser.getAccessToken());
+
+		if(kakaoUser == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "USER NOT FOUND"));
+		String email = kakaoUser.get("email").toString();
+
+		User isExist = userService.getUserByAuth(email);
+
+		// 카카오 유저 이메일로 가입된 유저가 없다면.
+		if(isExist == null) {
+			Auth auth = Auth.builder()
+					.email((String)kakaoUser.get("email"))
+					.type(UserType.KAKAO)
+					.build();
+			User user = User
+					.builder()
+					.name((String)kakaoUser.get("nickname"))
+					.auth(auth)
+					.point(0l)
+					.role(UserRole.ROLE_USER)
+					.build();
+			Map<String, Object> userInfo = new HashMap<>();
+			userInfo.put("AUTH", auth);
+			userInfo.put("USER", user);
+
+			userService.createUser(userInfo);
+		}
+		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "SUCCESS"));
 	}
 }
