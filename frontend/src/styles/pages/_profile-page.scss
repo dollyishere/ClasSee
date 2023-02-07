@@ -21,18 +21,18 @@
 
     .profile-page__header {
       display: flex;
-      .profile-page__photo {
+      .profile-page__image {
         width: 33%;
         height: 300px;
         flex-wrap: wrap;
-        .profile-page__photo--not {
+        .profile-page__image--not {
           margin: 20px auto;
           width: 220px;
           height: 220px;
           background-color: colors.$light_gray_color;
           border-radius: 50%;
         }
-        .photo-page__photo--change {
+        .profile-page__image--change {
           padding: 0 20px 0 0;
           text-align: right;
           color: colors.$theme_color;
