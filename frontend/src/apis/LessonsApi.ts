@@ -5,7 +5,7 @@ const LessonsApi = () => {
   const getRecommandLessonsApi = async (email: string | null) => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_SERVER_URI}/api/v1/lessons/recommands/${email}`,
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/lessons/recommands?email=${email}`,
       );
       return response.data;
     } catch (error: any) {
@@ -38,7 +38,7 @@ const LessonsApi = () => {
   ) => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_SERVER_URI}/api/v1/students${email}/lessons?limit=${limit}&offset=${offset}&query=${query}`,
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/students/${email}/lessons?limit=${limit}&offset=${offset}&query=${query}`,
       );
       return response.data;
     } catch (error: any) {
@@ -63,7 +63,7 @@ const LessonsApi = () => {
   const deleteBookmarkApi = async (email: string, lessonId: number) => {
     try {
       const response = await axios.delete(
-        `${process.env.REACT_APP_SERVER_URI}/api/v1/deleteBookmark/${email}/${lessonId}`,
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/bookmarks/${email}/${lessonId}`,
       );
       return response.data;
     } catch (error: any) {
@@ -73,8 +73,8 @@ const LessonsApi = () => {
   };
   const addBookmarkApi = async (email: string, lessonId: number) => {
     try {
-      const response = await axios.delete(
-        `${process.env.REACT_APP_SERVER_URI}/api/v1/addBookmark/${email}/${lessonId}`,
+      const response = await axios.post(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/bookmarks/${email}/${lessonId}`,
       );
       return response.data;
     } catch (error: any) {
