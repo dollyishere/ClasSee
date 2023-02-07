@@ -66,17 +66,17 @@ const UserApi = () => {
     }
     return null;
   };
-  // const doGetAccessToken = async () => {
-  //   try {
-  //     const response = await axios.get<Response>(
-  //       `${process.env.REACT_APP_SERVER_URI}/api/v1/users~`,
-  //     );
   const doGetAccessToken = async (email: string, refreshtoken: string) => {
     try {
       const response = await axios.get<Response>(
-        `${process.env.REACT_APP_SERVER_URI}/api/v1/auth/token?email=${email}&refreshToken=${refreshtoken}`,
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/auth/token?email=${email}`,
+        {
+          headers: {
+            Authorization: `Bearer ${refreshtoken}`,
+          },
+        },
       );
-      console.log(response);
+      return response;
     } catch (error: any) {
       console.error(error);
     }
