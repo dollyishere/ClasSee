@@ -49,10 +49,17 @@ const RecommandLessons = () => {
   const [lessons, setLessons] = useState<Lesson[]>();
   const userInfo = useRecoilValue(privateInfoState);
   useEffect(() => {
-    getRecommandLessons().then((res: LessonsResponse) => {
-      console.log('추천강의', res.lessonInfoList);
-      setLessons(res.lessonInfoList);
-    });
+    if (userInfo) {
+      getRecommandLessons(userInfo.email).then((res: LessonsResponse) => {
+        console.log('추천강의', res.lessonInfoList);
+        setLessons(res.lessonInfoList);
+      });
+    } else {
+      getRecommandLessons(null).then((res: LessonsResponse) => {
+        console.log('추천강의', res.lessonInfoList);
+        setLessons(res.lessonInfoList);
+      });
+    }
   }, []);
   // 강의 정보를 useState로 받아서 저장
   // const [lessons, setlessons] = useState([]);

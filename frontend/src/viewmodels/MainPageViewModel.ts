@@ -11,8 +11,8 @@ const MainPageViewModel = () => {
     deleteBookmarkApi,
     addBookmarkApi,
   } = useApi();
-  const getRecommandLessons = async () => {
-    const res = await getRecommandLessonsApi();
+  const getRecommandLessons = async (email: string | null) => {
+    const res = await getRecommandLessonsApi(email);
 
     return res;
   };

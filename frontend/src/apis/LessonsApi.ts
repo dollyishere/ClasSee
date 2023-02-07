@@ -2,10 +2,10 @@ import axios, { AxiosResponse } from 'axios';
 import { LessonsResponse } from '../types/LessonsType';
 
 const LessonsApi = () => {
-  const getRecommandLessonsApi = async () => {
+  const getRecommandLessonsApi = async (email: string | null) => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_SERVER_URI}/api/v1/lessons/recommands`,
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/lessons/recommands/${email}`,
       );
       return response.data;
     } catch (error: any) {
