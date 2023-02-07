@@ -16,6 +16,7 @@
 @use './components/chat-box';
 @use './components/message';
 @use './components/sidebar';
+@use './components/search-box';
 
 // pages
 @use './pages/signup-page';
@@ -25,6 +26,7 @@
 @use './pages/lesson-detail-page';
 @use './pages/my-page';
 @use './pages/profile-page';
+@use './pages/lessons_page';
 
 html,
 body,

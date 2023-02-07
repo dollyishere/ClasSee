@@ -1,9 +1,10 @@
 @use '../base/colors';
+$height: 80px;
 
 header {
   position: sticky;
   z-index: 2;
-  height: 80px;
+  height: $height;
   width: 100%;
   top: 0;
   display: flex;
