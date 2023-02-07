@@ -1,7 +1,9 @@
 import axios, { AxiosResponse } from 'axios';
-import { LessonsResponse } from '../types/LessonsType';
+import { useRecoilValue } from 'recoil';
+import AuthTokenState from '../models/AuthTokenAtom';
 
 const LessonsApi = () => {
+  const accessToken = useRecoilValue(AuthTokenState);
   const getRecommandLessonsApi = async (email: string | null) => {
     try {
       const response = await axios.get(
@@ -23,6 +25,11 @@ const LessonsApi = () => {
     try {
       const response = await axios.get(
         `${process.env.REACT_APP_SERVER_URI}/api/v1/teachers/${email}/lessons?limit=${limit}&offset=${offset}&query=${query}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
       );
       return response.data;
     } catch (error: any) {
