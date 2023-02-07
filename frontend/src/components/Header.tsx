@@ -45,7 +45,7 @@ const Header = () => {
       {/* 네비게이션 */}
       <ul className="nav">
         <li className="nav__item">
-          <Link to="/lesson" className="nav__item--link">
+          <Link to="/lessons" className="nav__item--link">
             강의
           </Link>
         </li>
