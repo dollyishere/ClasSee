@@ -67,13 +67,13 @@ export interface PamphletType {
   img: string;
 }
 
-export interface CreateLessonRequest {
+export interface LessonRequest {
   category: string;
   checkList: CheckListType[];
   cklsDescription: string;
   curriculumList: CurriculumType[];
   description: string;
-  email: string;
+  email: string | undefined;
   kitDescription: string;
   kitPrice: number;
   maximum: number;
