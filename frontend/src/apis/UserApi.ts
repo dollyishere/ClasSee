@@ -1,3 +1,4 @@
+import { Email } from '@mui/icons-material';
 import axios from 'axios';
 
 import { Response } from '../types/BaseType';
@@ -83,12 +84,94 @@ const UserApi = () => {
     return null;
   };
 
+  const doUpdateProfileImage = async (email: string, url: string) => {
+    try {
+      const response = await axios.put<Response>(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/users/${email}/img?img=${url}`,
+      );
+
+      return response.data.statusCode;
+    } catch (error: any) {
+      console.error(error);
+    }
+    return null;
+  };
+
+  const doUpdateNickName = async (email: string, nickname: string) => {
+    try {
+      const response = await axios.put<Response>(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/users/${email}/nickname?nickname=${nickname}`,
+      );
+      return response.data.statusCode;
+    } catch (error: any) {
+      console.error(error);
+    }
+    return null;
+  };
+
+  const doUpdatePhone = async (email: string, phone: string) => {
+    try {
+      const response = await axios.put<Response>(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/users/${email}/phone?phone=${phone}`,
+      );
+      return response.data.statusCode;
+    } catch (error: any) {
+      console.error(error);
+    }
+    return null;
+  };
+
+  const doUpdateAddress = async (email: string, address: string) => {
+    try {
+      const respnose = await axios.put<Response>(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/users/${email}/address?address=${address}`,
+      );
+      return respnose.data.statusCode;
+    } catch (error: any) {
+      console.error(error);
+    }
+    return null;
+  };
+
+  const doUpdateDescription = async (email: string, description: string) => {
+    try {
+      const response = await axios.put<Response>(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/users/${email}/description?description=${description}`,
+      );
+      return response.data.statusCode;
+    } catch (error: any) {
+      console.error(error);
+    }
+    return null;
+  };
+
+  const doUpdatePassword = async (email: string, hashedPassword: string) => {
+    try {
+      const response = await axios.put<Response>(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/users/${email}/password`,
+        {
+          password: hashedPassword,
+        },
+      );
+      return response.data.statusCode;
+    } catch (error: any) {
+      console.error(error);
+    }
+    return null;
+  };
+
   return {
     doSignUp,
     doEmailDuplicationCheck,
     doGetSalt,
     doLogin,
+    doUpdateProfileImage,
     doGetAccessToken,
+    doUpdateNickName,
+    doUpdatePhone,
+    doUpdateAddress,
+    doUpdateDescription,
+    doUpdatePassword,
   };
 };
 
