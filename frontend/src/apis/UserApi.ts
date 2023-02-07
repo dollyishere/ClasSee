@@ -117,6 +117,18 @@ const UserApi = () => {
     return null;
   };
 
+  const doUpdateAddress = async (email: string, address: string) => {
+    try {
+      const respnose = await axios.put<Response>(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/users/${email}/address?address=${address}`,
+      );
+      return respnose.data.statusCode;
+    } catch (error: any) {
+      console.error(error);
+    }
+    return null;
+  };
+
   return {
     doSignUp,
     doEmailDuplicationCheck,
@@ -126,6 +138,7 @@ const UserApi = () => {
     doGetAccessToken,
     doUpdateNickName,
     doUpdatePhone,
+    doUpdateAddress,
   };
 };
 
