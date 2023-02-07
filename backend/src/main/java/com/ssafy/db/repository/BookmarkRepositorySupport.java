@@ -4,6 +4,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.db.entity.lesson.Lesson;
 import com.ssafy.db.entity.user.Bookmark;
 import com.ssafy.db.entity.user.QBookmark;
+import com.ssafy.db.entity.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,4 +37,17 @@ public class BookmarkRepositorySupport{
 
         return bookmarkList;
     }
+
+    public Long bookmarkedCheck(Long lessonId, User user) {
+        if (user == null) return 0l;
+
+        return jpaQueryFactory.
+                select(qBookmark.count())
+                .from(qBookmark)
+                .where(
+                        qBookmark.userId.eq(user.getAuth().getId()),
+                        qBookmark.lessonId.eq(lessonId)
+                ).fetchOne();
+    }
+
 }

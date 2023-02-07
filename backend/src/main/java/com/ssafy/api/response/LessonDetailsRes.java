@@ -32,7 +32,7 @@ import java.util.List;
 @Setter
 @ApiModel("LessonDetailsResponse")
 public class LessonDetailsRes extends BaseResponseBody {
-    String userEmail;
+    String teacherEmail;
     String lessonName;
     String cklsDescription;
 
@@ -40,15 +40,18 @@ public class LessonDetailsRes extends BaseResponseBody {
     Long kitPrice;
     String kitDescription;
     String category;
-    Long runningtime;
+    Long runningTime;
+    Long maximum;
     String userName;
     String userDesciption;
-    String profileImg;
+    String teacherImage;
     List<Curriculum> curriculums;
     List<Checklist> checkLists;
     List<Pamphlet> pamphlets;
 
     double score;
+
+    boolean isBookMarked;
 
     public static LessonDetailsRes of(Integer statusCode, String message, LessonDetailsRes lessonDetailsRes) {
         lessonDetailsRes.setMessage(message);

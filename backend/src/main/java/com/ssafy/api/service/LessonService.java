@@ -8,6 +8,7 @@ import com.ssafy.api.response.LessonDetailsRes;
 import com.ssafy.api.response.LessonSchedulesRes;
 import com.ssafy.db.entity.lesson.Lesson;
 import com.ssafy.db.entity.lesson.OpenLesson;
+import com.ssafy.db.entity.user.User;
 import org.apache.tomcat.jni.Local;
 
 import java.time.LocalDate;
@@ -22,11 +23,11 @@ public interface LessonService {
     Long createLesson(Map<String, Object> lessonInfo);
     void updateLesson(Map<String, Object> lessonInfo);
 
-    List<LessonInfoDto> setLessonProperty(List<Lesson> lessonList);
+    List<LessonInfoDto> setLessonProperty(List<Lesson> lessonList, User user);
 
     void createSchedule(OpenLesson requestInfo) throws Exception;
 
-    LessonDetailsRes getLessonDetails(Long lessonId);
+    LessonDetailsRes getLessonDetails(Long lessonId, User user);
 
     LessonSchedulesRes getLessonSchedules(Long lessonId, LocalDate regDate);
 

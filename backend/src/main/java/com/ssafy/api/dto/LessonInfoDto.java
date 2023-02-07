@@ -16,8 +16,10 @@ import lombok.Setter;
 public class LessonInfoDto {
     Long id; // 레슨 아이디
     String name;
-    Long runningtime;
+    Long runningTime;
     String category;
-    String img;
+    String lessonImage;
+    String teacherImage;
     double score;
+    boolean isBookMarked;
 }
