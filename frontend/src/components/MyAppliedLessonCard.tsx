@@ -13,7 +13,6 @@ import privateInfoState from '../models/PrivateInfoAtom';
 
 import logo from '../assets/logo.png';
 
-// type combinetype = { lesson: Lesson; myapplied: MyAppliedHover };
 interface Props {
   lesson: Lesson;
 }
@@ -141,8 +140,6 @@ const MyAppliedLessonCard = ({ lesson }: Props) => {
               >
                 <p>강의 취소</p>
               </button>
-              {/* {} */}
-              {/* <ModalTest lessonId={lesson.id} modalOpen={modalOpen} /> */}
             </div>
           </div>
         </div>

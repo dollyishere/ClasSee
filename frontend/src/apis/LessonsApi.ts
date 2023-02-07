@@ -31,6 +31,7 @@ const LessonsApi = () => {
           },
         },
       );
+      console.log(response.data);
       return response.data;
     } catch (error: any) {
       console.error(error);

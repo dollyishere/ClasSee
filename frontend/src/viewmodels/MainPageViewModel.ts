@@ -1,8 +1,14 @@
 import axios from 'axios';
-import useApi from '../apis/LessonsApi';
+import { useRecoilState } from 'recoil';
+import useLessonApi from '../apis/LessonsApi';
+import useUserApi from '../apis/UserApi';
 import { LessonsResponse } from '../types/LessonsType';
+import { decryptToken } from '../utils/Encrypt';
+import authTokenState from '../models/AuthTokenAtom';
 
 const MainPageViewModel = () => {
+  const [authToken, setAuthToken] = useRecoilState(authTokenState);
+
   const {
     getRecommandLessonsApi,
     MyCreatedLessonsMainpageApi,
@@ -10,7 +16,8 @@ const MainPageViewModel = () => {
     deleteMyAppliedLessonsMainpageApi,
     deleteBookmarkApi,
     addBookmarkApi,
-  } = useApi();
+  } = useLessonApi();
+  const { doGetAccessToken } = useUserApi();
   const getRecommandLessons = async (email: string | null) => {
     const res = await getRecommandLessonsApi(email);
 
@@ -22,8 +29,18 @@ const MainPageViewModel = () => {
     offset: number,
     query: string,
   ) => {
-    const res = await MyCreatedLessonsMainpageApi(email, limit, offset, query);
+    let res = await MyCreatedLessonsMainpageApi(email, limit, offset, query);
+    console.log(res);
+    if (res.statusCode === 403) {
+      const hashedRefreshToken = localStorage.getItem('refreshToken');
 
+      if (hashedRefreshToken !== null) {
+        const refreshToken = decryptToken(hashedRefreshToken, email);
+        const accessToken = await doGetAccessToken(email, refreshToken);
+        setAuthToken(accessToken);
+        res = await MyCreatedLessonsMainpageApi(email, limit, offset, query);
+      }
+    }
     return res;
   };
   const getMyAppliedLessonsMainpage = async (

@@ -18,7 +18,3 @@ export interface Lesson {
 export interface LessonsResponse extends Response {
   lessonInfoList: Array<Lesson>;
 }
-
-export interface BookMarkedResponse extends Response {
-  lessonInfoList: Array<number>;
-}
