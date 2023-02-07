@@ -1,6 +1,8 @@
 import { Email } from '@mui/icons-material';
 import axios from 'axios';
+import { useRecoilValue } from 'recoil';
 
+import authTokenState from '../models/AuthTokenAtom';
 import { Response } from '../types/BaseType';
 import {
   SignUpRequest,
@@ -10,6 +12,7 @@ import {
 } from '../types/UserType';
 
 const UserApi = () => {
+  const authToken = useRecoilValue(authTokenState);
   // salt를 가져오는 함수
   const doGetSalt = async (email: string) => {
     try {
@@ -101,12 +104,17 @@ const UserApi = () => {
     try {
       const response = await axios.put<Response>(
         `${process.env.REACT_APP_SERVER_URI}/api/v1/users/${email}/nickname?nickname=${nickname}`,
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        },
       );
       return response.data.statusCode;
     } catch (error: any) {
       console.error(error);
     }
-    return null;
+    return 403;
   };
 
   const doUpdatePhone = async (email: string, phone: string) => {

@@ -12,11 +12,11 @@ import { storage } from '../utils/Firebase';
 import useApi from '../apis/UserApi';
 import authTokenState from '../models/AuthTokenAtom';
 import useInfoState from '../models/PrivateInfoAtom';
-import { createHashedPassword } from '../utils/Encrypt';
+import { createHashedPassword, decryptToken } from '../utils/Encrypt';
 
 const ProfileViewModel = () => {
   const [userInfo, setUserInfo] = useRecoilState(useInfoState);
-  const authToken = useRecoilValue(authTokenState);
+  const [authToken, setAuthToken] = useRecoilState(authTokenState);
   const {
     doUpdateProfileImage,
     doUpdateNickName,
@@ -26,6 +26,7 @@ const ProfileViewModel = () => {
     doUpdatePassword,
     doGetSalt,
     doWithdrawl,
+    doGetAccessToken,
   } = useApi();
 
   const getProfileImage = async (email: string) => {
@@ -73,6 +74,15 @@ const ProfileViewModel = () => {
           ...userInfo,
           nickname,
         });
+      } else if (response === 403) {
+        const hashedRefreshToken = localStorage.getItem('refreshToken');
+        if (hashedRefreshToken !== null) {
+          const refreshToken = decryptToken(hashedRefreshToken, userInfo.email);
+          const accessToken = await doGetAccessToken(
+            userInfo.email,
+            refreshToken,
+          );
+        }
       }
     }
   };
