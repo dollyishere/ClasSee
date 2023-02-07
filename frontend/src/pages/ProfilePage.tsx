@@ -12,8 +12,13 @@ const ProfilePage = () => {
   const navigate = useNavigate();
   const userInfo = useRecoilValue(privateInfoState);
 
-  const { uploadProfileImage, getProfileImage, updateNickName, updatePhone } =
-    useViewModel();
+  const {
+    uploadProfileImage,
+    getProfileImage,
+    updateNickName,
+    updatePhone,
+    updateAddress,
+  } = useViewModel();
 
   const upload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.currentTarget.files !== null && userInfo !== null) {
@@ -37,6 +42,15 @@ const ProfilePage = () => {
       const phone = prompt('변경할 전화번호를 입력하세요.', userInfo.phone);
       if (phone !== null) {
         updatePhone(phone);
+      }
+    }
+  };
+
+  const handleUpdateAddress = async () => {
+    if (userInfo !== null) {
+      const address = prompt('변경할 주소를 입력하세요.', userInfo.address);
+      if (address !== null) {
+        updateAddress(address);
       }
     }
   };
@@ -168,7 +182,11 @@ const ProfilePage = () => {
                   {userInfo.address}
                 </div>
                 <div className="profile-page__buttons">
-                  <button type="button" className="button profile-page__button">
+                  <button
+                    type="button"
+                    className="button profile-page__button"
+                    onClick={handleUpdateAddress}
+                  >
                     주소 변경
                   </button>
                 </div>
