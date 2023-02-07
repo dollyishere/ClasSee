@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 import { Response } from '../types/BaseType';
-import { BookMarkedResponse } from '../types/LessonsType';
 import {
   SignUpRequest,
   SaltResponse,
@@ -75,7 +74,7 @@ const UserApi = () => {
   const doGetAccessToken = async (email: string, refreshtoken: string) => {
     try {
       const response = await axios.get<Response>(
-        `${process.env.REACT_APP_SERVER_URI}/api/v1/accesstoken/${email}/${refreshtoken}`,
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/auth/token?email=${email}&refreshToken=${refreshtoken}`,
       );
       console.log(response);
     } catch (error: any) {
