@@ -37,7 +37,7 @@ const ProfilePage = () => {
 
   const handleUpdateNickName = async () => {
     if (userInfo !== null) {
-      const nickname = prompt('변경할 닉네임을 입력하세요.', userInfo.name);
+      const nickname = prompt('변경할 닉네임을 입력하세요.', userInfo.nickname);
       if (nickname !== null) {
         updateNickName(nickname);
       }
