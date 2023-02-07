@@ -3,7 +3,7 @@ import { atom, selector, useRecoilState, useRecoilValue } from 'recoil';
 import axios, { AxiosResponse } from 'axios';
 import { Link } from 'react-router-dom';
 import logo from '../../assets/logo.png';
-import LessonCard from '../LessonCard';
+import MyAppliedLessonCard from '../MyAppliedLessonCard';
 import useViewModel from '../../viewmodels/MainPageViewModel';
 import { LessonsResponse, Lesson } from '../../types/LessonsType';
 import privateInfoState from '../../models/PrivateInfoAtom';
@@ -62,26 +62,27 @@ const MyAppliedLessonsMainpage = () => {
   const [lessons, setLessons] = useState<Lesson[]>();
   const userInfo = useRecoilValue(privateInfoState);
   useEffect(() => {
-    if (userInfo && userInfo.email)
+    if (userInfo && userInfo.email) {
       getMyAppliedLessonsMainpage(userInfo.email, 2, 0, 'TODO').then(
         (res: LessonsResponse) => {
           console.log('내가 신청한 강의', res.lessonInfoList);
           setLessons(res.lessonInfoList);
         },
       );
+    }
   }, []);
   return (
     <div className="applylessons">
-      <h1 className="applylesson--title"> 신청한 클래스 </h1>
-      {lessons ? (
-        <div className="lesson">
-          {lessons.map((lesson: Lesson) => (
-            <LessonCard lesson={lesson} />
-          ))}
-        </div>
-      ) : (
-        <div>no Created</div>
-      )}
+      <h1 className="applylessons__title"> 신청한 클래스 </h1>
+      <div className="applylessons__cards">
+        {lessons ? (
+          lessons.map((lesson: Lesson) => (
+            <MyAppliedLessonCard lesson={lesson} />
+          ))
+        ) : (
+          <div>no Created</div>
+        )}
+      </div>
     </div>
   );
 };
