@@ -71,10 +71,10 @@ public class UserController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공")
     })
-    public ResponseEntity<Boolean> withdrawalUser(@PathVariable String email){
+    public ResponseEntity<? extends BaseResponseBody> withdrawalUser(@PathVariable String email){
         userService.deleteUser(email);
 
-        return ResponseEntity.status(200).body(true);
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"성공"));
     }
 
     @GetMapping("/{email}")
