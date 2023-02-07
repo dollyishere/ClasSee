@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { Card, CardContent } from '@mui/material';
@@ -11,6 +11,7 @@ const ProfilePage = () => {
   const [image, setImage] = useState<string>();
   const navigate = useNavigate();
   const userInfo = useRecoilValue(privateInfoState);
+  const descriptionRef = useRef<HTMLTextAreaElement>(null);
 
   const {
     uploadProfileImage,
@@ -18,6 +19,7 @@ const ProfilePage = () => {
     updateNickName,
     updatePhone,
     updateAddress,
+    updateDescription,
   } = useViewModel();
 
   const upload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,6 +54,12 @@ const ProfilePage = () => {
       if (address !== null) {
         updateAddress(address);
       }
+    }
+  };
+
+  const handleUpdateDescription = async () => {
+    if (userInfo !== null && descriptionRef.current !== null) {
+      updateDescription(descriptionRef.current.value);
     }
   };
 
@@ -194,10 +202,17 @@ const ProfilePage = () => {
               <div className="profile-page__section">
                 <div className="profile-page__section--label">소개</div>
                 <div className="profile-page__section--content">
-                  <textarea>{userInfo.description}</textarea>
+                  <textarea
+                    ref={descriptionRef}
+                    defaultValue={userInfo.description}
+                  />
                 </div>
                 <div className="profile-page__buttons">
-                  <button type="button" className="button profile-page__button">
+                  <button
+                    type="button"
+                    className="button profile-page__button"
+                    onClick={handleUpdateDescription}
+                  >
                     소개 변경
                   </button>
                 </div>

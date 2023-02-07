@@ -20,6 +20,7 @@ const ProfileViewModel = () => {
     doUpdateNickName,
     doUpdatePhone,
     doUpdateAddress,
+    doUpdateDescription,
   } = useApi();
 
   const getProfileImage = async (email: string) => {
@@ -95,12 +96,25 @@ const ProfileViewModel = () => {
     }
   };
 
+  const updateDescription = async (description: string) => {
+    if (userInfo !== null) {
+      const response = await doUpdateDescription(userInfo.email, description);
+      if (response === 200) {
+        setUserInfo({
+          ...userInfo,
+          description,
+        });
+      }
+    }
+  };
+
   return {
     updateNickName,
     uploadProfileImage,
     getProfileImage,
     updatePhone,
     updateAddress,
+    updateDescription,
   };
 };
 
