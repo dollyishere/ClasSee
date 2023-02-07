@@ -5,30 +5,35 @@ import { Card, CardContent } from '@mui/material';
 import { PersonOutline } from '@mui/icons-material';
 
 import privateInfoState from '../models/PrivateInfoAtom';
-import authTokenState from '../models/AuthTokenAtom';
 import useViewModel from '../viewmodels/ProfileViewModel';
 
 const ProfilePage = () => {
-  const [image, setImage] = useState<any>(null);
+  const [image, setImage] = useState<string>();
   const navigate = useNavigate();
-  // const userInfo = useRecoilValue(privateInfoState);
-  const userInfo = {
-    img: null,
-    nickname: 'taejin',
-    point: 0,
-    name: 'kotaejin',
-    email: '12@12.com',
-    phone: '01012345678',
-    pasword: '1234',
-    address: 'house',
-    description: 'test',
+  const userInfo = useRecoilValue(privateInfoState);
+
+  const { uploadProfileImage, getProfileImage } = useViewModel();
+
+  const upload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.currentTarget.files !== null && userInfo !== null) {
+      await uploadProfileImage(e.currentTarget.files[0]);
+      const uploadedImage = await getProfileImage(userInfo.email);
+      setImage(uploadedImage);
+    }
   };
 
   useEffect(() => {
-    // if (userInfo === null) {
-    //   alert('로그인 후 이용 가능합니다.');
-    //   navigate('/login');
-    // }
+    if (userInfo === null) {
+      alert('로그인 후 이용 가능합니다.');
+      navigate('/login');
+    } else {
+      const getImage = async () => {
+        const imageUrl = await getProfileImage(userInfo.email);
+        console.log(imageUrl);
+        setImage(imageUrl);
+      };
+      getImage();
+    }
   }, []);
 
   return (
@@ -37,9 +42,9 @@ const ProfilePage = () => {
         <Card className="profile-page__card">
           <CardContent>
             <div className="profile-page__header">
-              <div className="profile-page__photo">
-                {userInfo.img === null ? (
-                  <div className="profile-page__photo--not">
+              <div className="profile-page__image">
+                {image === null ? (
+                  <div className="profile-page__image--not">
                     <PersonOutline
                       style={{
                         fontSize: '200px',
@@ -47,15 +52,20 @@ const ProfilePage = () => {
                     />
                   </div>
                 ) : (
-                  '있음'
+                  <img
+                    src={image}
+                    alt={image}
+                    className="profile-page__image--not"
+                  />
                 )}
-                <div className="photo-page__photo--change">
-                  <label htmlFor="profile-page__photo-input">
+                <div className="profile-page__image--change">
+                  <label htmlFor="profile-page__image-input">
                     프로필 변경
                     <input
                       type="file"
                       placeholder="프로필 변경"
-                      id="profile-page__photo-input"
+                      id="profile-page__image-input"
+                      onChange={upload}
                     />
                   </label>
                 </div>
@@ -147,7 +157,7 @@ const ProfilePage = () => {
               <div className="profile-page__section">
                 <div className="profile-page__section--label">소개</div>
                 <div className="profile-page__section--content">
-                  <textarea placeholder={userInfo.description} />
+                  <textarea>{userInfo.description}</textarea>
                 </div>
                 <div className="profile-page__buttons">
                   <button type="button" className="button profile-page__button">
