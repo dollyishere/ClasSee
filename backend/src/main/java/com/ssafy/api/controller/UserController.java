@@ -223,7 +223,7 @@ public class UserController {
             @ApiResponse(code = 200, message = "성공")
     })
     public ResponseEntity<? extends BaseResponseBody> updateUserImg(@PathVariable String email, @RequestParam String img) {
-        userService.updateUserDescription(email, img);
+        userService.updateUserImg(email, img);
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200,"수정 완료"));
     }
