@@ -25,6 +25,7 @@ const ProfileViewModel = () => {
     doUpdateDescription,
     doUpdatePassword,
     doGetSalt,
+    doWithdrawl,
   } = useApi();
 
   const getProfileImage = async (email: string) => {
@@ -118,9 +119,25 @@ const ProfileViewModel = () => {
       if (salt !== null) {
         const hashedPassword = createHashedPassword(password, salt);
         const response = await doUpdatePassword(userInfo.email, hashedPassword);
-        console.log(response);
       }
     }
+  };
+
+  const withdrawl = async () => {
+    if (userInfo !== null) {
+      const response = await doWithdrawl(userInfo.email);
+      if (response === 200) {
+        const imageRef = ref(storage, `profiles/${encodeURI(userInfo.email)}/`);
+        await listAll(imageRef).then((res: any) => {
+          res.items.forEach((item: any) => {
+            deleteObject(item);
+          });
+        });
+        setUserInfo(null);
+      }
+      return response;
+    }
+    return 400;
   };
 
   return {
@@ -131,6 +148,7 @@ const ProfileViewModel = () => {
     updateAddress,
     updateDescription,
     updatePassword,
+    withdrawl,
   };
 };
 

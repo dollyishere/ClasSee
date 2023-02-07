@@ -24,6 +24,7 @@ const ProfilePage = () => {
     updateAddress,
     updateDescription,
     updatePassword,
+    withdrawl,
   } = useViewModel();
 
   const upload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -83,6 +84,18 @@ const ProfilePage = () => {
     }
   };
 
+  const handleWithdrawl = async () => {
+    const email = prompt(
+      '회원 탈퇴를 진행합니다. 정말 탈퇴를 원하실 경우 이메일을 입력해주세요.',
+    );
+    if (email === userInfo?.email) {
+      const response = await withdrawl();
+      if (response === 200) {
+        alert('탈퇴 처리되셨습니다.');
+        navigate('/');
+      }
+    }
+  };
   useEffect(() => {
     if (userInfo === null) {
       alert('로그인 후 이용 가능합니다.');
@@ -242,7 +255,11 @@ const ProfilePage = () => {
                 </div>
               </div>
             </div>
-            <button type="button" className="button profile-page__withdrawl">
+            <button
+              type="button"
+              className="button profile-page__withdrawl"
+              onClick={handleWithdrawl}
+            >
               회원탈퇴
             </button>
           </CardContent>
