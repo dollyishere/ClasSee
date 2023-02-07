@@ -24,21 +24,23 @@ export interface PamphletsType {
 export interface LessonDetailResponse {
   message: string;
   statusCode: number;
-  userEmail: string;
+  teacherEmail: string;
   lessonName: string;
   cklsDescription: string;
   lessonDescription: string;
   kitPrice: number;
   kitDescription: string;
   category: string;
-  runningtime: number;
+  runningTime: number;
+  maximum: number;
   userName: string;
   userDesciption: string | null;
-  profileImg: string | null;
+  teacherImage: string | null;
   curriculums: CurriculumsType[];
   checkLists: CheckListsType[];
   pamphlets: PamphletsType[];
   score: number;
+  bookMarked: boolean;
 }
 
 export interface LessonDetailProps {

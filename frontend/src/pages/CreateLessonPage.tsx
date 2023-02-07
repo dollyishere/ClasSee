@@ -23,7 +23,7 @@ import {
   CheckListType,
   CurriculumType,
   PamphletType,
-  CreateLessonRequest,
+  LessonRequest,
 } from '../types/CreateLessonType';
 import { UserInfo } from '../types/UserType';
 
@@ -111,14 +111,13 @@ const CreateLessonPage = () => {
         },
       );
 
-      const createLessonRequestBody: CreateLessonRequest = {
+      const createLessonRequestBody: LessonRequest = {
         category: categorySelectState,
         checkList: checkList as CheckListType[],
         cklsDescription: materialDescState,
         curriculumList: curriculumList as CurriculumType[],
         description: lessonDescState,
-        // email: userInfo?.email,
-        email: 'ttest@gmail.com',
+        email: userInfo?.email,
         kitDescription: kitDescState,
         kitPrice: kitPriceState,
         maximum: maximumState,
@@ -266,7 +265,7 @@ const CreateLessonPage = () => {
               variant="contained"
               onClick={handleCreateLessonSubmit}
             >
-              강의 수정
+              강의 생성
             </Button>
           ) : (
             <Button

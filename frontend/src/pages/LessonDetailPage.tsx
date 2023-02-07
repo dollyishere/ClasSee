@@ -32,21 +32,23 @@ const LessonDetailPage = () => {
     useState<LessonDetailResponse>({
       message: '' as string,
       statusCode: 0 as number,
-      userEmail: '' as string,
+      teacherEmail: '' as string,
       lessonName: '' as string,
       cklsDescription: '' as string,
       lessonDescription: '' as string,
       kitPrice: 0 as number,
       kitDescription: '' as string,
       category: '' as string,
-      runningtime: 0 as number,
+      runningTime: 0 as number,
+      maximum: 0 as number,
       userName: '' as string,
       userDesciption: '' as string | null,
-      profileImg: '' as string | null,
+      teacherImage: '' as string | null,
       curriculums: [] as CurriculumsType[],
       checkLists: [] as CheckListsType[],
       pamphlets: [] as PamphletsType[],
       score: 0 as number,
+      bookMarked: false as boolean,
     });
 
   // api 실행할 시 실행될 CreateLessonModel createLesson에 할당
@@ -84,25 +86,30 @@ const LessonDetailPage = () => {
         setLessonDetailState(res);
         // firebase의 해당 강의가 저장된 폴더의 url에 접근하여 해당하는 이미지 파일을 각각 다운받음
         // 강의 관련 사진 다운로드해서 pamphletsImgState에 저장
-        if (lessonDetailState.pamphlets) {
+        res.pamphlets.forEach((item) => {
+          const imageName = item.img as string;
           listAll(pamphletsImgRef).then((response: any) => {
-            response.items.forEach((item: any) => {
-              getDownloadURL(item).then((url) => {
-                setPamphletsImgState((prev: any) => [...prev, url]);
-              });
+            response.items.forEach((img: any) => {
+              if (img.name === imageName) {
+                getDownloadURL(img).then((url) => {
+                  setPamphletsImgState((prev: any) => [...prev, url]);
+                });
+              }
             });
           });
-        }
-        // 준비물 이미지 다운로드해서 checkListImgState에 저장
-        if (lessonDetailState.checkLists) {
+        });
+        res.checkLists.forEach((item) => {
+          const imageName = item.img as string;
           listAll(checkListImgRef).then((response: any) => {
-            response.items.forEach((item: any) => {
-              getDownloadURL(item).then((url) => {
-                setCheckListImgState((prev: any) => [...prev, url]);
-              });
+            response.items.forEach((img: any) => {
+              if (img.name === imageName) {
+                getDownloadURL(img).then((url) => {
+                  setCheckListImgState((prev: any) => [...prev, url]);
+                });
+              }
             });
           });
-        }
+        });
       } else {
         alert(res?.message);
       }
@@ -121,14 +128,14 @@ const LessonDetailPage = () => {
         <div className="lesson-detail-page__info">
           <h1>{lessonDetailState.lessonName}</h1>
           <p>
-            {lessonDetailState.runningtime === 0
+            {lessonDetailState.runningTime === 0
               ? '미정'
-              : lessonDetailState.runningtime}{' '}
+              : lessonDetailState.runningTime}{' '}
             시간
           </p>
-          {lessonDetailState.profileImg ? (
+          {lessonDetailState.teacherImage ? (
             // 해당 파트 프로필 이미지 구현되었을 때 firebase로 데이터 불러오는 것과 함께 구현
-            <img src={lessonDetailState.profileImg} alt="profileImg" />
+            <img src={lessonDetailState.teacherImage} alt="teacherImage" />
           ) : null}
           <p>{lessonDetailState.userName}</p>
           <p>
@@ -179,9 +186,9 @@ const LessonDetailPage = () => {
               </div>
               <h2>강사 소개</h2>
               <div className="lesson-detail-page__teacher">
-                {lessonDetailState.profileImg ? (
+                {lessonDetailState.teacherImage ? (
                   // 해당 파트 프로필 이미지 구현되었을 때 firebase로 데이터 불러오는 것과 함께 구현
-                  <img src={lessonDetailState.profileImg} alt="profileImg" />
+                  <img src={lessonDetailState.teacherImage} alt="profileImg" />
                 ) : null}
                 <div className="lesson-detail-page__teacher-text">
                   <h3>{lessonDetailState.userName}</h3>

@@ -1,14 +1,10 @@
 import axios from 'axios';
 
-import {
-  CreateLessonRequest,
-  CreateLessonResponse,
-} from '../types/CreateLessonType';
+import { LessonRequest, CreateLessonResponse } from '../types/CreateLessonType';
+import { Response } from '../types/BaseType';
 
 const CreateLessonApi = () => {
-  const DoCreateLesson = async (
-    createLessonRequestBody: CreateLessonRequest,
-  ) => {
+  const doCreateLesson = async (createLessonRequestBody: LessonRequest) => {
     try {
       const response = await axios.post<CreateLessonResponse>(
         `${process.env.REACT_APP_SERVER_URI}/api/v1/lessons`,
@@ -21,21 +17,24 @@ const CreateLessonApi = () => {
     return null;
   };
   const doUpdateLesson = async (
-    createLessonRequestBody: CreateLessonRequest,
+    updateLessonRequestBody: LessonRequest,
+    lessonId: number,
   ) => {
     try {
-      const response = await axios.put<CreateLessonResponse>(
-        `${process.env.REACT_APP_SERVER_URI}/api/v1/lessons`,
-        createLessonRequestBody,
+      console.log(lessonId);
+      const response = await axios.put<Response>(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/lessons/${lessonId}`,
+        updateLessonRequestBody,
       );
       return response.data;
     } catch (error: any) {
       console.error(error);
+      console.log(updateLessonRequestBody);
     }
     return null;
   };
   return {
-    DoCreateLesson,
+    doCreateLesson,
     doUpdateLesson,
   };
 };

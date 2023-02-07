@@ -67,7 +67,7 @@ export interface PamphletType {
   img: string;
 }
 
-export interface CreateLessonRequest {
+export interface LessonRequest {
   category: string;
   checkList: CheckListType[];
   cklsDescription: string;

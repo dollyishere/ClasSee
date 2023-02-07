@@ -24,7 +24,7 @@ import {
   CheckListType,
   CurriculumType,
   PamphletType,
-  CreateLessonRequest,
+  LessonRequest,
 } from '../types/CreateLessonType';
 import {
   LessonDetailRequest,
@@ -71,11 +71,11 @@ const UpdateLessonPage = () => {
   const [kitDescState, setKitDescState] = useState<string>('');
   const [kitPriceState, setKitPriceState] = useState<number>(0);
 
-  // 강의 개설을 신청하는 유저의 정보를 useRecoilValue를 통해 불러옴
+  // 강의 수정을 신청하는 유저의 정보를 useRecoilValue를 통해 불러옴
   // const userInfo = useRecoilValue(PrivateInfoState);
 
-  // api 실행할 시 실행될 CreateLessonModel createLesson에 할당
-  const { createLesson } = CreateLessonViewModel();
+  // api 실행할 시 실행될 함수를 불러옴
+  const { updateLesson } = CreateLessonViewModel();
 
   // 강의 개설 완료 시 컴포넌트 전환에 필요한 useNavigate 재할당
   const navigate = useNavigate();
@@ -87,13 +87,14 @@ const UpdateLessonPage = () => {
   const userInfo = useRecoilValue(PrivateInfoState);
 
   // firebase storage의 이 경로에 있는 파일들을 가져옴
+
   const checkListImgRef = ref(
     storage,
     `lessons/${lessonId.lessonId}/checklist_images`,
   );
   const pamphletsImgRef = ref(
     storage,
-    `lessons/${lessonId.lessonId}/pamphlet_images`,
+    `lessons/${lessonId.lessonId}/pamphlet_images/`,
   );
 
   // const handleLessonDelete = (event: React.MouseEvent<HTMLButtonElement>) => {};
@@ -105,46 +106,55 @@ const UpdateLessonPage = () => {
     const fetchData = async () => {
       const res = await getLessonDetail(getLessonDetailRequestBody);
       if (res?.message === 'SUCCESS') {
-        // 만약 강의 상세 정보를 db에서 받아오는 것에 성공했다면, lessonDetailState에 해당 정보를 저장
+        // 만약 강의 상세 정보를 db에서 받아오는 것에 성공했다면, 해당하는 State에 각각 정보를 저장
         setLessonNameState(res.lessonName);
         setCategorySelectState(res.category);
         setlessonDescState(res.lessonDescription);
         setMaterialDescState(res.cklsDescription);
-
-        setRunningtimeState(res.runningtime);
+        setMaximumState(res.maximum);
+        setRunningtimeState(res.runningTime);
         setBasicPriceState(res.kitPrice);
         setKitDescState(res.kitDescription);
         setKitPriceState(res.kitPrice);
 
-        // firebase의 해당 강의가 저장된 폴더의 url에 접근하여 해당하는 이미지 파일을 각각 다운받음
-        // 강의 관련 사진 다운로드해서 pamphletsImgState에 저장
-        // res.curriculums.map((item: object) => {
-        //   const curriDesc = item.description as string
-        //   setCurriListState[...curriListState, curriDesc]});
+        // curriculums, pamphlets, checkList의 경우, 리스트 형태이므로 forEach로 해체하여 따로 저장
+        res.curriculums.forEach((item) => {
+          const curriDesc = item.description as string;
+          setCurriListState((prevState) => [...prevState, curriDesc]);
+        });
 
-        if (lessonImgFileListState) {
+        // 이미지의 경우, 이하의 로직을 따름
+        // 먼저 pamphlets, checkLists 안에 든 img(해당하는 이미지 이름)을 imageName에 저장함
+        // 이후, 미리 만들어둔 ref를 통해 해당하는 폴더에 든 이미지들을 불러옴(listAll)
+        // 이 요청으로 이미지에 대한 정보를 불러 왔다면(response.items), 미리 지정해둔 imageName과 대조해봄
+        // 불러온 이미지의 이름과 imageName이 같다면, 해당하는 이미지의 파일과 url을 각각 해당하는 state에 다운받음
+        res.pamphlets.forEach((item) => {
+          const imageName = item.img as string;
           listAll(pamphletsImgRef).then((response: any) => {
-            response.items.forEach((item: any) => {
-              getDownloadURL(item).then((url) => {
-                console.log(url);
-                setLessonImgFileListState((prev: any) => [...prev, url]);
-                setLessonImgSrcListState((prev: any) => [...prev, url]);
-              });
+            response.items.forEach((img: any) => {
+              if (img.name === imageName) {
+                setLessonImgFileListState((prev: any) => [...prev, img]);
+                getDownloadURL(img).then((url) => {
+                  setLessonImgSrcListState((prev: any) => [...prev, url]);
+                });
+              }
             });
           });
-        }
-        // 준비물 이미지 다운로드해서 checkListImgState에 저장
-        if (materialImgSrcListState) {
+        });
+        res.checkLists.forEach((item) => {
+          const imageName = item.img as string;
           listAll(checkListImgRef).then((response: any) => {
-            response.items.forEach((item: any) => {
-              getDownloadURL(item).then((url) => {
-                console.log(url);
-                setMaterialImgFileListState((prev: any) => [...prev, url]);
-                setMaterialImgSrcListState((prev: any) => [...prev, url]);
-              });
+            response.items.forEach((img: any) => {
+              if (img.name === imageName) {
+                setMaterialImgFileListState((prev: any) => [...prev, img]);
+                getDownloadURL(img).then((url) => {
+                  setMaterialImgSrcListState((prev: any) => [...prev, url]);
+                });
+              }
             });
           });
-        }
+        });
+        console.log(res);
       } else {
         alert(res?.message);
       }
@@ -193,7 +203,7 @@ const UpdateLessonPage = () => {
         },
       );
 
-      const EditLessonRequestBody: CreateLessonRequest = {
+      const EditLessonRequestBody: LessonRequest = {
         category: categorySelectState,
         checkList: checkList as CheckListType[],
         cklsDescription: materialDescState,
@@ -208,42 +218,51 @@ const UpdateLessonPage = () => {
         price: basicPriceState,
         runningtime: runningtimeState,
       };
-
-      const res = await createLesson(EditLessonRequestBody);
+      const res = await updateLesson(
+        EditLessonRequestBody,
+        Number(lessonId.lessonId),
+      );
       if (res?.message === 'SUCCESS') {
-        // 만약 강의 개설에 성공했을 시, 이하 코드를 실행함
-        // 만약 업로드한 이미지 파일이 하나 이상 존재한다면,
-        // 파일을 Firebase에 업로드한 후 해당 이름을 checkListState에 집어넣어줌
+        // 만약 강의 수정에 성공했을 시, 이하 코드를 실행함
+        // 만약 image의 속성이 Blob이 아닐 시(=이미 db에 저장된 이미지일 시) 그냥 pass함
+        // 만약 속성이 Blob이라면, 새로 업로드할 이미지라는 뜻임
+        // 이하 코드를 실행하여 이미지를 firebase에 업로드 함
         if (lessonImgFileListState.length !== 0) {
           lessonImgFileListState.forEach(async (image: any) => {
-            const upLoadedCheckListImage = await uploadBytes(
-              ref(
-                storage,
-                `lessons/${res.lessonId}/pamphlet_images/${image.name}`,
-              ),
-              image,
-            );
+            const imageName = image.name;
+            if (image instanceof Blob) {
+              const upLoadedCheckListImage = await uploadBytes(
+                ref(
+                  storage,
+                  `lessons/${lessonId.lessonId}/pamphlet_images/${imageName}`,
+                ),
+                image,
+              );
+            }
           });
         }
         if (materialImgFileListState.length !== 0) {
           materialImgFileListState.forEach(async (image: any) => {
-            const upLoadedPamphletImage = await uploadBytes(
-              ref(
-                storage,
-                `lessons/${res.lessonId}/checklist_images/${image.name}`,
-              ),
-              image,
-            );
+            const imageName = image.name;
+            if (image instanceof Blob) {
+              const upLoadedPamphletImage = await uploadBytes(
+                ref(
+                  storage,
+                  `lessons/${lessonId.lessonId}/checklist_images/${imageName}`,
+                ),
+                image,
+              );
+            }
           });
         }
-        // 이후 사용자에게 강의가 새로 등록되었음을 알린 후 메인 페이지로 이동
-        alert('강의가 등록되었습니다.');
+        // 이후 사용자에게 강의 정보가 수정되었음을 알린 후 메인 페이지로 이동
+        alert('강의가 수정되었습니다.');
         navigate(`/`);
       } else {
         alert('다시 시도해주십시오.');
       }
 
-      // 필수 입력 항목을 입력하지 않았을 경우 예외조건 처리함
+      //  필수 입력 항목을 입력하지 않았을 경우 예외조건 처리함
     } else if (lessonNameState === '') {
       alert('클래스 이름을 입력해주세요.');
       setSelectedComponent(1);
@@ -347,7 +366,7 @@ const UpdateLessonPage = () => {
               variant="contained"
               onClick={handleCreateLessonSubmit}
             >
-              강의 생성
+              강의 수정
             </Button>
           ) : (
             <Button
