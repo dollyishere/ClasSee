@@ -83,25 +83,13 @@ const UserApi = () => {
     }
     return null;
   };
-  // 로그인 떄 user의 북마크 정보를 받아오기 때문에 userapi에 작성
-  const getBookMarked = async (email: string) => {
-    try {
-      const response = await axios.get<BookMarkedResponse>(
-        `${process.env.REACT_APP_SERVER_URI}/api/v1/bookmarks/${email}`,
-      );
-      console.log(response);
-    } catch (error: any) {
-      console.log(error);
-    }
-    return null;
-  };
+
   return {
     doSignUp,
     doEmailDuplicationCheck,
     doGetSalt,
     doLogin,
     doGetAccessToken,
-    getBookMarked,
   };
 };
 
