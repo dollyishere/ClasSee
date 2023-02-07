@@ -129,6 +129,18 @@ const UserApi = () => {
     return null;
   };
 
+  const doUpdateDescription = async (email: string, description: string) => {
+    try {
+      const response = await axios.put<Response>(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/users/${email}/description?description=${description}`,
+      );
+      return response.data.statusCode;
+    } catch (error: any) {
+      console.error(error);
+    }
+    return null;
+  };
+
   return {
     doSignUp,
     doEmailDuplicationCheck,
@@ -139,6 +151,7 @@ const UserApi = () => {
     doUpdateNickName,
     doUpdatePhone,
     doUpdateAddress,
+    doUpdateDescription,
   };
 };
 
