@@ -106,15 +106,17 @@ const LoginPage = () => {
             )}
           </div>
           {/* 비밀번호 & 회원가입 페이지로 이동 */}
-          <ul className="link">
-            <li className="link__item">
-              <Link to="/find_pw">비밀번호 찾기</Link>
-            </li>
-            <li>|</li>
-            <li className="link__item">
-              <Link to="/signup">회원가입</Link>
-            </li>
-          </ul>
+          <div className="login__find">
+            <br />
+            <Link to="/find_pw" style={{ textDecoration: 'none' }}>
+              비밀번호 찾기&nbsp;&nbsp;
+            </Link>
+            <Link to="/signup" style={{ textDecoration: 'none' }}>
+              &nbsp;&nbsp;회원가입
+            </Link>
+          </div>
+          <br />
+
           {/* <Button variant="contained" color="warning" startIcon={<ChatBubbleIcon />} className="login__button">
           카카오 로그인
         </Button> */}
@@ -125,8 +127,8 @@ const LoginPage = () => {
         </form>
         {/* 소셜(카카오) 로그인 */}
         <button type="button" className="login__button social-login">
-          <ChatBubbleIcon />
-          카카오 로그인
+          <ChatBubbleIcon className="kakao__icon" />
+          <div className="kakao__text">카카오 로그인</div>
         </button>
       </Card>
     </div>
