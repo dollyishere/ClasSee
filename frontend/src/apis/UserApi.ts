@@ -79,11 +79,26 @@ const UserApi = () => {
     return null;
   };
 
+  const doUpdateProfileImage = async (email: string, url: string) => {
+    try {
+      const response = await axios.put<Response>(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/users/${email}/img?img=${url}`,
+      );
+
+      console.log(response);
+      return response.status;
+    } catch (error: any) {
+      console.error(error);
+    }
+    return null;
+  };
+
   return {
     doSignUp,
     doEmailDuplicationCheck,
     doGetSalt,
     doLogin,
+    doUpdateProfileImage,
   };
 };
 
