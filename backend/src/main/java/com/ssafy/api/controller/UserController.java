@@ -2,6 +2,7 @@ package com.ssafy.api.controller;
 
 import com.ssafy.api.dto.UserEmailPwDto;
 import com.ssafy.api.request.UserFindPwPostReq;
+import com.ssafy.api.request.UserUpdatePwPutReq;
 import com.ssafy.api.response.UserInfoGetRes;
 import com.ssafy.api.service.AuthService;
 import com.ssafy.api.service.EmailService;
@@ -159,10 +160,10 @@ public class UserController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends BaseResponseBody> changePw(@PathVariable String email, @RequestParam String password) {
+    public ResponseEntity<? extends BaseResponseBody> changePw(@PathVariable String email, @RequestBody UserUpdatePwPutReq userUpdatePwPutReq) {
         UserEmailPwDto userInfo = UserEmailPwDto.builder()
                                                 .email(email)
-                                                .password(password)
+                                                .password(userUpdatePwPutReq.getPassword())
                                                 .build();
         try {
             userService.updatePassword(userInfo);
