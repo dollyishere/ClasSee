@@ -20,9 +20,9 @@ public class PhotocardListGetRes {
     String userNickname;
     String lessonName;
     Long likesCount;
-    Boolean likesClick;
+    Boolean isLiked;
 
-    public PhotocardListGetRes(Photocard photocard, Long likes_count, Boolean likes_click){
+    public PhotocardListGetRes(Photocard photocard, Long likesCount, Boolean isLiked){
         this.id = photocard.getId();
         this.title = photocard.getTitle();
         this.content = photocard.getContent();
@@ -32,8 +32,8 @@ public class PhotocardListGetRes {
         this.userEmail = photocard.getUser().getAuth().getEmail();
         this.userNickname = photocard.getUser().getNickname();
         this.lessonName = photocard.getLesson_name();
-        this.likesCount = likes_count;
-        this.likesClick = likes_click;
+        this.likesCount = likesCount;
+        this.isLiked = isLiked;
 
     }
 
