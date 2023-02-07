@@ -35,4 +35,9 @@ public class CurriculumRepositorySupport {
         em.clear();
         em.flush();
     }
+
+    public void delete(Long lessonId) {
+        jpaQueryFactory.delete(qCurriculum)
+                .where(qCurriculum.lessonId.eq((lessonId))).execute();
+    }
 }

@@ -81,15 +81,24 @@ public class LessonServiceImpl implements LessonService {
         lessonRepositorySupport.update(lesson);
 
         checkLists.forEach((checklist) -> {
-            checkListRepositorySupport.update(checklist);
+            checkListRepositorySupport.delete(lesson.getId());
+
+            checklist.setLessonId(lesson.getId());
+            checkListRepositorySupport.save(checklist);
         });
 
         curriculums.forEach((curriculum) -> {
-            curriculumRepositorySupport.update(curriculum);
+            curriculumRepositorySupport.delete(lesson.getId());
+
+            curriculum.setLessonId(lesson.getId());
+            curriculumRepositorySupport.save(curriculum);
         });
 
         pamphlets.forEach((pamphlet) -> {
-            pamphletRepositorySupport.update(pamphlet);
+            pamphletRepositorySupport.delete(lesson.getId());
+
+            pamphlet.setLessonId(lesson.getId());
+            pamphletRepositorySupport.save(pamphlet);
         });
     }
 

@@ -211,7 +211,7 @@ public class AuthController {
 			@ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
 			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
 	})
-	public ResponseEntity<? extends BaseResponseBody> getKakaoCode(@RequestParam String code) {
+	public ResponseEntity<? extends BaseResponseBody> getKakaoCode(@RequestParam String code, HttpServletResponse res) {
 		KakaoUserDto reqUser = kakaoService.getKakaoInfo(code);
 		HashMap<String, Object> kakaoUser = kakaoService.getUserInfo(reqUser.getAccessToken());
 
