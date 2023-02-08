@@ -9,10 +9,16 @@ import { Lesson, LessonSearchOption } from '../types/LessonsType';
 import LessonCard from '../components/LessonCard';
 
 const LessonsPage = () => {
-  const location = useLocation();
+  // 뷰 모델
   const { searchLessons } = useViewModel();
 
+  // 카테고리를 알기 위한 location
+  const location = useLocation();
+
+  // 현재 페이지에 보여지는 강의 배열
   const [lessons, setLessons] = useState<Array<Lesson> | null>();
+
+  // 한 페이지에 몇 개를 보여줄 것인지
   const [limit, setLimit] = useState<number>(6);
   const [offset, setOffset] = useState<number>(0);
   const [category, setCategory] = useState<string | undefined>(
