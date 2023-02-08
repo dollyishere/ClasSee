@@ -46,9 +46,9 @@ public class ReviewController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "success", response = ReviewPageGetRes.class)
     })
-    public ResponseEntity<?> reviewList(@PathVariable Long lesson_id, @RequestParam int offset, @RequestParam int limit){
+    public ResponseEntity<?> reviewList(@PathVariable Long lessonId, @RequestParam int offset, @RequestParam int limit){
 
-        List<Review> reviewList = reviewService.readReview(lesson_id, offset, limit);
+        List<Review> reviewList = reviewService.readReview(lessonId, offset, limit);
 
         List<ReviewListGetRes> reviewListGetResList =
                 reviewList
@@ -56,7 +56,7 @@ public class ReviewController {
                         .map(r -> new ReviewListGetRes(r))
                         .collect(Collectors.toList());
 
-        Long reviewCount = reviewService.countReview(lesson_id);
+        Long reviewCount = reviewService.countReview(lessonId);
 
         ReviewPageGetRes reviewPage = new ReviewPageGetRes();
         reviewPage.setCount(reviewCount);
