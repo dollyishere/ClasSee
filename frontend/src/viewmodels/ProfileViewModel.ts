@@ -55,7 +55,7 @@ const ProfileViewModel = () => {
 
       const uploadedImage = await getProfileImage(userInfo.email);
 
-      doUpdateProfileImage(userInfo.email, uploadedImage);
+      await doUpdateProfileImage(userInfo.email, uploadedImage);
       if (uploadedImage !== undefined)
         setUserInfo({
           ...userInfo,

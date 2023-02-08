@@ -5,7 +5,11 @@ import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
 import SearchBox from '../components/LessonsPage/SearchBox';
 import useViewModel from '../viewmodels/LessonsViewModel';
-import { Lesson, LessonSearchOption } from '../types/LessonsType';
+import {
+  Lesson,
+  LessonSearchOption,
+  SearchResponse,
+} from '../types/LessonsType';
 import LessonCard from '../components/LessonCard';
 
 const LessonsPage = () => {
@@ -14,6 +18,33 @@ const LessonsPage = () => {
 
   // 카테고리를 알기 위한 location
   const location = useLocation();
+  let initialCategory;
+  switch (location.pathname.split('/')[2]) {
+    case 'craft':
+      initialCategory = '공예';
+      break;
+    case 'drawing':
+      initialCategory = '드로잉';
+      break;
+    case 'music':
+      initialCategory = '음악';
+      break;
+    case 'exercise':
+      initialCategory = '운동';
+      break;
+    case 'cook':
+      initialCategory = '요리';
+      break;
+    case 'beauty':
+      initialCategory = '뷰티';
+      break;
+    case 'etc':
+      initialCategory = '기타';
+      break;
+    default:
+      initialCategory = '';
+      break;
+  }
 
   // 현재 페이지에 보여지는 강의 배열
   const [lessons, setLessons] = useState<Array<Lesson> | null>();
@@ -21,9 +52,7 @@ const LessonsPage = () => {
   // 한 페이지에 몇 개를 보여줄 것인지
   const [limit, setLimit] = useState<number>(6);
   const [offset, setOffset] = useState<number>(0);
-  const [category, setCategory] = useState<string | undefined>(
-    location.pathname.split('/')[2],
-  );
+  const [category, setCategory] = useState<string | undefined>(initialCategory);
   const [dayOfWeek, setDayOfWeek] = useState<string | undefined>(undefined);
   const [email, setEmail] = useState<string | undefined>(undefined);
   const [maxPrice, setMaxPrice] = useState<number | undefined>(undefined);
@@ -69,10 +98,22 @@ const LessonsPage = () => {
         minStartTime,
         name,
       });
+      console.log(
+        limit,
+        offset,
+        category,
+        dayOfWeek,
+        email,
+        maxPrice,
+        maxStartTime,
+        minPrice,
+        minStartTime,
+        name,
+      );
+      console.log(data);
       setLessons(data);
     };
     getData();
-    console.log(category);
   }, [
     category,
     dayOfWeek,
