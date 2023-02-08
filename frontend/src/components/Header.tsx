@@ -33,6 +33,14 @@ const Header = () => {
     setToggleUserInfo((prev: boolean) => !prev);
   };
 
+  const test = () => {
+    window.open(
+      '/lesson/test/student',
+      '강의',
+      `height=${window.screen.height}, width=${window.screen.width}, fullscreen=yes, status=no, scrollbars=no`,
+    );
+  };
+
   return (
     <header>
       {/* 로고 */}
@@ -67,11 +75,9 @@ const Header = () => {
       {/* 버튼 */}
       <ul className="nav">
         <li className="nav__item">
-          <Link to="/lesson/test/student" target="_blank">
-            <button type="button" className="nav__button button">
-              테스트
-            </button>
-          </Link>
+          <button type="button" className="nav__button button" onClick={test}>
+            테스트
+          </button>
         </li>
         {userInfo === null ? (
           <>
