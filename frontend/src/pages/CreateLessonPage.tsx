@@ -62,7 +62,7 @@ const CreateLessonPage = () => {
   const [kitPriceState, setKitPriceState] = useState<number>(0);
 
   // 강의 개설을 신청하는 유저의 정보를 useRecoilValue를 통해 불러옴
-  const userInfo = useRecoilValue(PrivateInfoState);
+  const userInfo = useRecoilValue(privateInfoState);
 
   // api 실행할 시 실행될 CreateLessonModel createLesson에 할당
   const { createLesson } = CreateLessonViewModel();

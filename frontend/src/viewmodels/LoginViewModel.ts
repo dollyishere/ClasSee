@@ -3,7 +3,6 @@ import { useRecoilState } from 'recoil';
 import useApi from '../apis/UserApi';
 import privateInfoState from '../models/PrivateInfoAtom';
 import authTokenState from '../models/AuthTokenAtom';
-
 import {
   createHashedPassword,
   encryptToken,
@@ -14,7 +13,30 @@ import {
 const LoginViewModel = () => {
   const [privateInfo, setPrivateInfo] = useRecoilState(privateInfoState);
   const [authToken, setAuthToken] = useRecoilState(authTokenState);
-  const { doGetSalt, doLogin } = useApi();
+  const { doGetSalt, doLogin, doLogout, doGetAccessToken } = useApi();
+
+  const logout = async (email: string) => {
+    const response = await doLogout(email);
+    if (response === 403) {
+      const hashedRefreshToken = localStorage.getItem('refreshToken');
+      if (hashedRefreshToken !== null) {
+        const refreshToken = decryptToken(hashedRefreshToken, email);
+        const newAuthToken = await doGetAccessToken(email, refreshToken);
+        console.log(newAuthToken);
+        if (newAuthToken !== null) {
+          setAuthToken(newAuthToken);
+          const newResponse = await logout(email);
+          if (newResponse === 200) {
+            return 200;
+          }
+        }
+      }
+    } else if (response === 200) {
+      setPrivateInfo(null);
+      return 200;
+    }
+    return 400;
+  };
 
   const login = async (email: string, password: string) => {
     const salt = await doGetSalt(email);
@@ -57,6 +79,7 @@ const LoginViewModel = () => {
   };
   return {
     login,
+    logout,
   };
 };
 
