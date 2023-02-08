@@ -81,7 +81,8 @@ const UserApi = () => {
           },
         },
       );
-      return response.headers.accesstoken;
+      const { headers, data } = response;
+      return { headers, data };
     } catch (error: any) {
       console.error(error);
     }
