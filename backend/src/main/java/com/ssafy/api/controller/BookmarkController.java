@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-@Api(value = "북마크 API", tags = {"Bookmark"})
+@Api(value = "북마크 API, 로그인 O", tags = {"Bookmark"})
 @RestController
 @RequestMapping("/api/v1/bookmarks")
 public class BookmarkController {
@@ -32,7 +32,7 @@ public class BookmarkController {
     LessonService lessonService;
 
     @PostMapping("/{email}/{lessonId}")
-    @ApiOperation(value = "북마크 등록", notes = "<strong>회원 정보와 강의 정보</strong>를 통해 북마크를 등록한다.")
+    @ApiOperation(value = "북마크 등록, 로그인 O", notes = "<strong>회원 정보와 강의 정보</strong>를 통해 북마크를 등록한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
             @ApiResponse(code = 401, message = "인증 실패"),
@@ -46,7 +46,7 @@ public class BookmarkController {
     }
 
     @DeleteMapping("/{email}/{lessonId}")
-    @ApiOperation(value = "북마크 삭제", notes = "<strong>회원 정보와 강의 정보</strong>를 통해 북마크를 삭제한다.")
+    @ApiOperation(value = "북마크 삭제, 로그인 O", notes = "<strong>회원 정보와 강의 정보</strong>를 통해 북마크를 삭제한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
             @ApiResponse(code = 401, message = "인증 실패"),
@@ -61,7 +61,7 @@ public class BookmarkController {
     }
 
     @GetMapping("/{email}")
-    @ApiOperation(value = "북마크 리스트", notes = "사용자의 북마크 리스트")
+    @ApiOperation(value = "북마크 리스트, 로그인 O", notes = "사용자의 북마크 리스트")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = UserSaltRes.class),
             @ApiResponse(code = 401, message = "인증 실패", response = BaseResponseBody.class),

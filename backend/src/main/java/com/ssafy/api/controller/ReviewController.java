@@ -29,7 +29,7 @@ public class ReviewController {
     ReviewService reviewService;
 
     @PostMapping()
-    @ApiOperation(value = "리뷰 등록", notes = "리뷰 내용과 이메일, openLesson_id를 입력받은 뒤 리뷰를 등록")
+    @ApiOperation(value = "리뷰 등록, 로그인 O", notes = "리뷰 내용과 이메일, openLesson_id를 입력받은 뒤 리뷰를 등록")
     @ApiResponses({
             @ApiResponse(code = 200, message = "success")
     })
@@ -41,7 +41,7 @@ public class ReviewController {
     }
 
     @GetMapping("/list/{lesson_id}")
-    @ApiOperation(value = "강의 리뷰 목록 조회", notes = "리뷰를 볼 lesson id와 limit(가져올 수), offset(시작지점)을 입력하면 목록을 반환")
+    @ApiOperation(value = "강의 리뷰 목록 조회, 로그인 X", notes = "리뷰를 볼 lesson id와 limit(가져올 수), offset(시작지점)을 입력하면 목록을 반환")
     @ApiResponses({
             @ApiResponse(code = 200, message = "success")
     })
@@ -65,7 +65,7 @@ public class ReviewController {
     }
 
     @GetMapping("/mylist/{email}")
-    @ApiOperation(value = "내가 쓴 리뷰 목록 조회", notes = "내 email과 limit(가져올 수), offset(시작지점)을 입력하면 목록을 반환")
+    @ApiOperation(value = "내가 쓴 리뷰 목록 조회, 로그인 O", notes = "내 email과 limit(가져올 수), offset(시작지점)을 입력하면 목록을 반환")
     @ApiResponses({
             @ApiResponse(code = 200, message = "success")
     })
@@ -89,7 +89,7 @@ public class ReviewController {
     }
 
     @DeleteMapping()
-    @ApiOperation(value = "리뷰 삭제", notes = "리뷰 id를 입력 받아 삭제")
+    @ApiOperation(value = "리뷰 삭제, 로그인 O", notes = "리뷰 id를 입력 받아 삭제")
     @ApiResponses({
             @ApiResponse(code = 200, message = "success")
     })
@@ -101,7 +101,7 @@ public class ReviewController {
     }
 
     @PutMapping()
-    @ApiOperation(value = "리뷰 수정", notes = "내가 한 리뷰 수정")
+    @ApiOperation(value = "리뷰 수정, 로그인 O", notes = "내가 한 리뷰 수정")
     @ApiResponses({
             @ApiResponse(code = 200, message = "success")
     })

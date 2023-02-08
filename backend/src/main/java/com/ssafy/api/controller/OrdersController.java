@@ -22,7 +22,7 @@ public class OrdersController {
     OrdersService ordersService;
 
     @PostMapping()
-    @ApiOperation(value = "주문 정보 등록", notes = "주문 정보 입력 후 주문 생성, 잔액 부족 시 403")
+    @ApiOperation(value = "주문 정보 등록, 로그인 O", notes = "주문 정보 입력 후 주문 생성, 잔액 부족 시 403")
     @ApiResponses({
             @ApiResponse(code = 200, message = "success"),
             @ApiResponse(code = 403, message = "fail")
@@ -39,7 +39,7 @@ public class OrdersController {
     }
 
     @PutMapping("/{email}/point")
-    @ApiOperation(value = "포인트 충전", notes = "유저 이메일과 금액 입력 후 포인트 충전")
+    @ApiOperation(value = "포인트 충전, 로그인 O", notes = "유저 이메일과 금액 입력 후 포인트 충전")
     @ApiResponses({
             @ApiResponse(code = 200, message = "success")
     })
@@ -52,7 +52,7 @@ public class OrdersController {
 
 
     @GetMapping()
-    @ApiOperation(value = "주문페이지 정보", notes = "주문 페이지에 들어왔을 때, 필요한 정보들을 반환")
+    @ApiOperation(value = "주문페이지 정보, 로그인 O", notes = "주문 페이지에 들어왔을 때, 필요한 정보들을 반환")
     @ApiResponses({
             @ApiResponse(code = 200, message = "success")
     })
@@ -64,7 +64,7 @@ public class OrdersController {
     }
 
     @DeleteMapping("/{ordersId}")
-    @ApiOperation(value = "주문 취소", notes = "주문 ID ")
+    @ApiOperation(value = "주문 취소, 로그인 O", notes = "주문 ID ")
     @ApiResponses({
             @ApiResponse(code = 200, message = "success")
     })
