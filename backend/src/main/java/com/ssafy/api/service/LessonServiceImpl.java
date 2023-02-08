@@ -77,30 +77,28 @@ public class LessonServiceImpl implements LessonService {
         Lesson lesson = (Lesson) lessonInfo.get("LESSON");
         List<Checklist> checkLists = (List<Checklist>) lessonInfo.get("CHECKLISTS");
         List<Curriculum> curriculums = (List<Curriculum>) lessonInfo.get("CURRICULUMS");
-        List<Pamphlet> pamphlets = (List<Pamphlet>) lessonInfo.get("PAMPHLET");
+        List<Pamphlet> pamphlets = (List<Pamphlet>) lessonInfo.get("PAMPHLETS");
 
-        lessonRepositorySupport.update(lesson);
+        checkListRepositorySupport.delete(lesson.getId());
+        curriculumRepositorySupport.delete(lesson.getId());
+        pamphletRepositorySupport.delete(lesson.getId());
 
         checkLists.forEach((checklist) -> {
-            checkListRepositorySupport.delete(lesson.getId());
-
             checklist.setLessonId(lesson.getId());
             checkListRepositorySupport.save(checklist);
         });
 
         curriculums.forEach((curriculum) -> {
-            curriculumRepositorySupport.delete(lesson.getId());
-
             curriculum.setLessonId(lesson.getId());
             curriculumRepositorySupport.save(curriculum);
         });
 
         pamphlets.forEach((pamphlet) -> {
-            pamphletRepositorySupport.delete(lesson.getId());
-
             pamphlet.setLessonId(lesson.getId());
             pamphletRepositorySupport.save(pamphlet);
         });
+
+        lessonRepositorySupport.update(lesson);
     }
 
     @Override

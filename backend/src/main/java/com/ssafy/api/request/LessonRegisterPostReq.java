@@ -86,7 +86,7 @@ public class LessonRegisterPostReq {
 
         lessonInfo.put("LESSON", lesson);
         lessonInfo.put("CHECKLISTS", checklists);
-        lessonInfo.put("PAMPHLET", pamphlets);
+        lessonInfo.put("PAMPHLETS", pamphlets);
         lessonInfo.put("CURRICULUMS", curriculums);
         return lessonInfo;
     }
@@ -113,7 +113,7 @@ public class LessonRegisterPostReq {
 
         lessonInfo.put("LESSON", lesson);
         lessonInfo.put("CHECKLISTS", checklists);
-        lessonInfo.put("PAMPHLET", pamphlets);
+        lessonInfo.put("PAMPHLETS", pamphlets);
         lessonInfo.put("CURRICULUMS", curriculums);
         return lessonInfo;
     }
