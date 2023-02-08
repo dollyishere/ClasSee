@@ -35,9 +35,9 @@ public class PhotocardServiceImpl implements PhotocardService {
     @Override
     public void createPhotocard(PhotocardRegistPostReq photocardRegistPostReq) {
 
-        User user = userRepositorySupport
-                .findUserByAuth(photocardRegistPostReq.getUserEmail())
-                .get();
+        Long user_id = userRepositorySupport.findId(photocardRegistPostReq.getUserEmail());
+        User user = userRepositorySupport.findOne(user_id);
+
 
         Lesson lesson = photocardRepositorySupport
                 .findOneLesson(photocardRegistPostReq.getLessonId());
