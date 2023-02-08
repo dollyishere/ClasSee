@@ -14,14 +14,15 @@
       width: calc(100% - sidebar.$width);
       overflow: auto;
       .lesson-page__lesson-list {
+        width: 90%;
+        margin: 0 auto;
         display: flex;
         flex-wrap: wrap;
-        justify-content: center;
         .lesson-page__lesson-card {
           display: flex;
           align-items: center;
           justify-content: center;
-          width: 30%;
+          width: 33%;
         }
       }
     }
