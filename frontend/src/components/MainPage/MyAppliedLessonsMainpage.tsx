@@ -7,7 +7,13 @@ import MyAppliedLessonCard from '../MyAppliedLessonCard';
 import useViewModel from '../../viewmodels/MainPageViewModel';
 import { LessonsResponse, Lesson } from '../../types/LessonsType';
 import privateInfoState from '../../models/PrivateInfoAtom';
-
+import AuthTokenState from '../../models/AuthTokenAtom';
+import useApi from '../../apis/UserApi';
+import {
+  createHashedPassword,
+  encryptToken,
+  decryptToken,
+} from '../../utils/Encrypt';
 // 로그인이 되었을 때만 이 컴포넌트가 보여짐
 // 내가 신청한 강의를 get으로 api요청 보냄
 // 강의가 있으면 강의카드를 보여주고
@@ -16,9 +22,30 @@ const MyAppliedLessonsMainpage = () => {
   const { getMyAppliedLessonsMainpage } = useViewModel();
   const [lessons, setLessons] = useState<Lesson[]>();
   const userInfo = useRecoilValue(privateInfoState);
+  const accessToken = useRecoilValue(AuthTokenState);
+  const [authToken, setAuthToken] = useRecoilState(AuthTokenState);
+  const { doGetAccessToken } = useApi();
 
   useEffect(() => {
     if (userInfo && userInfo.email) {
+      //   if (accessToken == null) {
+      //     const hashedRefreshToken = localStorage.getItem('refreshToken');
+      //     if (hashedRefreshToken !== null) {
+      //       const refreshToken = decryptToken(hashedRefreshToken, userInfo.email);
+      //       const response = doGetAccessToken(userInfo.email, refreshToken);
+      //       if (response) {
+      //         console.log('durldurldurl', response);
+      // const encryptedToken = encryptToken(
+      //   response.headers.refreshtoken,
+      //   userInfo.email,
+      // );
+      // localStorage.setItem('refreshToken', encryptedToken);
+      // const authtoken = response;
+      // setAuthToken(authtoken);
+      //     }
+      //   }
+      // }
+      // console.log(accessToken);
       getMyAppliedLessonsMainpage(userInfo.email, 2, 0, 'TODO').then(
         (res: LessonsResponse) => {
           console.log('내가 신청한 강의', res.lessonInfoList);
