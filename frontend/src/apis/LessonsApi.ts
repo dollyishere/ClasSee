@@ -4,10 +4,10 @@ import AuthTokenState from '../models/AuthTokenAtom';
 
 const LessonsApi = () => {
   const accessToken = useRecoilValue(AuthTokenState);
-  const getRecommandLessonsApi = async (email: string | null) => {
+  const getRecommandLessonsApi = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_SERVER_URI}/api/v1/lessons/recommands?email=${email}`,
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/lessons/recommands`,
       );
       return response.data;
     } catch (error: any) {
