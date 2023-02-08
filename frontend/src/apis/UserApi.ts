@@ -2,7 +2,6 @@ import { Email } from '@mui/icons-material';
 import axios from 'axios';
 import { useRecoilValue } from 'recoil';
 
-import authTokenState from '../models/AuthTokenAtom';
 import { Response } from '../types/BaseType';
 import {
   SignUpRequest,
