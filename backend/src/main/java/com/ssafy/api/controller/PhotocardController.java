@@ -4,6 +4,7 @@ import com.ssafy.api.request.ArticleRegisterPostReq;
 import com.ssafy.api.request.PhotocardRegistPostReq;
 import com.ssafy.api.response.PageGetRes;
 import com.ssafy.api.response.PhotocardListGetRes;
+import com.ssafy.api.response.PhotocardPageGetRes;
 import com.ssafy.api.service.PhotocardService;
 import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.common.model.response.NotFoundErrorResponseBody;
@@ -45,7 +46,7 @@ public class PhotocardController {
     @PostMapping("/likes")
     @ApiOperation(value = "좋아요 등록, 로그인 O", notes = "좋아요를 누른 사용자 email, 포토카드 id를 입력 받아 좋아요 등록")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "성공")
+            @ApiResponse(code = 200, message = "success", response = BaseResponseBody.class)
     })
     public ResponseEntity<? extends BaseResponseBody> registLikes(@RequestParam String email, @RequestParam Long id) {
 
@@ -60,7 +61,7 @@ public class PhotocardController {
     @ApiOperation(value = "포토카드 리스트, 로그인 X", notes = "limit는 가져올 갯수, offset은 시작 위치(0부터 시작), count는 총 개수," +
             " likes_count는 해당 포토카드의 좋아요 총개수, likes_check는 true면 내가 좋아요 누른 포토카드이고 false면 안누른 포토카드")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "성공")
+            @ApiResponse(code = 200, message = "success", response = PhotocardPageGetRes.class)
     })
     public ResponseEntity<?> photocardList(@RequestParam int offset, @RequestParam int limit, @RequestParam String email){
 
@@ -78,7 +79,7 @@ public class PhotocardController {
 
         Long photocardCount = photocardService.photocardCount();
 
-        PageGetRes photocardPage = new PageGetRes();
+        PhotocardPageGetRes photocardPage = new PhotocardPageGetRes();
 
         photocardPage.setCount(photocardCount);
         photocardPage.setPage(photocardListGetResList);
@@ -90,7 +91,7 @@ public class PhotocardController {
     @ApiOperation(value = "나의 포토카드 리스트, 로그인 O", notes = "limit는 가져올 갯수, offset은 시작 위치(0부터 시작), count는 총 개수," +
             " likes_count는 해당 포토카드의 좋아요 총개수, likes_check는 true면 내가 좋아요 누른 포토카드이고 false면 안누른 포토카드")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "성공")
+            @ApiResponse(code = 200, message = "success", response = PhotocardPageGetRes.class)
     })
     public ResponseEntity<?> photocardMyList(@RequestParam int offset, @RequestParam int limit, @PathVariable String email){
 
@@ -108,7 +109,7 @@ public class PhotocardController {
 
         Long photocardCount = photocardService.myPhotocardCount(email);
 
-        PageGetRes photocardPage = new PageGetRes();
+        PhotocardPageGetRes photocardPage = new PhotocardPageGetRes();
 
         photocardPage.setCount(photocardCount);
         photocardPage.setPage(photocardListGetResList);
@@ -119,7 +120,7 @@ public class PhotocardController {
     @DeleteMapping()
     @ApiOperation(value = "포토 카드 삭제, 로그인 O", notes = "포토 카드 id를 입력 받아 삭제")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "success")
+            @ApiResponse(code = 200, message = "success", response = BaseResponseBody.class)
     })
     public ResponseEntity<? extends BaseResponseBody> deletePhotocard(@RequestParam Long id) {
 
@@ -131,7 +132,7 @@ public class PhotocardController {
     @DeleteMapping("/likes")
     @ApiOperation(value = "좋아요 취소, 로그인 O", notes = "좋아요를 취소할 사용자 email, 포토카드 id를 입력 받아 좋아요 취소(삭제)")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "success")
+            @ApiResponse(code = 200, message = "success", response = BaseResponseBody.class)
     })
     public ResponseEntity<? extends BaseResponseBody> deleteLikes(@RequestParam String email, @RequestParam Long id) {
 
