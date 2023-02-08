@@ -67,7 +67,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{email}")
-    @ApiOperation(value = "유저 삭제", notes = "유저 정보를 삭제(회원탈퇴)")
+    @ApiOperation(value = "유저 삭제, 로그인 O", notes = "유저 정보를 삭제(회원탈퇴)")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class)
     })
@@ -78,7 +78,7 @@ public class UserController {
     }
 
     @GetMapping("/{email}")
-    @ApiOperation(value = "회원 본인 정보 조회", notes = "로그인한 회원 본인의 정보를 응답한다.")
+    @ApiOperation(value = "회원 본인 정보 조회, 로그인 O", notes = "로그인한 회원 본인의 정보를 응답한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
             @ApiResponse(code = 401, message = "인증 실패", response = InvalidErrorResponseBody.class),
@@ -128,7 +128,7 @@ public class UserController {
     }
 
     @GetMapping("/{email}/check")
-    @ApiOperation(value = "비밀번호 찾기", notes = "<strong>이름과 이메알</strong>을 통해 비밀번호 찾는 메서드.")
+    @ApiOperation(value = "비밀번호 찾기, 로그인 X", notes = "<strong>이름과 이메알</strong>을 통해 비밀번호 찾는 메서드.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
             @ApiResponse(code = 401, message = "인증 실패", response = InvalidErrorResponseBody.class),
@@ -153,7 +153,7 @@ public class UserController {
     }
 
     @PutMapping("/{email}/password")
-    @ApiOperation(value = "비밀번호 변경", notes = "<strong>새로운 비밀번호</strong>을 통해 비밀번호 변경 하는 메서드.")
+    @ApiOperation(value = "비밀번호 변경, 로그인 O", notes = "<strong>새로운 비밀번호</strong>을 통해 비밀번호 변경 하는 메서드.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
             @ApiResponse(code = 401, message = "인증 실패", response = InvalidErrorResponseBody.class),
@@ -175,7 +175,7 @@ public class UserController {
     }
 
     @PutMapping("/{email}/nickname")
-    @ApiOperation(value = "유저 닉네임 업데이트", notes = "유저 정보를 수정")
+    @ApiOperation(value = "유저 닉네임 업데이트, 로그인 O", notes = "유저 정보를 수정")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class)
     })
@@ -186,7 +186,7 @@ public class UserController {
     }
 
     @PutMapping("/{email}/address")
-    @ApiOperation(value = "유저 주소 업데이트", notes = "유저 정보를 수정")
+    @ApiOperation(value = "유저 주소 업데이트, 로그인 O", notes = "유저 정보를 수정")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class)
     })
@@ -197,7 +197,7 @@ public class UserController {
     }
 
     @PutMapping("/{email}/phone")
-    @ApiOperation(value = "유저 폰번호 업데이트", notes = "유저 정보를 수정")
+    @ApiOperation(value = "유저 폰번호 업데이트, 로그인 O", notes = "유저 정보를 수정")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class)
     })
@@ -208,7 +208,7 @@ public class UserController {
     }
 
     @PutMapping("/{email}/description")
-    @ApiOperation(value = "유저 자기소개 업데이트", notes = "유저 정보를 수정")
+    @ApiOperation(value = "유저 자기소개 업데이트, 로그인 O", notes = "유저 정보를 수정")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class)
     })
@@ -219,7 +219,7 @@ public class UserController {
     }
 
     @PutMapping("/{email}/img")
-    @ApiOperation(value = "유저 이미지 업데이트", notes = "유저 정보를 수정")
+    @ApiOperation(value = "유저 이미지 업데이트, 로그인 O", notes = "유저 정보를 수정")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class)
     })

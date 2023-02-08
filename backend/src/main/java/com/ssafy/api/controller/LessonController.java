@@ -40,7 +40,7 @@ public class LessonController {
     UserService userService;
 
     @PostMapping()
-    @ApiOperation(value = "강의 등록", notes = "<strong>강의 정보</strong>를 통해 회원가입 한다.")
+    @ApiOperation(value = "강의 등록, 로그인 O", notes = "<strong>강의 정보</strong>를 통해 회원가입 한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
             @ApiResponse(code = 401, message = "인증 실패", response = InvalidErrorResponseBody.class),
@@ -69,7 +69,7 @@ public class LessonController {
     }
 
     @PutMapping("/{lessonId}")
-    @ApiOperation(value = "강의 수정", notes = "<strong>강의 정보</strong>를 수정 한다.")
+    @ApiOperation(value = "강의 수정, 로그인 O", notes = "<strong>강의 정보</strong>를 수정 한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
             @ApiResponse(code = 401, message = "인증 실패", response = InvalidErrorResponseBody.class),
@@ -87,7 +87,7 @@ public class LessonController {
     }
 
     @PostMapping("/{lessonId}/schedules")
-    @ApiOperation(value = "강의 스케줄 등록", notes = "<strong>강의 진행 정보</strong>를 통해 회원가입 한다.")
+    @ApiOperation(value = "강의 스케줄 등록, 로그인 O", notes = "<strong>강의 진행 정보</strong>를 통해 회원가입 한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
             @ApiResponse(code = 401, message = "인증 실패", response = InvalidErrorResponseBody.class),
@@ -116,7 +116,7 @@ public class LessonController {
     }
 
     @GetMapping("/{lessonId}")
-    @ApiOperation(value = "강의 상세 화면", notes = "강의정보, 강사정보, 강의 일정 정보를 반환한다")
+    @ApiOperation(value = "강의 상세 화면, 로그인 X", notes = "강의정보, 강사정보, 강의 일정 정보를 반환한다")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
             @ApiResponse(code = 401, message = "인증 실패", response = InvalidErrorResponseBody.class),
@@ -136,7 +136,7 @@ public class LessonController {
     }
 
     @GetMapping("/{lessonId}/schedules")
-    @ApiOperation(value = "강의 스케줄 조회", notes = "강의 아이디와 날짜(yyyy-MM-dd)를 통해 개설 강의 리스트 조회")
+    @ApiOperation(value = "강의 스케줄 조회, 로그인 X", notes = "강의 아이디와 날짜(yyyy-MM-dd)를 통해 개설 강의 리스트 조회")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
             @ApiResponse(code = 401, message = "인증 실패", response = InvalidErrorResponseBody.class),
@@ -152,7 +152,7 @@ public class LessonController {
     }
 
     @GetMapping("/recommands")
-    @ApiOperation(value = "추천 강의 리스트", notes = "평점이 높은 강의 12개를 반환")
+    @ApiOperation(value = "추천 강의 리스트, 로그인 X", notes = "평점이 높은 강의 12개를 반환")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
             @ApiResponse(code = 401, message = "인증 실패", response = InvalidErrorResponseBody.class),
@@ -178,7 +178,7 @@ public class LessonController {
     }
 
     @GetMapping("/search")
-    @ApiOperation(value = "검색 강의 리스트", notes = "필터링 된 강의 리스트 반환")
+    @ApiOperation(value = "검색 강의 리스트, 로그인 X", notes = "필터링 된 강의 리스트 반환")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
             @ApiResponse(code = 401, message = "인증 실패", response = InvalidErrorResponseBody.class),

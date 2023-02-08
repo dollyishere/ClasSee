@@ -27,7 +27,7 @@ public class StudentController {
     @Autowired
     LessonService lessonService;
     @GetMapping("/{email}/lessons")
-    @ApiOperation(value = "신청한 강의 목록 조회", notes = "수강생이 신청한 강의 목록을 조회한다. 쿼리(DONE[완료], TODO[진행]")
+    @ApiOperation(value = "신청한 강의 목록 조회, 로그인 O", notes = "수강생이 신청한 강의 목록을 조회한다. 쿼리(DONE[완료], TODO[진행]")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
             @ApiResponse(code = 401, message = "인증 실패"),
