@@ -41,7 +41,7 @@ public class ReviewController {
         return ResponseEntity.status(200).body(BaseResponseBody.of(200,"success"));
     }
 
-    @GetMapping("/list/{lesson_id}")
+    @GetMapping("/list/{lessonId}")
     @ApiOperation(value = "강의 리뷰 목록 조회, 로그인 X", notes = "리뷰를 볼 lesson id와 limit(가져올 수), offset(시작지점)을 입력하면 목록을 반환")
     @ApiResponses({
             @ApiResponse(code = 200, message = "success", response = ReviewPageGetRes.class)
