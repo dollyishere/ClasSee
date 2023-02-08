@@ -52,7 +52,7 @@ public class OrdersServiceImpl implements OrdersService{
         User user = userRepositorySupport.findOne(user_id);
         Long user_point = user.getPoint();
 
-        OpenLesson openLesson = ordersRepositorySupport.findOneOpenLesson(ordersRegistPostReq.getOpenLesson_id());
+        OpenLesson openLesson = ordersRepositorySupport.findOneOpenLesson(ordersRegistPostReq.getOpenLessonId());
         Lesson lesson = ordersRepositorySupport.findOneLesson(openLesson.getLessonId());
 
         Long teacher_id = lesson.getUser().getId();
