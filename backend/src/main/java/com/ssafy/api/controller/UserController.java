@@ -6,6 +6,7 @@ import com.ssafy.api.request.UserUpdatePwPutReq;
 import com.ssafy.api.response.UserInfoGetRes;
 import com.ssafy.api.service.AuthService;
 import com.ssafy.api.service.EmailService;
+import com.ssafy.common.model.response.*;
 import com.ssafy.db.entity.user.Auth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,6 @@ import com.ssafy.api.request.UserRegisterPostReq;
 import com.ssafy.api.response.UserRes;
 import com.ssafy.api.service.UserService;
 import com.ssafy.common.auth.SsafyUserDetails;
-import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.db.entity.user.User;
 
 import io.swagger.annotations.Api;
@@ -49,11 +49,11 @@ public class UserController {
     @PostMapping()
     @ApiOperation(value = "회원 가입", notes = "<strong>회원가입 정보</strong>를 통해 회원가입 한다.")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "성공"),
-            @ApiResponse(code = 401, message = "인증 실패"),
-            @ApiResponse(code = 404, message = "사용자 없음"),
-            @ApiResponse(code = 409, message = "중복 이메일"),
-            @ApiResponse(code = 500, message = "서버 오류")
+            @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
+            @ApiResponse(code = 401, message = "인증 실패", response = InvalidErrorResponseBody.class),
+            @ApiResponse(code = 404, message = "사용자 없음", response = NotFoundErrorResponseBody.class),
+            @ApiResponse(code = 409, message = "중복 이메일", response = DuplicateErrorResponseBody.class),
+            @ApiResponse(code = 500, message = "서버 오류", response = ServerErrorResponseBody.class)
     })
     public ResponseEntity<? extends BaseResponseBody> register(
             @RequestBody @ApiParam(value = "회원가입 정보", required = true) UserRegisterPostReq registerInfo) {
@@ -69,7 +69,7 @@ public class UserController {
     @DeleteMapping("/{email}")
     @ApiOperation(value = "유저 삭제", notes = "유저 정보를 삭제(회원탈퇴)")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "성공")
+            @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class)
     })
     public ResponseEntity<? extends BaseResponseBody> withdrawalUser(@PathVariable String email){
         userService.deleteUser(email);
@@ -80,10 +80,10 @@ public class UserController {
     @GetMapping("/{email}")
     @ApiOperation(value = "회원 본인 정보 조회", notes = "로그인한 회원 본인의 정보를 응답한다.")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "성공"),
-            @ApiResponse(code = 401, message = "인증 실패"),
-            @ApiResponse(code = 404, message = "사용자 없음"),
-            @ApiResponse(code = 500, message = "서버 오류")
+            @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
+            @ApiResponse(code = 401, message = "인증 실패", response = InvalidErrorResponseBody.class),
+            @ApiResponse(code = 404, message = "사용자 없음", response = NotFoundErrorResponseBody.class),
+            @ApiResponse(code = 500, message = "서버 오류", response = ServerErrorResponseBody.class)
     })
     public ResponseEntity<UserInfoGetRes> getUserInfo(@PathVariable String email) {
         /**
@@ -99,8 +99,8 @@ public class UserController {
     @GetMapping("/duplicate/nickname/{nickname}")
     @ApiOperation(value = "닉네임 중복 체크", notes = "DB에 이미 nickname이 있는지 체크")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "해당 닉네임을 사용할 수 있음"),
-            @ApiResponse(code = 409, message = "해당 닉네임을 사용할 수 없음")
+            @ApiResponse(code = 200, message = "해당 닉네임을 사용할 수 있음", response = BaseResponseBody.class),
+            @ApiResponse(code = 409, message = "해당 닉네임을 사용할 수 없음", response = DuplicateErrorResponseBody.class)
     })
     public ResponseEntity<? extends BaseResponseBody> checkUserNickname(@PathVariable String nickname) {
 
@@ -115,8 +115,8 @@ public class UserController {
     @GetMapping("/duplicate/email/{email}")
     @ApiOperation(value = "이메일 중복 체크", notes = "DB에 이미 email이 있는지 체크")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "해당 이메일을 사용할 수 있음"),
-            @ApiResponse(code = 409, message = "해당 이메일을 사용할 수 없음")
+            @ApiResponse(code = 200, message = "해당 닉네임을 사용할 수 있음", response = BaseResponseBody.class),
+            @ApiResponse(code = 409, message = "해당 닉네임을 사용할 수 없음", response = DuplicateErrorResponseBody.class)
     })
     public ResponseEntity<? extends BaseResponseBody> checkUserEmail(@PathVariable String email) {
 
@@ -130,10 +130,10 @@ public class UserController {
     @GetMapping("/{email}/check")
     @ApiOperation(value = "비밀번호 찾기", notes = "<strong>이름과 이메알</strong>을 통해 비밀번호 찾는 메서드.")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "성공"),
-            @ApiResponse(code = 401, message = "인증 실패"),
-            @ApiResponse(code = 404, message = "사용자 없음"),
-            @ApiResponse(code = 500, message = "서버 오류")
+            @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
+            @ApiResponse(code = 401, message = "인증 실패", response = InvalidErrorResponseBody.class),
+            @ApiResponse(code = 404, message = "사용자 없음", response = NotFoundErrorResponseBody.class),
+            @ApiResponse(code = 500, message = "서버 오류", response = ServerErrorResponseBody.class)
     })
     public ResponseEntity<? extends BaseResponseBody> checkUser(@ApiParam(value = "이름, 이메일 정보", required = true) @PathVariable String email, @RequestParam String name) throws Exception {
         UserFindPwPostReq userInfo = UserFindPwPostReq.builder()
@@ -155,10 +155,10 @@ public class UserController {
     @PutMapping("/{email}/password")
     @ApiOperation(value = "비밀번호 변경", notes = "<strong>새로운 비밀번호</strong>을 통해 비밀번호 변경 하는 메서드.")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "성공"),
-            @ApiResponse(code = 401, message = "인증 실패"),
-            @ApiResponse(code = 404, message = "사용자 없음"),
-            @ApiResponse(code = 500, message = "서버 오류")
+            @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
+            @ApiResponse(code = 401, message = "인증 실패", response = InvalidErrorResponseBody.class),
+            @ApiResponse(code = 404, message = "사용자 없음", response = NotFoundErrorResponseBody.class),
+            @ApiResponse(code = 500, message = "서버 오류", response = ServerErrorResponseBody.class)
     })
     public ResponseEntity<? extends BaseResponseBody> changePw(@PathVariable String email, @RequestBody UserUpdatePwPutReq userUpdatePwPutReq) {
         UserEmailPwDto userInfo = UserEmailPwDto.builder()
@@ -177,7 +177,7 @@ public class UserController {
     @PutMapping("/{email}/nickname")
     @ApiOperation(value = "유저 닉네임 업데이트", notes = "유저 정보를 수정")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "성공")
+            @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class)
     })
     public ResponseEntity<? extends  BaseResponseBody> updateUserNickname(@PathVariable String email, @RequestParam String nickname) {
         userService.updateUserNickname(email, nickname);
@@ -188,7 +188,7 @@ public class UserController {
     @PutMapping("/{email}/address")
     @ApiOperation(value = "유저 주소 업데이트", notes = "유저 정보를 수정")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "성공")
+            @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class)
     })
     public ResponseEntity<? extends BaseResponseBody> updateUserAddress(@PathVariable String email, @RequestParam String address) {
         userService.updateUserAddress(email, address);
@@ -199,7 +199,7 @@ public class UserController {
     @PutMapping("/{email}/phone")
     @ApiOperation(value = "유저 폰번호 업데이트", notes = "유저 정보를 수정")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "성공")
+            @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class)
     })
     public ResponseEntity<? extends BaseResponseBody> updateUserPhone(@PathVariable String email, @RequestParam String phone) {
         userService.updateUserPhone(email, phone);
@@ -210,7 +210,7 @@ public class UserController {
     @PutMapping("/{email}/description")
     @ApiOperation(value = "유저 자기소개 업데이트", notes = "유저 정보를 수정")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "성공")
+            @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class)
     })
     public ResponseEntity<? extends BaseResponseBody> updateUserDescription(@PathVariable String email, @RequestParam String description) {
         userService.updateUserDescription(email, description);
@@ -221,7 +221,7 @@ public class UserController {
     @PutMapping("/{email}/img")
     @ApiOperation(value = "유저 이미지 업데이트", notes = "유저 정보를 수정")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "성공")
+            @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class)
     })
     public ResponseEntity<? extends BaseResponseBody> updateUserImg(@PathVariable String email, @RequestParam String img) {
         userService.updateUserImg(email, img);
