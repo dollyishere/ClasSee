@@ -31,9 +31,6 @@ public class UserLoginPostRes extends BaseResponseBody{
 	String img;
 	String description;
 	UserRole userRole;
-
-	List<Long> bookmarkList;
-
 	public static UserLoginPostRes of(Integer statusCode, String message, UserLoginPostRes userLoginPostRes) {
 		UserLoginPostRes res = new UserLoginPostRes();
 		res.setStatusCode(statusCode);
@@ -48,7 +45,6 @@ public class UserLoginPostRes extends BaseResponseBody{
 		res.setImg(userLoginPostRes.getImg());
 		res.setDescription(userLoginPostRes.getDescription());
 		res.setUserRole(userLoginPostRes.getUserRole());
-		res.setBookmarkList(userLoginPostRes.bookmarkList);
 		return res;
 	}
 }

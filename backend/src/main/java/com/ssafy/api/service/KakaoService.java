@@ -5,6 +5,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.ssafy.api.dto.KakaoUserDto;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -17,6 +19,13 @@ import java.util.Map;
 
 @Service
 public class KakaoService {
+    public static final String TOKEN_PREFIX = "Bearer ";
+    public static final String HEADER_STRING = "Authorization";
+
+    @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
+    private String KAKAO_KEY;
+    @Value("${spring.security.oauth2.client.registration.kakao.redirect-uri}")
+    private String KAKAO_REDIRECT_URL;
 
     public KakaoUserDto getKakaoInfo(String code) {
         String access_Token = "";
@@ -38,15 +47,14 @@ public class KakaoService {
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
             StringBuilder sb = new StringBuilder();
             sb.append("grant_type=authorization_code");
-            sb.append("&client_id=9d406bcca44533823a9b4217d86cbbbc"); // TODO REST_API_KEY 입력
-            sb.append("&redirect_uri=http://localhost:8080/api/v1/auth/kakao"); // TODO 인가코드 받은 redirect_uri 입력
+            sb.append("&client_id=" + KAKAO_KEY); // TODO REST_API_KEY 입력
+            sb.append("&redirect_uri=" + KAKAO_REDIRECT_URL); // TODO 인가코드 받은 redirect_uri 입력
             sb.append("&code=" + code);
             bw.write(sb.toString());
             bw.flush();
 
             //결과 코드가 200이라면 성공
             int responseCode = conn.getResponseCode();
-            System.out.println("responseCode : " + responseCode);
 
             //요청을 통해 얻은 JSON타입의 Response 메세지 읽어오기
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
@@ -109,8 +117,6 @@ public class KakaoService {
             }
 
             JsonObject element = new Gson().fromJson(result, JsonObject.class);
-
-            System.out.println("RESULT >>>>>>" + result);
 
             JsonObject properties = element.getAsJsonObject().get("properties").getAsJsonObject();
             JsonObject kakao_account = element.getAsJsonObject().get("kakao_account").getAsJsonObject();
