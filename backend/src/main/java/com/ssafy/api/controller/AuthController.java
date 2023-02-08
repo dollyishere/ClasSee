@@ -4,6 +4,9 @@ import com.ssafy.api.dto.KakaoUserDto;
 import com.ssafy.api.request.UserLogoutPostReq;
 import com.ssafy.api.response.UserSaltRes;
 import com.ssafy.api.service.*;
+import com.ssafy.common.model.response.InvalidErrorResponseBody;
+import com.ssafy.common.model.response.NotFoundErrorResponseBody;
+import com.ssafy.common.model.response.ServerErrorResponseBody;
 import com.ssafy.db.entity.lesson.Lesson;
 import com.ssafy.db.entity.user.Auth;
 import com.ssafy.db.entity.user.UserRole;
@@ -71,9 +74,9 @@ public class AuthController {
 	@ApiOperation(value = "로그인", notes = "<strong>이메일과 패스워드</strong>를 통해 로그인 한다.")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
-			@ApiResponse(code = 401, message = "인증 실패", response = BaseResponseBody.class),
-			@ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
-			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
+			@ApiResponse(code = 401, message = "인증 실패", response = InvalidErrorResponseBody.class),
+			@ApiResponse(code = 404, message = "사용자 없음", response = NotFoundErrorResponseBody.class),
+			@ApiResponse(code = 500, message = "서버 오류", response = ServerErrorResponseBody.class)
 	})
 	public ResponseEntity<? extends BaseResponseBody> login(
 			@RequestBody @ApiParam(value = "로그인 정보", required = true) UserLoginPostReq loginInfo, HttpServletResponse res) {
@@ -125,9 +128,9 @@ public class AuthController {
 	@ApiOperation(value = "로그아웃", notes = "<strong>토큰 정보</strong>을 통해 로그아웃 한다.")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
-			@ApiResponse(code = 401, message = "인증 실패", response = BaseResponseBody.class),
-			@ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
-			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
+			@ApiResponse(code = 401, message = "인증 실패", response = InvalidErrorResponseBody.class),
+			@ApiResponse(code = 404, message = "사용자 없음", response = NotFoundErrorResponseBody.class),
+			@ApiResponse(code = 500, message = "서버 오류", response = ServerErrorResponseBody.class)
 	})
 	public ResponseEntity<?> logout(@RequestHeader("Authorization") String accessToken, @RequestParam String email) {
 		try {
@@ -145,8 +148,8 @@ public class AuthController {
 	@ApiOperation(value = "salt 요청 api", notes = "사용자의 salt 반환")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공", response = UserSaltRes.class),
-			@ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
-			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
+			@ApiResponse(code = 404, message = "사용자 없음", response = NotFoundErrorResponseBody.class),
+			@ApiResponse(code = 500, message = "서버 오류", response = ServerErrorResponseBody.class)
 	})
 	public ResponseEntity<? extends BaseResponseBody> findSalt(@RequestParam String email) {
 		User user = userService.getUserByAuth(email);
@@ -159,8 +162,8 @@ public class AuthController {
 	@ApiOperation(value = "accessToken 요청 api", notes = "사용자의 accessToken 반환")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공", response = UserSaltRes.class),
-			@ApiResponse(code = 401, message = "인증 실패", response = BaseResponseBody.class),
-			@ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class)
+			@ApiResponse(code = 401, message = "인증 실패", response = InvalidErrorResponseBody.class),
+			@ApiResponse(code = 404, message = "사용자 없음", response = NotFoundErrorResponseBody.class)
 	})
 	public ResponseEntity<? extends BaseResponseBody> getAccessToken(@RequestHeader("refreshToken") String refreshToken, @RequestParam String email, HttpServletResponse res) {
 		User user = userService.getUserByAuth(email);
@@ -192,9 +195,9 @@ public class AuthController {
 	@ApiOperation(value = "권한 테스트", notes = "로그인 접근 여부")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
-			@ApiResponse(code = 401, message = "인증 실패", response = BaseResponseBody.class),
-			@ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
-			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
+			@ApiResponse(code = 401, message = "인증 실패", response = InvalidErrorResponseBody.class),
+			@ApiResponse(code = 404, message = "사용자 없음", response = NotFoundErrorResponseBody.class),
+			@ApiResponse(code = 500, message = "서버 오류", response = ServerErrorResponseBody.class)
 	})
 	public ResponseEntity<UserLoginPostRes> test() {
 		return ResponseEntity.ok(UserLoginPostRes.of(200, "Success", UserLoginPostRes.builder().build()));
@@ -204,8 +207,8 @@ public class AuthController {
 	@ApiOperation(value = "Kakao login api", notes = "code 반환")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공", response = UserSaltRes.class),
-			@ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
-			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
+			@ApiResponse(code = 404, message = "사용자 없음", response = NotFoundErrorResponseBody.class),
+			@ApiResponse(code = 500, message = "서버 오류", response = ServerErrorResponseBody.class)
 	})
 	public ResponseEntity<? extends BaseResponseBody> getKakaoCode(@RequestParam String code, HttpServletResponse res) {
 		KakaoUserDto reqUser = kakaoService.getKakaoInfo(code);
