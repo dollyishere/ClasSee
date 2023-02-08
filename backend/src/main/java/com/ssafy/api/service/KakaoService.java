@@ -64,7 +64,6 @@ public class KakaoService {
             while ((line = br.readLine()) != null) {
                 result += line;
             }
-            System.out.println("response body : " + result);
 
             //Gson 라이브러리에 포함된 클래스로 JSON파싱 객체 생성
             JsonObject element = new Gson().fromJson(result, JsonObject.class);

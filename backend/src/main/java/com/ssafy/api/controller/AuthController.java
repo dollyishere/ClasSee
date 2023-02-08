@@ -169,7 +169,6 @@ public class AuthController {
 		User user = userService.getUserByAuth(email);
 		if(user == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "USER NOT FOUND"));
 
-		System.out.println("REFRESH_TOKEN >>>>>>>>>> " + refreshToken);
 		if (!redisService.getValues(email).equals(refreshToken)) return ResponseEntity.status(401).body(BaseResponseBody.of(401, "INVALID TOKEN"));
 
 		// 프론트로 보내줄 access, refresh token 생성

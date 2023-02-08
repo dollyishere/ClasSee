@@ -208,6 +208,7 @@ public class LessonRepositorySupport {
         Map<String, Object> result = new HashMap<>();
         // requestinfo ( (min, max) startTime, price, dayofweek, category )
         BooleanBuilder builder = new BooleanBuilder();
+        builder.and(qLesson.user.auth.id.isNotNull());
 //        builder.and(qLesson.id.eq(qOpenLesson.lessonId));
         if(requestInfo.getKeyword() != null) builder.and(qLesson.name.contains(requestInfo.getKeyword()));
         if(requestInfo.getCategory() != null) builder.and(qLesson.category.eq(requestInfo.getCategory()));

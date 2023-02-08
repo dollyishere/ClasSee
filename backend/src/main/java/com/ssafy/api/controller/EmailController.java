@@ -1,8 +1,10 @@
 package com.ssafy.api.controller;
 
 import com.ssafy.api.service.EmailService;
+import com.ssafy.common.model.response.BaseResponseBody;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @Api(value = "메일", tags = {"Mail"})
@@ -19,9 +21,9 @@ public class EmailController {
 
     @GetMapping("/confirm/{email}")
     @ResponseBody
-    public String mailConfirm(@PathVariable String email) throws Exception {
+    public ResponseEntity<? extends BaseResponseBody> mailConfirm(@PathVariable String email) throws Exception {
         String code = emailService.sendSimpleMessage(email);
-        System.out.println("인증코드: " + code);
-        return code;
+
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, code));
     }
 }
