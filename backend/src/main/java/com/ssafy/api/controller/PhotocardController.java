@@ -6,11 +6,13 @@ import com.ssafy.api.response.PageGetRes;
 import com.ssafy.api.response.PhotocardListGetRes;
 import com.ssafy.api.service.PhotocardService;
 import com.ssafy.common.model.response.BaseResponseBody;
+import com.ssafy.common.model.response.NotFoundErrorResponseBody;
 import com.ssafy.db.entity.board.Photocard;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +31,8 @@ public class PhotocardController {
     @PostMapping()
     @ApiOperation(value = "포토카드 등록", notes = "포토카드 정보 입력 후 포토카드 생성")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "성공")
+            @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
+            @ApiResponse(code = 404, message = "실패", response = NotFoundErrorResponseBody.class)
     })
     public ResponseEntity<? extends BaseResponseBody> registPhotocard(@RequestBody PhotocardRegistPostReq photocardRegistPostReq) {
 
