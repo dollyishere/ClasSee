@@ -50,7 +50,7 @@ public class LessonServiceImpl implements LessonService {
         Lesson lesson = (Lesson) lessonInfo.get("LESSON");
         List<Checklist> checkLists = (List<Checklist>) lessonInfo.get("CHECKLISTS");
         List<Curriculum> curriculums = (List<Curriculum>) lessonInfo.get("CURRICULUMS");
-        List<Pamphlet> pamphlets = (List<Pamphlet>) lessonInfo.get("PAMPHLET");
+        List<Pamphlet> pamphlets = (List<Pamphlet>) lessonInfo.get("PAMPHLETS");
 
         lessonRepositorySupport.save(lesson);
 
