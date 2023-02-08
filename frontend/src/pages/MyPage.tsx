@@ -20,7 +20,12 @@ const MyPage = () => {
     <div className="my-page page">
       <Header />
       <div className="my-page__contents">
-        <Sidebar items={sidebarItems} />
+        <Sidebar
+          items={sidebarItems}
+          onSidebarClick={(item: string) => {
+            console.log(item);
+          }}
+        />
         <div className="my-page__sub-page">
           <Routes>
             <Route path="" element={<ProfilePage />} />
