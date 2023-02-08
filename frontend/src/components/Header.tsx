@@ -4,6 +4,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import { useRecoilValue } from 'recoil';
 
 import { Notifications, Person } from '@mui/icons-material';
+import useViewModel from '../viewmodels/LoginViewModel';
 import logo from '../assets/logo2.png';
 import privateInfoState from '../models/PrivateInfoAtom';
 
@@ -11,6 +12,7 @@ const Header = () => {
   const searchbarRef = useRef(null); // 검색창을 접근/제어하기 위한 hook
   const userInfo = useRecoilValue(privateInfoState);
   const [toggleUserInfo, setToggleUserInfo] = useState<boolean>(false);
+  const viewModel = useViewModel();
 
   const navigate = useNavigate();
 
@@ -31,6 +33,12 @@ const Header = () => {
 
   const handleToggleUserInfo = () => {
     setToggleUserInfo((prev: boolean) => !prev);
+  };
+  const handleLogout = async () => {
+    if (userInfo?.email) {
+      const result = await viewModel.logout(userInfo?.email);
+      navigate('/');
+    }
   };
 
   const test = () => {
@@ -126,7 +134,11 @@ const Header = () => {
             >
               회원정보
             </button>
-            <button type="button" className="header__user-info--logout button">
+            <button
+              type="button"
+              className="header__user-info--logout button"
+              onClick={handleLogout}
+            >
               로그아웃
             </button>
           </div>
