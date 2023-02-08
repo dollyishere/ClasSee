@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -238,8 +239,8 @@ public class LessonServiceImpl implements LessonService {
                             )
                             .teacherImage(lesson.get().getUser().getImg())
                             .score(lessonRepositorySupport.setLessonAvgScore(lesson.get()))
-                            .startTime(openLesson.getStartTime())
-                            .endTime(openLesson.getEndTime())
+                            .startTime(openLesson.getStartTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
+                            .endTime(openLesson.getEndTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
                             .isBookMarked(
                                     (bookmarkRepositorySupport.bookmarkedCheck(lesson.get().getId(), userRepositorySupport.findOne(userId))) == 0 ? false: true
                             )

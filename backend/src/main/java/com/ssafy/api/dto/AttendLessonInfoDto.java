@@ -20,8 +20,6 @@ public class AttendLessonInfoDto{
     String teacherImage;
     double score;
     boolean isBookMarked;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    LocalDateTime startTime;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    LocalDateTime endTime;
+    String startTime;
+    String endTime;
 }
