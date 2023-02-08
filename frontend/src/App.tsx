@@ -11,6 +11,7 @@ import LessonPage from './pages/LessonPage';
 import LoginPage from './pages/LoginPage';
 import LessonDetailPage from './pages/LessonDetailPage';
 import MyPage from './pages/MyPage';
+import UpdateLessonPage from './pages/UpdateLessonPage';
 
 import TestPage from './pages/TestPage';
 
@@ -24,8 +25,12 @@ const App = () => {
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="/signup" element={<SignUpPage />} />
-          <Route path="/create_lesson" element={<CreateLessonPage />} />
+          <Route path="/create-lesson" element={<CreateLessonPage />} />
           <Route path="/lesson/:lessonId" element={<LessonDetailPage />} />
+          <Route
+            path="/update-lesson/:lessonId"
+            element={<UpdateLessonPage />}
+          />
           <Route path="/lesson/:sessionId/:role" element={<LessonPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/image" element={<TestPage />} />

@@ -16,18 +16,30 @@ const ChangeComponentBtn = ({
     // 이를 통해 현재 렌더링되는 컴포넌트를 리렌더링을 통해 변화시킴
     <CardActions>
       {selectedComponentState === 1 ? null : (
-        <Button type="button" variant="contained" onClick={() => setSelectedComponentState(selectedComponentState - 1)}>
+        <Button
+          type="button"
+          variant="contained"
+          onClick={() => setSelectedComponentState(selectedComponentState - 1)}
+        >
           이전 단계
         </Button>
       )}
       {/* 반대로 다음 단계 버튼의 경우, selectedComponentState의 값이 6이라면 다음 단계 대신 강의 생성 버튼을 보이도록 함 */}
       {/* 마찬가지로 다음 단계 버튼의 경우 누를 때마다 selectedComponentState 값을 1씩 증가시켜 재렌더링을 유도함 */}
       {selectedComponentState === 6 ? (
-        <Button type="button" variant="contained" onClick={handleCreateLessonSubmit}>
+        <Button
+          type="button"
+          variant="contained"
+          onClick={handleCreateLessonSubmit}
+        >
           강의 생성
         </Button>
       ) : (
-        <Button type="button" variant="contained" onClick={() => setSelectedComponentState(selectedComponentState + 1)}>
+        <Button
+          type="button"
+          variant="contained"
+          onClick={() => setSelectedComponentState(selectedComponentState + 1)}
+        >
           다음 단계
         </Button>
       )}

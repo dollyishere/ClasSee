@@ -12,11 +12,11 @@ import { storage } from '../utils/Firebase';
 import useApi from '../apis/UserApi';
 import authTokenState from '../models/AuthTokenAtom';
 import useInfoState from '../models/PrivateInfoAtom';
-import { createHashedPassword } from '../utils/Encrypt';
+import { createHashedPassword, decryptToken } from '../utils/Encrypt';
 
 const ProfileViewModel = () => {
   const [userInfo, setUserInfo] = useRecoilState(useInfoState);
-  const authToken = useRecoilValue(authTokenState);
+  const [authToken, setAuthToken] = useRecoilState(authTokenState);
   const {
     doUpdateProfileImage,
     doUpdateNickName,
@@ -25,6 +25,8 @@ const ProfileViewModel = () => {
     doUpdateDescription,
     doUpdatePassword,
     doGetSalt,
+    doWithdrawl,
+    doGetAccessToken,
   } = useApi();
 
   const getProfileImage = async (email: string) => {
@@ -72,6 +74,15 @@ const ProfileViewModel = () => {
           ...userInfo,
           nickname,
         });
+      } else if (response === 403) {
+        const hashedRefreshToken = localStorage.getItem('refreshToken');
+        if (hashedRefreshToken !== null) {
+          const refreshToken = decryptToken(hashedRefreshToken, userInfo.email);
+          const accessToken = await doGetAccessToken(
+            userInfo.email,
+            refreshToken,
+          );
+        }
       }
     }
   };
@@ -118,9 +129,25 @@ const ProfileViewModel = () => {
       if (salt !== null) {
         const hashedPassword = createHashedPassword(password, salt);
         const response = await doUpdatePassword(userInfo.email, hashedPassword);
-        console.log(response);
       }
     }
+  };
+
+  const withdrawl = async () => {
+    if (userInfo !== null) {
+      const response = await doWithdrawl(userInfo.email);
+      if (response === 200) {
+        const imageRef = ref(storage, `profiles/${encodeURI(userInfo.email)}/`);
+        await listAll(imageRef).then((res: any) => {
+          res.items.forEach((item: any) => {
+            deleteObject(item);
+          });
+        });
+        setUserInfo(null);
+      }
+      return response;
+    }
+    return 400;
   };
 
   return {
@@ -131,6 +158,7 @@ const ProfileViewModel = () => {
     updateAddress,
     updateDescription,
     updatePassword,
+    withdrawl,
   };
 };
 

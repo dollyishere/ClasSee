@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams, Link } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
-import { Stack, Button } from '@mui/material';
+import { Stack, Button, Card, CardContent } from '@mui/material';
 
 import { ref, getDownloadURL, listAll } from 'firebase/storage';
 import { storage } from '../utils/Firebase';
@@ -17,13 +17,12 @@ import {
 
 import LessonDetailViewModel from '../viewmodels/LessonDetailViewModel';
 
-import privateInfoState from '../models/PrivateInfoAtom';
+import PrivateInfoState from '../models/PrivateInfoAtom';
 
-import Header from '../components/Header';
-import BasicRating from '../components/Rating';
-import CheckSchedule from '../components/CheckSchedule';
+import CreateScheduleComponent from '../components/CreateSchedule';
+import ScheduleDetail from '../components/ScheduleDetail';
 
-const LessonDetailPage = () => {
+const MyCreatedLessonDetailPage = () => {
   // url(Router) 통해서 입력된 lessonId를 useParams로 받아옴
   const lessonId = useParams();
 
@@ -51,18 +50,22 @@ const LessonDetailPage = () => {
       bookMarked: false as boolean,
     });
 
-  // api 실행할 시 실행될 CreateLessonModel createLesson에 할당
+  // api 실행할 시 실행될 CreateLessonViewModel createLesson에 할당
   const { getLessonDetail } = LessonDetailViewModel();
 
   // 강의 개설을 신청하는 유저의 이메일 정보를 useRecoilValue를 통해 불러옴
-  // const userInfo = useRecoilValue(privateInfoState);
+  const userInfo = useRecoilValue(PrivateInfoState);
 
   // 강의 소개 & 준비물 이미지 파일을 담을 State 각각 생성
   const [pamphletsImgState, setPamphletsImgState] = useState<any>([]);
   const [checkListImgState, setCheckListImgState] = useState<any>([]);
   const [teacherImgState, setTeacherImgState] = useState<any>();
 
-  const [changeVisiable, setChangeVisiable] = useState(false);
+  // 스케줄 목록을 담을 State 생성
+  const [schedulesListState, setScheduleListState] = useState<any>([]);
+
+  // 강의 스케줄 추가 input 여부 확인할 state 생성
+  const [scheduleInputState, setScheduleInputState] = useState(false);
 
   // firebase storage의 이 경로에 있는 파일들을 가져옴
   const checkListImgRef = ref(
@@ -74,6 +77,7 @@ const LessonDetailPage = () => {
     `lessons/${lessonId.lessonId}/pamphlet_images`,
   );
 
+  // const handleLessonDelete = (event: React.MouseEvent<HTMLButtonElement>) => {};
   // useEffect로 해당 페이지 렌더링 시 강의 상세 정보를 받아오도록 내부 함수 실행
   useEffect(() => {
     const getLessonDetailRequestBody: LessonDetailRequest = {
@@ -116,97 +120,91 @@ const LessonDetailPage = () => {
     };
     fetchData();
   }, []);
+
   return (
-    <div className="lesson-detail-page__container">
-      <Header />
-      <div className="lesson-detail-page__header">
-        <div className="lesson-detail-page-img-slider">
-          {pamphletsImgState.map((image: any) => (
-            <img src={image} alt={image} />
-          ))}
-        </div>
-        <div className="lesson-detail-page__info">
-          <h1>{lessonDetailState.lessonName}</h1>
-          <p>
-            {lessonDetailState.runningTime === 0
-              ? '미정'
-              : lessonDetailState.runningTime}{' '}
-            시간
-          </p>
-          {lessonDetailState.teacherImage ? (
-            // 해당 파트 프로필 이미지 구현되었을 때 firebase로 데이터 불러오는 것과 함께 구현
-            <img src={lessonDetailState.teacherImage} alt="teacherImage" />
-          ) : null}
-          <p>{lessonDetailState.userName}</p>
-          <p>
-            <BasicRating />
-          </p>
-          <p>{lessonDetailState.score ? <BasicRating /> : '평가가 없어요'}</p>
-          <div>{lessonDetailState.category}</div>
-        </div>
-      </div>
-      <div className="lesson-detail-page__body">
-        <div className="lesson-detail-page__content">
-          <div className="lesson-detail-page__button">
-            <Stack spacing={2} direction="row">
-              <Button
-                variant={changeVisiable ? 'outlined' : 'contained'}
-                onClick={() => setChangeVisiable(false)}
-              >
-                강의 상세
-              </Button>
-              <Button
-                variant={changeVisiable ? 'contained' : 'outlined'}
-                onClick={() => setChangeVisiable(true)}
-              >
-                강의 후기
-              </Button>
-            </Stack>
-          </div>
-          {!changeVisiable ? (
-            <div className="lesson-detail-page__box">
-              <h2>강의 소개</h2>
-              <div className="lesson-detail-page__lesson-description">
-                <p>{lessonDetailState.lessonDescription}</p>
-              </div>
-              <h2>커리큘럼</h2>
-              <div className="lesson-detail-page__curriculum">
-                {lessonDetailState.curriculums.map((curri: any) => (
-                  <h3>
-                    Step{curri.stage + 1}. {curri.description}
-                  </h3>
+    <div className="profile-page">
+      <Card className="profile-page__card">
+        <h1>개설한 클래스 관리</h1>
+        <CardContent>
+          <div className="created-lesson-detail-page__box">
+            <div className="created-lesson-detail-page__header">
+              클래스 상세
+            </div>
+            <div className="created-lesson-detail-page__lesson-name">
+              <h3>클래스 명:</h3>
+              <p>{lessonDetailState.lessonName}</p>
+              <p>상세 페이지 바로 가기</p>
+            </div>
+            <div className="created-lesson-detail-page__runningtime">
+              <h3>소요 시간:</h3>
+              <p>
+                {lessonDetailState.runningTime === 0
+                  ? '미정'
+                  : lessonDetailState.runningTime}{' '}
+                시간
+              </p>
+            </div>
+            <div className="created-lesson-detail-page__category">
+              <h3>카테고리</h3>
+              <div>{lessonDetailState.category}</div>
+            </div>
+            <div className="created-lesson-detail-page__enrolled-image">
+              <h3>등록한 사진:</h3>
+              <div>
+                {pamphletsImgState.map((image: any) => (
+                  <img src={image} alt={image} />
                 ))}
-              </div>
-              <h2>준비물</h2>
-              <div className="lesson-detail-page__checklist">
                 {checkListImgState.map((image: any) => (
                   <img src={image} alt={image} />
                 ))}
-                <div>{lessonDetailState.cklsDescription}</div>
-              </div>
-              <h2>강사 소개</h2>
-              <div className="lesson-detail-page__teacher">
-                {lessonDetailState.teacherImage ? (
-                  // 해당 파트 프로필 이미지 구현되었을 때 firebase로 데이터 불러오는 것과 함께 구현
-                  <img src={lessonDetailState.teacherImage} alt="profileImg" />
-                ) : null}
-                <div className="lesson-detail-page__teacher-text">
-                  <h3>{lessonDetailState.userName}</h3>
-                  <p>{lessonDetailState.userDesciption}</p>
-                </div>
               </div>
             </div>
-          ) : (
-            <div className="lesson-detail-page__review">
-              <h2>강의 후기</h2>
+            <div className="created-lesson-detail-page__button">
+              <Stack spacing={2} direction="row">
+                <Button variant="contained">강의 상세 수정</Button>
+                <Button variant="contained">강의 삭제</Button>
+              </Stack>
             </div>
-          )}
-        </div>
-        <div className="lesson-detail-page__reservation">
-          <CheckSchedule />
-        </div>
-      </div>
+          </div>
+          <div>
+            <div className="created-lesson-detail-page__header">
+              스케줄 관리
+            </div>
+            <div>
+              <ul>
+                <li>일자</li>
+                <li>시간</li>
+                <li>참여 인원</li>
+                <li>수정/삭제</li>
+              </ul>
+              {schedulesListState.map((schedule: any) => (
+                <ScheduleDetail />
+              ))}
+              {scheduleInputState ? (
+                <CreateScheduleComponent
+                  runningtime={lessonDetailState.runningTime}
+                  lessonId={Number(lessonId.lessonId)}
+                  scheduleInputState={scheduleInputState}
+                  setScheduleInputState={setScheduleInputState}
+                />
+              ) : (
+                <Button
+                  variant="contained"
+                  onClick={() => setScheduleInputState(true)}
+                >
+                  스케줄 추가
+                </Button>
+              )}
+            </div>
+          </div>
+          <div>
+            <Link to="/">
+              <Button variant="contained"> 메뉴로 돌아가기 </Button>
+            </Link>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };
-export default LessonDetailPage;
+export default MyCreatedLessonDetailPage;
