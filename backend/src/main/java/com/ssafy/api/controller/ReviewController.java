@@ -65,7 +65,7 @@ public class ReviewController {
         return ResponseEntity.status(200).body(reviewPage);
     }
 
-    @GetMapping("/mylist/{email}")
+    @GetMapping("/list/{email}")
     @ApiOperation(value = "내가 쓴 리뷰 목록 조회, 로그인 O", notes = "내 email과 limit(가져올 수), offset(시작지점)을 입력하면 목록을 반환")
     @ApiResponses({
             @ApiResponse(code = 200, message = "success", response = ReviewPageGetRes.class)
