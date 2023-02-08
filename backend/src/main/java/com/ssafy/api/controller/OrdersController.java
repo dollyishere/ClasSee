@@ -26,14 +26,14 @@ public class OrdersController {
     @ApiOperation(value = "주문 정보 등록, 로그인 O", notes = "주문 정보 입력 후 주문 생성, 잔액 부족 시 403")
     @ApiResponses({
             @ApiResponse(code = 200, message = "success", response = BaseResponseBody.class),
-            @ApiResponse(code = 403, message = "fail", response = ForbiddenErrorResponseBody.class)
+            @ApiResponse(code = 403, message = "forbidden", response = ForbiddenErrorResponseBody.class)
     })
     public ResponseEntity<? extends BaseResponseBody> registOrders(@RequestBody OrdersRegistPostReq ordersRegistPostReq) throws Exception {
 
         try{
             ordersService.createOrders(ordersRegistPostReq);
         } catch(Exception e){
-            return ResponseEntity.status(403).body(BaseResponseBody.of(403,"fail"));
+            return ResponseEntity.status(403).body(BaseResponseBody.of(403,"forbidden"));
         }
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200,"success"));

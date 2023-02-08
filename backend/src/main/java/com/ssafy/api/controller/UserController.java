@@ -108,7 +108,7 @@ public class UserController {
         if (user == null) {
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success"));
         }
-        return ResponseEntity.status(409).body(BaseResponseBody.of(409, "invalid"));
+        return ResponseEntity.status(409).body(BaseResponseBody.of(409, "duplicate"));
 
     }
 
@@ -124,7 +124,7 @@ public class UserController {
         if (user == null) {
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success"));
         }
-        return ResponseEntity.status(409).body(BaseResponseBody.of(409, "invalid"));
+        return ResponseEntity.status(409).body(BaseResponseBody.of(409, "duplicate"));
     }
 
     @GetMapping("/{email}/check")
@@ -177,56 +177,56 @@ public class UserController {
     @PutMapping("/{email}/nickname")
     @ApiOperation(value = "유저 닉네임 업데이트, 로그인 O", notes = "유저 정보를 수정")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class)
+            @ApiResponse(code = 200, message = "SUCCESS", response = BaseResponseBody.class)
     })
     public ResponseEntity<? extends  BaseResponseBody> updateUserNickname(@PathVariable String email, @RequestParam String nickname) {
         userService.updateUserNickname(email, nickname);
 
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"수정 완료"));
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"SUCCESS"));
     }
 
     @PutMapping("/{email}/address")
     @ApiOperation(value = "유저 주소 업데이트, 로그인 O", notes = "유저 정보를 수정")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class)
+            @ApiResponse(code = 200, message = "SUCCESS", response = BaseResponseBody.class)
     })
     public ResponseEntity<? extends BaseResponseBody> updateUserAddress(@PathVariable String email, @RequestParam String address) {
         userService.updateUserAddress(email, address);
 
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"수정 완료"));
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"SUCCESS"));
     }
 
     @PutMapping("/{email}/phone")
     @ApiOperation(value = "유저 폰번호 업데이트, 로그인 O", notes = "유저 정보를 수정")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class)
+            @ApiResponse(code = 200, message = "SUCCESS", response = BaseResponseBody.class)
     })
     public ResponseEntity<? extends BaseResponseBody> updateUserPhone(@PathVariable String email, @RequestParam String phone) {
         userService.updateUserPhone(email, phone);
 
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"수정 완료"));
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"SUCCESS"));
     }
 
     @PutMapping("/{email}/description")
     @ApiOperation(value = "유저 자기소개 업데이트, 로그인 O", notes = "유저 정보를 수정")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class)
+            @ApiResponse(code = 200, message = "SUCCESS", response = BaseResponseBody.class)
     })
     public ResponseEntity<? extends BaseResponseBody> updateUserDescription(@PathVariable String email, @RequestParam String description) {
         userService.updateUserDescription(email, description);
 
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"수정 완료"));
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"SUCCESS"));
     }
 
     @PutMapping("/{email}/img")
     @ApiOperation(value = "유저 이미지 업데이트, 로그인 O", notes = "유저 정보를 수정")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class)
+            @ApiResponse(code = 200, message = "SUCCESS", response = BaseResponseBody.class)
     })
     public ResponseEntity<? extends BaseResponseBody> updateUserImg(@PathVariable String email, @RequestParam String img) {
         userService.updateUserImg(email, img);
 
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"수정 완료"));
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"SUCCESS"));
     }
 
 }
