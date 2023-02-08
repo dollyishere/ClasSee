@@ -6,11 +6,13 @@ import com.ssafy.api.response.PageGetRes;
 import com.ssafy.api.response.PhotocardListGetRes;
 import com.ssafy.api.service.PhotocardService;
 import com.ssafy.common.model.response.BaseResponseBody;
+import com.ssafy.common.model.response.NotFoundErrorResponseBody;
 import com.ssafy.db.entity.board.Photocard;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,9 +29,10 @@ public class PhotocardController {
     PhotocardService photocardService;
 
     @PostMapping()
-    @ApiOperation(value = "포토카드 등록", notes = "포토카드 정보 입력 후 포토카드 생성")
+    @ApiOperation(value = "포토카드 등록, 로그인 O", notes = "포토카드 정보 입력 후 포토카드 생성")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "성공")
+            @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
+            @ApiResponse(code = 404, message = "실패", response = NotFoundErrorResponseBody.class)
     })
     public ResponseEntity<? extends BaseResponseBody> registPhotocard(@RequestBody PhotocardRegistPostReq photocardRegistPostReq) {
 
@@ -40,7 +43,7 @@ public class PhotocardController {
     }
 
     @PostMapping("/likes")
-    @ApiOperation(value = "좋아요 등록", notes = "좋아요를 누른 사용자 email, 포토카드 id를 입력 받아 좋아요 등록")
+    @ApiOperation(value = "좋아요 등록, 로그인 O", notes = "좋아요를 누른 사용자 email, 포토카드 id를 입력 받아 좋아요 등록")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공")
     })
@@ -54,7 +57,7 @@ public class PhotocardController {
 
 
     @GetMapping("/list")
-    @ApiOperation(value = "포토카드 리스트", notes = "limit는 가져올 갯수, offset은 시작 위치(0부터 시작), count는 총 개수," +
+    @ApiOperation(value = "포토카드 리스트, 로그인 X", notes = "limit는 가져올 갯수, offset은 시작 위치(0부터 시작), count는 총 개수," +
             " likes_count는 해당 포토카드의 좋아요 총개수, likes_check는 true면 내가 좋아요 누른 포토카드이고 false면 안누른 포토카드")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공")
@@ -84,7 +87,7 @@ public class PhotocardController {
     }
 
     @GetMapping("/list/{email}")
-    @ApiOperation(value = "나의 포토카드 리스트", notes = "limit는 가져올 갯수, offset은 시작 위치(0부터 시작), count는 총 개수," +
+    @ApiOperation(value = "나의 포토카드 리스트, 로그인 O", notes = "limit는 가져올 갯수, offset은 시작 위치(0부터 시작), count는 총 개수," +
             " likes_count는 해당 포토카드의 좋아요 총개수, likes_check는 true면 내가 좋아요 누른 포토카드이고 false면 안누른 포토카드")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공")
@@ -114,7 +117,7 @@ public class PhotocardController {
     }
 
     @DeleteMapping()
-    @ApiOperation(value = "포토 카드 삭제", notes = "포토 카드 id를 입력 받아 삭제")
+    @ApiOperation(value = "포토 카드 삭제, 로그인 O", notes = "포토 카드 id를 입력 받아 삭제")
     @ApiResponses({
             @ApiResponse(code = 200, message = "success")
     })
@@ -126,7 +129,7 @@ public class PhotocardController {
     }
 
     @DeleteMapping("/likes")
-    @ApiOperation(value = "좋아요 취소", notes = "좋아요를 취소할 사용자 email, 포토카드 id를 입력 받아 좋아요 취소(삭제)")
+    @ApiOperation(value = "좋아요 취소, 로그인 O", notes = "좋아요를 취소할 사용자 email, 포토카드 id를 입력 받아 좋아요 취소(삭제)")
     @ApiResponses({
             @ApiResponse(code = 200, message = "success")
     })
