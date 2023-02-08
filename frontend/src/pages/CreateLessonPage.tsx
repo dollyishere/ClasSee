@@ -116,7 +116,7 @@ const CreateLessonPage = () => {
         cklsDescription: materialDescState,
         curriculumList: curriculumList as CurriculumType[],
         description: lessonDescState,
-        email: 'test@ssafy.com',
+        email: '12@12.com',
         // email: 'test1234@gmail.com',
         // email: `${userEmail}`,
         kitDescription: kitDescState,
