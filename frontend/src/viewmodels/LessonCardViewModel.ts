@@ -17,7 +17,6 @@ const LessonCardViewModel = () => {
     const imageRef = ref(storage, `lessons/${lessonId}/pamphlet_images/`);
     const response = await listAll(imageRef);
     const ret = await getDownloadURL(response.items[0]);
-    console.log('ret', ret);
     return ret;
   };
   return {

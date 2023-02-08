@@ -50,7 +50,6 @@ const LoginViewModel = () => {
           res.data.email,
         );
         localStorage.setItem('refreshToken', encryptedToken);
-        console.log('asd', decryptToken(encryptedToken, email));
         return {
           statusCode: 200,
         };

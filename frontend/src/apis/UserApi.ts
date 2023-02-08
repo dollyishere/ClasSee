@@ -72,7 +72,6 @@ const UserApi = () => {
   };
   const doGetAccessToken = async (email: string, refreshtoken: string) => {
     try {
-      console.log('email', email);
       const response = await axios.get<Response>(
         `${process.env.REACT_APP_SERVER_URI}/api/v1/auth/token?email=${email}`,
         {

@@ -5,7 +5,6 @@ import { LessonsResponse, LessonSearchOption } from '../types/LessonsType';
 
 const LessonsApi = () => {
   const accessToken = useRecoilValue(AuthTokenState);
-
   const doSearchLessons = async (searchOption: LessonSearchOption) => {
     let query = `limit=${searchOption.limit}&offset=${searchOption.offset}`;
     if (searchOption.category) {

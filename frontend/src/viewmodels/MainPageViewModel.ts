@@ -39,17 +39,16 @@ const MainPageViewModel = () => {
         console.log('refreshToken', refreshToken);
         const response = await doGetAccessToken(email, refreshToken);
 
-        console.log('response', response);
         if (response) {
           const encryptedToken = encryptToken(
             response.headers.refreshtoken,
             email,
           );
-          console.log('encryptedToken', encryptedToken);
-          console.log('accesstoken', response.headers.accesstoken);
-          const accessToken = response.headers.accesstoken;
+          // console.log('encryptedToken', encryptedToken);
+          // console.log('accesstoken', response.headers.accesstoken);
+          const authtoken = response.headers.accesstoken;
           localStorage.setItem('refreshToken', encryptedToken);
-          setAuthToken(accessToken);
+          setAuthToken(authtoken);
         }
         // console.log('accessToken', accessToken);
         res = await MyCreatedLessonsMainpageApi(email, limit, offset, query);
