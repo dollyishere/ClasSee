@@ -5,6 +5,9 @@ import com.ssafy.api.response.AttendLessonInfoListRes;
 import com.ssafy.api.service.LessonService;
 import com.ssafy.api.service.UserService;
 import com.ssafy.common.model.response.BaseResponseBody;
+import com.ssafy.common.model.response.InvalidErrorResponseBody;
+import com.ssafy.common.model.response.NotFoundErrorResponseBody;
+import com.ssafy.common.model.response.ServerErrorResponseBody;
 import com.ssafy.db.entity.user.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -29,10 +32,10 @@ public class StudentController {
     @GetMapping("/{email}/lessons")
     @ApiOperation(value = "신청한 강의 목록 조회, 로그인 O", notes = "수강생이 신청한 강의 목록을 조회한다. 쿼리(DONE[완료], TODO[진행]")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "성공"),
-            @ApiResponse(code = 401, message = "인증 실패"),
-            @ApiResponse(code = 404, message = "사용자 없음"),
-            @ApiResponse(code = 500, message = "서버 오류")
+            @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
+            @ApiResponse(code = 401, message = "인증 실패", response = InvalidErrorResponseBody.class),
+            @ApiResponse(code = 404, message = "사용자 없음", response = NotFoundErrorResponseBody.class),
+            @ApiResponse(code = 500, message = "서버 오류", response = ServerErrorResponseBody.class)
     })
     public ResponseEntity<?> getLessonListInfo(
             @PathVariable String email,
