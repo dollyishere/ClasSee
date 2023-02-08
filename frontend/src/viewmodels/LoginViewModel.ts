@@ -16,26 +16,9 @@ const LoginViewModel = () => {
   const { doGetSalt, doLogin, doLogout, doGetAccessToken } = useApi();
 
   const logout = async (email: string) => {
-    const response = await doLogout(email);
-    if (response === 403) {
-      const hashedRefreshToken = localStorage.getItem('refreshToken');
-      if (hashedRefreshToken !== null) {
-        const refreshToken = decryptToken(hashedRefreshToken, email);
-        const newAuthToken = await doGetAccessToken(email, refreshToken);
-        console.log(newAuthToken);
-        if (newAuthToken !== null) {
-          setAuthToken(newAuthToken);
-          const newResponse = await logout(email);
-          if (newResponse === 200) {
-            return 200;
-          }
-        }
-      }
-    } else if (response === 200) {
-      setPrivateInfo(null);
-      return 200;
-    }
-    return 400;
+    await doLogout(email);
+
+    setPrivateInfo(null);
   };
 
   const login = async (email: string, password: string) => {

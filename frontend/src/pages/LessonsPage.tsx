@@ -1,10 +1,35 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
 import SearchBox from '../components/LessonsPage/SearchBox';
+import useViewModel from '../viewmodels/LessonsViewModel';
+import { Lesson, LessonSearchOption } from '../types/LessonsType';
+import LessonCard from '../components/LessonCard';
 
 const LessonsPage = () => {
+  const location = useLocation();
+  const { searchLessons } = useViewModel();
+
+  const [lessons, setLessons] = useState<Array<Lesson> | null>();
+  const [limit, setLimit] = useState<number>(6);
+  const [offset, setOffset] = useState<number>(0);
+  const [category, setCategory] = useState<string | undefined>(
+    location.pathname.split('/')[2],
+  );
+  const [dayOfWeek, setDayOfWeek] = useState<string | undefined>(undefined);
+  const [email, setEmail] = useState<string | undefined>(undefined);
+  const [maxPrice, setMaxPrice] = useState<number | undefined>(undefined);
+  const [maxStartTime, setMaxStartTime] = useState<number | undefined>(
+    undefined,
+  );
+  const [minPrice, setMinPrice] = useState<number | undefined>(undefined);
+  const [minStartTime, setMinStartTime] = useState<number | undefined>(
+    undefined,
+  );
+  const [name, setName] = useState<string | undefined>(undefined);
+
   const sidebarItems = [
     { name: '전체 강의', path: '/lessons' },
     { name: '공예', path: '/lessons/craft' },
@@ -15,14 +40,59 @@ const LessonsPage = () => {
     { name: '뷰티', path: '/lessons/beauty' },
     { name: '기타', path: '/lessons/etc' },
   ];
+
+  const handleSidebarClick = (item: string) => {
+    if (item === '전체 강의') {
+      setCategory(undefined);
+    } else {
+      setCategory(item);
+    }
+  };
+
+  useEffect(() => {
+    const getData = async () => {
+      const data = await searchLessons({
+        limit,
+        offset,
+        category,
+        dayOfWeek,
+        email,
+        maxPrice,
+        maxStartTime,
+        minPrice,
+        minStartTime,
+        name,
+      });
+      setLessons(data);
+    };
+    getData();
+    console.log(category);
+  }, [
+    category,
+    dayOfWeek,
+    email,
+    maxPrice,
+    maxStartTime,
+    minPrice,
+    minStartTime,
+    name,
+  ]);
+
   return (
     <div className="lessons-page">
       <Header />
       <div className="lessons-page__contents">
-        <Sidebar items={sidebarItems} />
+        <Sidebar items={sidebarItems} onSidebarClick={handleSidebarClick} />
         <div className="lessons-page__sub-page">
           <SearchBox />
-          서브페이지
+          <div className="lesson-page__lesson-list">
+            {lessons?.map((lesson: Lesson) => (
+              <div className="lesson-page__lesson-card" key={lesson.lessonId}>
+                <LessonCard lesson={lesson} />
+              </div>
+            ))}
+          </div>
+          <div className="lessons-page__pagination">페이지네이션</div>
         </div>
       </div>
     </div>
