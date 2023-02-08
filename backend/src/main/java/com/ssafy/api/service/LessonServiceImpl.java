@@ -235,7 +235,7 @@ public class LessonServiceImpl implements LessonService {
                             .runningTime(lesson.get().getRunningtime())
                             .category(lesson.get().getCategory())
                             .lessonImage(
-                                    ((pamphletList == null) ? pamphletList.get(0).getImg(): null)
+                                    ((pamphletList.size() <= 0) ? null : pamphletList.get(0).getImg())
                             )
                             .teacherImage(lesson.get().getUser().getImg())
                             .score(lessonRepositorySupport.setLessonAvgScore(lesson.get()))
@@ -251,7 +251,7 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public List<Lesson> getLessonListByFilter(LessonSearchFilterDto requestInfo, int offset, int limit) {
+    public Map<String, Object> getLessonListByFilter(LessonSearchFilterDto requestInfo, int offset, int limit) {
         return lessonRepositorySupport.findLessonListByFilter(requestInfo, offset, limit);
     }
 

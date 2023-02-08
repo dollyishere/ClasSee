@@ -24,7 +24,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 유저 관련 API 요청 처리를 위한 컨트롤러 정의.
@@ -192,7 +194,10 @@ public class LessonController {
             if (user == null) return ResponseEntity.status(200).body(BaseResponseBody.of(404, "USER NOT FOUND"));
         }
 
-        List<Lesson> lessonIdList = lessonService.getLessonListByFilter(requestInfo, offset, limit);
+        Map<String, Object> result = lessonService.getLessonListByFilter(requestInfo, offset, limit);
+
+        List<Lesson> lessonIdList = (List<Lesson>) result.get("LESSON_LIST");
+        Long count = (Long) result.get("COUNT");
 
         if(lessonIdList == null) return ResponseEntity.status(200).body(BaseResponseBody.of(404, "검색에 맞는 강의가 없습니다."));
 
@@ -201,6 +206,7 @@ public class LessonController {
 
         LessonInfoListRes res = LessonInfoListRes.builder()
                 .lessonInfoList(lessonList)
+                .count(count)
                 .build();
 
         return ResponseEntity.status(200).body(LessonInfoListRes.of(200, "SUCCESS", res));

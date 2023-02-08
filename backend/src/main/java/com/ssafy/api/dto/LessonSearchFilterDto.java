@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 public class LessonSearchFilterDto {
-    String name;
+    String keyword;
     Long minPrice;
     Long maxPrice;
     Long minStartTime;
