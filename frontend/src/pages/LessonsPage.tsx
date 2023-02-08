@@ -58,7 +58,9 @@ const LessonsPage = () => {
   const [count, setCount] = useState<number>(0);
 
   const [category, setCategory] = useState<string | undefined>(initialCategory);
-  const [dayOfWeek, setDayOfWeek] = useState<string | undefined>(undefined);
+  const [dayOfWeek, setDayOfWeek] = useState<Array<boolean>>(
+    new Array(7).fill(false),
+  );
   const [email, setEmail] = useState<string | undefined>(undefined);
   const [maxPrice, setMaxPrice] = useState<number | undefined>(undefined);
   const [maxStartTime, setMaxStartTime] = useState<number | undefined>(
@@ -96,39 +98,38 @@ const LessonsPage = () => {
     setPage(value);
   };
 
-  useEffect(() => {
-    const getData = async () => {
-      const limit = 6;
-      const offset = (page - 1) * limit;
-      const data = await searchLessons({
-        limit,
-        offset,
-        category,
-        dayOfWeek,
-        email,
-        maxPrice,
-        maxStartTime,
-        minPrice,
-        minStartTime,
-        name,
-      });
-      if (data !== null && data.count !== undefined) {
-        setCount(Math.ceil(data.count / limit));
+  const search = async () => {
+    const limit = 6;
+    const offset = (page - 1) * limit;
+    let day = '';
+    for (let i = 0; i < 7; i += 1) {
+      if (dayOfWeek[i]) {
+        day += `${i},`;
       }
-      setLessons(data?.lessonInfoList);
-    };
-    getData();
-  }, [
-    category,
-    dayOfWeek,
-    email,
-    maxPrice,
-    maxStartTime,
-    minPrice,
-    minStartTime,
-    name,
-    page,
-  ]);
+    }
+    day = day.substring(0, day.length - 1);
+
+    const data = await searchLessons({
+      limit,
+      offset,
+      category,
+      dayOfWeek: day,
+      email,
+      maxPrice,
+      maxStartTime,
+      minPrice,
+      minStartTime,
+      name,
+    });
+    if (data !== null && data.count !== undefined) {
+      setCount(Math.ceil(data.count / limit));
+    }
+    setLessons(data?.lessonInfoList);
+  };
+
+  useEffect(() => {
+    search();
+  }, [page, category]);
 
   return (
     <div className="lessons-page">
@@ -136,7 +137,15 @@ const LessonsPage = () => {
       <div className="lessons-page__contents">
         <Sidebar items={sidebarItems} onSidebarClick={handleSidebarClick} />
         <div className="lessons-page__sub-page">
-          <SearchBox />
+          <SearchBox
+            dayOfWeek={dayOfWeek}
+            setDayOfWeek={setDayOfWeek}
+            setMinStartTime={setMinStartTime}
+            setMaxStartTime={setMaxStartTime}
+            setMinPrice={setMinPrice}
+            setMaxPrice={setMaxPrice}
+            search={search}
+          />
           <div className="lessons-page__lesson-list">
             {lessons?.map((lesson: Lesson) => (
               <div className="lessons-page__lesson-card" key={lesson.lessonId}>
