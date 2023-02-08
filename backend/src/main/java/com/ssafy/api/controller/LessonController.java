@@ -118,7 +118,7 @@ public class LessonController {
     @GetMapping("/{lessonId}")
     @ApiOperation(value = "강의 상세 화면, 로그인 X", notes = "강의정보, 강사정보, 강의 일정 정보를 반환한다")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
+            @ApiResponse(code = 200, message = "성공", response = LessonDetailsRes.class),
             @ApiResponse(code = 401, message = "인증 실패", response = InvalidErrorResponseBody.class),
             @ApiResponse(code = 404, message = "사용자 없음", response = NotFoundErrorResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = ServerErrorResponseBody.class)
@@ -138,7 +138,7 @@ public class LessonController {
     @GetMapping("/{lessonId}/schedules")
     @ApiOperation(value = "강의 스케줄 조회, 로그인 X", notes = "강의 아이디와 날짜(yyyy-MM-dd)를 통해 개설 강의 리스트 조회")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
+            @ApiResponse(code = 200, message = "성공", response = LessonSchedulesRes.class),
             @ApiResponse(code = 401, message = "인증 실패", response = InvalidErrorResponseBody.class),
             @ApiResponse(code = 404, message = "사용자 없음", response = NotFoundErrorResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = ServerErrorResponseBody.class)
@@ -154,7 +154,7 @@ public class LessonController {
     @GetMapping("/recommands")
     @ApiOperation(value = "추천 강의 리스트, 로그인 X", notes = "평점이 높은 강의 12개를 반환")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
+            @ApiResponse(code = 200, message = "성공", response = LessonInfoListRes.class),
             @ApiResponse(code = 401, message = "인증 실패", response = InvalidErrorResponseBody.class),
             @ApiResponse(code = 404, message = "사용자 없음", response = NotFoundErrorResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = ServerErrorResponseBody.class)
@@ -180,7 +180,7 @@ public class LessonController {
     @GetMapping("/search")
     @ApiOperation(value = "검색 강의 리스트, 로그인 X", notes = "필터링 된 강의 리스트 반환")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
+            @ApiResponse(code = 200, message = "성공", response = LessonInfoListRes.class),
             @ApiResponse(code = 401, message = "인증 실패", response = InvalidErrorResponseBody.class),
             @ApiResponse(code = 404, message = "사용자 없음", response = NotFoundErrorResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = ServerErrorResponseBody.class)

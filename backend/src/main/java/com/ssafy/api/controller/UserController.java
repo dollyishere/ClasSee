@@ -80,7 +80,7 @@ public class UserController {
     @GetMapping("/{email}")
     @ApiOperation(value = "회원 본인 정보 조회, 로그인 O", notes = "로그인한 회원 본인의 정보를 응답한다.")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
+            @ApiResponse(code = 200, message = "성공", response = UserInfoGetRes.class),
             @ApiResponse(code = 401, message = "인증 실패", response = InvalidErrorResponseBody.class),
             @ApiResponse(code = 404, message = "사용자 없음", response = NotFoundErrorResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = ServerErrorResponseBody.class)
