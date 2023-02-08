@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -24,6 +25,29 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    private static String[] SWAGGER_PATH = new String[] {
+            "/v2/api-docs/**",
+            "/swagger-ui/**",
+            "/swagger-resources/**",
+    };
+    private static String[] OPEN_API_GET = new String[] {
+            "/api/v1/auth/kakao",
+            "/api/v1/auth/salt",
+            "/api/v1/lessons/**",
+            "/api/v1/mails/**",
+            "/api/v1/notice/**",
+            "/api/v1/photocard/list",
+            "/api/v1/review/list/**",
+            "/api/v1/users/duplicate/**",
+            "/api/v1/users/**/check",
+            "/api/v1/article/**"
+    };
+
+    private static String[] OPEN_API_POST = new String[] {
+            "/api/v1/auth/login",
+            "/api/v1/users"
+    };
+
     @Autowired
     private SsafyUserDetailService ssafyUserDetailService;
 
@@ -64,9 +88,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(), userService, redisTemplate)) //HTTP 요청에 JWT 토큰 인증 필터를 거치도록 필터를 추가
                 .authorizeRequests()
-                .antMatchers("/api/v1/users/me", "/api/v1/auth/test").authenticated()       //인증이 필요한 URL과 필요하지 않은 URL에 대하여 설정
-//                .antMatchers("/api/v1/users/me", "/api/v1/auth/test").authenticated()       //인증이 필요한 URL과 필요하지 않은 URL에 대하여 설정
-                .anyRequest().permitAll()
+                .antMatchers(SWAGGER_PATH).permitAll()
+                .antMatchers(HttpMethod.GET, OPEN_API_GET).permitAll()
+                .antMatchers(HttpMethod.POST, OPEN_API_POST).permitAll()
+                .anyRequest().authenticated()
                 .and().cors();
 
     }
