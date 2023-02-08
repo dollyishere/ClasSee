@@ -11,7 +11,6 @@ import Header from '../components/Header';
 
 const MainPage = () => {
   const privateInfo = useRecoilValue(privateInfoState);
-
   return (
     <div className="page">
       <Header />

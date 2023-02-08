@@ -42,13 +42,15 @@ const LoginViewModel = () => {
           userRole: res.data.userRole,
           point: res.data.point,
         });
-        console.log(res.headers.accesstoken);
+        // console.log(res.headers.accesstoken);
+        console.log('리프레시', res.headers.refreshtoken);
         setAuthToken(res.headers.accesstoken);
         const encryptedToken = encryptToken(
           res.headers.refreshtoken,
           res.data.email,
         );
         localStorage.setItem('refreshToken', encryptedToken);
+        console.log('asd', decryptToken(encryptedToken, email));
         return {
           statusCode: 200,
         };

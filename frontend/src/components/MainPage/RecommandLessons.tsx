@@ -23,7 +23,10 @@ const RecommandLessons = () => {
       <h1 className="recommandlessons__title"> 추천 클래스 </h1>
       {/* 강의 하나씩 map으로 돌면서 카드에 적용 */}
       <div className="recommandlessons__cards">
-        {lessons && lessons.map((lesson) => <LessonCard lesson={lesson} />)}
+        {lessons &&
+          lessons.map((lesson) => (
+            <LessonCard lesson={lesson} key={lesson.lessonId} />
+          ))}
       </div>
     </div>
   );

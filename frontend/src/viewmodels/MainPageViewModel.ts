@@ -3,7 +3,7 @@ import { useRecoilState } from 'recoil';
 import useLessonApi from '../apis/LessonsApi';
 import useUserApi from '../apis/UserApi';
 import { LessonsResponse } from '../types/LessonsType';
-import { decryptToken } from '../utils/Encrypt';
+import { decryptToken, encryptToken } from '../utils/Encrypt';
 import authTokenState from '../models/AuthTokenAtom';
 
 const MainPageViewModel = () => {
@@ -37,8 +37,20 @@ const MainPageViewModel = () => {
       if (hashedRefreshToken !== null) {
         const refreshToken = decryptToken(hashedRefreshToken, email);
         console.log('refreshToken', refreshToken);
-        const accessToken = await doGetAccessToken(email, refreshToken);
-        // setAuthToken(accessToken);
+        const response = await doGetAccessToken(email, refreshToken);
+
+        console.log('response', response);
+        if (response) {
+          const encryptedToken = encryptToken(
+            response.headers.refreshtoken,
+            email,
+          );
+          console.log('encryptedToken', encryptedToken);
+          console.log('accesstoken', response.headers.accesstoken);
+          const accessToken = response.headers.accesstoken;
+          localStorage.setItem('refreshToken', encryptedToken);
+          setAuthToken(accessToken);
+        }
         // console.log('accessToken', accessToken);
         res = await MyCreatedLessonsMainpageApi(email, limit, offset, query);
       }
