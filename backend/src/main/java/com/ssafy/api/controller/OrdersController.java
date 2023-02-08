@@ -56,9 +56,9 @@ public class OrdersController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "success")
     })
-    public ResponseEntity<?> getNoticeInfo(@RequestParam String user_email, @RequestParam Long openLesson_id){
+    public ResponseEntity<?> getNoticeInfo(@RequestParam String email, @RequestParam Long openLessonId){
 
-        OrdersInfoGetRes ordersInfoGetRes = ordersService.readOrders(user_email, openLesson_id);
+        OrdersInfoGetRes ordersInfoGetRes = ordersService.readOrders(email, openLessonId);
 
         return ResponseEntity.status(200).body(ordersInfoGetRes);
     }
