@@ -60,3 +60,9 @@ export interface LessonDetailProps {
   scheduleInputState: boolean;
   setScheduleInputState: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
+export interface RatingProps {
+  ratingValue: number | null;
+  setRatingValue: React.Dispatch<React.SetStateAction<number | null>>;
+  disableValue: boolean;
+}

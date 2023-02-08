@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
 import { Stack, Button, Card, CardContent } from '@mui/material';
@@ -53,16 +53,18 @@ const MyCreatedLessonDetailPage = () => {
   // api 실행할 시 실행될 CreateLessonViewModel createLesson에 할당
   const { getLessonDetail } = LessonDetailViewModel();
 
+  // 컴포넌트 전환에 필요한 useNavigate 재할당
+  const navigate = useNavigate();
+
   // 강의 개설을 신청하는 유저의 이메일 정보를 useRecoilValue를 통해 불러옴
   const userInfo = useRecoilValue(PrivateInfoState);
 
   // 강의 소개 & 준비물 이미지 파일을 담을 State 각각 생성
   const [pamphletsImgState, setPamphletsImgState] = useState<any>([]);
   const [checkListImgState, setCheckListImgState] = useState<any>([]);
-  const [teacherImgState, setTeacherImgState] = useState<any>();
 
   // 스케줄 목록을 담을 State 생성
-  const [schedulesListState, setScheduleListState] = useState<any>([]);
+  const [schedulesListState, setSchedulesListState] = useState<any>([]);
 
   // 강의 스케줄 추가 input 여부 확인할 state 생성
   const [scheduleInputState, setScheduleInputState] = useState(false);
@@ -80,45 +82,56 @@ const MyCreatedLessonDetailPage = () => {
   // const handleLessonDelete = (event: React.MouseEvent<HTMLButtonElement>) => {};
   // useEffect로 해당 페이지 렌더링 시 강의 상세 정보를 받아오도록 내부 함수 실행
   useEffect(() => {
-    const getLessonDetailRequestBody: LessonDetailRequest = {
-      lessonId: Number(lessonId.lessonId),
-    };
-    const fetchData = async () => {
-      const res = await getLessonDetail(getLessonDetailRequestBody);
-      if (res?.message === 'SUCCESS') {
-        // 만약 강의 상세 정보를 db에서 받아오는 것에 성공했다면, lessonDetailState에 해당 정보를 저장
-        setLessonDetailState(res);
-        // firebase의 해당 강의가 저장된 폴더의 url에 접근하여 해당하는 이미지 파일을 각각 다운받음
-        // 강의 관련 사진 다운로드해서 pamphletsImgState에 저장
-        res.pamphlets.forEach((item) => {
-          const imageName = item.img as string;
-          listAll(pamphletsImgRef).then((response: any) => {
-            response.items.forEach((img: any) => {
-              if (img.name === imageName) {
-                getDownloadURL(img).then((url) => {
-                  setPamphletsImgState((prev: any) => [...prev, url]);
+    if (userInfo === null) {
+      alert('로그인 후 이용 가능합니다.');
+      navigate('/login');
+    } else {
+      const getLessonDetailRequestBody: LessonDetailRequest = {
+        lessonId: Number(lessonId.lessonId),
+      };
+      const fetchData = async () => {
+        const res = await getLessonDetail(getLessonDetailRequestBody);
+        if (res?.message === 'SUCCESS') {
+          if (userInfo.email !== res.teacherEmail) {
+            alert('잘못된 접근입니다.');
+            navigate('/');
+          } else {
+            // 만약 강의 상세 정보를 db에서 받아오는 것에 성공했다면, lessonDetailState에 해당 정보를 저장
+            setLessonDetailState(res);
+            // firebase의 해당 강의가 저장된 폴더의 url에 접근하여 해당하는 이미지 파일을 각각 다운받음
+            // 강의 관련 사진 다운로드해서 pamphletsImgState에 저장
+            res.pamphlets.forEach((item) => {
+              const imageName = item.img as string;
+              listAll(pamphletsImgRef).then((response: any) => {
+                console.log(response);
+                response.items.forEach((img: any) => {
+                  if (img.name === imageName) {
+                    getDownloadURL(img).then((url) => {
+                      setPamphletsImgState((prev: any) => [...prev, url]);
+                    });
+                  }
                 });
-              }
+              });
             });
-          });
-        });
-        res.checkLists.forEach((item) => {
-          const imageName = item.img as string;
-          listAll(checkListImgRef).then((response: any) => {
-            response.items.forEach((img: any) => {
-              if (img.name === imageName) {
-                getDownloadURL(img).then((url) => {
-                  setCheckListImgState((prev: any) => [...prev, url]);
+            res.checkLists.forEach((item) => {
+              const imageName = item.img as string;
+              listAll(checkListImgRef).then((response: any) => {
+                response.items.forEach((img: any) => {
+                  if (img.name === imageName) {
+                    getDownloadURL(img).then((url) => {
+                      setCheckListImgState((prev: any) => [...prev, url]);
+                    });
+                  }
                 });
-              }
+              });
             });
-          });
-        });
-      } else {
-        alert(res?.message);
-      }
-    };
-    fetchData();
+          }
+        } else {
+          alert(res?.message);
+        }
+      };
+      fetchData();
+    }
   }, []);
 
   return (
@@ -133,7 +146,20 @@ const MyCreatedLessonDetailPage = () => {
             <div className="created-lesson-detail-page__lesson-name">
               <h3>클래스 명:</h3>
               <p>{lessonDetailState.lessonName}</p>
-              <p>상세 페이지 바로 가기</p>
+              {/* span 태그로 제작된 텍스트만 눌러도 페이지 이동할 수 있도록 button과 같은 기능을 부여 */}
+              <span
+                role="button"
+                tabIndex={0}
+                onClick={() => navigate(`/lesson/${Number(lessonId.lessonId)}`)}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    navigate(`/lesson/${Number(lessonId.lessonId)}`);
+                  }
+                }}
+              >
+                상세 페이지 바로 가기
+              </span>
             </div>
             <div className="created-lesson-detail-page__runningtime">
               <h3>소요 시간:</h3>
@@ -161,7 +187,14 @@ const MyCreatedLessonDetailPage = () => {
             </div>
             <div className="created-lesson-detail-page__button">
               <Stack spacing={2} direction="row">
-                <Button variant="contained">강의 상세 수정</Button>
+                <Button
+                  variant="contained"
+                  onClick={() =>
+                    navigate(`/update-lesson/${Number(lessonId.lessonId)}`)
+                  }
+                >
+                  강의 상세 수정
+                </Button>
                 <Button variant="contained">강의 삭제</Button>
               </Stack>
             </div>

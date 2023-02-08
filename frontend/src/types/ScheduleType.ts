@@ -22,6 +22,11 @@ export interface CreateScheduleResponse {
   statusCode: number;
 }
 
+export interface ScheduleDetailProps {
+  schedulesListState: any;
+  setSchedulesListState: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
 export interface LessonSchedulesType {
   openLessonId: number;
   lessonId: number;
