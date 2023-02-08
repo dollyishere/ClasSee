@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { Pagination } from '@mui/material';
 
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
@@ -50,9 +51,12 @@ const LessonsPage = () => {
   // 현재 페이지에 보여지는 강의 배열
   const [lessons, setLessons] = useState<Array<Lesson> | null>();
 
-  // 한 페이지에 몇 개를 보여줄 것인지
-  const [limit, setLimit] = useState<number>(6);
-  const [offset, setOffset] = useState<number>(0);
+  // 현재 페이지 번호
+  const [page, setPage] = useState<number>(1);
+
+  // 전체 페이지 개수
+  const [count, setCount] = useState<number>(0);
+
   const [category, setCategory] = useState<string | undefined>(initialCategory);
   const [dayOfWeek, setDayOfWeek] = useState<string | undefined>(undefined);
   const [email, setEmail] = useState<string | undefined>(undefined);
@@ -85,8 +89,17 @@ const LessonsPage = () => {
     }
   };
 
+  const handlePageChange = (
+    event: React.ChangeEvent<unknown>,
+    value: number,
+  ) => {
+    setPage(value);
+  };
+
   useEffect(() => {
     const getData = async () => {
+      const limit = 6;
+      const offset = (page - 1) * limit;
       const data = await searchLessons({
         limit,
         offset,
@@ -99,20 +112,10 @@ const LessonsPage = () => {
         minStartTime,
         name,
       });
-      console.log(
-        limit,
-        offset,
-        category,
-        dayOfWeek,
-        email,
-        maxPrice,
-        maxStartTime,
-        minPrice,
-        minStartTime,
-        name,
-      );
-      console.log(data);
-      setLessons(data);
+      if (data !== null && data.count !== undefined) {
+        setCount(Math.ceil(data.count / limit));
+      }
+      setLessons(data?.lessonInfoList);
     };
     getData();
   }, [
@@ -124,6 +127,7 @@ const LessonsPage = () => {
     minPrice,
     minStartTime,
     name,
+    page,
   ]);
 
   return (
@@ -133,14 +137,23 @@ const LessonsPage = () => {
         <Sidebar items={sidebarItems} onSidebarClick={handleSidebarClick} />
         <div className="lessons-page__sub-page">
           <SearchBox />
-          <div className="lesson-page__lesson-list">
+          <div className="lessons-page__lesson-list">
             {lessons?.map((lesson: Lesson) => (
-              <div className="lesson-page__lesson-card" key={lesson.lessonId}>
+              <div className="lessons-page__lesson-card" key={lesson.lessonId}>
                 <LessonCard lesson={lesson} />
               </div>
             ))}
           </div>
-          <div className="lessons-page__pagination">페이지네이션</div>
+          <div className="lessons-page__pagination">
+            <Pagination
+              variant="outlined"
+              count={count}
+              page={page}
+              shape="rounded"
+              size="large"
+              onChange={handlePageChange}
+            />
+          </div>
         </div>
       </div>
     </div>
