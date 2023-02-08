@@ -132,15 +132,15 @@ public class AuthController {
 			@ApiResponse(code = 404, message = "사용자 없음", response = NotFoundErrorResponseBody.class),
 			@ApiResponse(code = 500, message = "서버 오류", response = ServerErrorResponseBody.class)
 	})
-	public ResponseEntity<?> logout(@RequestHeader String accessToken, @RequestParam String email) {
+	public ResponseEntity<?> logout(@RequestHeader("Authorization") String accessToken, @RequestParam String email) {
 		try {
 			authService.logout(email, accessToken.substring(7));
 			return ResponseEntity.ok(BaseResponseBody.of(200, "SUCCESS"));
 		} catch (ExpiredJwtException e){
-			return ResponseEntity.status(401).body(BaseResponseBody.of(403, "EXPIRED TOKEN"));
+			return ResponseEntity.status(403).body(BaseResponseBody.of(403, "EXPIRED TOKEN"));
 		} catch (Exception e){
 			e.printStackTrace();
-			return ResponseEntity.status(401).body(BaseResponseBody.of(500, "SERVER ERROR"));
+			return ResponseEntity.status(500).body(BaseResponseBody.of(500, "SERVER ERROR"));
 		}
 	}
 
@@ -170,7 +170,7 @@ public class AuthController {
 		if(user == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "USER NOT FOUND"));
 
 		System.out.println("REFRESH_TOKEN >>>>>>>>>> " + refreshToken);
-		if (!redisService.getValues(email).equals(refreshToken.substring(7))) return ResponseEntity.status(401).body(BaseResponseBody.of(401, "INVALID TOKEN"));
+		if (!redisService.getValues(email).equals(refreshToken)) return ResponseEntity.status(401).body(BaseResponseBody.of(401, "INVALID TOKEN"));
 
 		// 프론트로 보내줄 access, refresh token 생성
 		String afterATK = JwtTokenUtil.getToken(JwtTokenUtil.atkExpirationTime, email);
