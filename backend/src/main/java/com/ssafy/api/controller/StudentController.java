@@ -45,12 +45,12 @@ public class StudentController {
     ) {
         User user = userService.getUserByAuth(email);
 
-        if(user == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "사용자 없음"));
+        if(user == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "USER NOT FOUND"));
         Long userId = user.getAuth().getId();
 
         // 해당 유저가 신청한 강의 리스트
         List<AttendLessonInfoDto> lessonList = lessonService.getAttendLessonList(userId, query, "S", limit, offset);
-        if(lessonList == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "신청 강의 없음"));
+        if(lessonList == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "LESSON NOT FOUND"));
 
         AttendLessonInfoListRes res = AttendLessonInfoListRes.builder()
                 .lessonInfoList(lessonList)
