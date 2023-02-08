@@ -109,7 +109,8 @@ public class LessonServiceImpl implements LessonService {
         lessonList.forEach((lesson) -> {
             // 대표 이미지
             LessonInfoDto lessonRes = LessonInfoDto.builder()
-                    .id(lesson.getId())
+                    .lessonId
+                            (lesson.getId())
                     .name(lesson.getName())
                     .category(lesson.getCategory())
                     .runningTime(lesson.getRunningtime())

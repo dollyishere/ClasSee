@@ -14,7 +14,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class LessonInfoDto {
-    Long id; // 레슨 아이디
+    Long lessonId; // 레슨 아이디
     String name;
     Long runningTime;
     String category;
