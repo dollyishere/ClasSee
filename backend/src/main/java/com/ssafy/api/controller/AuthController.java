@@ -27,6 +27,7 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.ApiResponse;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -114,9 +115,8 @@ public class AuthController {
 			res.setHeader("accessToken", accessToken);
 			res.setHeader("refreshToken", refreshToken);
 		} catch (Exception e){
-			return ResponseEntity.status(401).body(BaseResponseBody.of(401, "TOKEN RESPONSE FAILED"));
+			return ResponseEntity.status(403).body(BaseResponseBody.of(401, "TOKEN RESPONSE FAILED"));
 		}
-
 		// 유효한 패스워드가 맞는 경우, 로그인 성공으로 응답.(액세스 토큰을 포함하여 응답값 전달)
 		return ResponseEntity.ok(UserLoginPostRes.of(200, "SUCCESS", userLoginPostRes));
 	}
@@ -134,7 +134,7 @@ public class AuthController {
 			authService.logout(email, accessToken.substring(7));
 			return ResponseEntity.ok(BaseResponseBody.of(200, "SUCCESS"));
 		} catch (ExpiredJwtException e){
-			return ResponseEntity.status(401).body(BaseResponseBody.of(401, "EXPIRED TOKEN"));
+			return ResponseEntity.status(401).body(BaseResponseBody.of(403, "EXPIRED TOKEN"));
 		} catch (Exception e){
 			e.printStackTrace();
 			return ResponseEntity.status(401).body(BaseResponseBody.of(500, "SERVER ERROR"));
@@ -162,10 +162,11 @@ public class AuthController {
 			@ApiResponse(code = 401, message = "인증 실패", response = BaseResponseBody.class),
 			@ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class)
 	})
-	public ResponseEntity<? extends BaseResponseBody> getAccessToken(@RequestHeader String refreshToken, @RequestParam String email, HttpServletResponse res) {
+	public ResponseEntity<? extends BaseResponseBody> getAccessToken(@RequestHeader("refreshToken") String refreshToken, @RequestParam String email, HttpServletResponse res) {
 		User user = userService.getUserByAuth(email);
 		if(user == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "USER NOT FOUND"));
 
+		System.out.println("REFRESH_TOKEN >>>>>>>>>> " + refreshToken);
 		if (!redisService.getValues(email).equals(refreshToken.substring(7))) return ResponseEntity.status(401).body(BaseResponseBody.of(401, "INVALID TOKEN"));
 
 		// 프론트로 보내줄 access, refresh token 생성
