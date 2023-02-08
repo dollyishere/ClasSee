@@ -13,17 +13,10 @@ const RecommandLessons = () => {
   const [lessons, setLessons] = useState<Lesson[]>();
   const userInfo = useRecoilValue(privateInfoState);
   useEffect(() => {
-    if (userInfo) {
-      getRecommandLessons(userInfo.email).then((res: LessonsResponse) => {
-        console.log('추천강의', res.lessonInfoList);
-        setLessons(res.lessonInfoList);
-      });
-    } else {
-      getRecommandLessons(null).then((res: LessonsResponse) => {
-        console.log('추천강의', res.lessonInfoList);
-        setLessons(res.lessonInfoList);
-      });
-    }
+    getRecommandLessons().then((res: LessonsResponse) => {
+      console.log('추천강의', res.lessonInfoList);
+      setLessons(res.lessonInfoList);
+    });
   }, []);
   return (
     <div className="recommandlessons">

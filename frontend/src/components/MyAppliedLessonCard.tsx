@@ -11,7 +11,7 @@ import { LessonsResponse, Lesson } from '../types/LessonsType';
 import useViewModel from '../viewmodels/MainPageViewModel';
 import privateInfoState from '../models/PrivateInfoAtom';
 
-import logo from '../assets/logo.png';
+import logo from '../assets/logo2.png';
 
 interface Props {
   lesson: Lesson;
