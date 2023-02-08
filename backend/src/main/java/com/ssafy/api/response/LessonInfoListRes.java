@@ -22,12 +22,14 @@ import java.util.List;
 @ApiModel("LessonListGetResponse")
 public class LessonInfoListRes extends BaseResponseBody{
     List<LessonInfoDto> lessonInfoList;
+    long count;
 
     public static LessonInfoListRes of(Integer statusCode, String message, LessonInfoListRes lessonInfoListRes) {
         LessonInfoListRes res = new LessonInfoListRes();
         res.setStatusCode(statusCode);
         res.setMessage(message);
         res.setLessonInfoList(lessonInfoListRes.getLessonInfoList());
+        res.setCount(lessonInfoListRes.getCount());
         return res;
     }
 }

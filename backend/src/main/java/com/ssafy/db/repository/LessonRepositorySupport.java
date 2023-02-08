@@ -19,10 +19,7 @@ import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * 강의 모델 관련 디비 쿼리 생성을 위한 구현 정의.
@@ -207,11 +204,12 @@ public class LessonRepositorySupport {
         return count;
     }
 
-    public List<Lesson> findLessonListByFilter(LessonSearchFilterDto requestInfo, int offset, int limit) {
+    public Map<String, Object> findLessonListByFilter(LessonSearchFilterDto requestInfo, int offset, int limit) {
+        Map<String, Object> result = new HashMap<>();
         // requestinfo ( (min, max) startTime, price, dayofweek, category )
         BooleanBuilder builder = new BooleanBuilder();
 //        builder.and(qLesson.id.eq(qOpenLesson.lessonId));
-        if(requestInfo.getName() != null) builder.and(qLesson.name.contains(requestInfo.getName()));
+        if(requestInfo.getKeyword() != null) builder.and(qLesson.name.contains(requestInfo.getKeyword()));
         if(requestInfo.getCategory() != null) builder.and(qLesson.category.eq(requestInfo.getCategory()));
         if(requestInfo.getMinPrice() != null) builder.and(qLesson.price.goe(requestInfo.getMinPrice()));
         if(requestInfo.getMaxPrice() != null) builder.and(qLesson.price.loe(requestInfo.getMaxPrice()));
@@ -238,7 +236,18 @@ public class LessonRepositorySupport {
                 .limit(limit)
                 .fetch();
 
-        return lessonList;
+        Long count = jpaQueryFactory
+                .select(qLesson.countDistinct())
+                .from(qLesson)
+                .leftJoin(qLesson.openLessonList, qOpenLesson)
+                .where(builder)
+                .fetchOne();
+
+
+        result.put("LESSON_LIST", lessonList);
+        result.put("COUNT", count);
+
+        return result;
     }
 
     public Long existsUserInLesson(Long lessonId) {
