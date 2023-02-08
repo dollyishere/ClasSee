@@ -18,8 +18,8 @@ const MainPageViewModel = () => {
     addBookmarkApi,
   } = useLessonApi();
   const { doGetAccessToken } = useUserApi();
-  const getRecommandLessons = async (email: string | null) => {
-    const res = await getRecommandLessonsApi(email);
+  const getRecommandLessons = async () => {
+    const res = await getRecommandLessonsApi();
 
     return res;
   };
@@ -36,7 +36,7 @@ const MainPageViewModel = () => {
       // console.log('hashedRefreshToken', hashedRefreshToken);
       if (hashedRefreshToken !== null) {
         const refreshToken = decryptToken(hashedRefreshToken, email);
-        // console.log('refreshToken', refreshToken);
+        console.log('refreshToken', refreshToken);
         const accessToken = await doGetAccessToken(email, refreshToken);
         // setAuthToken(accessToken);
         // console.log('accessToken', accessToken);
