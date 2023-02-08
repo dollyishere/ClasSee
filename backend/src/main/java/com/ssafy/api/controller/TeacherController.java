@@ -59,11 +59,11 @@ public class TeacherController {
         */
         User user = userService.getUserByAuth(email);
 
-        if(user == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "사용자 정보 없음"));
+        if(user == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "USER NOT FOUND"));
         Long userId = user.getAuth().getId();
 
         List<AttendLessonInfoDto> lessonList = lessonService.getAttendLessonList(userId, query, "T", limit, offset);
-        if(lessonList == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "개설 강의 없음"));
+        if(lessonList == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "LESSON NOT FOUND"));
 
         AttendLessonInfoListRes res = AttendLessonInfoListRes.builder()
                 .lessonInfoList(lessonList)
