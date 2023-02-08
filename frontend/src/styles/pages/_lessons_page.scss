@@ -1,0 +1,30 @@
+@use '../base/colors';
+@use '../components/sidebar';
+@use '../components/header';
+
+.lessons-page {
+  height: 100%;
+  background-color: colors.$theme_color_light;
+  .lessons-page__contents {
+    height: calc(100% - header.$height);
+    width: 100%;
+    height: calc(100% - 80px);
+    display: flex;
+    .lessons-page__sub-page {
+      width: calc(100% - sidebar.$width);
+      overflow: auto;
+      .lesson-page__lesson-list {
+        width: 90%;
+        margin: 0 auto;
+        display: flex;
+        flex-wrap: wrap;
+        .lesson-page__lesson-card {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 33%;
+        }
+      }
+    }
+  }
+}

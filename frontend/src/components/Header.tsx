@@ -4,6 +4,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import { useRecoilValue } from 'recoil';
 
 import { Notifications, Person } from '@mui/icons-material';
+import useViewModel from '../viewmodels/LoginViewModel';
 import logo from '../assets/logo2.png';
 import privateInfoState from '../models/PrivateInfoAtom';
 
@@ -11,6 +12,7 @@ const Header = () => {
   const searchbarRef = useRef(null); // 검색창을 접근/제어하기 위한 hook
   const userInfo = useRecoilValue(privateInfoState);
   const [toggleUserInfo, setToggleUserInfo] = useState<boolean>(false);
+  const viewModel = useViewModel();
 
   const navigate = useNavigate();
 
@@ -32,6 +34,20 @@ const Header = () => {
   const handleToggleUserInfo = () => {
     setToggleUserInfo((prev: boolean) => !prev);
   };
+  const handleLogout = async () => {
+    if (userInfo?.email) {
+      const result = await viewModel.logout(userInfo?.email);
+      navigate('/');
+    }
+  };
+
+  const test = () => {
+    window.open(
+      '/lesson/test/student',
+      '강의',
+      `height=${window.screen.height}, width=${window.screen.width}, fullscreen=yes, status=no, scrollbars=no`,
+    );
+  };
 
   return (
     <header>
@@ -45,7 +61,7 @@ const Header = () => {
       {/* 네비게이션 */}
       <ul className="nav">
         <li className="nav__item">
-          <Link to="/lesson" className="nav__item--link">
+          <Link to="/lessons" className="nav__item--link">
             강의
           </Link>
         </li>
@@ -67,11 +83,9 @@ const Header = () => {
       {/* 버튼 */}
       <ul className="nav">
         <li className="nav__item">
-          <Link to="/lesson/test/student" target="_blank">
-            <button type="button" className="nav__button button">
-              테스트
-            </button>
-          </Link>
+          <button type="button" className="nav__button button" onClick={test}>
+            테스트
+          </button>
         </li>
         {userInfo === null ? (
           <>
@@ -120,7 +134,11 @@ const Header = () => {
             >
               회원정보
             </button>
-            <button type="button" className="header__user-info--logout button">
+            <button
+              type="button"
+              className="header__user-info--logout button"
+              onClick={handleLogout}
+            >
               로그아웃
             </button>
           </div>

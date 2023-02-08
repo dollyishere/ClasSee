@@ -1,4 +1,6 @@
+import { Email } from '@mui/icons-material';
 import axios from 'axios';
+import { useRecoilValue } from 'recoil';
 
 import { Response } from '../types/BaseType';
 import {
@@ -7,8 +9,10 @@ import {
   LoginRequest,
   LoginResponse,
 } from '../types/UserType';
+import authTokenState from '../models/AuthTokenAtom';
 
 const UserApi = () => {
+  const authToken = useRecoilValue(authTokenState);
   // salt를 가져오는 함수
   const doGetSalt = async (email: string) => {
     try {
@@ -73,16 +77,122 @@ const UserApi = () => {
         `${process.env.REACT_APP_SERVER_URI}/api/v1/auth/token?email=${email}`,
         {
           headers: {
-            Authorization: `Bearer ${refreshtoken}`,
+            refreshToken: refreshtoken,
           },
         },
       );
-      console.log('accesstoken', response.headers);
-      return response.headers;
+      return response.headers.accesstoken;
     } catch (error: any) {
       console.error(error);
     }
     return null;
+  };
+
+  const doUpdateProfileImage = async (email: string, url: string) => {
+    try {
+      const response = await axios.put<Response>(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/users/${email}/img?img=${url}`,
+      );
+
+      return response.data.statusCode;
+    } catch (error: any) {
+      console.error(error);
+    }
+    return null;
+  };
+
+  const doUpdateNickName = async (email: string, nickname: string) => {
+    try {
+      const response = await axios.put<Response>(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/users/${email}/nickname?nickname=${nickname}`,
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        },
+      );
+      return response.data.statusCode;
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error);
+      }
+      console.error('Unexpected Error', error);
+    }
+    return 403;
+  };
+
+  const doUpdatePhone = async (email: string, phone: string) => {
+    try {
+      const response = await axios.put<Response>(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/users/${email}/phone?phone=${phone}`,
+      );
+      return response.data.statusCode;
+    } catch (error: any) {
+      console.error(error);
+    }
+    return null;
+  };
+
+  const doUpdateAddress = async (email: string, address: string) => {
+    try {
+      const respnose = await axios.put<Response>(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/users/${email}/address?address=${address}`,
+      );
+      return respnose.data.statusCode;
+    } catch (error: any) {
+      console.error(error);
+    }
+    return null;
+  };
+
+  const doUpdateDescription = async (email: string, description: string) => {
+    try {
+      const response = await axios.put<Response>(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/users/${email}/description?description=${description}`,
+      );
+      return response.data.statusCode;
+    } catch (error: any) {
+      console.error(error);
+    }
+    return null;
+  };
+
+  const doUpdatePassword = async (email: string, hashedPassword: string) => {
+    try {
+      const response = await axios.put<Response>(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/users/${email}/password`,
+        {
+          password: hashedPassword,
+        },
+      );
+      return response.data.statusCode;
+    } catch (error: any) {
+      console.error(error);
+    }
+    return null;
+  };
+
+  const doWithdrawl = async (email: string) => {
+    try {
+      const response = await axios.delete<Response>(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/users/${email}`,
+      );
+      return response.data.statusCode;
+    } catch (error: any) {
+      console.error(error);
+    }
+    return null;
+  };
+  const doLogout = async (email: string) => {
+    try {
+      const response = await axios.post<Response>(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/auth/logout?email=${email}`,
+      );
+      return response.data.statusCode;
+    } catch (error) {
+      console.error(error);
+    }
+    return 403;
   };
 
   return {
@@ -90,7 +200,15 @@ const UserApi = () => {
     doEmailDuplicationCheck,
     doGetSalt,
     doLogin,
+    doUpdateProfileImage,
     doGetAccessToken,
+    doUpdateNickName,
+    doUpdatePhone,
+    doUpdateAddress,
+    doUpdateDescription,
+    doUpdatePassword,
+    doWithdrawl,
+    doLogout,
   };
 };
 

@@ -3,7 +3,6 @@ import { useRecoilState } from 'recoil';
 import useApi from '../apis/UserApi';
 import privateInfoState from '../models/PrivateInfoAtom';
 import authTokenState from '../models/AuthTokenAtom';
-
 import {
   createHashedPassword,
   encryptToken,
@@ -14,7 +13,13 @@ import {
 const LoginViewModel = () => {
   const [privateInfo, setPrivateInfo] = useRecoilState(privateInfoState);
   const [authToken, setAuthToken] = useRecoilState(authTokenState);
-  const { doGetSalt, doLogin } = useApi();
+  const { doGetSalt, doLogin, doLogout, doGetAccessToken } = useApi();
+
+  const logout = async (email: string) => {
+    await doLogout(email);
+
+    setPrivateInfo(null);
+  };
 
   const login = async (email: string, password: string) => {
     const salt = await doGetSalt(email);
@@ -37,6 +42,7 @@ const LoginViewModel = () => {
           userRole: res.data.userRole,
           point: res.data.point,
         });
+        console.log(res.headers.accesstoken);
         setAuthToken(res.headers.accesstoken);
         const encryptedToken = encryptToken(
           res.headers.refreshtoken,
@@ -56,6 +62,7 @@ const LoginViewModel = () => {
   };
   return {
     login,
+    logout,
   };
 };
 
