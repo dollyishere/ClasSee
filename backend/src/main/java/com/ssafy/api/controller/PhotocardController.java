@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -63,19 +64,31 @@ public class PhotocardController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "success", response = PhotocardPageGetRes.class)
     })
-    public ResponseEntity<?> photocardList(@RequestParam int offset, @RequestParam int limit, @RequestParam String email){
+    public ResponseEntity<?> photocardList(@RequestParam int offset, @RequestParam int limit, String email){
 
         List<Photocard> photocardList =
                 photocardService
                 .readPhotocardList(offset, limit);
 
-        List<PhotocardListGetRes> photocardListGetResList =
-                photocardList
-                        .stream()
-                        .map(p -> new PhotocardListGetRes(p,
-                                photocardService.countLikes(p),
-                                photocardService.checkLikes(email, p.getId())))
-                        .collect(Collectors.toList());
+        List<PhotocardListGetRes> photocardListGetResList = new ArrayList<>();
+
+        if(email != null) {
+            photocardListGetResList =
+                    photocardList
+                            .stream()
+                            .map(p -> new PhotocardListGetRes(p,
+                                    photocardService.countLikes(p),
+                                    photocardService.checkLikes(email, p.getId())))
+                            .collect(Collectors.toList());
+        } else {
+            photocardListGetResList =
+                    photocardList
+                            .stream()
+                            .map(p -> new PhotocardListGetRes(p,
+                                    photocardService.countLikes(p),
+                                    false))
+                            .collect(Collectors.toList());
+        }
 
         Long photocardCount = photocardService.photocardCount();
 
