@@ -10,9 +10,20 @@
     width: 100%;
     height: calc(100% - 80px);
     display: flex;
-
     .lessons-page__sub-page {
       width: calc(100% - sidebar.$width);
+      overflow: auto;
+      .lesson-page__lesson-list {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        .lesson-page__lesson-card {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 30%;
+        }
+      }
     }
   }
 }
