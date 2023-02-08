@@ -10,6 +10,7 @@ import {
   LoginRequest,
   LoginResponse,
 } from '../types/UserType';
+import authTokenState from '../models/AuthTokenAtom';
 
 const UserApi = () => {
   const authToken = useRecoilValue(authTokenState);
@@ -78,9 +79,14 @@ const UserApi = () => {
   const doGetAccessToken = async (email: string, refreshtoken: string) => {
     try {
       const response = await axios.get<Response>(
-        `${process.env.REACT_APP_SERVER_URI}/api/v1/accesstoken/${email}/${refreshtoken}`,
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/auth/token?email=${email}`,
+        {
+          headers: {
+            refreshToken: refreshtoken,
+          },
+        },
       );
-      console.log(response);
+      return response.headers.accesstoken;
     } catch (error: any) {
       console.error(error);
     }
@@ -111,8 +117,11 @@ const UserApi = () => {
         },
       );
       return response.data.statusCode;
-    } catch (error: any) {
-      console.error(error);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error);
+      }
+      console.error('Unexpected Error', error);
     }
     return 403;
   };
@@ -179,6 +188,17 @@ const UserApi = () => {
     }
     return null;
   };
+  const doLogout = async (email: string) => {
+    try {
+      const response = await axios.post<Response>(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/auth/logout?email=${email}`,
+      );
+      return response.data.statusCode;
+    } catch (error) {
+      console.error(error);
+    }
+    return 403;
+  };
 
   return {
     doSignUp,
@@ -193,6 +213,7 @@ const UserApi = () => {
     doUpdateDescription,
     doUpdatePassword,
     doWithdrawl,
+    doLogout,
   };
 };
 

@@ -4,6 +4,9 @@ import imageCompression from 'browser-image-compression';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 
+import { ref, deleteObject } from 'firebase/storage';
+import { storage } from '../utils/Firebase';
+
 // 부모 컴포넌트 측에서 전달한 Props의 type을 지정함
 import { ImageUploadProps } from '../types/CreateLessonType';
 
@@ -15,7 +18,6 @@ const ImageUpload = ({
   setImgFileListState,
 }: ImageUploadProps) => {
   const fileRef = useRef<HTMLInputElement>(null);
-
   // 만약 사용자가 이미지를 input을 통해 추가했을 시, 이하 함수 실행
   const handleAddImages = async (e: React.ChangeEvent<HTMLInputElement>) => {
     // 사용자가 올린 파일 정보를 변수 img에 저장
@@ -45,22 +47,21 @@ const ImageUpload = ({
       // URL.createObjectURL을 통해 해당 파일의 상대경로를 생성, imgSrcListState에 저장함
       const result = URL.createObjectURL(compressedFile);
       setImgSrcListState([...imgSrcListState, result]);
-
-      // 단순히 미리보기 구현의 경우, 위의 방법이 더 효과적일 것으로 생각되어 이하 방법은 안전성 검증 후 폐기함
-      // // 파일을 성공적으로 읽었을 시(on_load가 이를 관장함), 해당 이벤트가 시작됨
-      // fileReader.onload = (event: ProgressEvent<FileReader>) => {
-      //   // 파일을 읽은 결과물을 result에 할당함
-      //   const result = event?.target?.result as string;
-      //   // result를 setImgFileListState를 이용해 imgSrcList에 추가함
-      //   setImgSrcListState([...imgSrcListState, result]);
-      // };
     }
   };
 
   // 마이너스 버튼 클릭 시, 해당하는 이미지는 imgFileListState 내에서 삭제됨
-  const handleDeleteImage = (id: number) => {
+  const handleDeleteImage = async (id: number) => {
     setImgSrcListState(imgSrcListState.filter((_, index) => index !== id));
     setImgFileListState(imgFileListState.filter((_, index) => index !== id));
+    const deletedImg = imgFileListState.filter(
+      (_, index) => index === id,
+    )[0] as any;
+    const imageRef = ref(storage, `${encodeURI(deletedImg.fullPath)}`);
+    if (!(deletedImg instanceof Blob)) {
+      const goDeleteImg = await deleteObject(imageRef);
+      alert('사진이 삭제되었습니다!');
+    }
   };
 
   return (
