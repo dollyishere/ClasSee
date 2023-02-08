@@ -7,7 +7,6 @@ import MyAppliedLessonCard from '../MyAppliedLessonCard';
 import useViewModel from '../../viewmodels/MainPageViewModel';
 import { LessonsResponse, Lesson } from '../../types/LessonsType';
 import privateInfoState from '../../models/PrivateInfoAtom';
-import AuthTokenState from '../../models/AuthTokenAtom';
 
 // 로그인이 되었을 때만 이 컴포넌트가 보여짐
 // 내가 신청한 강의를 get으로 api요청 보냄
@@ -17,7 +16,6 @@ const MyAppliedLessonsMainpage = () => {
   const { getMyAppliedLessonsMainpage } = useViewModel();
   const [lessons, setLessons] = useState<Lesson[]>();
   const userInfo = useRecoilValue(privateInfoState);
-  const accessToken = useRecoilValue(AuthTokenState);
 
   useEffect(() => {
     if (userInfo && userInfo.email && accessToken) {

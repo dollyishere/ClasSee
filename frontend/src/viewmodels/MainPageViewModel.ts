@@ -30,14 +30,16 @@ const MainPageViewModel = () => {
     query: string,
   ) => {
     let res = await MyCreatedLessonsMainpageApi(email, limit, offset, query);
-    console.log(res);
-    if (res.statusCode === 403) {
+    // if (res.statusCode === 403) {
+    if (res === null) {
       const hashedRefreshToken = localStorage.getItem('refreshToken');
-
+      // console.log('hashedRefreshToken', hashedRefreshToken);
       if (hashedRefreshToken !== null) {
         const refreshToken = decryptToken(hashedRefreshToken, email);
+        // console.log('refreshToken', refreshToken);
         const accessToken = await doGetAccessToken(email, refreshToken);
-        setAuthToken(accessToken);
+        // setAuthToken(accessToken);
+        // console.log('accessToken', accessToken);
         res = await MyCreatedLessonsMainpageApi(email, limit, offset, query);
       }
     }

@@ -13,6 +13,7 @@ import { storage } from '../utils/Firebase';
 import { LessonsResponse, Lesson } from '../types/LessonsType';
 import privateInfoState from '../models/PrivateInfoAtom';
 import useViewModel from '../viewmodels/MainPageViewModel';
+import useLessonCardViewModel from '../viewmodels/LessonCardViewModel';
 import logo from '../assets/logo.png';
 
 interface Props {
@@ -20,21 +21,18 @@ interface Props {
 }
 const LessonCard = ({ lesson }: Props) => {
   const userInfo = useRecoilValue(privateInfoState);
-
-  const checkListImgRef = ref(
-    storage,
-    `lessons/${lesson.lessonId}/checklist_images`,
-  );
-  const pamphletsImgRef = ref(
-    storage,
-    `lessons/${lesson.lessonId}/pamphlet_images/`,
-  );
+  const { getLessonImage } = useLessonCardViewModel();
+  const [image, setImage] = useState<string>();
 
   useEffect(() => {
-    const imgName = lesson.lessonImage;
-    listAll(pamphletsImgRef).then((response: any) => {
-      console.log('파이어베이스이미지', response);
-    });
+    if (userInfo) {
+      console.log(lesson.lessonId);
+      const getImage = async () => {
+        const imageUrl = await getLessonImage(lesson.lessonId);
+        setImage(imageUrl);
+      };
+      getImage();
+    }
   });
 
   const [isBookMarked, setIsBookMarked] = useState(lesson.bookMarked);
@@ -46,11 +44,9 @@ const LessonCard = ({ lesson }: Props) => {
     if (userInfo) {
       if (isBookMarked) {
         const res = deleteBookmark(userInfo.email, lesson.lessonId);
-        console.log('지웠어', res);
         setIsBookMarked(false);
       } else {
         const res = addBookmark(userInfo.email, lesson.lessonId);
-        console.log('넣었어', res);
         setIsBookMarked(true);
       }
     } else {
@@ -66,7 +62,7 @@ const LessonCard = ({ lesson }: Props) => {
       >
         {/* 강의 대표이미지와 북마크 버튼 담는 div */}
         <div className="lesson__backImg">
-          <img className="lesson__img" src={logo} alt={lesson.name} />
+          <img className="lesson__img" src={image} alt={lesson.name} />
           {/* 북마크 버튼 클릭 시 true, false 값변경으로 아이콘 변경 */}
           <button
             type="button"

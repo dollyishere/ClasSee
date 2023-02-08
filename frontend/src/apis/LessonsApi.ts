@@ -31,7 +31,7 @@ const LessonsApi = () => {
           },
         },
       );
-      console.log(response.data);
+      // console.log(response.data);
       return response.data;
     } catch (error: any) {
       console.error(error);
@@ -47,6 +47,11 @@ const LessonsApi = () => {
     try {
       const response = await axios.get(
         `${process.env.REACT_APP_SERVER_URI}/api/v1/students/${email}/lessons?limit=${limit}&offset=${offset}&query=${query}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
       );
       return response.data;
     } catch (error: any) {

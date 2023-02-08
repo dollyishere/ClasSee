@@ -38,7 +38,6 @@ const LoginViewModel = () => {
           point: res.data.point,
         });
         setAuthToken(res.headers.accesstoken);
-        console.log(res.headers.accesstoken);
         const encryptedToken = encryptToken(
           res.headers.refreshtoken,
           res.data.email,
