@@ -18,7 +18,7 @@ const MyAppliedLessonsMainpage = () => {
   const userInfo = useRecoilValue(privateInfoState);
 
   useEffect(() => {
-    if (userInfo && userInfo.email && accessToken) {
+    if (userInfo && userInfo.email) {
       getMyAppliedLessonsMainpage(userInfo.email, 2, 0, 'TODO').then(
         (res: LessonsResponse) => {
           console.log('내가 신청한 강의', res.lessonInfoList);

@@ -21,7 +21,6 @@ const MyCreatedLessonsMainpage = () => {
   // 메인페이지 마운트 시 강의 정보들 요청
 
   useEffect(() => {
-    console.log('111111');
     if (userInfo !== null && userInfo.email)
       getMyCreatedLessonsMainpage(userInfo.email, 2, 0, 'TODO').then(
         (res: LessonsResponse) => {
