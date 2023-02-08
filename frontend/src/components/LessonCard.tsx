@@ -14,7 +14,7 @@ import { LessonsResponse, Lesson } from '../types/LessonsType';
 import privateInfoState from '../models/PrivateInfoAtom';
 import useViewModel from '../viewmodels/MainPageViewModel';
 import useLessonCardViewModel from '../viewmodels/LessonCardViewModel';
-import logo from '../assets/logo.png';
+import logo from '../assets/logo2.png';
 
 interface Props {
   lesson: Lesson;
@@ -22,18 +22,22 @@ interface Props {
 const LessonCard = ({ lesson }: Props) => {
   const userInfo = useRecoilValue(privateInfoState);
   const { getLessonImage } = useLessonCardViewModel();
-  const [image, setImage] = useState<string>();
+  const [lessonImage, setImage] = useState<string>(logo);
+  const [teacherImage, setTeacherImage] = useState<string>(logo);
 
-  useEffect(() => {
-    if (userInfo) {
-      console.log(lesson.lessonId);
+  useEffect(
+    () => {
+      // if (userInfo) {
       const getImage = async () => {
         const imageUrl = await getLessonImage(lesson.lessonId);
-        setImage(imageUrl);
+        if (imageUrl) {
+          setImage(imageUrl);
+        }
       };
       getImage();
-    }
-  });
+    },
+    // });
+  );
 
   const [isBookMarked, setIsBookMarked] = useState(lesson.bookMarked);
   const { deleteBookmark, addBookmark } = useViewModel();
@@ -62,7 +66,7 @@ const LessonCard = ({ lesson }: Props) => {
       >
         {/* 강의 대표이미지와 북마크 버튼 담는 div */}
         <div className="lesson__backImg">
-          <img className="lesson__img" src={image} alt={lesson.name} />
+          <img className="lesson__img" src={lessonImage} alt={lesson.name} />
           {/* 북마크 버튼 클릭 시 true, false 값변경으로 아이콘 변경 */}
           <button
             type="button"
@@ -94,7 +98,7 @@ const LessonCard = ({ lesson }: Props) => {
             direction="row"
             spacing={2}
           >
-            <Avatar alt="Remy Sharp" src={logo} />
+            <Avatar alt="Remy Sharp" src={lesson.teacherImage} />
           </Stack>
         </div>
         {/* 강의명 */}
