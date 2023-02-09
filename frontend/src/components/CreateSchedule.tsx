@@ -4,11 +4,7 @@ import { Stack, TextField, Button } from '@mui/material/';
 
 import ScheduleViewModel from '../viewmodels/ScheduleViewModel';
 
-import {
-  CreateScheduleProps,
-  CreateScheduleRequest,
-  RequestInfo,
-} from '../types/ScheduleType';
+import { CreateScheduleProps, ScheduleRequest } from '../types/LessonsType';
 
 const CreateScheduleComponent = ({
   runningtime,
@@ -61,13 +57,12 @@ const CreateScheduleComponent = ({
       } else {
         // datetime input의 경우 중간에 T로 시간을 구분하고 있음
         // 해당 T까지 DB에 보내면 안되기 때문에, sclice로 해당 부분만 제거해서 데이터를 담아줌
-        const createScheduleRequestBody: CreateScheduleRequest = {
+        const createScheduleRequestBody: ScheduleRequest = {
           endTime: `${endTime.slice(0, 10)} ${endTime.slice(-5)}`,
           startTime: `${startTime.slice(0, 10)} ${startTime.slice(-5)}`,
         };
-        console.log(createScheduleRequestBody);
         const res = await createSchedule(createScheduleRequestBody, lessonId);
-        if (res?.message === 'SUCCESS') {
+        if (res && res.message === 'SUCCESS') {
           alert('스케줄이 등록되었습니다');
           setScheduleInputState(false);
         } else {

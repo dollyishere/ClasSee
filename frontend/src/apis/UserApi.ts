@@ -42,6 +42,7 @@ const UserApi = () => {
     }
     return null;
   };
+
   // 회원가입 함수
   const doSignUp = async (signupRequestBody: SignUpRequest) => {
     try {
@@ -80,7 +81,6 @@ const UserApi = () => {
           },
         },
       );
-      console.log(response);
       const { headers, data } = response;
       return { headers, data };
     } catch (error: any) {
@@ -102,13 +102,18 @@ const UserApi = () => {
     return null;
   };
 
-  const doUpdateNickName = async (email: string, nickname: string) => {
+  const doUpdateNickName = async (
+    email: string,
+    nickname: string,
+    accessToken: string | null,
+  ) => {
     try {
       const response = await axios.put<Response>(
         `${process.env.REACT_APP_SERVER_URI}/api/v1/users/${email}/nickname?nickname=${nickname}`,
+        {},
         {
           headers: {
-            Authorization: `Bearer ${authToken}`,
+            Authorization: `Bearer ${accessToken}`,
           },
         },
       );

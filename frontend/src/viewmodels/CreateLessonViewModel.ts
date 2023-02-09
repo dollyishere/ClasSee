@@ -1,12 +1,15 @@
-import CreateLessonApi from '../apis/CreateLessonApi';
+import LessonsApi from '../apis/LessonsApi';
 
-import { LessonRequest } from '../types/CreateLessonType';
+import { LessonRequest } from '../types/LessonsType';
 
 const CreateLessonViewModel = () => {
-  const { doCreateLesson, doUpdateLesson } = CreateLessonApi();
+  const { doCreateLesson, doUpdateLesson } = LessonsApi();
 
-  const createLesson = async (data: LessonRequest) => {
-    const res = await doCreateLesson(data);
+  const createLesson = async (
+    data: LessonRequest,
+    accessToken: string | null,
+  ) => {
+    const res = await doCreateLesson(data, accessToken);
     return res;
   };
   const updateLesson = async (data: LessonRequest, lessonId: number) => {

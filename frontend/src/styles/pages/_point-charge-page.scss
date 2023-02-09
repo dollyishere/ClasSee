@@ -1,0 +1,31 @@
+@use '../base/colors';
+
+.point-charge-page {
+  height: 100%;
+  overflow: auto;
+  .point-charge-page__card {
+    width: 60%;
+    margin: 80px auto;
+    .point-charge-page__select-box {
+      margin: 0 auto;
+      width: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      .point-charge-page__row {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+        .point-charge-page__button--price {
+          width: 30%;
+          background-color: colors.$beige_color;
+          &:hover {
+            background-color: colors.$beige_color_focus;
+          }
+        }
+      }
+    }
+  }
+}

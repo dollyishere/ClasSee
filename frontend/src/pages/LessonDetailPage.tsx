@@ -12,9 +12,8 @@ import {
   LessonDetailRequest,
   LessonDetailResponse,
   CurriculumsType,
-  CheckListsType,
-  PamphletsType,
-} from '../types/LessonDetailType';
+  ImageListType,
+} from '../types/LessonsType';
 
 import LessonDetailViewModel from '../viewmodels/LessonDetailViewModel';
 import useViewModel from '../viewmodels/ProfileViewModel';
@@ -48,8 +47,8 @@ const LessonDetailPage = () => {
       userDesciption: '' as string | null,
       teacherImage: '' as string | null,
       curriculums: [] as CurriculumsType[],
-      checkLists: [] as CheckListsType[],
-      pamphlets: [] as PamphletsType[],
+      checkLists: [] as ImageListType[],
+      pamphlets: [] as ImageListType[],
       score: 0 as number,
       bookMarked: false as boolean,
     });
@@ -71,16 +70,6 @@ const LessonDetailPage = () => {
   const [ratingValue, setRatingValue] = useState<number | null>(0);
   const disableValue = true as boolean;
 
-  // firebase storage의 이 경로에 있는 파일들을 가져옴
-  const checkListImgRef = ref(
-    storage,
-    `lessons/${lessonId.lessonId}/checklist_images`,
-  );
-  const pamphletsImgRef = ref(
-    storage,
-    `lessons/${lessonId.lessonId}/pamphlet_images`,
-  );
-
   // useEffect로 해당 페이지 렌더링 시 강의 상세 정보를 받아오도록 내부 함수 실행
   useEffect(() => {
     const getLessonDetailRequestBody: LessonDetailRequest = {
@@ -88,7 +77,6 @@ const LessonDetailPage = () => {
     };
     const getTeacherImage = async () => {
       const imageUrl = await getProfileImage(lessonDetailState.teacherEmail);
-      console.log(imageUrl);
       setTeacherImgState(imageUrl);
     };
     const fetchData = async () => {
@@ -100,26 +88,22 @@ const LessonDetailPage = () => {
         // 강의 관련 사진 다운로드해서 pamphletsImgState에 저장
         res.pamphlets.forEach((item) => {
           const imageName = item.img as string;
-          listAll(pamphletsImgRef).then((response: any) => {
-            response.items.forEach((img: any) => {
-              if (img.name === imageName) {
-                getDownloadURL(img).then((url) => {
-                  setPamphletsImgState((prev: any) => [...prev, url]);
-                });
-              }
-            });
+          const imgRef = ref(
+            storage,
+            `lessons/${lessonId.lessonId}/pamphlet_images/${imageName}`,
+          );
+          getDownloadURL(imgRef).then((url: any) => {
+            setPamphletsImgState((prev: any) => [...prev, url]);
           });
         });
         res.checkLists.forEach((item) => {
           const imageName = item.img as string;
-          listAll(checkListImgRef).then((response: any) => {
-            response.items.forEach((img: any) => {
-              if (img.name === imageName) {
-                getDownloadURL(img).then((url) => {
-                  setCheckListImgState((prev: any) => [...prev, url]);
-                });
-              }
-            });
+          const imgRef = ref(
+            storage,
+            `lessons/${lessonId.lessonId}/checklist_images/${imageName}`,
+          );
+          getDownloadURL(imgRef).then((url: any) => {
+            setCheckListImgState((prev: any) => [...prev, url]);
           });
         });
       } else {

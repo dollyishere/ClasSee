@@ -8,6 +8,7 @@ import { ref, uploadBytes } from 'firebase/storage';
 import { storage } from '../utils/Firebase';
 
 import privateInfoState from '../models/PrivateInfoAtom';
+import authTokenState from '../models/AuthTokenAtom';
 
 import StepOne from '../components/CreateLessonPage/StepOne';
 import StepTwo from '../components/CreateLessonPage/StepTwo';
@@ -19,12 +20,7 @@ import Header from '../components/Header';
 
 import CreateLessonViewModel from '../viewmodels/CreateLessonViewModel';
 
-import {
-  CheckListType,
-  CurriculumType,
-  PamphletType,
-  LessonRequest,
-} from '../types/CreateLessonType';
+import { ImageType, CurriculumType, LessonRequest } from '../types/LessonsType';
 import { UserInfo } from '../types/UserType';
 
 const CreateLessonPage = () => {
@@ -64,6 +60,8 @@ const CreateLessonPage = () => {
   // 강의 개설을 신청하는 유저의 정보를 useRecoilValue를 통해 불러옴
   const userInfo = useRecoilValue(privateInfoState);
 
+  const authToken = useRecoilValue(authTokenState);
+
   // api 실행할 시 실행될 CreateLessonModel createLesson에 할당
   const { createLesson } = CreateLessonViewModel();
 
@@ -87,7 +85,7 @@ const CreateLessonPage = () => {
       basicPriceState !== 0
     ) {
       // array 형태로 넣어야 할 데이터는, 해당 형식에 맞게 다시 재생성함
-      const pamphletList: PamphletType[] = lessonImgFileListState.map(
+      const pamphletList: ImageType[] = lessonImgFileListState.map(
         (Img: any) => {
           return {
             img: Img.name as string,
@@ -95,7 +93,7 @@ const CreateLessonPage = () => {
         },
       );
 
-      const checkList: CheckListType[] = materialImgFileListState.map(
+      const checkList: ImageType[] = materialImgFileListState.map(
         (Img: any) => {
           return {
             img: Img.name,
@@ -113,7 +111,7 @@ const CreateLessonPage = () => {
 
       const createLessonRequestBody: LessonRequest = {
         category: categorySelectState,
-        checkList: checkList as CheckListType[],
+        checkList: checkList as ImageType[],
         cklsDescription: materialDescState,
         curriculumList: curriculumList as CurriculumType[],
         description: lessonDescState,
@@ -122,12 +120,12 @@ const CreateLessonPage = () => {
         kitPrice: kitPriceState,
         maximum: maximumState,
         name: lessonNameState,
-        pamphletList: pamphletList as PamphletType[],
+        pamphletList: pamphletList as ImageType[],
         price: basicPriceState,
         runningtime: runningtimeState,
       };
 
-      const res = await createLesson(createLessonRequestBody);
+      const res = await createLesson(createLessonRequestBody, authToken);
       if (res?.message === 'SUCCESS') {
         // 만약 강의 개설에 성공했을 시, 이하 코드를 실행함
         // 만약 업로드한 이미지 파일이 하나 이상 존재한다면,

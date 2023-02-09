@@ -42,13 +42,12 @@ const LoginViewModel = () => {
           userRole: res.data.userRole,
           point: res.data.point,
         });
-        // console.log(res.headers.accesstoken);
-        console.log('리프레시', res.headers.refreshtoken);
-        setAuthToken(res.headers.accesstoken);
-        const encryptedToken = encryptToken(
-          res.headers.refreshtoken,
-          res.data.email,
-        );
+        const accessToken = res.headers.authorization.substr(7);
+        const refreshToken = res.headers['refresh-token'];
+        console.log(accessToken);
+        console.log(refreshToken);
+        setAuthToken(accessToken);
+        const encryptedToken = encryptToken(refreshToken, res.data.email);
         localStorage.setItem('refreshToken', encryptedToken);
         return {
           statusCode: 200,

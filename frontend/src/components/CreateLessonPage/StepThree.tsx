@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { StepThreeProps } from '../../types/CreateLessonType';
+import { StepThreeProps } from '../../types/LessonsType';
 
 const StepThree = ({ lessonDescState, setLessonDescState }: StepThreeProps) => {
   // 해당하는 textarea 값이 변경될 시, onChange, setLessonDescState을 이용해 lessonDescState의 값을 변경함

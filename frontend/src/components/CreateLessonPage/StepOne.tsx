@@ -2,7 +2,7 @@ import React from 'react';
 
 import CategorySelectBox from '../CategorySelectBox';
 
-import { StepOneProps } from '../../types/CreateLessonType';
+import { StepOneProps } from '../../types/LessonsType';
 
 const StepOne = ({
   lessonNameState,
