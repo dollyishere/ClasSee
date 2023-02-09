@@ -179,7 +179,12 @@ const CreateLessonPage = () => {
       setSelectedComponent(6);
     }
   };
-
+  useEffect(() => {
+    if (userInfo === null) {
+      alert('로그인 후 이용 가능합니다.');
+      navigate('/login');
+    }
+  }, []);
   return (
     <div className="page" id="create-lesson-page">
       <Header />

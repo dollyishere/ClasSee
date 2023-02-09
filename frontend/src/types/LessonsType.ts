@@ -17,3 +17,20 @@ export interface Lesson {
 export interface LessonsResponse extends Response {
   lessonInfoList: Array<Lesson>;
 }
+
+export interface LessonSearchOption {
+  category: string | undefined;
+  dayOfWeek: string | undefined;
+  minPrice: number | undefined;
+  maxPrice: number | undefined;
+  minStartTime: number | undefined;
+  maxStartTime: number | undefined;
+  name: string | undefined;
+  email: string | undefined;
+  limit: number;
+  offset: number;
+}
+
+export interface SearchResponse extends LessonsResponse {
+  count: number;
+}

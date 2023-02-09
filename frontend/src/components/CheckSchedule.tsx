@@ -2,6 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { Stack, TextField, Button } from '@mui/material/';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+
+import Calendar from 'react-calendar';
+import moment from 'moment';
 
 import ScheduleViewModel from '../viewmodels/ScheduleViewModel';
 
@@ -14,29 +18,24 @@ import {
 const CheckSchedule = () => {
   const lessonIdParams = useParams();
 
+  // api를 통해 불러올 스케줄 데이터를 담아줄 scheduleList 생성
   const [scheduleList, setScheduleListState] = useState<LessonSchedulesType[]>(
     [],
   );
 
-  const today = new Date();
-  const [dateState, setDateState] = useState<string>(
-    `${today.getFullYear()}-${(today.getMonth() + 1)
-      .toString()
-      .padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`,
-  );
+  // 달력의 값을 주관할 selectedDate 생성
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
+  // api method로 사용할 getSchedule을 불러옴
   const { getSchedule } = ScheduleViewModel();
 
   // 만약 사용자가 날짜를 바꿀 시, 해당 날짜에 배정된 스케줄을 불러옴
-  const handleDateChange = async (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    setDateState(event.target.value);
-    if (dateState === '') {
+  const getScheduleSelected = async (date: Date) => {
+    if (!selectedDate) {
       alert('올바른 값을 입력해주세요.');
     } else {
       const checkScheduleRequestBody: GetScheduleRequest = {
-        regDate: dateState,
+        regDate: moment(date).format('YYYY-MM-DD'),
         lessonId: Number(lessonIdParams.lessonId),
       };
       const res = await getSchedule(checkScheduleRequestBody);
@@ -44,41 +43,70 @@ const CheckSchedule = () => {
         if (res.lessonSchedules.length) {
           setScheduleListState(res.lessonSchedules);
         } else {
-          alert('예정된 스케줄이 없습니다.');
+          // 만약 해당 날짜에 스케줄이 없다면, scheduleList를 초기화함
+          setScheduleListState([]);
         }
       } else {
         alert('다시 시도해주세요.');
       }
     }
   };
+
+  // 사용자가 달력에서 다른 값을 선택했을 시, 해당 값으로 value를 바꿔준 후, 스케줄을 가져옴
+  const handleDateChange = (date: Date) => {
+    setSelectedDate(date);
+    getScheduleSelected(date);
+  };
+
+  useEffect(() => {
+    const getTodaysSchedule = async () => {
+      const checkScheduleRequestBody: GetScheduleRequest = {
+        regDate: moment(selectedDate).format('YYYY-MM-DD'),
+        lessonId: Number(lessonIdParams.lessonId),
+      };
+      const res = await getSchedule(checkScheduleRequestBody);
+      if (res?.message === 'SUCCESS') {
+        if (res.lessonSchedules.length) {
+          setScheduleListState(res.lessonSchedules);
+        } else {
+          // 만약 해당 날짜에 스케줄이 없다면, scheduleList를 초기화함
+          setScheduleListState([]);
+        }
+      }
+    };
+    getTodaysSchedule();
+  }, []);
+
   return (
     <div>
       <div>
         <h3>클래스 예약하기</h3>
       </div>
       <div>
-        <Stack component="form" noValidate spacing={3}>
-          <TextField
-            id="date"
-            label="날짜 선택"
-            type="date"
-            value={dateState}
-            sx={{ width: 220 }}
-            InputLabelProps={{
-              shrink: true,
-            }}
-            onChange={handleDateChange}
-          />
-        </Stack>
         <div>
           <h3>클래스 시간 선택</h3>
+          <div>
+            <h3>
+              <CalendarMonthIcon /> 일자 |{' '}
+              {moment(selectedDate).format('YYYY-MM-DD')}
+            </h3>
+          </div>
+          <div>
+            <Calendar
+              onChange={handleDateChange}
+              value={selectedDate}
+              // moment를 통해 달력에 각 일이 표시되는 형식을 변환해줌(본래는 뒤에 '일'이 붙음)
+              formatDay={(locale, date) => moment(date).format('DD')}
+            />
+          </div>
           <ul>
             {scheduleList.length !== 0 ? (
               scheduleList.map((schedule) => {
                 const { openLessonId, lessonId, startTime, endTime } = schedule;
                 return (
                   <li key={openLessonId}>
-                    강의 시간 : {startTime} to {endTime}
+                    강의 시간 : {startTime.slice(11, 16)} to{' '}
+                    {endTime.slice(11, 16)}
                     <Button>선택</Button>
                   </li>
                 );
