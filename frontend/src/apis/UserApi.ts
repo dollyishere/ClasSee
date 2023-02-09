@@ -76,10 +76,11 @@ const UserApi = () => {
         `${process.env.REACT_APP_SERVER_URI}/api/v1/auth/token?email=${email}`,
         {
           headers: {
-            refreshToken: refreshtoken,
+            Authorization: `Bearer ${refreshtoken}`,
           },
         },
       );
+      console.log(response);
       const { headers, data } = response;
       return { headers, data };
     } catch (error: any) {
