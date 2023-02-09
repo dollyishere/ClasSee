@@ -5,10 +5,6 @@ import TopRoutes from './TopRoutes';
 import './App.css';
 import './styles/main.scss';
 
-import useUserApi from './apis/UserApi';
-import privateInfoState from './models/PrivateInfoAtom';
-import { decryptToken, encryptToken } from './utils/Encrypt';
-
 const App = () => {
   return (
     <RecoilRoot>
