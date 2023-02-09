@@ -1,5 +1,9 @@
 import axios, { AxiosResponse } from 'axios';
-import { LessonsResponse, LessonSearchOption } from '../types/LessonsType';
+import {
+  LessonsResponse,
+  LessonSearchOption,
+  SearchResponse,
+} from '../types/LessonsType';
 
 const LessonsApi = () => {
   const doSearchLessons = async (searchOption: LessonSearchOption) => {
@@ -31,7 +35,7 @@ const LessonsApi = () => {
     }
 
     try {
-      const response = await axios.get<LessonsResponse>(
+      const response = await axios.get<SearchResponse>(
         `${process.env.REACT_APP_SERVER_URI}/api/v1/lessons/search?${query}`,
       );
       return response.data;

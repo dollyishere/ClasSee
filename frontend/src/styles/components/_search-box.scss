@@ -34,6 +34,9 @@
         margin: 0 10px;
         color: colors.$gray_color;
       }
+      .clicked {
+        background-color: colors.$beige_color_focus;
+      }
       .search-box__button {
         background-color: colors.$theme_color;
         color: white;
