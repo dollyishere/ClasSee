@@ -28,32 +28,39 @@ const MainPageViewModel = () => {
     limit: number,
     offset: number,
     query: string,
+    accessToken: string,
   ) => {
-    let res = await MyCreatedLessonsMainpageApi(email, limit, offset, query);
+    const res = await MyCreatedLessonsMainpageApi(
+      email,
+      limit,
+      offset,
+      query,
+      accessToken,
+    );
     // if (res.statusCode === 403) {
-    if (res === null) {
-      const hashedRefreshToken = localStorage.getItem('refreshToken');
-      // console.log('hashedRefreshToken', hashedRefreshToken);
-      if (hashedRefreshToken !== null) {
-        const refreshToken = decryptToken(hashedRefreshToken, email);
-        console.log('refreshToken', refreshToken);
-        const response = await doGetAccessToken(email, refreshToken);
+    // if (res === null) {
+    //   const hashedRefreshToken = localStorage.getItem('refreshToken');
+    //   // console.log('hashedRefreshToken', hashedRefreshToken);
+    //   if (hashedRefreshToken !== null) {
+    //     const refreshToken = decryptToken(hashedRefreshToken, email);
+    //     console.log('refreshToken', refreshToken);
+    //     const response = await doGetAccessToken(email, refreshToken);
 
-        if (response) {
-          const encryptedToken = encryptToken(
-            response.headers.refreshtoken,
-            email,
-          );
-          // console.log('encryptedToken', encryptedToken);
-          // console.log('accesstoken', response.headers.accesstoken);
-          const authtoken = response.headers.accesstoken;
-          localStorage.setItem('refreshToken', encryptedToken);
-          setAuthToken(authtoken);
-        }
-        // console.log('accessToken', accessToken);
-        res = await MyCreatedLessonsMainpageApi(email, limit, offset, query);
-      }
-    }
+    //     if (response) {
+    //       const encryptedToken = encryptToken(
+    //         response.headers.refreshtoken,
+    //         email,
+    //       );
+    //       // console.log('encryptedToken', encryptedToken);
+    //       // console.log('accesstoken', response.headers.accesstoken);
+    //       const authtoken = response.headers.accesstoken;
+    //       localStorage.setItem('refreshToken', encryptedToken);
+    //       setAuthToken(authtoken);
+    //     }
+    //     // console.log('accessToken', accessToken);
+    //     res = await MyCreatedLessonsMainpageApi(email, limit, offset, query);
+    //   }
+    // }
     return res;
   };
   const getMyAppliedLessonsMainpage = async (
@@ -61,8 +68,15 @@ const MainPageViewModel = () => {
     limit: number,
     offset: number,
     query: string,
+    accessToken: string,
   ) => {
-    const res = await MyAppliedLessonsMainpageApi(email, limit, offset, query);
+    const res = await MyAppliedLessonsMainpageApi(
+      email,
+      limit,
+      offset,
+      query,
+      accessToken,
+    );
 
     return res;
   };

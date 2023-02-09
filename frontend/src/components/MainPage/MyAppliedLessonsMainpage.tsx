@@ -27,32 +27,36 @@ const MyAppliedLessonsMainpage = () => {
   const { doGetAccessToken } = useApi();
 
   useEffect(() => {
-    if (userInfo && userInfo.email) {
-      //   if (accessToken == null) {
-      //     const hashedRefreshToken = localStorage.getItem('refreshToken');
-      //     if (hashedRefreshToken !== null) {
-      //       const refreshToken = decryptToken(hashedRefreshToken, userInfo.email);
-      //       const response = doGetAccessToken(userInfo.email, refreshToken);
-      //       if (response) {
-      //         console.log('durldurldurl', response);
-      // const encryptedToken = encryptToken(
-      //   response.headers.refreshtoken,
-      //   userInfo.email,
-      // );
-      // localStorage.setItem('refreshToken', encryptedToken);
-      // const authtoken = response;
-      // setAuthToken(authtoken);
-      //     }
-      //   }
-      // }
-      // console.log(accessToken);
-      getMyAppliedLessonsMainpage(userInfo.email, 2, 0, 'TODO').then(
-        (res: LessonsResponse) => {
-          console.log('내가 신청한 강의', res.lessonInfoList);
-          setLessons(res.lessonInfoList);
-        },
-      );
-    }
+    // if (userInfo && userInfo.email) {
+    //   if (accessToken == null) {
+    //     const hashedRefreshToken = localStorage.getItem('refreshToken');
+    //     if (hashedRefreshToken !== null) {
+    //       const refreshToken = decryptToken(hashedRefreshToken, userInfo.email);
+    //       const response = doGetAccessToken(userInfo.email, refreshToken);
+    //       if (response) {
+    //         console.log('durldurldurl', response);
+    // const encryptedToken = encryptToken(
+    //   response.headers.refreshtoken,
+    //   userInfo.email,
+    // );
+    // localStorage.setItem('refreshToken', encryptedToken);
+    // const authtoken = response;
+    // setAuthToken(authtoken);
+    //     }
+    //   }
+    // }
+    // console.log(accessToken);
+    //     getMyAppliedLessonsMainpage(
+    //       userInfo.email,
+    //       2,
+    //       0,
+    //       'TODO',
+    //       accessToken,
+    //     ).then((res: LessonsResponse) => {
+    //       console.log('내가 신청한 강의', res.lessonInfoList);
+    //       setLessons(res.lessonInfoList);
+    //     });
+    //   }
   }, []);
   return (
     <div className="applylessons">
@@ -60,7 +64,7 @@ const MyAppliedLessonsMainpage = () => {
       <div className="applylessons__cards">
         {lessons ? (
           lessons.map((lesson: Lesson) => (
-            <MyAppliedLessonCard lesson={lesson} />
+            <MyAppliedLessonCard lesson={lesson} key={lesson.lessonId} />
           ))
         ) : (
           <div>no Created</div>
