@@ -205,3 +205,7 @@ export interface GetScheduleRequest {
   regDate: string | null;
   lessonId: number;
 }
+
+export interface SearchResponse extends LessonsResponse {
+  count: number;
+}

@@ -8,6 +8,7 @@ import { ref, uploadBytes } from 'firebase/storage';
 import { storage } from '../utils/Firebase';
 
 import privateInfoState from '../models/PrivateInfoAtom';
+import authTokenState from '../models/AuthTokenAtom';
 
 import StepOne from '../components/CreateLessonPage/StepOne';
 import StepTwo from '../components/CreateLessonPage/StepTwo';
@@ -58,6 +59,8 @@ const CreateLessonPage = () => {
 
   // 강의 개설을 신청하는 유저의 정보를 useRecoilValue를 통해 불러옴
   const userInfo = useRecoilValue(privateInfoState);
+
+  const authToken = useRecoilValue(authTokenState);
 
   // api 실행할 시 실행될 CreateLessonModel createLesson에 할당
   const { createLesson } = CreateLessonViewModel();
@@ -122,7 +125,7 @@ const CreateLessonPage = () => {
         runningtime: runningtimeState,
       };
 
-      const res = await createLesson(createLessonRequestBody);
+      const res = await createLesson(createLessonRequestBody, authToken);
       if (res?.message === 'SUCCESS') {
         // 만약 강의 개설에 성공했을 시, 이하 코드를 실행함
         // 만약 업로드한 이미지 파일이 하나 이상 존재한다면,
