@@ -8,12 +8,10 @@ import com.ssafy.api.response.PhotocardListGetRes;
 import com.ssafy.api.response.PhotocardPageGetRes;
 import com.ssafy.api.service.PhotocardService;
 import com.ssafy.common.exception.handler.LessonException;
+import com.ssafy.common.exception.handler.LikesException;
 import com.ssafy.common.exception.handler.PhotocardException;
 import com.ssafy.common.exception.handler.UserException;
-import com.ssafy.common.model.response.BaseResponseBody;
-import com.ssafy.common.model.response.InvalidErrorResponseBody;
-import com.ssafy.common.model.response.NotFoundErrorResponseBody;
-import com.ssafy.common.model.response.ServerErrorResponseBody;
+import com.ssafy.common.model.response.*;
 import com.ssafy.db.entity.board.Photocard;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -66,6 +64,7 @@ public class PhotocardController {
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
             @ApiResponse(code = 401, message = "인증 실패", response = InvalidErrorResponseBody.class),
             @ApiResponse(code = 404, message = "해당 자료 없음", response = NotFoundErrorResponseBody.class),
+            @ApiResponse(code = 409, message = "중복", response = DuplicateErrorResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = ServerErrorResponseBody.class)
     })
     public ResponseEntity<? extends BaseResponseBody> registLikes(@RequestParam String email, @RequestParam Long id) {
@@ -76,6 +75,8 @@ public class PhotocardController {
             return ResponseEntity.status(404).body(BaseResponseBody.of(404,"user not found"));
         } catch (PhotocardException p){
             return ResponseEntity.status(404).body(BaseResponseBody.of(404, "photocard not found"));
+        } catch (LikesException l) {
+            return ResponseEntity.status(409).body(BaseResponseBody.of(409, "likes duplicated"));
         } catch (Exception e){
             return ResponseEntity.status(404).body(BaseResponseBody.of(404,"unexpected exception"));
         }
