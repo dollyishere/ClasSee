@@ -6,6 +6,7 @@ import com.ssafy.api.request.UserUpdatePwPutReq;
 import com.ssafy.api.response.UserInfoGetRes;
 import com.ssafy.api.service.AuthService;
 import com.ssafy.api.service.EmailService;
+import com.ssafy.common.exception.handler.UserException;
 import com.ssafy.common.model.response.*;
 import com.ssafy.db.entity.user.Auth;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,12 +70,17 @@ public class UserController {
     @DeleteMapping("/{email}")
     @ApiOperation(value = "유저 삭제, 로그인 O", notes = "유저 정보를 삭제(회원탈퇴)")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class)
+            @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
+            @ApiResponse(code = 404, message = "사용자 없음", response = NotFoundErrorResponseBody.class)
     })
     public ResponseEntity<? extends BaseResponseBody> withdrawalUser(@PathVariable String email){
-        userService.deleteUser(email);
+        try {
+            userService.deleteUser(email);
+        } catch (UserException u){
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404,"user not found"));
+        }
 
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"성공"));
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"success"));
     }
 
     @GetMapping("/{email}")
@@ -85,12 +91,16 @@ public class UserController {
             @ApiResponse(code = 404, message = "사용자 없음", response = NotFoundErrorResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = ServerErrorResponseBody.class)
     })
-    public ResponseEntity<UserInfoGetRes> getUserInfo(@PathVariable String email) {
+    public ResponseEntity<?> getUserInfo(@PathVariable String email) {
         /**
          * 요청 헤더 액세스 토큰이 포함된 경우에만 실행되는 인증 처리이후, 리턴되는 인증 정보 객체(authentication) 통해서 요청한 유저 식별.
          * 액세스 토큰이 없이 요청하는 경우, 403 에러({"error": "Forbidden", "message": "Access Denied"}) 발생.
          */
         User user = userService.getUserByAuth(email);
+
+        if(user == null){
+            return ResponseEntity.status(404).body("user not found");
+        }
         UserInfoGetRes userInfoGetRes = new UserInfoGetRes(user);
 
         return ResponseEntity.status(200).body(userInfoGetRes);
@@ -177,10 +187,18 @@ public class UserController {
     @PutMapping("/{email}/nickname")
     @ApiOperation(value = "유저 닉네임 업데이트, 로그인 O", notes = "유저 정보를 수정")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "SUCCESS", response = BaseResponseBody.class)
+            @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
+            @ApiResponse(code = 401, message = "인증 실패", response = InvalidErrorResponseBody.class),
+            @ApiResponse(code = 404, message = "사용자 없음", response = NotFoundErrorResponseBody.class),
+            @ApiResponse(code = 500, message = "서버 오류", response = ServerErrorResponseBody.class)
     })
     public ResponseEntity<? extends  BaseResponseBody> updateUserNickname(@PathVariable String email, @RequestParam String nickname) {
-        userService.updateUserNickname(email, nickname);
+
+        try {
+            userService.updateUserNickname(email, nickname);
+        } catch (UserException u){
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404,"user not found"));
+        }
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200,"SUCCESS"));
     }
@@ -188,10 +206,18 @@ public class UserController {
     @PutMapping("/{email}/address")
     @ApiOperation(value = "유저 주소 업데이트, 로그인 O", notes = "유저 정보를 수정")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "SUCCESS", response = BaseResponseBody.class)
+            @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
+            @ApiResponse(code = 401, message = "인증 실패", response = InvalidErrorResponseBody.class),
+            @ApiResponse(code = 404, message = "사용자 없음", response = NotFoundErrorResponseBody.class),
+            @ApiResponse(code = 500, message = "서버 오류", response = ServerErrorResponseBody.class)
     })
     public ResponseEntity<? extends BaseResponseBody> updateUserAddress(@PathVariable String email, @RequestParam String address) {
-        userService.updateUserAddress(email, address);
+
+        try {
+            userService.updateUserAddress(email, address);
+        } catch (UserException u){
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404,"user not found"));
+        }
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200,"SUCCESS"));
     }
@@ -199,10 +225,18 @@ public class UserController {
     @PutMapping("/{email}/phone")
     @ApiOperation(value = "유저 폰번호 업데이트, 로그인 O", notes = "유저 정보를 수정")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "SUCCESS", response = BaseResponseBody.class)
+            @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
+            @ApiResponse(code = 401, message = "인증 실패", response = InvalidErrorResponseBody.class),
+            @ApiResponse(code = 404, message = "사용자 없음", response = NotFoundErrorResponseBody.class),
+            @ApiResponse(code = 500, message = "서버 오류", response = ServerErrorResponseBody.class)
     })
     public ResponseEntity<? extends BaseResponseBody> updateUserPhone(@PathVariable String email, @RequestParam String phone) {
-        userService.updateUserPhone(email, phone);
+
+        try {
+            userService.updateUserPhone(email, phone);
+        } catch (UserException u){
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404,"user not found"));
+        }
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200,"SUCCESS"));
     }
@@ -210,10 +244,18 @@ public class UserController {
     @PutMapping("/{email}/description")
     @ApiOperation(value = "유저 자기소개 업데이트, 로그인 O", notes = "유저 정보를 수정")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "SUCCESS", response = BaseResponseBody.class)
+            @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
+            @ApiResponse(code = 401, message = "인증 실패", response = InvalidErrorResponseBody.class),
+            @ApiResponse(code = 404, message = "사용자 없음", response = NotFoundErrorResponseBody.class),
+            @ApiResponse(code = 500, message = "서버 오류", response = ServerErrorResponseBody.class)
     })
     public ResponseEntity<? extends BaseResponseBody> updateUserDescription(@PathVariable String email, @RequestParam String description) {
-        userService.updateUserDescription(email, description);
+
+        try {
+            userService.updateUserDescription(email, description);
+        } catch (UserException u){
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404, "user not found"));
+        }
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200,"SUCCESS"));
     }
@@ -221,10 +263,18 @@ public class UserController {
     @PutMapping("/{email}/img")
     @ApiOperation(value = "유저 이미지 업데이트, 로그인 O", notes = "유저 정보를 수정")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "SUCCESS", response = BaseResponseBody.class)
+            @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
+            @ApiResponse(code = 401, message = "인증 실패", response = InvalidErrorResponseBody.class),
+            @ApiResponse(code = 404, message = "사용자 없음", response = NotFoundErrorResponseBody.class),
+            @ApiResponse(code = 500, message = "서버 오류", response = ServerErrorResponseBody.class)
     })
     public ResponseEntity<? extends BaseResponseBody> updateUserImg(@PathVariable String email, @RequestParam String img) {
-        userService.updateUserImg(email, img);
+
+        try {
+            userService.updateUserImg(email, img);
+        } catch (UserException u){
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404,"user not found"));
+        }
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200,"SUCCESS"));
     }

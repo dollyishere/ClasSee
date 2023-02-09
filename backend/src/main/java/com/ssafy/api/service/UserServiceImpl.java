@@ -2,6 +2,7 @@ package com.ssafy.api.service;
 
 import com.ssafy.api.dto.UserEmailPwDto;
 import com.ssafy.api.request.UserFindPwPostReq;
+import com.ssafy.common.exception.handler.UserException;
 import com.ssafy.db.entity.user.Auth;
 import com.ssafy.db.entity.user.UserType;
 import com.ssafy.db.repository.AuthRepository;
@@ -98,35 +99,65 @@ public class UserServiceImpl implements UserService {
 
 	// 유저 닉네임, 비밀번호, 전화번호, 주소, 소개 업데이트 시작
 	@Override
-	public void updateUserNickname(String email, String nickname) {
+	public void updateUserNickname(String email, String nickname) throws UserException {
+
+		if(userRepositorySupport.findId(email) == null){
+			throw new UserException("user not found");
+		}
+
 		userRepositorySupport.updateNickname(email, nickname);
 	}
 
 	@Override
-	public void updateUserPhone(String email, String phone) {
+	public void updateUserPhone(String email, String phone) throws UserException {
+
+		if(userRepositorySupport.findId(email) == null){
+			throw new UserException("user not found");
+		}
+
 		userRepositorySupport.updatePhone(email, phone);
 	}
 
 	@Override
-	public void updateUserAddress(String email, String address) {
+	public void updateUserAddress(String email, String address) throws UserException {
+
+		if(userRepositorySupport.findId(email) == null){
+			throw new UserException("user not found");
+		}
+
 		userRepositorySupport.updateAddress(email, address);
 	}
 
 	@Override
-	public void updateUserDescription(String email, String description) {
+	public void updateUserDescription(String email, String description) throws UserException {
+
+		if(userRepositorySupport.findId(email) == null){
+			throw new UserException("user not found");
+		}
+
 		userRepositorySupport.updateDescription(email, description);
 	}
 
 	@Override
-	public void updateUserImg(String email, String img) {
+	public void updateUserImg(String email, String img) throws UserException {
+
+		if(userRepositorySupport.findId(email) == null){
+			throw new UserException("user not found");
+		}
+
 		userRepositorySupport.updateImg(email, img);
 	}
 
 	// 유저 닉네임, 비밀번호, 전화번호, 주소, 소개 업데이트 끝
 
 	@Override
-	public void deleteUser(String email) {
+	public void deleteUser(String email) throws UserException {
 		Long userId = userRepositorySupport.findId(email);
+
+		if(userId == null){
+			throw new UserException("user not found");
+		}
+
 		User user = userRepositorySupport.findOne(userId);
 		userRepositorySupport.delete(user);
 	}
