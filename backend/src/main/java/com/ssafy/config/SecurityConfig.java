@@ -31,7 +31,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/swagger-resources/**",
     };
     private static String[] OPEN_API_GET = new String[] {
-            "/api/v1/auth/**",
+            "/api/v1/auth/kakao",
+            "/api/v1/auth/login",
+            "/api/v1/auth/token",
             "/api/v1/lessons/**",
             "/api/v1/mails/**",
             "/api/v1/notice/**",
