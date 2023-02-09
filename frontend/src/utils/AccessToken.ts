@@ -1,13 +1,16 @@
-import { useRecoilValue, useRecoilState } from 'recoil';
-import PrivateInfoState from '../models/PrivateInfoAtom';
-import authTokenState from '../models/AuthTokenAtom';
+import { useRecoilValue, useRecoilState, SetterOrUpdater } from 'recoil';
 import { decryptToken, encryptToken } from './Encrypt';
-import useUserApi from '../apis/UserApi';
+import { UserInfo } from '../types/UserType';
 
-export const AccessToken = async () => {
-  const [authtoken, setAuthToken] = useRecoilState(authTokenState);
-  const userInfo = useRecoilValue(PrivateInfoState);
-  const { doGetAccessToken } = useUserApi();
+// 로그인 인증 필요한
+export const AccessToken = async (
+  userInfo: UserInfo,
+  setAccessToken: SetterOrUpdater<null>,
+  doGetAccessToken: (
+    email: string,
+    refreshtoken: string,
+  ) => Promise<{ headers: any; data: any } | null>,
+) => {
   if (userInfo) {
     const hashedRefreshToken = localStorage.getItem('refreshToken');
     if (hashedRefreshToken && userInfo.email) {
@@ -16,17 +19,16 @@ export const AccessToken = async () => {
         userInfo.email,
         refreshToken,
       );
+
       const newRefreshToken = getAccessTokenResponse?.headers['refresh-token'];
       const newAccessToken =
         getAccessTokenResponse?.headers.authorization.substring(7);
-      console.log(newRefreshToken);
-      console.log(newAccessToken);
       if (newAccessToken !== undefined && newRefreshToken !== undefined) {
         localStorage.setItem(
           'refreshToken',
           encryptToken(newRefreshToken, userInfo.email),
         );
-        setAuthToken(newAccessToken);
+        setAccessToken(newAccessToken);
       }
       return newAccessToken;
     }
