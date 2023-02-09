@@ -2,6 +2,10 @@ package com.ssafy.api.service;
 
 import com.ssafy.api.request.ReviewRegistPostReq;
 import com.ssafy.api.request.ReviewUpdatePutReq;
+import com.ssafy.common.exception.handler.LessonException;
+import com.ssafy.common.exception.handler.OpenLessonException;
+import com.ssafy.common.exception.handler.ReviewException;
+import com.ssafy.common.exception.handler.UserException;
 import com.ssafy.db.entity.lesson.Lesson;
 import com.ssafy.db.entity.lesson.OpenLesson;
 import com.ssafy.db.entity.lesson.Review;
@@ -29,10 +33,14 @@ public class ReviewServiceImpl implements ReviewService {
     OrdersRepositorySupport ordersRepositorySupport;
 
     @Override
-    public void createReview(ReviewRegistPostReq reviewRegistPostReq) {
+    public void createReview(ReviewRegistPostReq reviewRegistPostReq) throws Exception {
 
         Long user_id = userRepositorySupport
                 .findId(reviewRegistPostReq.getUserEmail());
+
+        if(user_id == null){
+            throw new UserException("USER NOT FOUND");
+        }
 
         User user = userRepositorySupport
                 .findOne(user_id);
@@ -40,8 +48,16 @@ public class ReviewServiceImpl implements ReviewService {
         OpenLesson openLesson = ordersRepositorySupport
                 .findOneOpenLesson(reviewRegistPostReq.getOpenLessonId());
 
+        if(openLesson == null){
+            throw new OpenLessonException("OPENLESSON NOT FOUND");
+        }
+
         Lesson lesson = ordersRepositorySupport
                 .findOneLesson(openLesson.getLessonId());
+
+        if (lesson == null){
+            throw new LessonException("LESSON NOT FOUND");
+        }
 
         Review review = Review.builder()
                 .title(reviewRegistPostReq.getTitle())
@@ -60,7 +76,13 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Review> readReview(Long lesson_id, int offset, int limit) {
+    public List<Review> readReview(Long lesson_id, int offset, int limit) throws LessonException {
+
+        Lesson lesson = ordersRepositorySupport.findOneLesson(lesson_id);
+
+        if(lesson == null){
+            throw new LessonException("Lesson not found");
+        }
 
         return reviewRepositorySupport
                 .findList(lesson_id, offset, limit);
@@ -69,8 +91,12 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Review> readMyReview(String email, int offset, int limit) {
+    public List<Review> readMyReview(String email, int offset, int limit) throws UserException {
         Long user_id = userRepositorySupport.findId(email);
+
+        if(user_id == null){
+            throw new UserException("user not found");
+        }
 
         return reviewRepositorySupport
                 .findMyList(user_id, offset, limit);
@@ -92,7 +118,13 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public void updateReview(ReviewUpdatePutReq reviewUpdatePutReq) {
+    public void updateReview(ReviewUpdatePutReq reviewUpdatePutReq) throws ReviewException {
+
+        Review review = reviewRepositorySupport.findOne(reviewUpdatePutReq.getId());
+
+        if(review == null){
+            throw new ReviewException("review not found");
+        }
 
         reviewRepositorySupport
                 .updateReview(reviewUpdatePutReq);
@@ -101,9 +133,13 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public void deleteReview(Long id) {
+    public void deleteReview(Long id) throws ReviewException {
 
         Review review = reviewRepositorySupport.findOne(id);
+
+        if(review == null){
+            throw new ReviewException("review not found");
+        }
         reviewRepositorySupport.delete(review);
 
         return;
