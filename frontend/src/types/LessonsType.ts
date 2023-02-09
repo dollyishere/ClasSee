@@ -31,3 +31,7 @@ export interface LessonSearchOption {
   limit: number;
   offset: number;
 }
+
+export interface SearchResponse extends LessonsResponse {
+  count: number;
+}

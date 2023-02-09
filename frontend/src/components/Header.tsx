@@ -106,7 +106,11 @@ const Header = () => {
           </>
         ) : (
           <>
-            <button type="button" className="nav__button button">
+            <button
+              type="button"
+              className="nav__button button"
+              onClick={() => navigate('/create-lesson')}
+            >
               강의 개설
             </button>
             <button type="button" className="nav__button--icon">

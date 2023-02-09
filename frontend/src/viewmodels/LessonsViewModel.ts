@@ -7,7 +7,10 @@ const LessonsViewModel = () => {
   const searchLessons = async (searchOption: LessonSearchOption) => {
     const response = await doSearchLessons(searchOption);
     if (response !== null && response.statusCode === 200) {
-      return response?.lessonInfoList;
+      return {
+        count: response?.count,
+        lessonInfoList: response?.lessonInfoList,
+      };
     }
     return null;
   };

@@ -13,17 +13,22 @@
     .lessons-page__sub-page {
       width: calc(100% - sidebar.$width);
       overflow: auto;
-      .lesson-page__lesson-list {
+      .lessons-page__lesson-list {
         width: 90%;
         margin: 0 auto;
         display: flex;
         flex-wrap: wrap;
-        .lesson-page__lesson-card {
+        .lessons-page__lesson-card {
           display: flex;
           align-items: center;
           justify-content: center;
           width: 33%;
         }
+      }
+      .lessons-page__pagination {
+        display: flex;
+        justify-content: center;
+        padding: 20px;
       }
     }
   }

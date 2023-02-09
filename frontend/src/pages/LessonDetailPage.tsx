@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
 import { Stack, Button } from '@mui/material';
+import { PersonOutline } from '@mui/icons-material';
 
 import { ref, getDownloadURL, listAll } from 'firebase/storage';
 import { storage } from '../utils/Firebase';
@@ -16,16 +17,18 @@ import {
 } from '../types/LessonDetailType';
 
 import LessonDetailViewModel from '../viewmodels/LessonDetailViewModel';
+import useViewModel from '../viewmodels/ProfileViewModel';
 
 import privateInfoState from '../models/PrivateInfoAtom';
 
 import Header from '../components/Header';
-import BasicRating from '../components/Rating';
+import BasicRating from '../components/BasicRating';
 import CheckSchedule from '../components/CheckSchedule';
 
 const LessonDetailPage = () => {
   // url(Router) 통해서 입력된 lessonId를 useParams로 받아옴
   const lessonId = useParams();
+  const navigate = useNavigate();
 
   // api를 통해 받아온 강의 상세 정보를 저장할 lessonDetailState 생성
   const [lessonDetailState, setLessonDetailState] =
@@ -53,9 +56,10 @@ const LessonDetailPage = () => {
 
   // api 실행할 시 실행될 CreateLessonModel createLesson에 할당
   const { getLessonDetail } = LessonDetailViewModel();
+  const { getProfileImage } = useViewModel();
 
   // 강의 개설을 신청하는 유저의 이메일 정보를 useRecoilValue를 통해 불러옴
-  // const userInfo = useRecoilValue(privateInfoState);
+  const userInfo = useRecoilValue(privateInfoState);
 
   // 강의 소개 & 준비물 이미지 파일을 담을 State 각각 생성
   const [pamphletsImgState, setPamphletsImgState] = useState<any>([]);
@@ -63,6 +67,9 @@ const LessonDetailPage = () => {
   const [teacherImgState, setTeacherImgState] = useState<any>();
 
   const [changeVisiable, setChangeVisiable] = useState(false);
+
+  const [ratingValue, setRatingValue] = useState<number | null>(0);
+  const disableValue = true as boolean;
 
   // firebase storage의 이 경로에 있는 파일들을 가져옴
   const checkListImgRef = ref(
@@ -78,6 +85,11 @@ const LessonDetailPage = () => {
   useEffect(() => {
     const getLessonDetailRequestBody: LessonDetailRequest = {
       lessonId: Number(lessonId.lessonId),
+    };
+    const getTeacherImage = async () => {
+      const imageUrl = await getProfileImage(lessonDetailState.teacherEmail);
+      console.log(imageUrl);
+      setTeacherImgState(imageUrl);
     };
     const fetchData = async () => {
       const res = await getLessonDetail(getLessonDetailRequestBody);
@@ -115,6 +127,7 @@ const LessonDetailPage = () => {
       }
     };
     fetchData();
+    getTeacherImage();
   }, []);
   return (
     <div className="lesson-detail-page__container">
@@ -133,15 +146,33 @@ const LessonDetailPage = () => {
               : lessonDetailState.runningTime}{' '}
             시간
           </p>
-          {lessonDetailState.teacherImage ? (
-            // 해당 파트 프로필 이미지 구현되었을 때 firebase로 데이터 불러오는 것과 함께 구현
-            <img src={lessonDetailState.teacherImage} alt="teacherImage" />
-          ) : null}
+          {teacherImgState === null ? (
+            <div className="profile-page__image--not">
+              <PersonOutline
+                style={{
+                  fontSize: '200px',
+                }}
+              />
+            </div>
+          ) : (
+            <img
+              src={teacherImgState}
+              alt={teacherImgState}
+              className="profile-page__image--not"
+            />
+          )}
           <p>{lessonDetailState.userName}</p>
           <p>
-            <BasicRating />
+            {lessonDetailState.score ? (
+              <BasicRating
+                ratingValue={lessonDetailState.score}
+                setRatingValue={setRatingValue}
+                disableValue={disableValue}
+              />
+            ) : (
+              '평가가 없어요'
+            )}
           </p>
-          <p>{lessonDetailState.score ? <BasicRating /> : '평가가 없어요'}</p>
           <div>{lessonDetailState.category}</div>
         </div>
       </div>
@@ -186,10 +217,21 @@ const LessonDetailPage = () => {
               </div>
               <h2>강사 소개</h2>
               <div className="lesson-detail-page__teacher">
-                {lessonDetailState.teacherImage ? (
-                  // 해당 파트 프로필 이미지 구현되었을 때 firebase로 데이터 불러오는 것과 함께 구현
-                  <img src={lessonDetailState.teacherImage} alt="profileImg" />
-                ) : null}
+                {teacherImgState === null ? (
+                  <div className="profile-page__image--not">
+                    <PersonOutline
+                      style={{
+                        fontSize: '200px',
+                      }}
+                    />
+                  </div>
+                ) : (
+                  <img
+                    src={teacherImgState}
+                    alt={teacherImgState}
+                    className="profile-page__image--not"
+                  />
+                )}
                 <div className="lesson-detail-page__teacher-text">
                   <h3>{lessonDetailState.userName}</h3>
                   <p>{lessonDetailState.userDesciption}</p>
