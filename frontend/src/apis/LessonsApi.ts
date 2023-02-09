@@ -9,7 +9,6 @@ import {
 } from '../types/LessonsType';
 
 const LessonsApi = () => {
-  const accessToken = useRecoilValue(AuthTokenState);
   const doSearchLessons = async (searchOption: LessonSearchOption) => {
     let query = `limit=${searchOption.limit}&offset=${searchOption.offset}`;
     if (searchOption.category) {
@@ -65,6 +64,7 @@ const LessonsApi = () => {
     limit: number,
     offset: number,
     query: string,
+    accessToken: string,
   ) => {
     try {
       const response = await axios.get(
@@ -87,6 +87,7 @@ const LessonsApi = () => {
     limit: number,
     offset: number,
     query: string,
+    accessToken: string,
   ) => {
     try {
       const response = await axios.get(
