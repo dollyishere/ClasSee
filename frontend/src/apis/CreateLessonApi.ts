@@ -4,11 +4,20 @@ import { LessonRequest, CreateLessonResponse } from '../types/CreateLessonType';
 import { Response } from '../types/BaseType';
 
 const CreateLessonApi = () => {
-  const doCreateLesson = async (createLessonRequestBody: LessonRequest) => {
+  const doCreateLesson = async (
+    createLessonRequestBody: LessonRequest,
+    accessToken: string,
+  ) => {
     try {
+      console.log(accessToken);
       const response = await axios.post<CreateLessonResponse>(
         `${process.env.REACT_APP_SERVER_URI}/api/v1/lessons`,
         createLessonRequestBody,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
       );
       return response.data;
     } catch (error: any) {

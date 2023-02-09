@@ -5,8 +5,8 @@ import { LessonRequest } from '../types/CreateLessonType';
 const CreateLessonViewModel = () => {
   const { doCreateLesson, doUpdateLesson } = CreateLessonApi();
 
-  const createLesson = async (data: LessonRequest) => {
-    const res = await doCreateLesson(data);
+  const createLesson = async (data: LessonRequest, accessToken: string) => {
+    const res = await doCreateLesson(data, accessToken);
     return res;
   };
   const updateLesson = async (data: LessonRequest, lessonId: number) => {
