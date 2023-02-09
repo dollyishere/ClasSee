@@ -2,6 +2,10 @@ package com.ssafy.api.service;
 
 import com.ssafy.api.request.OrdersRegistPostReq;
 import com.ssafy.api.response.OrdersInfoGetRes;
+import com.ssafy.common.exception.handler.LessonException;
+import com.ssafy.common.exception.handler.OpenLessonException;
+import com.ssafy.common.exception.handler.OrdersException;
+import com.ssafy.common.exception.handler.UserException;
 import com.ssafy.db.entity.lesson.Lesson;
 import com.ssafy.db.entity.lesson.OpenLesson;
 import com.ssafy.db.entity.orders.Orders;
@@ -29,12 +33,26 @@ public class OrdersServiceImpl implements OrdersService{
     LessonRepositorySupport lessonRepositorySupport;
 
     @Override
-    public OrdersInfoGetRes readOrders(String email, Long id) {
+    public OrdersInfoGetRes readOrders(String email, Long id) throws Exception {
 
         OpenLesson openLesson = ordersRepositorySupport.findOneOpenLesson(id);
+
+        if(openLesson == null){
+            throw new OpenLessonException("openLesson not found");
+        }
+
         Lesson lesson = ordersRepositorySupport.findOneLesson(openLesson.getLessonId());
 
+        if(lesson == null){
+            throw new LessonException("lesson not found");
+        }
+
         Long user_id = userRepositorySupport.findId(email);
+
+        if(user_id == null){
+            throw new UserException("user not found");
+        }
+
         User user = userRepositorySupport.findOne(user_id);
 
         String lesson_img = lessonRepositorySupport.findLessonProfileImg(lesson);
@@ -49,13 +67,32 @@ public class OrdersServiceImpl implements OrdersService{
     public void createOrders(OrdersRegistPostReq ordersRegistPostReq) throws Exception {
 
         Long user_id = userRepositorySupport.findId(ordersRegistPostReq.getEmail());
+
+        if(user_id == null){
+            throw new UserException("user not found");
+        }
+
         User user = userRepositorySupport.findOne(user_id);
         Long user_point = user.getPoint();
 
         OpenLesson openLesson = ordersRepositorySupport.findOneOpenLesson(ordersRegistPostReq.getOpenLessonId());
+
+        if(openLesson == null){
+            throw new OpenLessonException("openLesson not found");
+        }
+
         Lesson lesson = ordersRepositorySupport.findOneLesson(openLesson.getLessonId());
 
+        if(lesson == null){
+            throw new LessonException("lesson not found");
+        }
+
         Long teacher_id = lesson.getUser().getId();
+
+        if(teacher_id == null){
+            throw new UserException("teacher not found");
+        }
+
         User teacher = userRepositorySupport.findOne(teacher_id);
 
         if(user_point >= ordersRegistPostReq.getPrice()) {
@@ -72,6 +109,7 @@ public class OrdersServiceImpl implements OrdersService{
             user.setPoint(user_point - ordersRegistPostReq.getPrice());
             teacher.setPoint(teacher.getPoint() + ordersRegistPostReq.getPrice());
             userRepositorySupport.save(user);
+            userRepositorySupport.save(teacher);
             ordersRepositorySupport.save(orders);
         } else {
             throw new Exception("포인트가 부족합니다");
@@ -81,9 +119,14 @@ public class OrdersServiceImpl implements OrdersService{
     }
 
     @Override
-    public void chargePoint(String email, Long point) {
+    public void chargePoint(String email, Long point) throws UserException {
 
         Long user_id = userRepositorySupport.findId(email);
+
+        if(user_id == null){
+            throw new UserException("user not found");
+        }
+
         ordersRepositorySupport.updatePoint(user_id, point);
 
         return;
@@ -91,8 +134,14 @@ public class OrdersServiceImpl implements OrdersService{
     }
 
     @Override
-    public void deleteOrders(Long ordersId) {
+    public void deleteOrders(Long ordersId) throws OrdersException {
+
+        if(ordersRepositorySupport.findOne(ordersId) == null){
+            throw new OrdersException("orders not found");
+        }
+
         ordersRepositorySupport.deleteOrders(ordersId);
+
     }
 
 
