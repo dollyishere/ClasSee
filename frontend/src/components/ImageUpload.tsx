@@ -8,7 +8,7 @@ import { ref, deleteObject } from 'firebase/storage';
 import { storage } from '../utils/Firebase';
 
 // 부모 컴포넌트 측에서 전달한 Props의 type을 지정함
-import { ImageUploadProps } from '../types/CreateLessonType';
+import { ImageUploadProps } from '../types/LessonsType';
 
 const ImageUpload = ({
   limitNumber,
@@ -50,7 +50,7 @@ const ImageUpload = ({
     }
   };
 
-  // 마이너스 버튼 클릭 시, 해당하는 이미지는 imgFileListState 내에서 삭제됨
+  // 마이너스 버튼 클릭 시, 해당하는 이미지는 삭제됨
   const handleDeleteImage = async (id: number) => {
     setImgSrcListState(imgSrcListState.filter((_, index) => index !== id));
     setImgFileListState(imgFileListState.filter((_, index) => index !== id));
@@ -58,10 +58,8 @@ const ImageUpload = ({
       (_, index) => index === id,
     )[0] as any;
     const imageRef = ref(storage, `${encodeURI(deletedImg.fullPath)}`);
-    if (!(deletedImg instanceof Blob)) {
-      const goDeleteImg = await deleteObject(imageRef);
-      alert('사진이 삭제되었습니다!');
-    }
+    const goDeleteImg = await deleteObject(imageRef);
+    alert('사진이 삭제되었습니다!');
   };
 
   return (

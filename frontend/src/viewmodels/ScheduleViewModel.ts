@@ -1,23 +1,17 @@
 import { Schedule } from '@mui/icons-material';
-import ScheduleApi from '../apis/ScheduleApi';
+import LessonsApi from '../apis/LessonsApi';
 
-import {
-  CreateScheduleRequest,
-  GetScheduleRequest,
-} from '../types/ScheduleType';
+import { ScheduleRequest, GetScheduleRequest } from '../types/LessonsType';
 
 const ScheduleViewModel = () => {
-  const { DoCreateSchedule, DoGetSchedule } = ScheduleApi();
+  const { doCreateSchedule, doGetSchedule } = LessonsApi();
 
-  const createSchedule = async (
-    data: CreateScheduleRequest,
-    lessonId: number,
-  ) => {
-    const res = await DoCreateSchedule(data, lessonId);
+  const createSchedule = async (data: ScheduleRequest, lessonId: number) => {
+    const res = await doCreateSchedule(data, lessonId);
     return res;
   };
   const getSchedule = async (data: GetScheduleRequest) => {
-    const res = await DoGetSchedule(data);
+    const res = await doGetSchedule(data);
     return res;
   };
   return {

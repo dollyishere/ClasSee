@@ -2,10 +2,7 @@ import React from 'react';
 
 import ImageUpload from '../ImageUpload';
 
-import {
-  ImageUploadProps,
-  MaterialDescProps,
-} from '../../types/CreateLessonType';
+import { ImageUploadProps, MaterialDescProps } from '../../types/LessonsType';
 
 // 상의한 Props를 엮어서 CombinedProps라는 새로운 type를 생성함
 type CombinedProps = ImageUploadProps & MaterialDescProps;

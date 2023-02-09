@@ -1,7 +1,7 @@
 import React from 'react';
 import ImageUpload from '../ImageUpload';
 
-import { ImageUploadProps } from '../../types/CreateLessonType';
+import { ImageUploadProps } from '../../types/LessonsType';
 
 const StepTwo = ({
   limitNumber,
