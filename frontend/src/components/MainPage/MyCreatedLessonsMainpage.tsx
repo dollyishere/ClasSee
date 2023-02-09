@@ -21,29 +21,29 @@ const MyCreatedLessonsMainpage = () => {
   // 메인페이지 마운트 시 강의 정보들 요청
   const [accessToken, setAccessToken] = useRecoilState(AuthTokenState);
 
-  useEffect(() => {
-    const handleGetAccessToken = async () => {
-      if (userInfo && userInfo.email) {
-        if (accessToken == null) {
-          const res = await AccessToken(
-            userInfo,
-            setAccessToken,
-            doGetAccessToken,
-          );
-          setAccessToken(res);
-          if (userInfo !== null && userInfo.email) {
-            getMyCreatedLessonsMainpage(userInfo.email, 2, 0, 'TODO', res).then(
-              (response: LessonsResponse) => {
-                console.log('내가 개설한 강의', response.lessonInfoList);
-                setLessons(response.lessonInfoList);
-              },
-            );
-          }
-        }
-      }
-    };
-    handleGetAccessToken();
-  }, []);
+  // useEffect(() => {
+  //   const handleGetAccessToken = async () => {
+  //     if (userInfo && userInfo.email) {
+  //       if (accessToken == null) {
+  //         const res = await AccessToken(
+  //           userInfo,
+  //           setAccessToken,
+  //           doGetAccessToken,
+  //         );
+  //         setAccessToken(res);
+  //         if (userInfo !== null && userInfo.email) {
+  //           getMyCreatedLessonsMainpage(userInfo.email, 2, 0, 'TODO', res).then(
+  //             (response: LessonsResponse) => {
+  //               console.log('내가 개설한 강의', response.lessonInfoList);
+  //               setLessons(response.lessonInfoList);
+  //             },
+  //           );
+  //         }
+  //       }
+  //     }
+  //   };
+  //   handleGetAccessToken();
+  // }, []);
 
   return (
     <div className="createlessons">
