@@ -4,13 +4,7 @@ import { useRecoilValue } from 'recoil';
 
 import { Button, Card, CardActions } from '@mui/material';
 
-import {
-  ref,
-  uploadBytes,
-  getBlob,
-  getDownloadURL,
-  listAll,
-} from 'firebase/storage';
+import { ref, uploadBytes, deleteObject } from 'firebase/storage';
 import { storage } from '../utils/Firebase';
 
 import PrivateInfoState from '../models/PrivateInfoAtom';
@@ -73,6 +67,8 @@ const UpdateLessonPage = () => {
   const [kitDescState, setKitDescState] = useState<string>('');
   const [kitPriceState, setKitPriceState] = useState<number>(0);
 
+  const [deleteImgList, setDeleteImgList] = useState<any[]>([]);
+
   // api 실행할 시 실행될 함수를 불러옴
   const { updateLesson } = CreateLessonViewModel();
 
@@ -80,7 +76,15 @@ const UpdateLessonPage = () => {
   const navigate = useNavigate();
 
   // api 실행할 시 실행될 CreateLessonViewModel createLesson에 할당
-  const { getLessonDetail } = LessonDetailViewModel();
+  const {
+    getLessonDetail,
+    getPamphletImgUrls,
+    getCheckImgUrls,
+    getPamphletImgFiles,
+    getCheckImgFiles,
+    doUploadImage,
+    doDeleteImageFiles,
+  } = LessonDetailViewModel();
 
   // 강의 개설을 신청하는 유저의 이메일 정보를 useRecoilValue를 통해 불러옴
   const userInfo = useRecoilValue(PrivateInfoState);
@@ -138,32 +142,28 @@ const UpdateLessonPage = () => {
             // 이후, 미리 만들어둔 ref를 통해 해당하는 폴더에 든 이미지들을 불러옴(listAll)
             // 이 요청으로 이미지에 대한 정보를 불러 왔다면(response.items), 미리 지정해둔 imageName과 대조해봄
             // 불러온 이미지의 이름과 imageName이 같다면, 해당하는 이미지의 파일과 url을 각각 해당하는 state에 다운받음
-            res.pamphlets.forEach((item) => {
-              const imageName = item.img as string;
-              const imgRef = ref(
-                storage,
-                `lessons/${lessonId.lessonId}/pamphlet_images/${imageName}`,
-              );
-              getBlob(imgRef).then((img: any) => {
-                setLessonImgFileListState((prev: any) => [...prev, img]);
-              });
-              getDownloadURL(imgRef).then((url: any) => {
-                setLessonImgSrcListState((prev: any) => [...prev, url]);
-              });
-            });
-            res.checkLists.forEach((item) => {
-              const imageName = item.img as string;
-              const imgRef = ref(
-                storage,
-                `lessons/${lessonId.lessonId}/checklist_images/${imageName}`,
-              );
-              getBlob(imgRef).then((img: any) => {
-                setMaterialImgFileListState((prev: any) => [...prev, img]);
-              });
-              getDownloadURL(imgRef).then((url: any) => {
-                setMaterialImgSrcListState((prev: any) => [...prev, url]);
-              });
-            });
+            // firebase의 해당 강의가 저장된 폴더의 url에 접근하여 해당하는 이미지 파일을 각각 다운받음
+            // 강의 관련 사진 다운로드해서 pamphletsImgState에 저장
+            getPamphletImgUrls(res.pamphlets, Number(lessonId.lessonId)).then(
+              (urls: any[]) => {
+                setLessonImgSrcListState(urls);
+              },
+            );
+            getCheckImgUrls(res.checkLists, Number(lessonId.lessonId)).then(
+              (urls: any[]) => {
+                setMaterialImgSrcListState(urls);
+              },
+            );
+            getPamphletImgFiles(res.pamphlets, Number(lessonId.lessonId)).then(
+              (files: any[]) => {
+                setLessonImgFileListState(files);
+              },
+            );
+            getCheckImgFiles(res.checkLists, Number(lessonId.lessonId)).then(
+              (files: any[]) => {
+                setMaterialImgFileListState(files);
+              },
+            );
           }
         } else {
           alert(res?.message);
@@ -238,32 +238,21 @@ const UpdateLessonPage = () => {
         // 만약 속성이 Blob이라면, 새로 업로드할 이미지라는 뜻임
         // 이하 코드를 실행하여 이미지를 firebase에 업로드 함
         if (lessonImgFileListState.length !== 0) {
-          lessonImgFileListState.forEach(async (image: any) => {
-            const imageName = image.name;
-            if (image instanceof Blob) {
-              const upLoadedCheckListImage = await uploadBytes(
-                ref(
-                  storage,
-                  `lessons/${lessonId.lessonId}/pamphlet_images/${imageName}`,
-                ),
-                image,
-              );
-            }
-          });
+          doUploadImage(
+            lessonImgFileListState,
+            Number(lessonId.lessonId),
+            'pamphlet_images',
+          );
         }
         if (materialImgFileListState.length !== 0) {
-          materialImgFileListState.forEach(async (image: any) => {
-            const imageName = image.name;
-            if (image instanceof Blob) {
-              const upLoadedPamphletImage = await uploadBytes(
-                ref(
-                  storage,
-                  `lessons/${lessonId.lessonId}/checklist_images/${imageName}`,
-                ),
-                image,
-              );
-            }
-          });
+          doUploadImage(
+            materialImgFileListState,
+            Number(lessonId.lessonId),
+            'checklist_images',
+          );
+        }
+        if (deleteImgList) {
+          doDeleteImageFiles(deleteImgList);
         }
         // 이후 사용자에게 강의 정보가 수정되었음을 알린 후 메인 페이지로 이동
         alert('강의가 수정되었습니다.');
@@ -311,6 +300,8 @@ const UpdateLessonPage = () => {
         {selectedComponent === 2 && (
           <StepTwo
             limitNumber={5}
+            deleteImgList={deleteImgList}
+            setDeleteImgList={setDeleteImgList}
             imgFileListState={lessonImgFileListState}
             setImgFileListState={setLessonImgFileListState}
             imgSrcListState={lessonImgSrcListState}
@@ -326,6 +317,8 @@ const UpdateLessonPage = () => {
         {selectedComponent === 4 && (
           <StepFour
             limitNumber={10}
+            deleteImgList={deleteImgList}
+            setDeleteImgList={setDeleteImgList}
             imgSrcListState={materialImgSrcListState}
             setImgSrcListState={setMaterialImgSrcListState}
             imgFileListState={materialImgFileListState}

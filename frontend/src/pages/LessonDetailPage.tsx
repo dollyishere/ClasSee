@@ -5,9 +5,6 @@ import { useRecoilValue } from 'recoil';
 import { Stack, Button } from '@mui/material';
 import { PersonOutline } from '@mui/icons-material';
 
-import { ref, getDownloadURL, listAll } from 'firebase/storage';
-import { storage } from '../utils/Firebase';
-
 import {
   LessonDetailRequest,
   LessonDetailResponse,
@@ -54,7 +51,8 @@ const LessonDetailPage = () => {
     });
 
   // api 실행할 시 실행될 CreateLessonModel createLesson에 할당
-  const { getLessonDetail } = LessonDetailViewModel();
+  const { getLessonDetail, getPamphletImgUrls, getCheckImgUrls } =
+    LessonDetailViewModel();
   const { getProfileImage } = useViewModel();
 
   // 강의 개설을 신청하는 유저의 이메일 정보를 useRecoilValue를 통해 불러옴
@@ -86,26 +84,16 @@ const LessonDetailPage = () => {
         setLessonDetailState(res);
         // firebase의 해당 강의가 저장된 폴더의 url에 접근하여 해당하는 이미지 파일을 각각 다운받음
         // 강의 관련 사진 다운로드해서 pamphletsImgState에 저장
-        res.pamphlets.forEach((item) => {
-          const imageName = item.img as string;
-          const imgRef = ref(
-            storage,
-            `lessons/${lessonId.lessonId}/pamphlet_images/${imageName}`,
-          );
-          getDownloadURL(imgRef).then((url: any) => {
-            setPamphletsImgState((prev: any) => [...prev, url]);
-          });
-        });
-        res.checkLists.forEach((item) => {
-          const imageName = item.img as string;
-          const imgRef = ref(
-            storage,
-            `lessons/${lessonId.lessonId}/checklist_images/${imageName}`,
-          );
-          getDownloadURL(imgRef).then((url: any) => {
-            setCheckListImgState((prev: any) => [...prev, url]);
-          });
-        });
+        getPamphletImgUrls(res.pamphlets, Number(lessonId.lessonId)).then(
+          (urls: any[]) => {
+            setPamphletsImgState(urls);
+          },
+        );
+        getCheckImgUrls(res.checkLists, Number(lessonId.lessonId)).then(
+          (urls: any[]) => {
+            setCheckListImgState(urls);
+          },
+        );
       } else {
         alert(res?.message);
       }
