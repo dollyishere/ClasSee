@@ -5,6 +5,7 @@ import com.ssafy.db.entity.lesson.OpenLesson;
 import com.ssafy.db.entity.user.User;
 import io.swagger.annotations.ApiModel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ApiModel("OrdersInfoGetRes")
+@NoArgsConstructor
 public class OrdersInfoGetRes {
 
     String lessonImg;

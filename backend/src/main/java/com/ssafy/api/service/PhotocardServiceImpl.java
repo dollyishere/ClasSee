@@ -1,6 +1,9 @@
 package com.ssafy.api.service;
 
 import com.ssafy.api.request.PhotocardRegistPostReq;
+import com.ssafy.common.exception.handler.LessonException;
+import com.ssafy.common.exception.handler.PhotocardException;
+import com.ssafy.common.exception.handler.UserException;
 import com.ssafy.db.entity.board.Likes;
 import com.ssafy.db.entity.board.Photocard;
 import com.ssafy.db.entity.lesson.Lesson;
@@ -33,15 +36,22 @@ public class PhotocardServiceImpl implements PhotocardService {
 
 
     @Override
-    public void createPhotocard(PhotocardRegistPostReq photocardRegistPostReq) {
+    public void createPhotocard(PhotocardRegistPostReq photocardRegistPostReq) throws Exception {
 
-        User user = userRepositorySupport
-                .findUserByAuth(photocardRegistPostReq.getUserEmail())
-                .get();
+        Long user_id = userRepositorySupport.findId(photocardRegistPostReq.getUserEmail());
+
+        if(user_id == null){
+            throw new UserException("user not found");
+        }
+        User user = userRepositorySupport.findOne(user_id);
+
 
         Lesson lesson = photocardRepositorySupport
                 .findOneLesson(photocardRegistPostReq.getLessonId());
 
+        if(lesson == null){
+            throw new LessonException("lesson not found");
+        }
 
         Photocard photocard = Photocard.builder()
                 .title(photocardRegistPostReq.getTitle())
@@ -67,9 +77,13 @@ public class PhotocardServiceImpl implements PhotocardService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Photocard> readMyPhotocardList(int offset, int limit, String email) {
+    public List<Photocard> readMyPhotocardList(int offset, int limit, String email) throws UserException {
 
         Long user_id = userRepositorySupport.findId(email);
+
+        if(user_id == null){
+            throw new UserException("user not found");
+        }
 
         return photocardRepositorySupport
                 .findMyList(offset, limit, user_id);
@@ -90,10 +104,14 @@ public class PhotocardServiceImpl implements PhotocardService {
     }
 
     @Override
-    public void deletePhotocard(Long id) {
+    public void deletePhotocard(Long id) throws PhotocardException {
 
         Photocard photocard = photocardRepositorySupport
                 .findOne(id);
+
+        if(photocard == null){
+            throw new PhotocardException("photocard not found");
+        }
 
         photocardRepositorySupport.delete(photocard);
 
@@ -122,15 +140,23 @@ public class PhotocardServiceImpl implements PhotocardService {
     }
 
     @Override
-    public void createLikes(String email, Long id) {
+    public void createLikes(String email, Long id) throws Exception {
         Long user_id = userRepositorySupport
                 .findId(email);
+
+        if(user_id == null){
+            throw new UserException("user not found");
+        }
 
         User user = userRepositorySupport
                 .findOne(user_id);
 
         Photocard photocard = photocardRepositorySupport
                 .findOne(id);
+
+        if(photocard == null){
+            throw new PhotocardException("photocard not found");
+        }
 
         Likes likes = Likes
                 .builder()
@@ -143,10 +169,18 @@ public class PhotocardServiceImpl implements PhotocardService {
     }
 
     @Override
-    public void deleteLikes(String email, Long id) {
+    public void deleteLikes(String email, Long id) throws Exception {
         Long user_id = userRepositorySupport.findId(email);
 
+        if(user_id == null){
+            throw new UserException("user not found");
+        }
+
         Likes likes = photocardRepositorySupport.findOneLikes(user_id, id);
+
+        if(likes == null){
+            throw new PhotocardException("likes not found");
+        }
 
         photocardRepositorySupport.deleteLikes(likes);
         return;
