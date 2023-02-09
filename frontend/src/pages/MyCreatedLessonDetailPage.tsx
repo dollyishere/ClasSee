@@ -49,8 +49,9 @@ const MyCreatedLessonDetailPage = () => {
       bookMarked: false as boolean,
     });
 
-  // api 실행할 시 실행될 CreateLessonViewModel createLesson에 할당
-  const { getLessonDetail } = LessonDetailViewModel();
+  // api 실행할 시 실행될 함수 가져옴
+  const { getLessonDetail, getPamphletImgUrls, getCheckImgUrls } =
+    LessonDetailViewModel();
 
   // 컴포넌트 전환에 필요한 useNavigate 재할당
   const navigate = useNavigate();
@@ -81,34 +82,24 @@ const MyCreatedLessonDetailPage = () => {
       const fetchData = async () => {
         const res = await getLessonDetail(getLessonDetailRequestBody);
         if (res?.message === 'SUCCESS') {
+          // 만약 강의 상세 정보를 db에서 받아오는 것에 성공했다면, lessonDetailState에 해당 정보를 저장
+          setLessonDetailState(res);
           if (userInfo.email !== res.teacherEmail) {
             alert('잘못된 접근입니다.');
             navigate('/');
           } else {
-            // 만약 강의 상세 정보를 db에서 받아오는 것에 성공했다면, lessonDetailState에 해당 정보를 저장
-            setLessonDetailState(res);
             // firebase의 해당 강의가 저장된 폴더의 url에 접근하여 해당하는 이미지 파일을 각각 다운받음
-            // 강의 사진  url 다운로드해서 pamphletsImgState에 저장
-            res.pamphlets.forEach((item) => {
-              const imageName = item.img as string;
-              const imgRef = ref(
-                storage,
-                `lessons/${lessonId.lessonId}/pamphlet_images/${imageName}`,
-              );
-              getDownloadURL(imgRef).then((url: any) => {
-                setPamphletsImgState((prev: any) => [...prev, url]);
-              });
-            });
-            res.checkLists.forEach((item) => {
-              const imageName = item.img as string;
-              const imgRef = ref(
-                storage,
-                `lessons/${lessonId.lessonId}/checklist_images/${imageName}`,
-              );
-              getDownloadURL(imgRef).then((url: any) => {
-                setCheckListImgState((prev: any) => [...prev, url]);
-              });
-            });
+            // 강의 관련 사진 다운로드해서 pamphletsImgState에 저장
+            getPamphletImgUrls(res.pamphlets, Number(lessonId.lessonId)).then(
+              (urls: any[]) => {
+                setPamphletsImgState(urls);
+              },
+            );
+            getCheckImgUrls(res.checkLists, Number(lessonId.lessonId)).then(
+              (urls: any[]) => {
+                setCheckListImgState(urls);
+              },
+            );
           }
         } else {
           alert(res?.message);

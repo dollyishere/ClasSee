@@ -19,6 +19,7 @@ import StepSix from '../components/CreateLessonPage/StepSix';
 import Header from '../components/Header';
 
 import CreateLessonViewModel from '../viewmodels/CreateLessonViewModel';
+import LessonDetailViewModel from '../viewmodels/LessonDetailViewModel';
 
 import { ImageType, CurriculumType, LessonRequest } from '../types/LessonsType';
 import { UserInfo } from '../types/UserType';
@@ -57,6 +58,8 @@ const CreateLessonPage = () => {
   const [kitDescState, setKitDescState] = useState<string>('');
   const [kitPriceState, setKitPriceState] = useState<number>(0);
 
+  const [deleteImgList, setDeleteImgList] = useState<any[]>([]);
+
   // 강의 개설을 신청하는 유저의 정보를 useRecoilValue를 통해 불러옴
   const userInfo = useRecoilValue(privateInfoState);
 
@@ -64,6 +67,7 @@ const CreateLessonPage = () => {
 
   // api 실행할 시 실행될 CreateLessonModel createLesson에 할당
   const { createLesson } = CreateLessonViewModel();
+  const { doUploadImage } = LessonDetailViewModel();
 
   // 강의 개설 완료 시 컴포넌트 전환에 필요한 useNavigate 재할당
   const navigate = useNavigate();
@@ -131,26 +135,18 @@ const CreateLessonPage = () => {
         // 만약 업로드한 이미지 파일이 하나 이상 존재한다면,
         // 파일을 Firebase에 업로드한 후 해당 이름을 checkListState에 집어넣어줌
         if (lessonImgFileListState.length !== 0) {
-          lessonImgFileListState.forEach(async (image: any) => {
-            const upLoadedCheckListImage = await uploadBytes(
-              ref(
-                storage,
-                `lessons/${res.lessonId}/pamphlet_images/${image.name}`,
-              ),
-              image,
-            );
-          });
+          doUploadImage(
+            lessonImgFileListState,
+            Number(res.lessonId),
+            'pamphlet_images',
+          );
         }
         if (materialImgFileListState.length !== 0) {
-          materialImgFileListState.forEach(async (image: any) => {
-            const upLoadedPamphletImage = await uploadBytes(
-              ref(
-                storage,
-                `lessons/${res.lessonId}/checklist_images/${image.name}`,
-              ),
-              image,
-            );
-          });
+          doUploadImage(
+            materialImgFileListState,
+            Number(res.lessonId),
+            'checklist_images',
+          );
         }
         // 이후 사용자에게 강의가 새로 등록되었음을 알린 후 메인 페이지로 이동
         alert('강의가 등록되었습니다.');
@@ -203,6 +199,8 @@ const CreateLessonPage = () => {
         {selectedComponent === 2 && (
           <StepTwo
             limitNumber={5}
+            deleteImgList={deleteImgList}
+            setDeleteImgList={setDeleteImgList}
             imgFileListState={lessonImgFileListState}
             setImgFileListState={setLessonImgFileListState}
             imgSrcListState={lessonImgSrcListState}
@@ -218,6 +216,8 @@ const CreateLessonPage = () => {
         {selectedComponent === 4 && (
           <StepFour
             limitNumber={10}
+            deleteImgList={deleteImgList}
+            setDeleteImgList={setDeleteImgList}
             imgSrcListState={materialImgSrcListState}
             setImgSrcListState={setMaterialImgSrcListState}
             imgFileListState={materialImgFileListState}

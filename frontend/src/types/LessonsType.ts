@@ -68,6 +68,8 @@ export interface ImageUploadProps {
   setImgSrcListState: React.Dispatch<React.SetStateAction<string[]>>;
   imgFileListState: object[];
   setImgFileListState: React.Dispatch<React.SetStateAction<object[]>>;
+  deleteImgList: any[];
+  setDeleteImgList: React.Dispatch<React.SetStateAction<any[]>>;
 }
 
 export interface MaterialDescProps {
