@@ -4,6 +4,7 @@ import { useRecoilValue } from 'recoil';
 import { Card, CardContent, Modal, Box } from '@mui/material';
 import { PersonOutline } from '@mui/icons-material';
 
+import authTokenState from '../models/AuthTokenAtom';
 import privateInfoState from '../models/PrivateInfoAtom';
 import useViewModel from '../viewmodels/ProfileViewModel';
 
@@ -11,6 +12,7 @@ const ProfilePage = () => {
   const [image, setImage] = useState<string>();
   const navigate = useNavigate();
   const userInfo = useRecoilValue(privateInfoState);
+  const authToken = useRecoilValue(authTokenState);
   const descriptionRef = useRef<HTMLTextAreaElement>(null);
   const [isPwModalOpen, setIsPwModalOpen] = useState<boolean>(false);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -39,7 +41,7 @@ const ProfilePage = () => {
     if (userInfo !== null) {
       const nickname = prompt('변경할 닉네임을 입력하세요.', userInfo.nickname);
       if (nickname !== null) {
-        updateNickName(nickname);
+        updateNickName(nickname, authToken);
       }
     }
   };
@@ -96,6 +98,11 @@ const ProfilePage = () => {
       }
     }
   };
+
+  const handlePointCharge = () => {
+    navigate('/mypage/point');
+  };
+
   useEffect(() => {
     if (userInfo === null) {
       alert('로그인 후 이용 가능합니다.');
@@ -167,6 +174,7 @@ const ProfilePage = () => {
                     <button
                       type="button"
                       className="button profile-page__button"
+                      onClick={handlePointCharge}
                     >
                       포인트 충전
                     </button>

@@ -7,6 +7,7 @@ import MyCreatedLessonDetailPage from './MyCreatedLessonDetailPage';
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
 import { SidebarItem, SidebarProps } from '../types/SidebarType';
+import PointChargePage from './PointChargePage';
 
 const MyPage = () => {
   const sidebarItems: Array<SidebarItem> = [
@@ -30,6 +31,7 @@ const MyPage = () => {
         <div className="my-page__sub-page">
           <Routes>
             <Route path="" element={<ProfilePage />} />
+            <Route path="/point" element={<PointChargePage />} />
             <Route
               path="/created-lesson/:lessonId"
               element={<MyCreatedLessonDetailPage />}
