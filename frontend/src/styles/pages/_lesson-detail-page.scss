@@ -1,1 +1,9 @@
 @use '../base/colors';
+
+.lesson-detail-page__container {
+  .lesson-detail-page__header {
+    width: 100%;
+    box-shadow: 0 5px 5px gray;
+    background-color: white;
+  }
+}
