@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
-import { RecoilRoot, useRecoilValue } from 'recoil';
+import { RecoilRoot, useRecoilValue, useRecoilState } from 'recoil';
 import MainPage from './pages/MainPage';
 import SignUpPage from './pages/SignUpPage';
 import CreateLessonPage from './pages/CreateLessonPage';
@@ -14,23 +14,26 @@ import Footer from './components/Footer';
 import LessonsPage from './pages/LessonsPage';
 import useUserApi from './apis/UserApi';
 import privateInfoState from './models/PrivateInfoAtom';
-import { decryptToken, encryptToken } from './utils/Encrypt';
+import { AccessToken } from './utils/AccessToken';
+import AuthTokenState from './models/AuthTokenAtom';
 
 const Router = () => {
   const { doGetAccessToken } = useUserApi();
   const userInfo = useRecoilValue(privateInfoState);
+  const [accessToken, setAccessToken] = useRecoilState(AuthTokenState);
 
-  useEffect(() => {
-    const reAccessToken = async () => {
-      const hashedRefreshToken = localStorage.getItem('refreshToken');
-      if (hashedRefreshToken && userInfo && userInfo.email) {
-        const refreshToken = decryptToken(hashedRefreshToken, userInfo.email);
-        const response = await doGetAccessToken(userInfo.email, refreshToken);
-        console.log('asdasdasd', response);
-      }
-    };
-    reAccessToken();
-  }, []);
+  // useEffect(() => {
+  //   const reAccessToken = async () => {
+  //     if (userInfo) {
+  //       const response = await AccessToken(
+  //         userInfo,
+  //         setAccessToken,
+  //         doGetAccessToken,
+  //       );
+  //     }
+  //   };
+  //   reAccessToken();
+  // }, []);
   return (
     <Routes>
       <Route path="/" element={<MainPage />} />
