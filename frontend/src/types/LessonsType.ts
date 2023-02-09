@@ -30,3 +30,178 @@ export interface LessonSearchOption {
   limit: number;
   offset: number;
 }
+
+// 강의 개설&수정 페이지 각각 개별 component에 전달할 props type
+export interface StepOneProps {
+  lessonNameState: string;
+  setLessonNameState: React.Dispatch<React.SetStateAction<string>>;
+  categorySelectState: string;
+  setCategorySelectState: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export interface StepThreeProps {
+  lessonDescState: string;
+  setLessonDescState: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export interface StepFiveProps {
+  curriListState: string[];
+  setCurriListState: React.Dispatch<React.SetStateAction<string[]>>;
+  maximumState: number;
+  setMaximumState: React.Dispatch<React.SetStateAction<number>>;
+  runningtimeState: number;
+  setRunningtimeState: React.Dispatch<React.SetStateAction<number>>;
+}
+
+export interface StepSixProps {
+  basicPriceState: number;
+  setBasicPriceState: React.Dispatch<React.SetStateAction<number>>;
+  kitDescState: string;
+  setKitDescState: React.Dispatch<React.SetStateAction<string>>;
+  kitPriceState: number;
+  setKitPriceState: React.Dispatch<React.SetStateAction<number>>;
+}
+
+export interface ImageUploadProps {
+  limitNumber: number;
+  imgSrcListState: string[];
+  setImgSrcListState: React.Dispatch<React.SetStateAction<string[]>>;
+  imgFileListState: object[];
+  setImgFileListState: React.Dispatch<React.SetStateAction<object[]>>;
+}
+
+export interface MaterialDescProps {
+  materialDescState: string;
+  setMaterialDescState: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export interface CategoryProps {
+  categorySelectState: string;
+  setCategorySelectState: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export interface ChangeComponentProps {
+  selectedComponentState: number;
+  setSelectedComponentState: React.Dispatch<React.SetStateAction<number>>;
+  handleCreateLessonSubmit: (
+    event: React.MouseEvent<HTMLButtonElement>,
+  ) => void;
+}
+
+export interface ImageType {
+  img: string;
+}
+
+export interface CurriculumType {
+  stage: number;
+  description: string;
+}
+
+export interface CurriculumsType extends CurriculumType {
+  id: number;
+  lessonId: number;
+}
+
+export interface ImageListType extends ImageType {
+  id: number;
+  lessonId: number;
+}
+
+export interface LessonRequest {
+  category: string;
+  checkList: ImageType[];
+  cklsDescription: string;
+  curriculumList: CurriculumType[];
+  description: string;
+  email: string | undefined;
+  kitDescription: string;
+  kitPrice: number;
+  maximum: number;
+  name: string;
+  pamphletList: ImageType[];
+  price: number;
+  runningtime: number;
+}
+
+export interface CreateLessonResponse extends Response {
+  lessonId: number;
+}
+
+export interface LessonDetailRequest {
+  lessonId: number;
+}
+
+export interface LessonDetailResponse extends Response {
+  teacherEmail: string;
+  lessonName: string;
+  cklsDescription: string;
+  lessonDescription: string;
+  kitPrice: number;
+  kitDescription: string;
+  category: string;
+  runningTime: number;
+  maximum: number;
+  userName: string;
+  userDesciption: string | null;
+  teacherImage: string | null;
+  curriculums: CurriculumType[];
+  checkLists: ImageListType[];
+  pamphlets: ImageListType[];
+  score: number;
+  bookMarked: boolean;
+}
+
+export interface LessonDetailProps {
+  lessonId: number;
+  lessonDetailState: LessonDetailResponse;
+  setLessonDetailState: React.Dispatch<
+    React.SetStateAction<LessonDetailResponse>
+  >;
+  pamphletsImgState: any;
+  setPamphletsImgState: React.Dispatch<React.SetStateAction<any>>;
+  checkListImgState: any;
+  setCheckListImgState: React.Dispatch<React.SetStateAction<any>>;
+  teacherImgState: any;
+  setTeacherImgState: React.Dispatch<React.SetStateAction<any>>;
+  schedulesListState: any;
+  setScheduleListState: React.Dispatch<React.SetStateAction<any>>;
+  scheduleInputState: boolean;
+  setScheduleInputState: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export interface RatingProps {
+  ratingValue: number | null;
+  setRatingValue: React.Dispatch<React.SetStateAction<number | null>>;
+  disableValue: boolean;
+}
+
+export interface CreateScheduleProps {
+  runningtime: number;
+  lessonId: number;
+  scheduleInputState: boolean;
+  setScheduleInputState: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export interface ScheduleRequest {
+  endTime: string;
+  startTime: string;
+}
+
+export interface ScheduleDetailProps {
+  schedulesListState: any;
+  setSchedulesListState: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export interface LessonSchedulesType extends ScheduleRequest {
+  openLessonId: number;
+  lessonId: number;
+}
+
+export interface GetScheduleResponse extends Response {
+  lessonSchedules: LessonSchedulesType[];
+}
+
+export interface GetScheduleRequest {
+  regDate: string | null;
+  lessonId: number;
+}

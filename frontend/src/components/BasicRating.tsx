@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Box, Rating, Typography } from '@mui/material';
-import { RatingProps } from '../types/LessonDetailType';
+import { RatingProps } from '../types/LessonsType';
 
 const BasicRating = ({
   ratingValue,

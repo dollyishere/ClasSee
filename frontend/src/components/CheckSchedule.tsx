@@ -9,11 +9,7 @@ import moment from 'moment';
 
 import ScheduleViewModel from '../viewmodels/ScheduleViewModel';
 
-import {
-  GetScheduleRequest,
-  GetScheduleResponse,
-  LessonSchedulesType,
-} from '../types/ScheduleType';
+import { GetScheduleRequest, LessonSchedulesType } from '../types/LessonsType';
 
 const CheckSchedule = () => {
   const lessonIdParams = useParams();

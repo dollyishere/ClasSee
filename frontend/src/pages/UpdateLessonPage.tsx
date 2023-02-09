@@ -27,18 +27,14 @@ import CreateLessonViewModel from '../viewmodels/CreateLessonViewModel';
 import LessonDetailViewModel from '../viewmodels/LessonDetailViewModel';
 
 import {
-  CheckListType,
+  ImageType,
   CurriculumType,
-  PamphletType,
   LessonRequest,
-} from '../types/CreateLessonType';
-import {
+  ImageListType,
   LessonDetailRequest,
   LessonDetailResponse,
   CurriculumsType,
-  CheckListsType,
-  PamphletsType,
-} from '../types/LessonDetailType';
+} from '../types/LessonsType';
 
 const UpdateLessonPage = () => {
   // url(Router) 통해서 입력된 lessonId를 useParams로 받아옴
@@ -194,7 +190,7 @@ const UpdateLessonPage = () => {
       basicPriceState !== 0
     ) {
       // array 형태로 넣어야 할 데이터는, 해당 형식에 맞게 다시 재생성함
-      const pamphletList: PamphletType[] = lessonImgFileListState.map(
+      const pamphletList: ImageType[] = lessonImgFileListState.map(
         (Img: any) => {
           return {
             img: Img.name as string,
@@ -202,7 +198,7 @@ const UpdateLessonPage = () => {
         },
       );
 
-      const checkList: CheckListType[] = materialImgFileListState.map(
+      const checkList: ImageType[] = materialImgFileListState.map(
         (Img: any) => {
           return {
             img: Img.name,
@@ -219,7 +215,7 @@ const UpdateLessonPage = () => {
       );
       const EditLessonRequestBody: LessonRequest = {
         category: categorySelectState,
-        checkList: checkList as CheckListType[],
+        checkList: checkList as ImageListType[],
         cklsDescription: materialDescState,
         curriculumList: curriculumList as CurriculumType[],
         description: lessonDescState,
@@ -228,7 +224,7 @@ const UpdateLessonPage = () => {
         kitPrice: kitPriceState,
         maximum: maximumState,
         name: lessonNameState,
-        pamphletList: pamphletList as PamphletType[],
+        pamphletList: pamphletList as ImageListType[],
         price: basicPriceState,
         runningtime: runningtimeState,
       };
