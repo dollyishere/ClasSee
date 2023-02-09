@@ -1,12 +1,12 @@
-import GetLessonDetailApi from '../apis/GetLessonDetailApi';
+import LessonsApi from '../apis/LessonsApi';
 
-import { LessonDetailRequest } from '../types/LessonDetailType';
+import { LessonDetailRequest } from '../types/LessonsType';
 
 const LessonDetailViewModel = () => {
-  const { DoGetLessonDetail } = GetLessonDetailApi();
+  const { doGetLessonDetail } = LessonsApi();
 
   const getLessonDetail = async (data: LessonDetailRequest) => {
-    const res = await DoGetLessonDetail(data);
+    const res = await doGetLessonDetail(data);
     return res;
   };
 

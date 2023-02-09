@@ -20,12 +20,7 @@ import Header from '../components/Header';
 
 import CreateLessonViewModel from '../viewmodels/CreateLessonViewModel';
 
-import {
-  CheckListType,
-  CurriculumType,
-  PamphletType,
-  LessonRequest,
-} from '../types/CreateLessonType';
+import { ImageType, CurriculumType, LessonRequest } from '../types/LessonsType';
 import { UserInfo } from '../types/UserType';
 
 const CreateLessonPage = () => {
@@ -90,7 +85,7 @@ const CreateLessonPage = () => {
       basicPriceState !== 0
     ) {
       // array 형태로 넣어야 할 데이터는, 해당 형식에 맞게 다시 재생성함
-      const pamphletList: PamphletType[] = lessonImgFileListState.map(
+      const pamphletList: ImageType[] = lessonImgFileListState.map(
         (Img: any) => {
           return {
             img: Img.name as string,
@@ -98,7 +93,7 @@ const CreateLessonPage = () => {
         },
       );
 
-      const checkList: CheckListType[] = materialImgFileListState.map(
+      const checkList: ImageType[] = materialImgFileListState.map(
         (Img: any) => {
           return {
             img: Img.name,
@@ -116,7 +111,7 @@ const CreateLessonPage = () => {
 
       const createLessonRequestBody: LessonRequest = {
         category: categorySelectState,
-        checkList: checkList as CheckListType[],
+        checkList: checkList as ImageType[],
         cklsDescription: materialDescState,
         curriculumList: curriculumList as CurriculumType[],
         description: lessonDescState,
@@ -125,7 +120,7 @@ const CreateLessonPage = () => {
         kitPrice: kitPriceState,
         maximum: maximumState,
         name: lessonNameState,
-        pamphletList: pamphletList as PamphletType[],
+        pamphletList: pamphletList as ImageType[],
         price: basicPriceState,
         runningtime: runningtimeState,
       };

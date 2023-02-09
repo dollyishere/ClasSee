@@ -6,7 +6,7 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import AddIcon from '@mui/icons-material/Add';
 
-import { StepFiveProps } from '../../types/CreateLessonType';
+import { StepFiveProps } from '../../types/LessonsType';
 
 const StepFive = ({
   curriListState,

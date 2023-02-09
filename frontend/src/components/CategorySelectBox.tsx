@@ -9,7 +9,7 @@ import {
   SelectChangeEvent,
 } from '@mui/material';
 
-import { CategoryProps } from '../types/CreateLessonType';
+import { CategoryProps } from '../types/LessonsType';
 
 const CategorySelectBox = ({
   categorySelectState,
