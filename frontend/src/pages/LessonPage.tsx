@@ -18,13 +18,16 @@ import {
   Mic,
 } from '@mui/icons-material';
 
+import { useRecoilValue } from 'recoil';
 import useViewModel from '../viewmodels/LessonViewModel';
 import UserVideo from '../components/UserVideo';
 import ChatBox from '../components/ChatBox';
 
 import { Device, Msg, ConnectionError } from '../types/OpenviduType';
+import PrivateInfoState from '../models/PrivateInfoAtom';
 
 const LessonPage = () => {
+  const userInfo = useRecoilValue(PrivateInfoState);
   // 사용자가 강사인지 수강생인지 url로 넘겨받도록 함
   // 이 부분은 로그인시 얻은 데이터로 나중에 바꿔야 돼요
   const location = useLocation();
@@ -81,7 +84,7 @@ const LessonPage = () => {
   // viewModel의 함수들
   // getToken은 서버로부터 세션 토큰을 받아옴
   // chat은 메시지 전송
-  const { getToken, chat } = useViewModel();
+  const { createSession, createToken, chat } = useViewModel();
 
   // 손들기 시그널 보내는 함수
   const sendRaiseHandSignal = () => {
@@ -182,7 +185,7 @@ const LessonPage = () => {
     setSession(newSession);
 
     // OpenVidu 연결 함수
-    const connection = () => {
+    const connection = async () => {
       // 다른 사용자가 들어와서 stream이 생성된 streamCreated 이벤트
       newSession.on('streamCreated', (event: StreamEvent) => {
         // 세션에 들어온 사용자 정보
@@ -273,67 +276,72 @@ const LessonPage = () => {
           }
         }
       });
+      if (userInfo !== null) {
+        // 세션 토큰 api 요청 함수
+        const { testId, testToken } = await createSession(
+          userInfo.email,
+          sessionId,
+        );
+        createToken(testId, testToken).then((token: string) => {
+          // 해당 토큰으로 세션 연결
+          newSession
+            .connect(token, { clientData: userName, role })
+            .then(async () => {
+              // 비디오stream 생성
+              const newPublisher = await newOV.initPublisherAsync(undefined, {
+                audioSource: undefined,
+                videoSource: undefined,
+                publishAudio: true,
+                publishVideo: true,
+                resolution: '640x360',
+                frameRate: 30,
+                insertMode: 'APPEND',
+                mirror: false,
+              });
 
-      // 세션 토큰 api 요청 함수
-      getToken(sessionId).then((token: string) => {
-        // 해당 토큰으로 세션 연결
-        newSession
-          .connect(token, { clientData: userName, role })
-          .then(async () => {
-            // 비디오stream 생성
-            const newPublisher = await newOV.initPublisherAsync(undefined, {
-              audioSource: undefined,
-              videoSource: undefined,
-              publishAudio: true,
-              publishVideo: true,
-              resolution: '640x360',
-              frameRate: 30,
-              insertMode: 'APPEND',
-              mirror: false,
-            });
+              // 세션에 stream을 publish
+              newSession.publish(newPublisher);
 
-            // 세션에 stream을 publish
-            newSession.publish(newPublisher);
+              // 컴퓨터와 연결된 디바이스 정보
+              const devices = await newOV.getDevices();
 
-            // 컴퓨터와 연결된 디바이스 정보
-            const devices = await newOV.getDevices();
+              // 디바이스들 중 videoinput device를 찾음
+              /*
+                {
+                deviceId, kind, label
+                }
+              */
+              const videoDevices = devices.filter(
+                (device: Device) => device.kind === 'videoinput',
+              );
 
-            // 디바이스들 중 videoinput device를 찾음
-            /*
-              {
-              deviceId, kind, label
+              // 현재 스트림에서 사용하고 있는 캠 deviceId
+              const currentVideoDeviceId = newPublisher.stream
+                .getMediaStream()
+                .getVideoTracks()[0]
+                .getSettings().deviceId;
+
+              // 컴퓨터와 연결된 디바이스 정보 중에서 현재 사용하고 있는 캠 정보를 가져옴
+              const newCurrentVideoDevice = videoDevices.find(
+                (device: Device) => device.deviceId === currentVideoDeviceId,
+              );
+
+              // currentVideoDevice state를 현재 사용하고 있는 캠 정보로 저장
+              setCurrentVideoDevice(newCurrentVideoDevice);
+
+              // role이 강사면 스트림을 teacherStreamManager에 저장
+              if (role === 'teacher') {
+                setTeacherStreamManager(newPublisher);
+              } else {
+                // role이 학생이면 스트림을 studentStreamManager에 저장
+                setStudentStreamManager(newPublisher);
               }
-            */
-            const videoDevices = devices.filter(
-              (device: Device) => device.kind === 'videoinput',
-            );
-
-            // 현재 스트림에서 사용하고 있는 캠 deviceId
-            const currentVideoDeviceId = newPublisher.stream
-              .getMediaStream()
-              .getVideoTracks()[0]
-              .getSettings().deviceId;
-
-            // 컴퓨터와 연결된 디바이스 정보 중에서 현재 사용하고 있는 캠 정보를 가져옴
-            const newCurrentVideoDevice = videoDevices.find(
-              (device: Device) => device.deviceId === currentVideoDeviceId,
-            );
-
-            // currentVideoDevice state를 현재 사용하고 있는 캠 정보로 저장
-            setCurrentVideoDevice(newCurrentVideoDevice);
-
-            // role이 강사면 스트림을 teacherStreamManager에 저장
-            if (role === 'teacher') {
-              setTeacherStreamManager(newPublisher);
-            } else {
-              // role이 학생이면 스트림을 studentStreamManager에 저장
-              setStudentStreamManager(newPublisher);
-            }
-          })
-          .catch((error: ConnectionError) => {
-            console.log('Error', error.code, error.message);
-          });
-      });
+            })
+            .catch((error: ConnectionError) => {
+              console.log('Error', error.code, error.message);
+            });
+        });
+      }
     };
     // 연결
     connection();
