@@ -34,6 +34,8 @@ public class OrdersInfoGetRes {
 
     String userAddress;
 
+    Long userPoint;
+
     Long lessonPrice;
 
     Long kitPrice;
@@ -48,6 +50,7 @@ public class OrdersInfoGetRes {
         this.userPhone = user.getPhone();
         this.userEmail = user.getAuth().getEmail();
         this.userAddress = user.getAddress();
+        this.userPoint = user.getPoint();
         this.lessonPrice = lesson.getPrice();
         this.kitPrice = lesson.getKitPrice();
 
