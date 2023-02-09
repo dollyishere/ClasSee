@@ -2,6 +2,7 @@ package com.ssafy.api.service;
 
 import com.ssafy.api.request.PhotocardRegistPostReq;
 import com.ssafy.common.exception.handler.LessonException;
+import com.ssafy.common.exception.handler.LikesException;
 import com.ssafy.common.exception.handler.PhotocardException;
 import com.ssafy.common.exception.handler.UserException;
 import com.ssafy.db.entity.board.Likes;
@@ -156,6 +157,10 @@ public class PhotocardServiceImpl implements PhotocardService {
 
         if(photocard == null){
             throw new PhotocardException("photocard not found");
+        }
+
+        if(photocardRepositorySupport.findOneLikes(user_id, id) != null){
+            throw new LikesException("likes already exists");
         }
 
         Likes likes = Likes
