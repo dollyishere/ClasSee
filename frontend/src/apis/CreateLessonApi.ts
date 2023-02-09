@@ -6,7 +6,7 @@ import { Response } from '../types/BaseType';
 const CreateLessonApi = () => {
   const doCreateLesson = async (
     createLessonRequestBody: LessonRequest,
-    accessToken: string,
+    accessToken: string | null,
   ) => {
     try {
       console.log(accessToken);

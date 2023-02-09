@@ -12,7 +12,11 @@ import { storage } from '../utils/Firebase';
 import useApi from '../apis/UserApi';
 import authTokenState from '../models/AuthTokenAtom';
 import useInfoState from '../models/PrivateInfoAtom';
-import { createHashedPassword, decryptToken } from '../utils/Encrypt';
+import {
+  createHashedPassword,
+  decryptToken,
+  encryptToken,
+} from '../utils/Encrypt';
 
 const ProfileViewModel = () => {
   const [userInfo, setUserInfo] = useRecoilState(useInfoState);
@@ -66,9 +70,16 @@ const ProfileViewModel = () => {
     return null;
   };
 
-  const updateNickName = async (nickname: string) => {
+  const updateNickName = async (
+    nickname: string,
+    accessToken: string | null,
+  ) => {
     if (userInfo !== null) {
-      const response = await doUpdateNickName(userInfo.email, nickname);
+      const response = await doUpdateNickName(
+        userInfo.email,
+        nickname,
+        accessToken,
+      );
       if (response === 200) {
         setUserInfo({
           ...userInfo,
@@ -78,10 +89,29 @@ const ProfileViewModel = () => {
         const hashedRefreshToken = localStorage.getItem('refreshToken');
         if (hashedRefreshToken !== null) {
           const refreshToken = decryptToken(hashedRefreshToken, userInfo.email);
-          const accessToken = await doGetAccessToken(
+          const getAccessTokenResponse = await doGetAccessToken(
             userInfo.email,
             refreshToken,
           );
+          const newRefreshToken =
+            getAccessTokenResponse?.headers['refresh-token'];
+          const newAccessToken =
+            getAccessTokenResponse?.headers.authorization.substring(7);
+          if (newAccessToken !== undefined && newRefreshToken !== undefined) {
+            localStorage.setItem(
+              'refreshToken',
+              encryptToken(newRefreshToken, userInfo.email),
+            );
+            setAuthToken(newAccessToken);
+            const newResponse = await doUpdateNickName(
+              userInfo.email,
+              nickname,
+              newAccessToken,
+            );
+            if (newResponse === 200) {
+              setUserInfo({ ...userInfo, nickname });
+            }
+          }
         }
       }
     }
