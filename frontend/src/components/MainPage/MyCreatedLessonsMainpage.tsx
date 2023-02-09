@@ -9,7 +9,9 @@ import { LessonsResponse, Lesson } from '../../types/LessonsType';
 import privateInfoState from '../../models/PrivateInfoAtom';
 import AuthTokenState from '../../models/AuthTokenAtom';
 import useUserApi from '../../apis/UserApi';
-import { decryptToken } from '../../utils/Encrypt';
+import { encryptToken, decryptToken } from '../../utils/Encrypt';
+import { AccessToken } from '../../utils/AccessToken';
+
 // 로그인이 되었을 때만 이 컴포넌트가 보여짐
 // 내가 개설한 강의를 get으로 api요청 보냄
 // 강의가 있으면 강의카드를 보여주고
@@ -22,50 +24,63 @@ const MyCreatedLessonsMainpage = () => {
   const userInfo = useRecoilValue(privateInfoState);
   // 메인페이지 마운트 시 강의 정보들 요청
   const [accessToken, setAccessToken] = useRecoilState(AuthTokenState);
-  const handleGetAccessToken = async () => {
-    if (userInfo && userInfo.email) {
-      if (accessToken == null) {
-        const hashedRefreshToken = localStorage.getItem('refreshToken');
-        if (hashedRefreshToken) {
-          let refreshToken = decryptToken(hashedRefreshToken, userInfo.email);
-          if (refreshToken) {
-            const response = await doGetAccessToken(
-              userInfo.email,
-              refreshToken,
-            );
-            if (response && response.headers) {
-              refreshToken = response.headers{'refresh-token'};
-              localStorage.setItem('refreshToken', refreshToken);
-              const authtoken = response.headers.accesstoken.substring(7);
-              setAccessToken(authtoken);
-              getMyCreatedLessonsMainpage(
-                userInfo.email,
-                2,
-                0,
-                'TODO',
-                authtoken,
-              ).then((res: LessonsResponse) => {
-                console.log('내가 개설한 강의1', res.lessonInfoList);
-                setLessons(res.lessonInfoList);
-              });
-            }
-          }
-        }
-      } else {
-        getMyCreatedLessonsMainpage(
-          userInfo.email,
-          2,
-          0,
-          'TODO',
-          accessToken,
-        ).then((res: LessonsResponse) => {
-          console.log('내가 개설한 강의2', res.lessonInfoList);
-          setLessons(res.lessonInfoList);
-        });
-      }
-    }
-  };
+
+  // if (userInfo && userInfo.email) {
+  //   if (accessToken == null) {
+  //     const hashedRefreshToken = localStorage.getItem('refreshToken');
+  //     if (hashedRefreshToken) {
+  //       const refreshtoken = decryptToken(hashedRefreshToken, userInfo.email);
+  //       if (refreshtoken) {
+  //         const response = await doGetAccessToken(
+  //           userInfo.email,
+  //           refreshtoken,
+  //         );
+  //         if (response && response.headers) {
+  //           const authtoken = response?.headers.authorization.substring(7);
+  //           const newRefreshtoken = response?.headers['refresh-token'];
+  //           localStorage.setItem('refreshToken', newRefreshtoken);
+  //           setAccessToken(authtoken);
+  //           const encryptedToken = encryptToken(
+  //             newRefreshtoken,
+  //             userInfo.email,
+  //           );
+  //           localStorage.setItem('refreshToken', encryptedToken);
+  //           getMyCreatedLessonsMainpage(
+  //             userInfo.email,
+  //             2,
+  //             0,
+  //             'TODO',
+  //             authtoken,
+  //           ).then((res: LessonsResponse) => {
+  //             console.log('내가 개설한 강의1', res.lessonInfoList);
+  //             setLessons(res.lessonInfoList);
+  //           });
+  //         }
+  //       }
+  //     }
+  //   } else {
+  //     getMyCreatedLessonsMainpage(
+  //       userInfo.email,
+  //       2,
+  //       0,
+  //       'TODO',
+  //       accessToken,
+  //     ).then((res: LessonsResponse) => {
+  //       console.log('내가 개설한 강의2', res.lessonInfoList);
+  //       setLessons(res.lessonInfoList);
+  //     });
+  //   }
+  // }
+
   useEffect(() => {
+    const handleGetAccessToken = async () => {
+      if (userInfo && userInfo.email) {
+        if (accessToken == null) {
+          const res = await AccessToken();
+          console.log('ddddddddd');
+        }
+      }
+    };
     handleGetAccessToken();
   }, []);
   //   if (userInfo && userInfo.email) {
