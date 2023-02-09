@@ -115,8 +115,8 @@ public class AuthController {
 		redisService.setValues(refreshToken, user.getAuth().getEmail());
 
 		try {
-			res.setHeader("accessToken", accessToken);
-			res.setHeader("refreshToken", refreshToken);
+			res.setHeader(JwtTokenUtil.HEADER_STRING, JwtTokenUtil.TOKEN_PREFIX + accessToken);
+			res.setHeader("Refresh-Token", refreshToken);
 		} catch (Exception e){
 			return ResponseEntity.status(403).body(BaseResponseBody.of(401, "TOKEN RESPONSE FAILED"));
 		}
@@ -165,11 +165,11 @@ public class AuthController {
 			@ApiResponse(code = 401, message = "인증 실패", response = InvalidErrorResponseBody.class),
 			@ApiResponse(code = 404, message = "사용자 없음", response = NotFoundErrorResponseBody.class)
 	})
-	public ResponseEntity<? extends BaseResponseBody> getAccessToken(@RequestHeader("refreshToken") String refreshToken, @RequestParam String email, HttpServletResponse res) {
+	public ResponseEntity<? extends BaseResponseBody> getAccessToken(@RequestHeader(JwtTokenUtil.HEADER_STRING) String refreshToken, @RequestParam String email, HttpServletResponse res) {
 		User user = userService.getUserByAuth(email);
 		if(user == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "USER NOT FOUND"));
 
-		if (!redisService.getValues(email).equals(refreshToken)) return ResponseEntity.status(401).body(BaseResponseBody.of(401, "INVALID TOKEN"));
+		if (!redisService.getValues(email).equals(refreshToken.substring(7))) return ResponseEntity.status(401).body(BaseResponseBody.of(401, "INVALID TOKEN"));
 
 		// 프론트로 보내줄 access, refresh token 생성
 		String afterATK = JwtTokenUtil.getToken(JwtTokenUtil.atkExpirationTime, email);
@@ -177,8 +177,8 @@ public class AuthController {
 
 		redisService.setValues(afterRTK, email);
 		try {
-			res.setHeader("accessToken", afterATK);
-			res.setHeader("refreshToken", afterRTK);
+			res.setHeader(JwtTokenUtil.HEADER_STRING, JwtTokenUtil.TOKEN_PREFIX + afterATK);
+			res.setHeader("Refresh-Token", afterRTK);
 		} catch (Exception e){
 			System.out.println(e.getStackTrace());
 			return ResponseEntity.status(401).body(BaseResponseBody.of(401, "TOKEN RESPONSE FAILED"));
@@ -247,8 +247,8 @@ public class AuthController {
 		redisService.setValues(refreshToken, email);
 
 		try {
-			res.setHeader("accessToken", accessToken);
-			res.setHeader("refreshToken", refreshToken);
+			res.setHeader(JwtTokenUtil.HEADER_STRING, JwtTokenUtil.TOKEN_PREFIX + accessToken);
+			res.setHeader("Refresh-Token", refreshToken);
 		} catch (Exception e){
 			return ResponseEntity.status(401).body(BaseResponseBody.of(401, "TOKEN RESPONSE FAILED"));
 		}
