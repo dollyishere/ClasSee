@@ -8,29 +8,27 @@ import AvTimerIcon from '@mui/icons-material/AvTimer';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import { LessonsResponse, Lesson } from '../types/LessonsType';
-import useViewModel from '../viewmodels/MainPageViewModel';
+import useMainPageViewModel from '../viewmodels/MainPageViewModel';
+import useProfileViewModel from '../viewmodels/ProfileViewModel';
 import privateInfoState from '../models/PrivateInfoAtom';
-
 import logo from '../assets/logo2.png';
 
 interface Props {
   lesson: Lesson;
 }
 const MyAppliedLessonCard = ({ lesson }: Props) => {
-  const { deleteMyAppliedLessonsMainpage } = useViewModel();
+  const { deleteMyAppliedLessonsMainpage, getLessonImage } =
+    useMainPageViewModel();
+  const { getProfileImage } = useProfileViewModel();
 
+  const [lessonImage, setLessonImage] = useState<string>(logo);
+  const [teacherImage, setTeacherImage] = useState<string>(logo);
   const [isBookMarked, setIsBookMarked] = useState(lesson.bookMarked);
-  // 북마크 아이콘 클릭 시 북마크 추가, 삭제 토글 버튼 함수
-  const getBookmarkStatus = (event: React.MouseEvent<HTMLElement>) => {
-    event.preventDefault();
-    setIsBookMarked(!isBookMarked);
-  };
+
   const [isHovered, setIsHovered] = useState(false);
-  // 강의 취소 버튼 클릭 시 모달 팝업을 위한 modalopen flag를 ture로 바꿈
   const userInfo = useRecoilValue(privateInfoState);
 
   const showModal = () => {
-    // setModalOpen(true);
     if (window.confirm('해당 강의를 정말 취소 하시겠습니까?')) {
       if (userInfo) {
         deleteMyAppliedLessonsMainpage(userInfo.email, lesson.lessonId).then(
@@ -42,6 +40,21 @@ const MyAppliedLessonCard = ({ lesson }: Props) => {
       console.log('test');
     }
   };
+
+  useEffect(() => {
+    console.log(lesson);
+    const getImage = async () => {
+      const lessonImageUrl = await getLessonImage(lesson.lessonId);
+      const teacherImageUrl = await getProfileImage(lesson.teacher);
+      if (lessonImageUrl) {
+        setLessonImage(lessonImageUrl);
+      }
+      if (teacherImageUrl) {
+        setTeacherImage(teacherImageUrl);
+      }
+    };
+    getImage();
+  });
   return (
     <div
       className="lesson__card"
@@ -56,11 +69,7 @@ const MyAppliedLessonCard = ({ lesson }: Props) => {
       <div className="lesson__backImg">
         <img className="lesson__img" src={logo} alt={lesson.name} />
         {/* 북마크 버튼 클릭 시 true, false 값변경으로 아이콘 변경 */}
-        <button
-          type="button"
-          onClick={getBookmarkStatus}
-          className="lesson__bookmark"
-        >
+        <button type="button" className="lesson__bookmark">
           {isBookMarked ? (
             <BookmarkIcon
               fontSize="large"
