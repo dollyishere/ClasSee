@@ -217,6 +217,22 @@ const LessonsApi = () => {
     }
     return null;
   };
+  const doGetBookmark = async (email: string) => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/bookmarks/${email}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+          },
+        },
+      );
+      return response.data;
+    } catch (error: any) {
+      console.error(error);
+    }
+    return null;
+  };
   const doCreateSchedule = async (
     createScheduleRequestBody: ScheduleRequest,
     lessonId: number,
@@ -269,6 +285,7 @@ const LessonsApi = () => {
     doSearchLessons,
     doCreateSchedule,
     doGetSchedule,
+    doGetBookmark,
   };
 };
 
