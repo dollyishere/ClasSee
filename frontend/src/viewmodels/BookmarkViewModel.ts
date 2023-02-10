@@ -1,7 +1,7 @@
 import { constSelector } from 'recoil';
 import useApi from '../apis/LessonsApi';
 
-const MyBookmarkViewModel = () => {
+const BookmarkViewModel = () => {
   const { doGetBookmark } = useApi();
   const getBookmark = async (email: string) => {
     const response = await doGetBookmark(email);
@@ -13,4 +13,4 @@ const MyBookmarkViewModel = () => {
   };
 };
 
-export default MyBookmarkViewModel;
+export default BookmarkViewModel;

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
-import { Pagination } from '@mui/material';
+import { Card, CardContent, Pagination } from '@mui/material';
 
 import PrivateInfoState from '../models/PrivateInfoAtom';
-import useViewModel from '../viewmodels/MyBookmarkViewModel';
+import useViewModel from '../viewmodels/BookmarkViewModel';
 import { Lesson } from '../types/LessonsType';
+import LessonCard from '../components/LessonCard';
 
 const MyBookmarkPage = () => {
   const [count, setCount] = useState<number>(0);
@@ -26,6 +27,7 @@ const MyBookmarkPage = () => {
       const getData = async () => {
         const data = await getBookmark(userInfo.email);
         setLessons(data);
+        console.log(data);
       };
       getData();
     }
@@ -33,17 +35,26 @@ const MyBookmarkPage = () => {
 
   return (
     <div className="my-bookmark-page">
-      북마크
-      <div className="my-bookmark-page__pagination">
-        <Pagination
-          variant="outlined"
-          count={count}
-          page={page}
-          shape="rounded"
-          size="large"
-          onChange={handlePageChange}
-        />
-      </div>
+      <Card className="my-bookmark-page__card">
+        <CardContent>
+          <div className="my-bookmark-page__title">북마크</div>
+          <div className="my-bookmark-page__lessons">
+            {lessons.map((lesson: Lesson) => (
+              <LessonCard lesson={lesson} key={lesson.lessonId} />
+            ))}
+          </div>
+          <div className="my-bookmark-page__pagination">
+            <Pagination
+              variant="outlined"
+              count={count}
+              page={page}
+              shape="rounded"
+              size="large"
+              onChange={handlePageChange}
+            />
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };
