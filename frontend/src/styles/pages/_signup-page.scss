@@ -1,63 +1,69 @@
 @use '../base/colors';
 
 // 회원가입 페이지 css
-#signup-page {
-  // 세로 가운데 정렬을 위해 flex container화
-  padding: 100px;
-  // 로고 이미지 css
-  img {
-    // 이미지 크기
-    width: 180px;
 
-    // 로고 이미지 가운데 정렬하기 위한 속성
-    margin: auto;
-    display: block;
-  }
+  .signup-page__container{
+    margin: 200px auto;
+    width: 400px;
+    padding: 30px 30px;
+    height: 850px;
+    align-items: center;
+    background-color: rgb(255, 255, 255);
+
+    .logo {
+      align-items: center;
+      padding: 0 30px;
+      img {
+        height: 50px;
+      }
+    }
+
+    .signup-list{
+      padding-left: 0px;
+    }
+  
 
   // 회원가입 내용 입력 폼
-  .signup-page__signup-form {
-    // input 태그가 가운데에 오기 위해 오른쪽으로 40px만큼 이동
-    position: relative;
-    left: 40px;
-
-    // 카드 내에서 폼이 차지하는 가로길이
-    width: 70%;
-
-    // 폼 가운데 정렬
-    margin: 0 auto;
-
-    // 폰트 크기
-    font-size: 24px;
-
+  
     // 입력 태그가 위치하는 행
     .signup-page__form--row {
       // 가로로 늘리기 위해 flex container로 만듦
-      display: flex;
 
       // 내부 아이템들을 세로 가운데 정렬
       align-items: center;
-      padding: 5px;
+      padding: 0px;
 
       // 입력 태그 옆에 있는 버튼
       .signup-page__input--button {
         // 오른쪽 남은 공간에서 가운데 정렬
-        margin: auto;
-
-        // 배경색
-        background-color: colors.$beige_color;
-
-        // 글자색
-        color: colors.$gray-color;
-
-        &:hover {
-          background-color: colors.$beige_color_focus;
-        }
+        padding: 10px 10px;
+      color: gray;
+      height: 40px;
+      width: 250px;
+      border-width: 0px;
+      border-radius: 10px;
+      background-color: colors.$beige_color;
+      box-shadow: 0 2px 4px gray;
+      transition: 0.1s;
+      font-size: 13px;
+      font-weight: bold;
+      line-height: 20px;
+      border: 0;
+      outline: 0;
+      margin: 5px;
+      &:hover {
+        cursor: pointer;
+        background-color: colors.$beige_color_focus;
+      }
       }
 
       // 생년월일을 위한 select 모음
       .signup-page__select {
         // 폼의 70만큼 차지하도록 가로길이 설정, 나머지 30은 버튼을 위한 부분
-        width: 70%;
+        width: 74%;
+
+        position: relative;
+
 
         // justify-contnet를 사용하기위해 flex container로 만듦
         display: flex;
@@ -69,14 +75,13 @@
       // select 태그
       .signup-page__select-item {
         // 가로길이 세로길이 설정
-        width: 30%;
-        height: 50px;
-
-        // 폰트 크기
-        font-size: 20px;
-
-        // 테두리
+        padding: 0px 10px;
+        height: 40px;
+        width: 250px;
+        margin: 10px;
+        border-width: 1px;
         border-color: colors.$gray_color;
+        font-size: 12px;
         border-radius: 10px;
 
         // 마우스 올리면 커서를 포인터로 변경
@@ -87,14 +92,40 @@
 
       // 통신사 선택 select
       #signup-page__select-item--TSP {
-        width: 25%;
+        position: relative;
+        left: 47px;
+        height: 40px;
+        width: 40%;
       }
 
       // 휴대전화 입력 폼
       #signup-page__input--phone {
-        width: 70%;
+        position: relative;
+        left: 48px;
+        height: 40px;
+        width: 60%;
       }
     }
+
+    #signup-page__select--birth-year{
+      position: relative;
+      left: 47px;
+      width: 90px;
+    }
+
+    #signup-page__select--birth-month{
+      position: relative;
+      left: 43px;
+      width: 80px;
+    }
+
+    #signup-page__select--birth-day{
+      position: relative;
+      left: 37px;
+      width: 80px;
+    }
+
+    
 
     // 각 행을 위한 리스트 아이템
     li {
@@ -102,31 +133,27 @@
       list-style: none;
 
       // 왼쪽 정렬
-      text-align: left;
+      text-align: center;
 
       // 아이템마다 일정 거리를 띄우기 위한 margin
-      margin: 0 0 30px 0;
+      margin: 0 0 0;
     }
 
     // 회원가입 정보 input 태그
     .signup-page__input {
       // 폼의 70%만큼 차지하도록 가로길이 설정, 나머지 30은 버튼을 위한 공간
-      width: 70%;
-
-      // select는 50px지만 padding이 5px씩 존재하기 때문에 높이는 40px
-      height: 40px;
-      padding: 5px;
-
-      // 테두리
-      border-radius: 10px;
-      border-width: 2px;
-      border-color: colors.$gray_color;
+      padding: 0px 10px;
+        height: 40px;
+        width: 230px;
+        margin: 10px;
+        border-width: 1px;
+        border-color: colors.$gray_color;
+        font-size: 12px;
+        border-radius: 10px;
 
       // 태그 바깥의 outline 제거
       outline: none;
 
-      // 폰트 크기
-      font-size: 24px;
     }
 
     // 회원가입 버튼
@@ -141,5 +168,6 @@
         background-color: colors.$theme_color_focus;
       }
     }
-  }
+  
 }
+

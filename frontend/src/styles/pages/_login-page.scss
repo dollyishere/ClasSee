@@ -2,9 +2,10 @@
 
 .login-page {
   height: 100%;
+  background-color: rgb(255, 255, 255);
   .login-page__container {
     margin: 200px auto;
-    width: 70%;
+    width: 400px;
     padding: 30px 30px;
     height: 400px;
     // width: 300px;
@@ -12,7 +13,7 @@
     // border-width: 1px;
     // border-color: colors.$gray_color;
     // border-style: solid;
-    background-color: white;
+    background-color: rgb(255, 255, 255);
     // text-align: center;
     .logo {
       align-items: center;
@@ -47,7 +48,7 @@
         border-width: 0;
         padding: 0 0px;
         margin-left: -25px;
-        position: relative; left: -20px; top: 7px;
+        position: relative; left: -20px; top: 8px;
         &:hover {
           cursor: pointer;
           color: black;
@@ -70,17 +71,60 @@
       }
     }
 
-    .login__find{
-      text-decoration: none;
-      font-size: 12px;
+    .find_pw_button{
+      padding: 10px 10px;
+      color: white;
+      height: 40px;
+      width: 110px;
+      border-width: 0px;
+      border-radius: 10px;
+      background-color: colors.$theme_color;
+      box-shadow: 0 2px 4px gray;
+      transition: 0.1s;
+      font-size: 13px;
       font-weight: bold;
+      line-height: 20px;
+      border: 0;
+      outline: 0;
+      margin: 5px;
+      &:hover {
+        cursor: pointer;
+        background-color: colors.$theme_color_focus;
+      }
+    }
+
+    .signup_button{
+      padding: 10px 10px;
+      color: white;
+      height: 40px;
+      width: 103px;
+      border-width: 0px;
+      border-radius: 10px;
+      background-color: colors.$theme_color;
+      box-shadow: 0 2px 4px gray;
+      transition: 0.1s;
+      font-size: 13px;
+      font-weight: bold;
+      line-height: 20px;
+      border: 0;
+      outline: 0;
+      margin: 5px;
+      &:hover {
+        cursor: pointer;
+        background-color: colors.$theme_color_focus;
+      }
+    }
+
+    .login__find{
+      font-size: 12px;
+      font-family:'Franklin Gothic Medium', 'Arial Narrow';
     }
 
     .login__button {
       padding: 10px 10px;
-      color: white;
+      color: rgb(255, 255, 255);
       height: 40px;
-      width: 200px;
+      width: 225px;
       border-width: 0px;
       border-radius: 10px;
       background-color: colors.$theme_color;
