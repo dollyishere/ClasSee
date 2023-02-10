@@ -233,6 +233,9 @@ const LessonDetailPage = () => {
               ) : (
                 <div className="lesson-detail-page__review">
                   <h2>강의 후기</h2>
+                  <div>
+                    <ReviewsInput />
+                  </div>
                 </div>
               )}
             </div>
