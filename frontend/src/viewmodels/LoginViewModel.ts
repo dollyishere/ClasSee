@@ -19,6 +19,7 @@ const LoginViewModel = () => {
     await doLogout(email);
 
     setPrivateInfo(null);
+    localStorage.setItem('accessToken', '');
   };
 
   const login = async (email: string, password: string) => {
