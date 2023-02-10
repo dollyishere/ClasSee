@@ -24,7 +24,7 @@ const Header = () => {
       const target = searchbarRef.current as HTMLInputElement;
 
       // 검색 로직
-      console.log(target.value);
+      navigate(`/lessons/search/${target.value}`);
 
       // 검색창을 빈칸으로
       target.value = '';
