@@ -4,6 +4,9 @@ import { Card, CardContent } from '@mui/material';
 
 import useViewModel from '../viewmodels/SignUpViewModel';
 
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+
 import { createSalt, createHashedPassword } from '../utils/Encrypt';
 
 import logo from '../assets/logo.png';
@@ -224,22 +227,24 @@ const SignUpPage = () => {
   };
 
   return (
-    <div className="page" id="signup-page">
+    <div className="page">
+      <Header />
       {/* mui card */}
-      <Card sx={{ width: 900, marginX: 'auto' }}>
+      <Card className="signup-page__container">
         <CardContent>
           {/* 메인 페이지로 이동하는 로고 */}
           <Link to="/">
-            <img alt="" src={logo} />
+            <div className="logo">
+              <img alt="" src={logo} />
+            </div>
           </Link>
           <form
             className="signup-page__signup-form"
             onSubmit={handleSignUpSubmit}
           >
-            <ul>
+            <ul className="signup-list">
               <li>
                 <label htmlFor="#signup-page__input--id">
-                  <div>아이디</div>
                   <div className="signup-page__form--row">
                     <input
                       type="email"
@@ -260,7 +265,6 @@ const SignUpPage = () => {
               </li>
               <li>
                 <label htmlFor="#signup-page__input--pw">
-                  <div>비밀번호</div>
                   <input
                     type="password"
                     className="signup-page__input"
@@ -272,7 +276,6 @@ const SignUpPage = () => {
               </li>
               <li>
                 <label htmlFor="#signup-page__input--pw-chk">
-                  <div>비밀번호 확인</div>
                   <input
                     type="password"
                     className="signup-page__input"
@@ -284,7 +287,6 @@ const SignUpPage = () => {
               </li>
               <li>
                 <label htmlFor="#signup-page__input--name">
-                  <div>이름</div>
                   <input
                     type="text"
                     className="signup-page__input"
@@ -295,8 +297,7 @@ const SignUpPage = () => {
                 </label>
               </li>
               <li>
-                <div>
-                  <div>생년월일</div>
+                <div className="signup-page__select--birth">
                   <div className="signup-page__form--row">
                     <div className="signup-page__select">
                       <select
@@ -329,7 +330,6 @@ const SignUpPage = () => {
               </li>
               <li>
                 <label htmlFor="#signup-page__input--nickname">
-                  <div>닉네임</div>
                   <input
                     type="text"
                     className="signup-page__input"
@@ -341,7 +341,6 @@ const SignUpPage = () => {
               </li>
               <li>
                 <label htmlFor="#signup-page__input--address">
-                  <div>주소</div>
                   <input
                     type="text"
                     className="signup-page__input"
@@ -353,7 +352,6 @@ const SignUpPage = () => {
               </li>
               <li>
                 <label htmlFor="#signup-page__input--phone">
-                  <div>휴대전화</div>{' '}
                   <div className="signup-page__form--row">
                     <div className="signup-page__select">
                       <select
@@ -391,6 +389,7 @@ const SignUpPage = () => {
                   </div>
                 </label>
               </li>
+              <br />
               <li>
                 <button type="submit" className="button signup-page__submit">
                   가입하기
@@ -400,6 +399,7 @@ const SignUpPage = () => {
           </form>
         </CardContent>
       </Card>
+      <Footer />
     </div>
   );
 };

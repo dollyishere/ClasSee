@@ -11,6 +11,7 @@ import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import useViewModel from '../viewmodels/LoginViewModel';
 
 import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 import logo from '../assets/logo.png';
 
@@ -108,11 +109,15 @@ const LoginPage = () => {
           {/* 비밀번호 & 회원가입 페이지로 이동 */}
           <div className="login__find">
             <br />
-            <Link to="/find_pw" style={{ textDecoration: 'none' }}>
-              비밀번호 찾기&nbsp;&nbsp;
+            <Link to="/find_pw">
+              <button type="button" className="find_pw_button">
+                비밀번호 찾기
+              </button>
             </Link>
-            <Link to="/signup" style={{ textDecoration: 'none' }}>
-              &nbsp;&nbsp;회원가입
+            <Link to="/signup">
+              <button type="button" className="signup_button">
+                회원가입
+              </button>
             </Link>
           </div>
           <br />
@@ -131,6 +136,7 @@ const LoginPage = () => {
           <div className="kakao__text">카카오 로그인</div>
         </button>
       </Card>
+      <Footer />
     </div>
   );
 };
