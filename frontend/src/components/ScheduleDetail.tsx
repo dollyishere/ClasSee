@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -10,10 +10,10 @@ import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 
-const ScheduleDetail = () => {
+const ScheduleDetail = (schedule: any) => {
   return (
     <div>
-      <div>예정</div>
+      <div>schedule</div>
     </div>
   );
 };

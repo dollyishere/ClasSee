@@ -78,6 +78,7 @@ const LessonDetailPage = () => {
       lessonId: Number(lessonId.lessonId),
     };
     const getTeacherImage = async () => {
+      console.log(lessonDetailState.teacher);
       const imageUrl = await getProfileImage(lessonDetailState.teacher);
       setTeacherImgState(imageUrl);
     };
@@ -137,6 +138,7 @@ const LessonDetailPage = () => {
                   : lessonDetailState.runningTime}{' '}
                 시간
               </p>
+              {/* <h3>{lessonDetailState.}</h3> */}
               {teacherImgState === null ? (
                 <div className="profile-page__image--not">
                   <PersonOutline
@@ -202,7 +204,7 @@ const LessonDetailPage = () => {
                   <h2>준비물</h2>
                   <div className="lesson-detail-page__checklist">
                     {checkListImgState.map((image: any) => (
-                      <img src={image} alt={image} />
+                      <img className="lesson_img" src={image} alt={image} />
                     ))}
                     <div>{lessonDetailState.cklsDescription}</div>
                   </div>

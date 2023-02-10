@@ -12,9 +12,11 @@ import {
   LessonDetailResponse,
   CurriculumsType,
   ImageListType,
+  GetScheduleRequest,
 } from '../types/LessonsType';
 
 import LessonDetailViewModel from '../viewmodels/LessonDetailViewModel';
+import ScheduleViewModel from '../viewmodels/ScheduleViewModel';
 
 import PrivateInfoState from '../models/PrivateInfoAtom';
 
@@ -52,6 +54,7 @@ const MyCreatedLessonDetailPage = () => {
   // api 실행할 시 실행될 함수 가져옴
   const { getLessonDetail, getPamphletImgUrls, getCheckImgUrls } =
     LessonDetailViewModel();
+  const { getSchedule } = ScheduleViewModel();
 
   // 컴포넌트 전환에 필요한 useNavigate 재할당
   const navigate = useNavigate();
@@ -105,7 +108,25 @@ const MyCreatedLessonDetailPage = () => {
           alert(res?.message);
         }
       };
+      const getLessonSchedule = async () => {
+        const checkScheduleRequestBody: GetScheduleRequest = {
+          regDate: '',
+          lessonId: Number(lessonId.lessonId),
+        };
+        const res = await getSchedule(checkScheduleRequestBody);
+        if (res?.message === 'SUCCESS') {
+          if (res.lessonSchedules.length) {
+            setSchedulesListState(res.lessonSchedules);
+          } else {
+            // 만약 해당 날짜에 스케줄이 없다면, scheduleList를 초기화함
+            setSchedulesListState([]);
+          }
+        } else {
+          alert('다시 시도해주세요.');
+        }
+      };
       fetchData();
+      getLessonSchedule();
     }
   }, []);
 
@@ -186,7 +207,7 @@ const MyCreatedLessonDetailPage = () => {
                 <li>수정/삭제</li>
               </ul>
               {schedulesListState.map((schedule: any) => (
-                <ScheduleDetail />
+                <ScheduleDetail schedule={schedule} />
               ))}
               {scheduleInputState ? (
                 <CreateScheduleComponent

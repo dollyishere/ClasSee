@@ -41,15 +41,18 @@ const LessonsApi = () => {
     lessonId: number,
   ) => {
     try {
-      console.log(lessonId);
       const response = await axios.put<Response>(
         `${process.env.REACT_APP_SERVER_URI}/api/v1/lessons/${lessonId}`,
         updateLessonRequestBody,
+        {
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+          },
+        },
       );
       return response.data;
     } catch (error: any) {
       console.error(error);
-      console.log(updateLessonRequestBody);
     }
     return null;
   };
