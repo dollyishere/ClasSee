@@ -217,16 +217,21 @@ const LessonsApi = () => {
     }
     return null;
   };
-  const doGetBookmark = async (email: string) => {
+  const doGetBookmark = async (
+    email: string,
+    limit: number,
+    offset: number,
+  ) => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_SERVER_URI}/api/v1/bookmarks/${email}`,
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/bookmarks/${email}?limit=${limit}&offset=${offset}`,
         {
           headers: {
             Authorization: `Bearer ${accesstoken}`,
           },
         },
       );
+      console.log(response);
       return response.data;
     } catch (error: any) {
       console.error(error);
