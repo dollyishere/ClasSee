@@ -15,25 +15,22 @@ import LessonsPage from './pages/LessonsPage';
 import useUserApi from './apis/UserApi';
 import privateInfoState from './models/PrivateInfoAtom';
 import { AccessToken } from './utils/AccessToken';
-import AuthTokenState from './models/AuthTokenAtom';
 
 const Router = () => {
   const { doGetAccessToken } = useUserApi();
   const userInfo = useRecoilValue(privateInfoState);
-  const [accessToken, setAccessToken] = useRecoilState(AuthTokenState);
-
-  // useEffect(() => {
-  //   const reAccessToken = async () => {
-  //     if (userInfo) {
-  //       const response = await AccessToken(
-  //         userInfo,
-  //         setAccessToken,
-  //         doGetAccessToken,
-  //       );
-  //     }
-  //   };
-  //   reAccessToken();
-  // }, []);
+  // 25분에 한번 accesstoken을 재발급받아온다
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const reAccessToken = async () => {
+        if (userInfo) {
+          const response = await AccessToken(userInfo, doGetAccessToken);
+          console.log(response);
+        }
+      };
+      reAccessToken();
+    }, 1500000);
+  }, []);
   return (
     <Routes>
       <Route path="/" element={<MainPage />} />
