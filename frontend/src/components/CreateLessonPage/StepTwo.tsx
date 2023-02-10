@@ -5,6 +5,8 @@ import { ImageUploadProps } from '../../types/LessonsType';
 
 const StepTwo = ({
   limitNumber,
+  deleteImgList,
+  setDeleteImgList,
   imgSrcListState,
   setImgSrcListState,
   imgFileListState,
@@ -15,6 +17,8 @@ const StepTwo = ({
       <h2>Step 2. 소개 사진 등록</h2>
       {/* props로 ImageUpload에 전달할 사진 개수를 limit 변수에 지정 */}
       <ImageUpload
+        deleteImgList={deleteImgList}
+        setDeleteImgList={setDeleteImgList}
         imgSrcListState={imgSrcListState}
         setImgSrcListState={setImgSrcListState}
         limitNumber={limitNumber}

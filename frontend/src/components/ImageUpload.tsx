@@ -12,6 +12,8 @@ import { ImageUploadProps } from '../types/LessonsType';
 
 const ImageUpload = ({
   limitNumber,
+  deleteImgList,
+  setDeleteImgList,
   imgSrcListState,
   setImgSrcListState,
   imgFileListState,
@@ -52,14 +54,16 @@ const ImageUpload = ({
 
   // 마이너스 버튼 클릭 시, 해당하는 이미지는 삭제됨
   const handleDeleteImage = async (id: number) => {
-    setImgSrcListState(imgSrcListState.filter((_, index) => index !== id));
-    setImgFileListState(imgFileListState.filter((_, index) => index !== id));
     const deletedImg = imgFileListState.filter(
       (_, index) => index === id,
     )[0] as any;
-    const imageRef = ref(storage, `${encodeURI(deletedImg.fullPath)}`);
-    const goDeleteImg = await deleteObject(imageRef);
-    alert('사진이 삭제되었습니다!');
+    if (!(deletedImg instanceof Blob)) {
+      setDeleteImgList([...deleteImgList, deletedImg]);
+      alert('사진이 삭제되었습니다!');
+      console.log(deleteImgList);
+    }
+    setImgSrcListState(imgSrcListState.filter((_, index) => index !== id));
+    setImgFileListState(imgFileListState.filter((_, index) => index !== id));
   };
 
   return (

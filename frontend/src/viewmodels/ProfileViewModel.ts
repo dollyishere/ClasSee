@@ -70,49 +70,14 @@ const ProfileViewModel = () => {
     return null;
   };
 
-  const updateNickName = async (
-    nickname: string,
-    accessToken: string | null,
-  ) => {
+  const updateNickName = async (nickname: string) => {
     if (userInfo !== null) {
-      const response = await doUpdateNickName(
-        userInfo.email,
-        nickname,
-        accessToken,
-      );
+      const response = await doUpdateNickName(userInfo.email, nickname);
       if (response === 200) {
         setUserInfo({
           ...userInfo,
           nickname,
         });
-      } else if (response === 403) {
-        const hashedRefreshToken = localStorage.getItem('refreshToken');
-        if (hashedRefreshToken !== null) {
-          const refreshToken = decryptToken(hashedRefreshToken, userInfo.email);
-          const getAccessTokenResponse = await doGetAccessToken(
-            userInfo.email,
-            refreshToken,
-          );
-          const newRefreshToken =
-            getAccessTokenResponse?.headers['refresh-token'];
-          const newAccessToken =
-            getAccessTokenResponse?.headers.authorization.substring(7);
-          if (newAccessToken !== undefined && newRefreshToken !== undefined) {
-            localStorage.setItem(
-              'refreshToken',
-              encryptToken(newRefreshToken, userInfo.email),
-            );
-            setAuthToken(newAccessToken);
-            const newResponse = await doUpdateNickName(
-              userInfo.email,
-              nickname,
-              newAccessToken,
-            );
-            if (newResponse === 200) {
-              setUserInfo({ ...userInfo, nickname });
-            }
-          }
-        }
       }
     }
   };
