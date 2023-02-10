@@ -161,7 +161,7 @@ const SearchBox = ({
                 >
                   <option value="default">선택</option>
                   {hours.map((hour: number) => (
-                    <option value={hour}>
+                    <option value={hour} key={hour}>
                       {String(hour).padStart(2, '0')} : 00
                     </option>
                   ))}
@@ -178,7 +178,7 @@ const SearchBox = ({
                 >
                   <option value="default">선택</option>
                   {hours.map((hour: number) => (
-                    <option value={hour}>
+                    <option value={hour} key={hour}>
                       {String(hour).padStart(2, '0')} : 00
                     </option>
                   ))}

@@ -20,33 +20,6 @@ const LessonsPage = () => {
 
   // 카테고리를 알기 위한 location
   const location = useLocation();
-  let initialCategory;
-  switch (location.pathname.split('/')[2]) {
-    case 'craft':
-      initialCategory = '공예';
-      break;
-    case 'drawing':
-      initialCategory = '드로잉';
-      break;
-    case 'music':
-      initialCategory = '음악';
-      break;
-    case 'exercise':
-      initialCategory = '운동';
-      break;
-    case 'cook':
-      initialCategory = '요리';
-      break;
-    case 'beauty':
-      initialCategory = '뷰티';
-      break;
-    case 'etc':
-      initialCategory = '기타';
-      break;
-    default:
-      initialCategory = '';
-      break;
-  }
 
   // 현재 페이지에 보여지는 강의 배열
   const [lessons, setLessons] = useState<Array<Lesson> | null>();
@@ -57,7 +30,7 @@ const LessonsPage = () => {
   // 전체 페이지 개수
   const [count, setCount] = useState<number>(0);
 
-  const [category, setCategory] = useState<string | undefined>(initialCategory);
+  const [category, setCategory] = useState<string | undefined>(undefined);
   const [dayOfWeek, setDayOfWeek] = useState<Array<boolean>>(
     new Array(7).fill(false),
   );
@@ -70,7 +43,6 @@ const LessonsPage = () => {
   const [minStartTime, setMinStartTime] = useState<number | undefined>(
     undefined,
   );
-  const [keyword, setKeyword] = useState<string | undefined>(undefined);
 
   const sidebarItems = [
     { name: '전체 강의', path: '/lessons' },
@@ -109,6 +81,10 @@ const LessonsPage = () => {
     }
     day = day.substring(0, day.length - 1);
 
+    let keyword;
+    if (location.pathname.split('/')[2] === 'search') {
+      keyword = location.pathname.split('/').at(3);
+    }
     const data = await searchLessons({
       limit,
       offset,
@@ -128,8 +104,36 @@ const LessonsPage = () => {
   };
 
   useEffect(() => {
+    let currentCategory;
+    switch (location.pathname.split('/')[2]) {
+      case 'craft':
+        currentCategory = '공예';
+        break;
+      case 'drawing':
+        currentCategory = '드로잉';
+        break;
+      case 'music':
+        currentCategory = '음악';
+        break;
+      case 'exercise':
+        currentCategory = '운동';
+        break;
+      case 'cook':
+        currentCategory = '요리';
+        break;
+      case 'beauty':
+        currentCategory = '뷰티';
+        break;
+      case 'etc':
+        currentCategory = '기타';
+        break;
+      default:
+        currentCategory = '';
+        break;
+    }
+    setCategory(currentCategory);
     search();
-  }, [page, category]);
+  }, [page, category, location.pathname]);
 
   return (
     <div className="lessons-page">
