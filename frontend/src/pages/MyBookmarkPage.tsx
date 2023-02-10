@@ -25,9 +25,11 @@ const MyBookmarkPage = () => {
   useEffect(() => {
     if (userInfo !== null) {
       const getData = async () => {
-        const data = await getBookmark(userInfo.email);
-        setLessons(data);
-        console.log(data);
+        const limit = 8;
+        const offset = (page - 1) * limit;
+        const data = await getBookmark(userInfo.email, limit, offset);
+        setLessons(data.lessonInfoList);
+        setCount(Math.ceil(data.count / limit));
       };
       getData();
     }
@@ -40,7 +42,12 @@ const MyBookmarkPage = () => {
           <div className="my-bookmark-page__title">북마크</div>
           <div className="my-bookmark-page__lessons">
             {lessons.map((lesson: Lesson) => (
-              <LessonCard lesson={lesson} key={lesson.lessonId} />
+              <div
+                className="my-bookmark-page__lesson-card"
+                key={lesson.lessonId}
+              >
+                <LessonCard lesson={lesson} />
+              </div>
             ))}
           </div>
           <div className="my-bookmark-page__pagination">

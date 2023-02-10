@@ -13,7 +13,9 @@
       margin: 0 auto;
       display: flex;
       flex-wrap: wrap;
-      justify-content: space-between;
+      .my-bookmark-page__lesson-card {
+        margin: 10px;
+      }
     }
     .my-bookmark-page__pagination {
       display: flex;
