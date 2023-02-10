@@ -34,6 +34,7 @@ public class OrdersController {
             @ApiResponse(code = 401, message = "인증 실패", response = InvalidErrorResponseBody.class),
             @ApiResponse(code = 403, message = "거절", response = ForbiddenErrorResponseBody.class),
             @ApiResponse(code = 404, message = "해당 자료 없음", response = NotFoundErrorResponseBody.class),
+            @ApiResponse(code = 409, message = "중복", response = DuplicateErrorResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = ServerErrorResponseBody.class)
     })
     public ResponseEntity<? extends BaseResponseBody> registOrders(@RequestBody OrdersRegistPostReq ordersRegistPostReq) throws Exception {
@@ -46,6 +47,8 @@ public class OrdersController {
             return ResponseEntity.status(404).body(BaseResponseBody.of(404,"openLesson not found"));
         } catch (LessonException l){
             return ResponseEntity.status(404).body(BaseResponseBody.of(404,"lesson not found"));
+        } catch (OrdersException o){
+            return ResponseEntity.status(409).body(BaseResponseBody.of(409,"duplicated orders"));
         } catch(Exception e){
             return ResponseEntity.status(403).body(BaseResponseBody.of(403,"payment forbidden"));
         }

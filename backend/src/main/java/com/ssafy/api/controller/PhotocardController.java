@@ -76,7 +76,7 @@ public class PhotocardController {
         } catch (PhotocardException p){
             return ResponseEntity.status(404).body(BaseResponseBody.of(404, "photocard not found"));
         } catch (LikesException l) {
-            return ResponseEntity.status(409).body(BaseResponseBody.of(409, "likes duplicated"));
+            return ResponseEntity.status(409).body(BaseResponseBody.of(409, "duplicated likes"));
         } catch (Exception e){
             return ResponseEntity.status(404).body(BaseResponseBody.of(404,"unexpected exception"));
         }

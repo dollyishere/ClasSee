@@ -29,6 +29,15 @@ public class OrdersRepositorySupport {
 
     public Orders findOne(Long id){ return em.find(Orders.class, id); }
 
+    public Orders findOne(Long user_id, Long openLesson_id){
+        Orders orders = jpaQueryFactory
+                .selectFrom(qOrders)
+                .where(qOrders.user.id.eq(user_id), qOrders.openLesson.id.eq(openLesson_id))
+                .fetchOne();
+
+        return orders;
+    }
+
     public OpenLesson findOneOpenLesson(Long id){ return em.find(OpenLesson.class, id); }
 
     public Lesson findOneLesson(Long id){ return em.find(Lesson.class, id); }
