@@ -71,7 +71,7 @@ const ImageUpload = ({
       <div className="img__container">
         {/* 저장해둔 이미지들을 map을 통해 순회하면서 화면에 이미지 출력 */}
         {imgSrcListState.map((image: string, id: number) => (
-          <div>
+          <div id={image}>
             <img className="img__item" src={image} alt={`${image}-${id}`} />
             <RemoveCircleOutlineIcon
               className="img__delete"

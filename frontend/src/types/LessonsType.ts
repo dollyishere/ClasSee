@@ -135,7 +135,7 @@ export interface LessonDetailRequest {
 }
 
 export interface LessonDetailResponse extends Response {
-  teacherEmail: string;
+  teacher: string;
   lessonName: string;
   cklsDescription: string;
   lessonDescription: string;

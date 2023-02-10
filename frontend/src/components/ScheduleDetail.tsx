@@ -11,8 +11,6 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 
 const ScheduleDetail = () => {
-  const theme = useTheme();
-
   return (
     <div>
       <div>예정</div>

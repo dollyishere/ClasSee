@@ -20,7 +20,6 @@ const BasicRating = ({
         alignItems: 'center',
       }}
     >
-      <Typography component="legend">Controlled</Typography>
       <Rating
         name="simple-controlled"
         value={ratingValue}
@@ -28,7 +27,7 @@ const BasicRating = ({
         onChange={(event: any) => {
           handleRatingValue(event);
         }}
-        disabled={disableValue}
+        readOnly={disableValue}
       />
       {ratingValue !== null && <Box sx={{ ml: 2 }}>{ratingValue}</Box>}
     </Box>

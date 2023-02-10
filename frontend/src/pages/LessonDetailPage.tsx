@@ -4,6 +4,9 @@ import { useRecoilValue } from 'recoil';
 
 import { Stack, Button } from '@mui/material';
 import { PersonOutline } from '@mui/icons-material';
+import { Carousel } from 'react-responsive-carousel';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import StickyBox from 'react-sticky-box';
 
 import {
   LessonDetailRequest,
@@ -31,7 +34,7 @@ const LessonDetailPage = () => {
     useState<LessonDetailResponse>({
       message: '' as string,
       statusCode: 0 as number,
-      teacherEmail: '' as string,
+      teacher: '' as string,
       lessonName: '' as string,
       cklsDescription: '' as string,
       lessonDescription: '' as string,
@@ -54,6 +57,7 @@ const LessonDetailPage = () => {
   const { getLessonDetail, getPamphletImgUrls, getCheckImgUrls } =
     LessonDetailViewModel();
   const { getProfileImage } = useViewModel();
+  const [isReady, setIsReady] = useState(false);
 
   // 강의 개설을 신청하는 유저의 이메일 정보를 useRecoilValue를 통해 불러옴
   const userInfo = useRecoilValue(privateInfoState);
@@ -74,7 +78,7 @@ const LessonDetailPage = () => {
       lessonId: Number(lessonId.lessonId),
     };
     const getTeacherImage = async () => {
-      const imageUrl = await getProfileImage(lessonDetailState.teacherEmail);
+      const imageUrl = await getProfileImage(lessonDetailState.teacher);
       setTeacherImgState(imageUrl);
     };
     const fetchData = async () => {
@@ -85,12 +89,12 @@ const LessonDetailPage = () => {
         // firebase의 해당 강의가 저장된 폴더의 url에 접근하여 해당하는 이미지 파일을 각각 다운받음
         // 강의 관련 사진 다운로드해서 pamphletsImgState에 저장
         getPamphletImgUrls(res.pamphlets, Number(lessonId.lessonId)).then(
-          (urls: any[]) => {
+          (urls: any) => {
             setPamphletsImgState(urls);
           },
         );
         getCheckImgUrls(res.checkLists, Number(lessonId.lessonId)).then(
-          (urls: any[]) => {
+          (urls: any) => {
             setCheckListImgState(urls);
           },
         );
@@ -100,126 +104,145 @@ const LessonDetailPage = () => {
     };
     fetchData();
     getTeacherImage();
+    setIsReady(true);
+    console.log(pamphletsImgState);
   }, []);
   return (
-    <div className="lesson-detail-page__container">
-      <Header />
-      <div className="lesson-detail-page__header">
-        <div className="lesson-detail-page-img-slider">
-          {pamphletsImgState.map((image: any) => (
-            <img src={image} alt={image} />
-          ))}
-        </div>
-        <div className="lesson-detail-page__info">
-          <h1>{lessonDetailState.lessonName}</h1>
-          <p>
-            {lessonDetailState.runningTime === 0
-              ? '미정'
-              : lessonDetailState.runningTime}{' '}
-            시간
-          </p>
-          {teacherImgState === null ? (
-            <div className="profile-page__image--not">
-              <PersonOutline
-                style={{
-                  fontSize: '200px',
-                }}
-              />
+    <div>
+      {isReady ? (
+        <div className="lesson-detail-page__container">
+          <Header />
+          <div className="lesson-detail-page__header">
+            <div className="lesson-detail-page-img-slider">
+              <div className="carousel-wrapper">
+                <Carousel infiniteLoop useKeyboardArrows autoPlay width={300}>
+                  {pamphletsImgState.map((image: any) => {
+                    return (
+                      <div>
+                        <img src={image} alt={image} />
+                      </div>
+                    );
+                  })}
+                </Carousel>
+              </div>
+              {/* {pamphletsImgState.map((image: any) => (
+                <img src={image} alt={image} />
+              ))} */}
             </div>
-          ) : (
-            <img
-              src={teacherImgState}
-              alt={teacherImgState}
-              className="profile-page__image--not"
-            />
-          )}
-          <p>{lessonDetailState.userName}</p>
-          <p>
-            {lessonDetailState.score ? (
-              <BasicRating
-                ratingValue={lessonDetailState.score}
-                setRatingValue={setRatingValue}
-                disableValue={disableValue}
-              />
-            ) : (
-              '평가가 없어요'
-            )}
-          </p>
-          <div>{lessonDetailState.category}</div>
-        </div>
-      </div>
-      <div className="lesson-detail-page__body">
-        <div className="lesson-detail-page__content">
-          <div className="lesson-detail-page__button">
-            <Stack spacing={2} direction="row">
-              <Button
-                variant={changeVisiable ? 'outlined' : 'contained'}
-                onClick={() => setChangeVisiable(false)}
-              >
-                강의 상세
-              </Button>
-              <Button
-                variant={changeVisiable ? 'contained' : 'outlined'}
-                onClick={() => setChangeVisiable(true)}
-              >
-                강의 후기
-              </Button>
-            </Stack>
-          </div>
-          {!changeVisiable ? (
-            <div className="lesson-detail-page__box">
-              <h2>강의 소개</h2>
-              <div className="lesson-detail-page__lesson-description">
-                <p>{lessonDetailState.lessonDescription}</p>
-              </div>
-              <h2>커리큘럼</h2>
-              <div className="lesson-detail-page__curriculum">
-                {lessonDetailState.curriculums.map((curri: any) => (
-                  <h3>
-                    Step{curri.stage + 1}. {curri.description}
-                  </h3>
-                ))}
-              </div>
-              <h2>준비물</h2>
-              <div className="lesson-detail-page__checklist">
-                {checkListImgState.map((image: any) => (
-                  <img src={image} alt={image} />
-                ))}
-                <div>{lessonDetailState.cklsDescription}</div>
-              </div>
-              <h2>강사 소개</h2>
-              <div className="lesson-detail-page__teacher">
-                {teacherImgState === null ? (
-                  <div className="profile-page__image--not">
-                    <PersonOutline
-                      style={{
-                        fontSize: '200px',
-                      }}
-                    />
-                  </div>
-                ) : (
-                  <img
-                    src={teacherImgState}
-                    alt={teacherImgState}
-                    className="profile-page__image--not"
+            <div className="lesson-detail-page__info">
+              <h1>{lessonDetailState.lessonName}</h1>
+              <p>
+                {lessonDetailState.runningTime === 0
+                  ? '미정'
+                  : lessonDetailState.runningTime}{' '}
+                시간
+              </p>
+              {teacherImgState === null ? (
+                <div className="profile-page__image--not">
+                  <PersonOutline
+                    style={{
+                      fontSize: '200px',
+                    }}
                   />
-                )}
-                <div className="lesson-detail-page__teacher-text">
-                  <h3>{lessonDetailState.userName}</h3>
-                  <p>{lessonDetailState.userDesciption}</p>
                 </div>
+              ) : (
+                <img
+                  src={teacherImgState}
+                  alt={teacherImgState}
+                  className="profile-page__image--not"
+                />
+              )}
+              <p>{lessonDetailState.userName}</p>
+              <p>
+                {lessonDetailState.score ? (
+                  <BasicRating
+                    ratingValue={lessonDetailState.score}
+                    setRatingValue={setRatingValue}
+                    disableValue={disableValue}
+                  />
+                ) : (
+                  '평가가 없어요'
+                )}
+              </p>
+              <div>{lessonDetailState.category}</div>
+            </div>
+          </div>
+          <div className="lesson-detail-page__body">
+            <div className="lesson-detail-page__content">
+              <div className="lesson-detail-page__button">
+                <Stack spacing={2} direction="row">
+                  <Button
+                    variant={changeVisiable ? 'outlined' : 'contained'}
+                    onClick={() => setChangeVisiable(false)}
+                  >
+                    강의 상세
+                  </Button>
+                  <Button
+                    variant={changeVisiable ? 'contained' : 'outlined'}
+                    onClick={() => setChangeVisiable(true)}
+                  >
+                    강의 후기
+                  </Button>
+                </Stack>
               </div>
+              {!changeVisiable ? (
+                <div className="lesson-detail-page__box">
+                  <h2>강의 소개</h2>
+                  <div className="lesson-detail-page__lesson-description">
+                    <p>{lessonDetailState.lessonDescription}</p>
+                  </div>
+                  <h2>커리큘럼</h2>
+                  <div className="lesson-detail-page__curriculum">
+                    {lessonDetailState.curriculums.map((curri: any) => (
+                      <h3>
+                        Step{curri.stage + 1}. {curri.description}
+                      </h3>
+                    ))}
+                  </div>
+                  <h2>준비물</h2>
+                  <div className="lesson-detail-page__checklist">
+                    {checkListImgState.map((image: any) => (
+                      <img src={image} alt={image} />
+                    ))}
+                    <div>{lessonDetailState.cklsDescription}</div>
+                  </div>
+                  <h2>강사 소개</h2>
+                  <div className="lesson-detail-page__teacher">
+                    {teacherImgState === null ? (
+                      <div className="profile-page__image--not">
+                        <PersonOutline
+                          style={{
+                            fontSize: '200px',
+                          }}
+                        />
+                      </div>
+                    ) : (
+                      <img
+                        src={teacherImgState}
+                        alt={teacherImgState}
+                        className="profile-page__image--not"
+                      />
+                    )}
+                    <div className="lesson-detail-page__teacher-text">
+                      <h3>{lessonDetailState.userName}</h3>
+                      <p>{lessonDetailState.userDesciption}</p>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="lesson-detail-page__review">
+                  <h2>강의 후기</h2>
+                </div>
+              )}
             </div>
-          ) : (
-            <div className="lesson-detail-page__review">
-              <h2>강의 후기</h2>
+            <div className="lesson-detail-page__reservation">
+              <StickyBox offsetTop={100} offsetBottom={100}>
+                <CheckSchedule />
+              </StickyBox>
             </div>
-          )}
+          </div>
         </div>
-        <div className="lesson-detail-page__reservation">
-          <CheckSchedule />
-        </div>
-      </div>
+      ) : null}
     </div>
   );
 };

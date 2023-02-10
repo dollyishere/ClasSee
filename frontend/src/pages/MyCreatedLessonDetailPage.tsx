@@ -30,7 +30,7 @@ const MyCreatedLessonDetailPage = () => {
     useState<LessonDetailResponse>({
       message: '' as string,
       statusCode: 0 as number,
-      teacherEmail: '' as string,
+      teacher: '' as string,
       lessonName: '' as string,
       cklsDescription: '' as string,
       lessonDescription: '' as string,
@@ -84,7 +84,7 @@ const MyCreatedLessonDetailPage = () => {
         if (res?.message === 'SUCCESS') {
           // 만약 강의 상세 정보를 db에서 받아오는 것에 성공했다면, lessonDetailState에 해당 정보를 저장
           setLessonDetailState(res);
-          if (userInfo.email !== res.teacherEmail) {
+          if (userInfo.email !== res.teacher) {
             alert('잘못된 접근입니다.');
             navigate('/');
           } else {
