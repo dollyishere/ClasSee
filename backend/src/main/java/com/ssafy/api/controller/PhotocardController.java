@@ -203,7 +203,9 @@ public class PhotocardController {
         } catch (UserException u){
             return ResponseEntity.status(404).body(BaseResponseBody.of(404, "user not found"));
         } catch (PhotocardException p){
-            return ResponseEntity.status(404).body(BaseResponseBody.of(404,"likes not found"));
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404,"photocard not found"));
+        } catch (LikesException l){
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404, "likes not found"));
         } catch (Exception e){
             return ResponseEntity.status(404).body(BaseResponseBody.of(404,"unexpected exception"));
         }

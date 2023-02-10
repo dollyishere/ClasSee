@@ -181,10 +181,14 @@ public class PhotocardServiceImpl implements PhotocardService {
             throw new UserException("user not found");
         }
 
+        if(photocardRepositorySupport.findOne(id) == null){
+            throw new PhotocardException("photocard not found");
+        }
+
         Likes likes = photocardRepositorySupport.findOneLikes(user_id, id);
 
         if(likes == null){
-            throw new PhotocardException("likes not found");
+            throw new LikesException("likes not found");
         }
 
         photocardRepositorySupport.deleteLikes(likes);
