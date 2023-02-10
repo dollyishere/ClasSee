@@ -34,7 +34,7 @@ const LessonDetailPage = () => {
     useState<LessonDetailResponse>({
       message: '' as string,
       statusCode: 0 as number,
-      teacherEmail: '' as string,
+      teacher: '' as string,
       lessonName: '' as string,
       cklsDescription: '' as string,
       lessonDescription: '' as string,
@@ -78,7 +78,7 @@ const LessonDetailPage = () => {
       lessonId: Number(lessonId.lessonId),
     };
     const getTeacherImage = async () => {
-      const imageUrl = await getProfileImage(lessonDetailState.teacherEmail);
+      const imageUrl = await getProfileImage(lessonDetailState.teacher);
       setTeacherImgState(imageUrl);
     };
     const fetchData = async () => {
@@ -236,7 +236,7 @@ const LessonDetailPage = () => {
               )}
             </div>
             <div className="lesson-detail-page__reservation">
-              <StickyBox offsetTop={50} offsetBottom={0}>
+              <StickyBox offsetTop={100} offsetBottom={100}>
                 <CheckSchedule />
               </StickyBox>
             </div>

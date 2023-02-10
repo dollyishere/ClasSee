@@ -96,7 +96,7 @@ const CheckSchedule = () => {
             // moment를 통해 달력에 각 일이 표시되는 형식을 변환해줌(본래는 뒤에 '일'이 붙음)
             formatDay={(locale, date) => moment(date).format('DD')}
           />
-          <ul>
+          <ul className="check-schedule__ul">
             {scheduleList.length !== 0 ? (
               scheduleList.map((schedule) => {
                 const { openLessonId, lessonId, startTime, endTime } = schedule;

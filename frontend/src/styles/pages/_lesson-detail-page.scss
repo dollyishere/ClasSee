@@ -2,24 +2,27 @@
 
 .lesson-detail-page__container {
   .lesson-detail-page__header {
+    margin-top: 2%;
     width: 100%;
     box-shadow: 0 5px 5px gray;
     background-color: white;
+    justify-content: center;
     display: flex;
   }
 }
 .lesson-detail-page__body {
+  margin-top: 2%;
   width: 90%;
   display: flex;
   align-items: 'flex-start';
   justify-content: center;
-  margin-top: 10%;
-  margin: auto;
+
   padding: auto;
   .lesson-detail-page__content {
     width: 80%;
   }
   .lesson-detail-page__reservation {
+    margin-top: 2%;
     justify-content: center;
   }
 }

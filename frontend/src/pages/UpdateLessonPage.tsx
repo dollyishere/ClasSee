@@ -117,7 +117,7 @@ const UpdateLessonPage = () => {
           // 또한, 각 State에 정보를 전달하기 전에 현재 강의 수정을 시도하는 유저와, 강의를 생성한 유저의 이메일을 대조해봄
           // 시도하는 유저와 강의 생성 유저가 같다면, 그 이후부터 정보를 배분함
           // 만약 강의 수정을 시도하는 유저가 해당 강의를 개설하지 않았다면, 경고창을 띄운 후 메인페이지로 돌아가게 함
-          if (userInfo.email !== res.teacherEmail) {
+          if (userInfo.email !== res.teacher) {
             alert('잘못된 접근입니다.');
             navigate('/');
           } else {
