@@ -1,1 +1,5 @@
 @use '../base/colors';
+.recommandlessons__cards {
+  display: flex;
+  justify-content: space-evenly;
+}
