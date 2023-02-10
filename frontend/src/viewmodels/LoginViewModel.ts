@@ -44,8 +44,6 @@ const LoginViewModel = () => {
         });
         const accessToken = res.headers.authorization.substr(7);
         const refreshToken = res.headers['refresh-token'];
-        console.log(accessToken);
-        console.log(refreshToken);
         setAuthToken(accessToken);
         const encryptedToken = encryptToken(refreshToken, res.data.email);
         localStorage.setItem('refreshToken', encryptedToken);

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { Stack, TextField, Button } from '@mui/material/';
+import FormatAlignJustifyIcon from '@mui/icons-material/FormatAlignJustify';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
 import Calendar from 'react-calendar';
@@ -74,9 +75,11 @@ const CheckSchedule = () => {
   }, []);
 
   return (
-    <div>
-      <div>
-        <h3>클래스 예약하기</h3>
+    <div className="check-schedule__container">
+      <div className="check-schedule__header">
+        <h3>
+          <FormatAlignJustifyIcon /> 클래스 예약하기
+        </h3>
       </div>
       <div>
         <div>
@@ -87,14 +90,12 @@ const CheckSchedule = () => {
               {moment(selectedDate).format('YYYY-MM-DD')}
             </h3>
           </div>
-          <div>
-            <Calendar
-              onChange={handleDateChange}
-              value={selectedDate}
-              // moment를 통해 달력에 각 일이 표시되는 형식을 변환해줌(본래는 뒤에 '일'이 붙음)
-              formatDay={(locale, date) => moment(date).format('DD')}
-            />
-          </div>
+          <Calendar
+            onChange={handleDateChange}
+            value={selectedDate}
+            // moment를 통해 달력에 각 일이 표시되는 형식을 변환해줌(본래는 뒤에 '일'이 붙음)
+            formatDay={(locale, date) => moment(date).format('DD')}
+          />
           <ul>
             {scheduleList.length !== 0 ? (
               scheduleList.map((schedule) => {

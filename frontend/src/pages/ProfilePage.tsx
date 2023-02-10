@@ -12,7 +12,6 @@ const ProfilePage = () => {
   const [image, setImage] = useState<string>();
   const navigate = useNavigate();
   const userInfo = useRecoilValue(privateInfoState);
-  const authToken = useRecoilValue(authTokenState);
   const descriptionRef = useRef<HTMLTextAreaElement>(null);
   const [isPwModalOpen, setIsPwModalOpen] = useState<boolean>(false);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -41,7 +40,7 @@ const ProfilePage = () => {
     if (userInfo !== null) {
       const nickname = prompt('변경할 닉네임을 입력하세요.', userInfo.nickname);
       if (nickname !== null) {
-        updateNickName(nickname, authToken);
+        updateNickName(nickname);
       }
     }
   };

@@ -7,13 +7,3 @@ const AuthTokenState = atom({
   default: null,
 });
 export default AuthTokenState;
-
-// const AuthTokenState = recoilPersist(
-//   atom({
-//     key: 'authToken',
-//     default: '',
-//     // effects_UNSTABLE: [persistAtom],
-//   }),
-// );
-
-// export default AuthTokenState;

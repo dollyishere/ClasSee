@@ -7,6 +7,10 @@
 .createlessons {
   border-right: solid 1px black;
   width: 50%;
+  .createlessons__cards {
+    display: flex;
+    justify-content: space-evenly;
+  }
 }
 
 .lesson {

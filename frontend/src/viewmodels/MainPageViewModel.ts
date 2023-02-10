@@ -1,6 +1,7 @@
 import axios from 'axios';
-import useApi from '../apis/LessonsApi';
-import { LessonsResponse } from '../types/LessonsType';
+import { useRecoilState } from 'recoil';
+import useLessonApi from '../apis/LessonsApi';
+import authTokenState from '../models/AuthTokenAtom';
 
 const MainPageViewModel = () => {
   const {
@@ -10,7 +11,7 @@ const MainPageViewModel = () => {
     deleteMyAppliedLessonsMainpageApi,
     deleteBookmarkApi,
     addBookmarkApi,
-  } = useApi();
+  } = useLessonApi();
   const getRecommandLessons = async () => {
     const res = await getRecommandLessonsApi();
 
@@ -23,7 +24,6 @@ const MainPageViewModel = () => {
     query: string,
   ) => {
     const res = await MyCreatedLessonsMainpageApi(email, limit, offset, query);
-
     return res;
   };
   const getMyAppliedLessonsMainpage = async (
@@ -44,13 +44,13 @@ const MainPageViewModel = () => {
 
     return res;
   };
-  const deleteBookmark = async (userId: string, lessonId: number) => {
-    const res = await deleteBookmarkApi(userId, lessonId);
+  const deleteBookmark = async (email: string, lessonId: number) => {
+    const res = await deleteBookmarkApi(email, lessonId);
 
     return res;
   };
-  const addBookmark = async (userId: string, lessonId: number) => {
-    const res = await addBookmarkApi(userId, lessonId);
+  const addBookmark = async (email: string, lessonId: number) => {
+    const res = await addBookmarkApi(email, lessonId);
 
     return res;
   };
