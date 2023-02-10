@@ -1,6 +1,7 @@
 package com.ssafy.api.controller;
 
 import com.ssafy.api.dto.AttendLessonInfoDto;
+import com.ssafy.api.dto.AttendOpenLessonInfoDto;
 import com.ssafy.api.response.AttendLessonInfoListRes;
 import com.ssafy.api.service.LessonService;
 import com.ssafy.api.service.UserService;
@@ -49,7 +50,7 @@ public class StudentController {
         Long userId = user.getAuth().getId();
 
         // 해당 유저가 신청한 강의 리스트
-        List<AttendLessonInfoDto> lessonList = lessonService.getAttendLessonList(userId, query, "S", limit, offset);
+        List<AttendOpenLessonInfoDto> lessonList = lessonService.getAttendLessonListByStudent(userId, query, limit, offset);
         if(lessonList == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "LESSON NOT FOUND"));
 
         AttendLessonInfoListRes res = AttendLessonInfoListRes.builder()
