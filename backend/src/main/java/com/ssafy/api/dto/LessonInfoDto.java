@@ -20,6 +20,7 @@ public class LessonInfoDto {
     String category;
     String lessonImage;
     String teacherImage;
+    String teacher;
     double score;
     boolean isBookMarked;
 }

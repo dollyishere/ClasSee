@@ -32,7 +32,7 @@ import java.util.List;
 @Setter
 @ApiModel("LessonDetailsResponse")
 public class LessonDetailsRes extends BaseResponseBody {
-    String teacherEmail;
+    String teacher;
     String lessonName;
     String cklsDescription;
 

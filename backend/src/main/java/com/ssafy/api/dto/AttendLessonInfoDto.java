@@ -13,6 +13,7 @@ public class AttendLessonInfoDto{
     Long runningTime;
     String category;
     String lessonImage;
+    String teacher;
     String teacherImage;
     double score;
     boolean isBookMarked;

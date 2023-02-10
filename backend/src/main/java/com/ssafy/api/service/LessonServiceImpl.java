@@ -110,6 +110,7 @@ public class LessonServiceImpl implements LessonService {
                     .name(lesson.getName())
                     .category(lesson.getCategory())
                     .runningTime(lesson.getRunningtime())
+                    .teacher(lesson.getUser().getAuth().getEmail())
                     .build();
             lessonRes.setTeacherImage(
                     lesson.getUser().getImg()
@@ -150,7 +151,7 @@ public class LessonServiceImpl implements LessonService {
         Long isBookMarked = bookmarkRepositorySupport.bookmarkedCheck(lessonId, user);
 
         LessonDetailsRes lessonDetailsRes = LessonDetailsRes.builder()
-                .teacherEmail(teacher.getAuth().getEmail())
+                .teacher(teacher.getAuth().getEmail())
                 .lessonName(lesson.get().getName())
                 .lessonDescription(lesson.get().getDescription())
                 .cklsDescription(lesson.get().getCklsDescription())
@@ -230,6 +231,7 @@ public class LessonServiceImpl implements LessonService {
                             .lessonImage(
                                     ((pamphletList.size() <= 0) ? null : pamphletList.get(0).getImg())
                             )
+                            .teacher(lesson.get().getUser().getAuth().getEmail())
                             .teacherImage(lesson.get().getUser().getImg())
                             .score(lessonRepositorySupport.setLessonAvgScore(lesson.get()))
                             .startTime(openLesson.getStartTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
@@ -266,6 +268,7 @@ public class LessonServiceImpl implements LessonService {
                                     ((pamphletList.size() <= 0) ? null : pamphletList.get(0).getImg())
                             )
                             .teacherImage(lesson.get().getUser().getImg())
+                            .teacher(lesson.get().getUser().getAuth().getEmail())
                             .score(lessonRepositorySupport.setLessonAvgScore(lesson.get()))
                             .isBookMarked(
                                     (bookmarkRepositorySupport.bookmarkedCheck(lesson.get().getId(), userRepositorySupport.findOne(userId))) == 0 ? false: true
