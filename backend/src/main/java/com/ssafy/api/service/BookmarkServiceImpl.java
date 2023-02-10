@@ -28,14 +28,13 @@ public class BookmarkServiceImpl implements BookmarkService {
     LessonRepository lessonRepository;
 
     @Override
-    public void create(String email, Long lessonId) {
+    public void create(Long userId, Long lessonId) {
         Bookmark bookmark = Bookmark.builder()
-                                    .lessonId(lessonId)
-                                    .userId(
-                                            userRepositorySupport.findId(email)
-                                    )
-                                    .build();
-        bookmarkRepositorySupport.save(bookmark);
+                .lessonId(lessonId)
+                .userId(userId)
+                .build();
+        boolean isExist = bookmarkRepositorySupport.isExist(userId, lessonId);
+        if(isExist) bookmarkRepositorySupport.save(bookmark);
     }
 
     @Override
@@ -46,8 +45,8 @@ public class BookmarkServiceImpl implements BookmarkService {
     }
 
     @Override
-    public List<Lesson> getBookmarkList(Long userId) {
-        List<Long> lessonIdList = bookmarkRepositorySupport.findBookmarkList(userId);
+    public List<Lesson> getBookmarkList(Long userId, int limit, int offset) {
+        List<Long> lessonIdList = bookmarkRepositorySupport.findBookmarkList(userId, limit, offset);
         List<Lesson> lessonList = new ArrayList<>();
 
         lessonIdList.forEach((lessonId) -> {
@@ -57,5 +56,10 @@ public class BookmarkServiceImpl implements BookmarkService {
         });
 
         return lessonList;
+    }
+
+    @Override
+    public Long getBookmarkCount(Long userId) {
+        return bookmarkRepositorySupport.findBookmarkCount(userId);
     }
 }

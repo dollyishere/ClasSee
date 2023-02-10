@@ -29,11 +29,14 @@ public class BookmarkRepositorySupport{
         em.persist(requestInfo);
     }
 
-    public List<Long> findBookmarkList(Long userId) {
+    public List<Long> findBookmarkList(Long userId, int limit, int offset) {
         List<Long> bookmarkList =
                 jpaQueryFactory.select(qBookmark.lessonId)
                         .from(qBookmark)
-                        .where(qBookmark.userId.eq(userId)).fetch();
+                        .where(qBookmark.userId.eq(userId))
+                        .limit(limit)
+                        .offset(offset)
+                        .fetch();
 
         return bookmarkList;
     }
@@ -50,4 +53,25 @@ public class BookmarkRepositorySupport{
                 ).fetchOne();
     }
 
+    public boolean isExist(Long userId, Long lessonId){
+        Long isExist = 0l;
+
+        isExist = jpaQueryFactory
+                .select(qBookmark.id)
+                .from(qBookmark)
+                .where(
+                        qBookmark.userId.eq(userId),
+                        qBookmark.lessonId.eq(lessonId)
+                ).fetchOne();
+
+        return (isExist == 0)? true: false;
+    }
+
+    public Long findBookmarkCount(Long userId) {
+        return jpaQueryFactory
+                .select(qBookmark.count())
+                .from(qBookmark)
+                .where(qBookmark.userId.eq(userId))
+                .fetchOne();
+    }
 }
