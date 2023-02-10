@@ -8,23 +8,66 @@ import {
 } from '@mui/material';
 import { useRecoilValue, useResetRecoilState } from 'recoil';
 
+import useViewModel from '../viewmodels/PointChargeViewModel';
 import privateInfoState from '../models/PrivateInfoAtom';
 
 import kakaoPay from '../assets/payment_icon_yellow_small.png';
 
 const PointChargePage = () => {
+  const userInfo = useRecoilValue(privateInfoState);
   const [checked, setChecked] = useState<boolean>(false);
-  const [point, setPoint] = useState<number>(0);
+  const [point, setPoint] = useState<number | null>(null);
+  const [payment, setPayment] = useState<string | null>(null);
+
+  const { chargePoint } = useViewModel();
+
   const paymentMethods = [
     {
-      name: 'kakao',
+      name: 'kakaoPay',
       src: kakaoPay,
     },
   ];
-  const userInfo = useRecoilValue(privateInfoState);
+  const prices = [
+    [5000, 10000, 15000],
+    [20000, 25000, 30000],
+    [50000, 80000, 100000],
+  ];
 
   const handleCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
     setChecked(event.target.checked);
+  };
+
+  const handlePointChange = (newPoint: number) => {
+    if (newPoint === point) {
+      setPoint(null);
+    } else {
+      setPoint(newPoint);
+    }
+  };
+
+  const handlePaymentChange = (newPayment: string) => {
+    if (payment === newPayment) {
+      setPayment(null);
+    } else {
+      setPayment(newPayment);
+    }
+  };
+
+  const handleChargeSubmit = () => {
+    if (point === null) {
+      alert('결제한 포인트를 선택해주세요.');
+      return;
+    }
+    if (payment === null) {
+      alert('결제 수단을 선택하세요.');
+      return;
+    }
+    if (!checked) {
+      alert('결제 동의를 체크해주세요.');
+      return;
+    }
+
+    chargePoint(point, payment);
   };
 
   return (
@@ -33,66 +76,24 @@ const PointChargePage = () => {
         <CardContent>
           <div className="point-charge-page__select-box">
             <form className="point-charge-page__price-form">
-              <div className="point-charge-page__row">
-                <button
-                  type="button"
-                  className="button point-charge-page__button--price"
-                >
-                  5,000원
-                </button>
-                <button
-                  type="button"
-                  className="button point-charge-page__button--price"
-                >
-                  10,000원
-                </button>
-                <button
-                  type="button"
-                  className="button point-charge-page__button--price"
-                >
-                  15,000원
-                </button>
-              </div>
-              <div className="point-charge-page__row">
-                <button
-                  type="button"
-                  className="button point-charge-page__button--price"
-                >
-                  20,000원
-                </button>
-                <button
-                  type="button"
-                  className="button point-charge-page__button--price"
-                >
-                  25,000원
-                </button>
-                <button
-                  type="button"
-                  className="button point-charge-page__button--price"
-                >
-                  30,000원
-                </button>
-              </div>
-              <div className="point-charge-page__row">
-                <button
-                  type="button"
-                  className="button point-charge-page__button--price"
-                >
-                  50,000원
-                </button>
-                <button
-                  type="button"
-                  className="button point-charge-page__button--price"
-                >
-                  80,000원
-                </button>
-                <button
-                  type="button"
-                  className="button point-charge-page__button--price"
-                >
-                  100,000원
-                </button>
-              </div>
+              {prices.map((row: Array<number>) => (
+                <div className="point-charge-page__row" key={row[0]}>
+                  {row.map((price: number) => (
+                    <button
+                      key={price}
+                      type="button"
+                      className="button point-charge-page__button--price"
+                      style={{
+                        backgroundColor: point === price ? '#7062c7' : '',
+                        color: point === price ? 'white' : '',
+                      }}
+                      onClick={() => handlePointChange(price)}
+                    >
+                      {price}P
+                    </button>
+                  ))}
+                </div>
+              ))}
             </form>
             <div className="point-charge-page__row--point">
               {userInfo !== null ? (
@@ -103,12 +104,17 @@ const PointChargePage = () => {
           <div className="point-charge-page__payment">
             <div className="point-charge-page__label">결제 수단</div>
             <div className="point-charge-page__buttons">
-              {paymentMethods.map((payment: any) => (
+              {paymentMethods.map((method: any) => (
                 <button
+                  key={method.name}
                   type="button"
                   className="point-charge-page__button--payment button"
+                  style={{
+                    backgroundColor: method.name === payment ? '#7062c7' : '',
+                  }}
+                  onClick={() => handlePaymentChange(method.name)}
                 >
-                  <img alt="카카오페이" src={payment.src} />
+                  <img alt="카카오페이" src={method.src} />
                 </button>
               ))}
             </div>
@@ -129,6 +135,7 @@ const PointChargePage = () => {
           <button
             type="button"
             className="button point-charge-page__button--submit"
+            onClick={handleChargeSubmit}
           >
             충전 신청
           </button>
