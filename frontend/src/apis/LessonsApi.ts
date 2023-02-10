@@ -88,8 +88,8 @@ const LessonsApi = () => {
     if (searchOption.maxStartTime) {
       query += `&maxStartTime=${searchOption.maxStartTime}`;
     }
-    if (searchOption.name) {
-      query += `&name=${searchOption.name}`;
+    if (searchOption.keyword) {
+      query += `&keyword=${searchOption.keyword}`;
     }
     if (searchOption.email) {
       query += `&email=${searchOption.email}`;

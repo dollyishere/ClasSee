@@ -26,7 +26,7 @@ export interface LessonSearchOption {
   maxPrice: number | undefined;
   minStartTime: number | undefined;
   maxStartTime: number | undefined;
-  name: string | undefined;
+  keyword: string | undefined;
   email: string | undefined;
   limit: number;
   offset: number;

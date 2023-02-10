@@ -70,7 +70,7 @@ const LessonsPage = () => {
   const [minStartTime, setMinStartTime] = useState<number | undefined>(
     undefined,
   );
-  const [name, setName] = useState<string | undefined>(undefined);
+  const [keyword, setKeyword] = useState<string | undefined>(undefined);
 
   const sidebarItems = [
     { name: '전체 강의', path: '/lessons' },
@@ -119,7 +119,7 @@ const LessonsPage = () => {
       maxStartTime,
       minPrice,
       minStartTime,
-      name,
+      keyword,
     });
     if (data !== null && data.count !== undefined) {
       setCount(Math.ceil(data.count / limit));
