@@ -25,19 +25,16 @@ const LessonCard = ({ lesson }: Props) => {
   const [lessonImage, setImage] = useState<string>(logo);
   const [teacherImage, setTeacherImage] = useState<string>(logo);
 
-  useEffect(
-    () => {
-      // if (userInfo) {
-      const getImage = async () => {
-        const imageUrl = await getLessonImage(lesson.lessonId);
-        if (imageUrl) {
-          setImage(imageUrl);
-        }
-      };
-      getImage();
-    },
-    // });
-  );
+  useEffect(() => {
+    console.log(lesson);
+    const getImage = async () => {
+      const imageUrl = await getLessonImage(lesson.lessonId);
+      if (imageUrl) {
+        setImage(imageUrl);
+      }
+    };
+    getImage();
+  });
 
   const [isBookMarked, setIsBookMarked] = useState(lesson.bookMarked);
   const { deleteBookmark, addBookmark } = useViewModel();
@@ -51,6 +48,7 @@ const LessonCard = ({ lesson }: Props) => {
         setIsBookMarked(false);
       } else {
         const res = addBookmark(userInfo.email, lesson.lessonId);
+        console.log(res);
         setIsBookMarked(true);
       }
     } else {

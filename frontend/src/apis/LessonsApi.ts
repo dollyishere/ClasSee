@@ -105,10 +105,21 @@ const LessonsApi = () => {
     }
     return null;
   };
-  const getRecommandLessonsApi = async () => {
+  const getRecommandLessonsApi1 = async () => {
     try {
       const response = await axios.get(
         `${process.env.REACT_APP_SERVER_URI}/api/v1/lessons/recommands`,
+      );
+      return response.data;
+    } catch (error: any) {
+      console.log(error);
+    }
+    return null;
+  };
+  const getRecommandLessonsApi2 = async (email: string) => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/lessons/recommands?email=${email}`,
       );
       return response.data;
     } catch (error: any) {
@@ -177,6 +188,11 @@ const LessonsApi = () => {
     try {
       const response = await axios.delete(
         `${process.env.REACT_APP_SERVER_URI}/api/v1/bookmarks/${email}/${lessonId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+          },
+        },
       );
       return response.data;
     } catch (error: any) {
@@ -188,6 +204,12 @@ const LessonsApi = () => {
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_SERVER_URI}/api/v1/bookmarks/${email}/${lessonId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+          },
+        },
       );
       return response.data;
     } catch (error: any) {
@@ -203,6 +225,11 @@ const LessonsApi = () => {
       const response = await axios.post<Response>(
         `${process.env.REACT_APP_SERVER_URI}/api/v1/lessons/${lessonId}/schedules`,
         createScheduleRequestBody,
+        {
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+          },
+        },
       );
       return response.data;
     } catch (error: any) {
@@ -232,7 +259,8 @@ const LessonsApi = () => {
     doCreateLesson,
     doUpdateLesson,
     doGetLessonDetail,
-    getRecommandLessonsApi,
+    getRecommandLessonsApi1,
+    getRecommandLessonsApi2,
     MyCreatedLessonsMainpageApi,
     MyAppliedLessonsMainpageApi,
     deleteMyAppliedLessonsMainpageApi,
