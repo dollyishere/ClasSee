@@ -1,34 +1,18 @@
-import React, { useState } from 'react';
-import BasicRating from '../BasicRating';
+import React from 'react';
+import { Box, Typography } from '@material-ui/core';
 
 interface Props {
-  username: string;
-  score: number;
-  onSubmit: (username: string, score: number, text: string) => void;
+  text: string;
+  rating: number;
 }
 
-const Reviews: React.FC<Props> = ({ username, score, onSubmit }: Props) => {
-  // const Reviews = () => {
-  const [text, setText] = useState('');
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setText(event.target.value);
-  };
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    onSubmit(username, score, text);
-  };
-
+const Review: React.FC<Props> = ({ text, rating }) => {
   return (
-    <form onSubmit={handleSubmit}>
-      <h3>{username}</h3>
-      {/* <p>Rating: {rating}</p> */}
-      {/* <BasicRating /> */}
-
-      <input type="text" value={text} onChange={handleChange} />
-      <button type="submit"> 등록 </button>
-    </form>
+    <Box m={2}>
+      <Typography>{text}</Typography>
+      <Typography>Rating: {rating}</Typography>
+    </Box>
   );
 };
 
-export default Reviews;
+export default Review;
