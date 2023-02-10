@@ -62,7 +62,7 @@ public class TeacherController {
         if(user == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "USER NOT FOUND"));
         Long userId = user.getAuth().getId();
 
-        List<AttendLessonInfoDto> lessonList = lessonService.getAttendLessonList(userId, query, "T", limit, offset);
+        List<AttendLessonInfoDto> lessonList = lessonService.getAttendLessonListByTeacher(userId, query, limit, offset);
         if(lessonList == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "LESSON NOT FOUND"));
 
         AttendLessonInfoListRes res = AttendLessonInfoListRes.builder()

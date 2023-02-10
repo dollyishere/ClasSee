@@ -15,7 +15,7 @@ import java.util.List;
 @Setter
 @ApiModel("AttendLessonInfoListResponse")
 public class AttendLessonInfoListRes extends BaseResponseBody {
-    List<AttendLessonInfoDto> lessonInfoList;
+    List<? extends AttendLessonInfoDto> lessonInfoList;
 
     public static AttendLessonInfoListRes of(Integer statusCode, String message, AttendLessonInfoListRes attendLessonInfoListRes) {
         AttendLessonInfoListRes res = new AttendLessonInfoListRes();
