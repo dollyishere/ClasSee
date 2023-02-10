@@ -9,10 +9,9 @@ import {
   LoginRequest,
   LoginResponse,
 } from '../types/UserType';
-import authTokenState from '../models/AuthTokenAtom';
 
 const UserApi = () => {
-  const authToken = useRecoilValue(authTokenState);
+  const accesstoken = localStorage.getItem('accessToken');
   // salt를 가져오는 함수
   const doGetSalt = async (email: string) => {
     try {
@@ -35,6 +34,9 @@ const UserApi = () => {
         loginRequestBody,
       );
       const { headers, data } = response;
+      const authtoken = response.headers.authorization.substring(7);
+      localStorage.setItem('accessToken', authtoken);
+
       // 로그인 헤더와 데이터를 반환
       return { headers, data };
     } catch (error: any) {
@@ -71,11 +73,6 @@ const UserApi = () => {
     }
     return null;
   };
-  // const doGetAccessToken = async () => {
-  //   try {
-  //     const response = await axios.get<Response>(
-  //       `${process.env.REACT_APP_SERVER_URI}/api/v1/users~`,
-  //     );
   const doGetAccessToken = async (email: string, refreshtoken: string) => {
     try {
       const response = await axios.get<Response>(
@@ -107,18 +104,14 @@ const UserApi = () => {
     return null;
   };
 
-  const doUpdateNickName = async (
-    email: string,
-    nickname: string,
-    accessToken: string | null,
-  ) => {
+  const doUpdateNickName = async (email: string, nickname: string) => {
     try {
       const response = await axios.put<Response>(
         `${process.env.REACT_APP_SERVER_URI}/api/v1/users/${email}/nickname?nickname=${nickname}`,
         {},
         {
           headers: {
-            Authorization: `Bearer ${accessToken}`,
+            Authorization: `Bearer ${accesstoken}`,
           },
         },
       );

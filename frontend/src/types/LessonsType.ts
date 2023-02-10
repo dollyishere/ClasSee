@@ -2,6 +2,7 @@ import { Response } from './BaseType';
 
 export interface Lesson {
   lessonId: number;
+  openLessonId: number;
   lessonImage: string;
   teacher: string;
   teacherImage: string;
@@ -9,7 +10,7 @@ export interface Lesson {
   runningTime: number;
   category: string;
   score: number;
-  isBookMarked: boolean;
+  bookMarked: boolean;
   startTime: string;
   endTime: string;
 }

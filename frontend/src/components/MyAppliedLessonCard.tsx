@@ -11,24 +11,21 @@ import { LessonsResponse, Lesson } from '../types/LessonsType';
 import useViewModel from '../viewmodels/MainPageViewModel';
 import privateInfoState from '../models/PrivateInfoAtom';
 
-import logo from '../assets/logo.png';
+import logo from '../assets/logo2.png';
 
-// type combinetype = { lesson: Lesson; myapplied: MyAppliedHover };
 interface Props {
   lesson: Lesson;
 }
-const MyAppliedTest = ({ lesson }: Props) => {
+const MyAppliedLessonCard = ({ lesson }: Props) => {
   const { deleteMyAppliedLessonsMainpage } = useViewModel();
 
-  const [isBookMarked, setIsBookMarked] = useState(lesson.isBookMarked);
+  const [isBookMarked, setIsBookMarked] = useState(lesson.bookMarked);
   // 북마크 아이콘 클릭 시 북마크 추가, 삭제 토글 버튼 함수
   const getBookmarkStatus = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
     setIsBookMarked(!isBookMarked);
   };
   const [isHovered, setIsHovered] = useState(false);
-  // 강의 취소 모달 오픈을 위한 flag
-  const [modalOpen, setModalOpen] = useState(false);
   // 강의 취소 버튼 클릭 시 모달 팝업을 위한 modalopen flag를 ture로 바꿈
   const userInfo = useRecoilValue(privateInfoState);
 
@@ -143,8 +140,6 @@ const MyAppliedTest = ({ lesson }: Props) => {
               >
                 <p>강의 취소</p>
               </button>
-              {/* {} */}
-              {/* <ModalTest lessonId={lesson.id} modalOpen={modalOpen} /> */}
             </div>
           </div>
         </div>
@@ -153,4 +148,4 @@ const MyAppliedTest = ({ lesson }: Props) => {
   );
 };
 
-export default MyAppliedTest;
+export default MyAppliedLessonCard;

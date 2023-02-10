@@ -1,4 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
+
+import { useRecoilValue } from 'recoil';
+import AuthTokenState from '../models/AuthTokenAtom';
 import {
   LessonRequest,
   CreateLessonResponse,
@@ -14,18 +17,16 @@ import {
 import { Response } from '../types/BaseType';
 
 const LessonsApi = () => {
-  const doCreateLesson = async (
-    createLessonRequestBody: LessonRequest,
-    accessToken: string,
-  ) => {
+  const accesstoken = localStorage.getItem('accessToken');
+
+  const doCreateLesson = async (createLessonRequestBody: LessonRequest) => {
     try {
-      console.log(accessToken);
       const response = await axios.post<CreateLessonResponse>(
         `${process.env.REACT_APP_SERVER_URI}/api/v1/lessons`,
         createLessonRequestBody,
         {
           headers: {
-            Authorization: `Bearer ${accessToken}`,
+            Authorization: `Bearer ${accesstoken}`,
           },
         },
       );
@@ -125,6 +126,11 @@ const LessonsApi = () => {
     try {
       const response = await axios.get(
         `${process.env.REACT_APP_SERVER_URI}/api/v1/teachers/${email}/lessons?limit=${limit}&offset=${offset}&query=${query}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+          },
+        },
       );
       return response.data;
     } catch (error: any) {
@@ -140,7 +146,12 @@ const LessonsApi = () => {
   ) => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_SERVER_URI}/api/v1/students${email}/lessons?limit=${limit}&offset=${offset}&query=${query}`,
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/students/${email}/lessons?limit=${limit}&offset=${offset}&query=${query}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+          },
+        },
       );
       return response.data;
     } catch (error: any) {
@@ -162,10 +173,10 @@ const LessonsApi = () => {
     }
     return null;
   };
-  const deleteBookmarkApi = async (userId: string, lessonId: number) => {
+  const deleteBookmarkApi = async (email: string, lessonId: number) => {
     try {
       const response = await axios.delete(
-        `${process.env.REACT_APP_SERVER_URI}/api/v1/deleteBookmark/${userId}/${lessonId}`,
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/bookmarks/${email}/${lessonId}`,
       );
       return response.data;
     } catch (error: any) {
@@ -173,10 +184,10 @@ const LessonsApi = () => {
     }
     return null;
   };
-  const addBookmarkApi = async (userId: string, lessonId: number) => {
+  const addBookmarkApi = async (email: string, lessonId: number) => {
     try {
-      const response = await axios.delete(
-        `${process.env.REACT_APP_SERVER_URI}/api/v1/addBookmark/${userId}/${lessonId}`,
+      const response = await axios.post(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/bookmarks/${email}/${lessonId}`,
       );
       return response.data;
     } catch (error: any) {
