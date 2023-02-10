@@ -30,6 +30,15 @@ const Router = () => {
       };
       reAccessToken();
     }, 1500000);
+
+    // 새로고침하면 받아옴
+    const rereAccessToken = async () => {
+      if (userInfo) {
+        const response = await AccessToken(userInfo, doGetAccessToken);
+        console.log(response);
+      }
+    };
+    rereAccessToken();
   }, []);
   return (
     <Routes>
