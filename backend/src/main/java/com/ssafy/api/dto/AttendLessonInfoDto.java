@@ -15,6 +15,8 @@ public class AttendLessonInfoDto{
     String lessonImage;
     String teacher;
     String teacherImage;
+    Long price;
+    Long kitPrice;
     double score;
     boolean isBookMarked;
 }

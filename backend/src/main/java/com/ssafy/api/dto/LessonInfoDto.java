@@ -23,4 +23,7 @@ public class LessonInfoDto {
     String teacher;
     double score;
     boolean isBookMarked;
+
+    Long price;
+    Long kitPrice;
 }
