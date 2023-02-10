@@ -1,14 +1,9 @@
 import axios from 'axios';
 import { useRecoilState } from 'recoil';
 import useLessonApi from '../apis/LessonsApi';
-import useUserApi from '../apis/UserApi';
-import { LessonsResponse } from '../types/LessonsType';
-import { decryptToken, encryptToken } from '../utils/Encrypt';
 import authTokenState from '../models/AuthTokenAtom';
 
 const MainPageViewModel = () => {
-  const [authToken, setAuthToken] = useRecoilState(authTokenState);
-
   const {
     getRecommandLessonsApi,
     MyCreatedLessonsMainpageApi,
@@ -17,7 +12,6 @@ const MainPageViewModel = () => {
     deleteBookmarkApi,
     addBookmarkApi,
   } = useLessonApi();
-  const { doGetAccessToken } = useUserApi();
   const getRecommandLessons = async () => {
     const res = await getRecommandLessonsApi();
 
@@ -28,39 +22,8 @@ const MainPageViewModel = () => {
     limit: number,
     offset: number,
     query: string,
-    accessToken: string,
   ) => {
-    const res = await MyCreatedLessonsMainpageApi(
-      email,
-      limit,
-      offset,
-      query,
-      accessToken,
-    );
-    // if (res.statusCode === 403) {
-    // if (res === null) {
-    //   const hashedRefreshToken = localStorage.getItem('refreshToken');
-    //   // console.log('hashedRefreshToken', hashedRefreshToken);
-    //   if (hashedRefreshToken !== null) {
-    //     const refreshToken = decryptToken(hashedRefreshToken, email);
-    //     console.log('refreshToken', refreshToken);
-    //     const response = await doGetAccessToken(email, refreshToken);
-
-    //     if (response) {
-    //       const encryptedToken = encryptToken(
-    //         response.headers.refreshtoken,
-    //         email,
-    //       );
-    //       // console.log('encryptedToken', encryptedToken);
-    //       // console.log('accesstoken', response.headers.accesstoken);
-    //       const authtoken = response.headers.accesstoken;
-    //       localStorage.setItem('refreshToken', encryptedToken);
-    //       setAuthToken(authtoken);
-    //     }
-    //     // console.log('accessToken', accessToken);
-    //     res = await MyCreatedLessonsMainpageApi(email, limit, offset, query);
-    //   }
-    // }
+    const res = await MyCreatedLessonsMainpageApi(email, limit, offset, query);
     return res;
   };
   const getMyAppliedLessonsMainpage = async (
@@ -68,15 +31,8 @@ const MainPageViewModel = () => {
     limit: number,
     offset: number,
     query: string,
-    accessToken: string,
   ) => {
-    const res = await MyAppliedLessonsMainpageApi(
-      email,
-      limit,
-      offset,
-      query,
-      accessToken,
-    );
+    const res = await MyAppliedLessonsMainpageApi(email, limit, offset, query);
 
     return res;
   };
