@@ -3,12 +3,6 @@
   display: flex;
   justify-content: space-evenly;
 }
-
-.recommandClass {
-  text-align: left;
-  margin-left: 100px;
-  font-size: 50px;
-}
 .lesson__card {
   position: relative;
   text-decoration: none;
@@ -19,7 +13,7 @@
   padding: 20px;
   border: 3px solid #ccc;
   border-radius: 15px;
-  box-shadow: 5px #ccc;
+  box-shadow: 4px 4px #a8a8a8;
   background-color: #f9f9f9;
   width: 100%;
   min-width: 200px;

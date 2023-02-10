@@ -1,7 +1,13 @@
 import axios from 'axios';
-import { useRecoilState } from 'recoil';
+import {
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  listAll,
+  deleteObject,
+} from 'firebase/storage';
 import useLessonApi from '../apis/LessonsApi';
-import authTokenState from '../models/AuthTokenAtom';
+import { storage } from '../utils/Firebase';
 
 const MainPageViewModel = () => {
   const {
@@ -59,6 +65,12 @@ const MainPageViewModel = () => {
 
     return res;
   };
+  const getLessonImage = async (lessonId: number) => {
+    const imageRef = ref(storage, `lessons/${lessonId}/pamphlet_images/`);
+    const response = await listAll(imageRef);
+    const ret = await getDownloadURL(response.items[0]);
+    return ret;
+  };
   return {
     getRecommandLessons1,
     getRecommandLessons2,
@@ -67,6 +79,7 @@ const MainPageViewModel = () => {
     deleteMyAppliedLessonsMainpage,
     deleteBookmark,
     addBookmark,
+    getLessonImage,
   };
 };
 

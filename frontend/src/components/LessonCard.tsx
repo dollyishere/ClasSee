@@ -12,8 +12,8 @@ import { ref, uploadBytes, getDownloadURL, listAll } from 'firebase/storage';
 import { storage } from '../utils/Firebase';
 import { LessonsResponse, Lesson } from '../types/LessonsType';
 import privateInfoState from '../models/PrivateInfoAtom';
-import useViewModel from '../viewmodels/MainPageViewModel';
-import useLessonCardViewModel from '../viewmodels/LessonCardViewModel';
+import useMainPageViewModel from '../viewmodels/MainPageViewModel';
+import useProfileViewModel from '../viewmodels/ProfileViewModel';
 import logo from '../assets/logo2.png';
 
 interface Props {
@@ -21,23 +21,12 @@ interface Props {
 }
 const LessonCard = ({ lesson }: Props) => {
   const userInfo = useRecoilValue(privateInfoState);
-  const { getLessonImage } = useLessonCardViewModel();
-  const [lessonImage, setImage] = useState<string>(logo);
+  const { getLessonImage, deleteBookmark, addBookmark } =
+    useMainPageViewModel();
+  const { getProfileImage } = useProfileViewModel();
+  const [lessonImage, setLessonImage] = useState<string>(logo);
   const [teacherImage, setTeacherImage] = useState<string>(logo);
-
-  useEffect(() => {
-    console.log(lesson);
-    const getImage = async () => {
-      const imageUrl = await getLessonImage(lesson.lessonId);
-      if (imageUrl) {
-        setImage(imageUrl);
-      }
-    };
-    getImage();
-  });
-
   const [isBookMarked, setIsBookMarked] = useState(lesson.bookMarked);
-  const { deleteBookmark, addBookmark } = useViewModel();
 
   // 북마크 아이콘 클릭 시 북마크 추가, 삭제 토글 버튼 함수
   const getBookmarkStatus = (event: React.MouseEvent<HTMLElement>) => {
@@ -48,13 +37,34 @@ const LessonCard = ({ lesson }: Props) => {
         setIsBookMarked(false);
       } else {
         const res = addBookmark(userInfo.email, lesson.lessonId);
-        console.log(res);
         setIsBookMarked(true);
       }
     } else {
       window.confirm('로그인 후 사용 가능합니다');
     }
   };
+
+  useEffect(() => {
+    const getImage = async () => {
+      const lessonImageUrl = await getLessonImage(lesson.lessonId);
+      if (lessonImageUrl) {
+        setLessonImage(lessonImageUrl);
+      }
+      // if (teacherImageUrl) {
+      //   setTeacherImage(teacherImageUrl);
+      // }
+    };
+    const getTeacherImage = async () => {
+      const teacherImageUrl = await getProfileImage(lesson.teacher);
+      if (teacherImageUrl) {
+        setTeacherImage(teacherImageUrl);
+        console.log(teacherImageUrl);
+      }
+    };
+    getImage();
+    getTeacherImage();
+  }, []);
+
   return (
     <div className="lesson">
       <Link
@@ -96,7 +106,7 @@ const LessonCard = ({ lesson }: Props) => {
             direction="row"
             spacing={2}
           >
-            <Avatar alt="Remy Sharp" src={lesson.teacherImage} />
+            <Avatar alt="Remy Sharp" src={teacherImage} />
           </Stack>
         </div>
         {/* 강의명 */}
