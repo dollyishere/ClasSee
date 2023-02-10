@@ -1,11 +1,9 @@
-import { useRecoilValue, useRecoilState, SetterOrUpdater } from 'recoil';
 import { decryptToken, encryptToken } from './Encrypt';
 import { UserInfo } from '../types/UserType';
 
 // 로그인 인증 필요한
 export const AccessToken = async (
   userInfo: UserInfo,
-  setAccessToken: SetterOrUpdater<null>,
   doGetAccessToken: (
     email: string,
     refreshtoken: string,
@@ -28,7 +26,7 @@ export const AccessToken = async (
           'refreshToken',
           encryptToken(newRefreshToken, userInfo.email),
         );
-        setAccessToken(newAccessToken);
+        localStorage.setItem('accessToken', newAccessToken);
       }
       return newAccessToken;
     }
