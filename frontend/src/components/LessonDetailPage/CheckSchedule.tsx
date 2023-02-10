@@ -8,9 +8,12 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import Calendar from 'react-calendar';
 import moment from 'moment';
 
-import ScheduleViewModel from '../viewmodels/ScheduleViewModel';
+import ScheduleViewModel from '../../viewmodels/ScheduleViewModel';
 
-import { GetScheduleRequest, LessonSchedulesType } from '../types/LessonsType';
+import {
+  GetScheduleRequest,
+  LessonSchedulesType,
+} from '../../types/LessonsType';
 
 const CheckSchedule = () => {
   const lessonIdParams = useParams();
