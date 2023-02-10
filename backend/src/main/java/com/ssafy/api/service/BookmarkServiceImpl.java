@@ -28,13 +28,16 @@ public class BookmarkServiceImpl implements BookmarkService {
     LessonRepository lessonRepository;
 
     @Override
-    public void create(Long userId, Long lessonId) {
+    public int create(Long userId, Long lessonId) {
         Bookmark bookmark = Bookmark.builder()
                 .lessonId(lessonId)
                 .userId(userId)
                 .build();
         boolean isExist = bookmarkRepositorySupport.isExist(userId, lessonId);
-        if(isExist) bookmarkRepositorySupport.save(bookmark);
+        if(!isExist) return 0;
+
+        bookmarkRepositorySupport.save(bookmark);
+        return 1;
     }
 
     @Override

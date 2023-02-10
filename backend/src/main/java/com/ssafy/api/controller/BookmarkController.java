@@ -35,7 +35,7 @@ public class BookmarkController {
     @ApiOperation(value = "북마크 등록, 로그인 O", notes = "<strong>회원 정보와 강의 정보</strong>를 통해 북마크를 등록한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
-            @ApiResponse(code = 401, message = "인증 실패"),
+            @ApiResponse(code = 401, message = "등록 실패[ 이미 등록된 상태 ]"),
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
@@ -43,8 +43,10 @@ public class BookmarkController {
         User user = userService.getUserByAuth(email);
         if (user == null) return ResponseEntity.status(200).body(BaseResponseBody.of(404, "USER NOT FOUND"));
 
-        bookmarkService.create(user.getAuth().getId(), lessonId);
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+        int result = bookmarkService.create(user.getAuth().getId(), lessonId);
+
+        if(result == 0) return ResponseEntity.status(200).body(BaseResponseBody.of(401, "FAILED"));
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "SUCCESS"));
     }
 
     @DeleteMapping("/{email}/{lessonId}")

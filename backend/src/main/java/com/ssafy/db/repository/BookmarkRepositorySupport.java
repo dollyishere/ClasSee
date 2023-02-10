@@ -57,14 +57,14 @@ public class BookmarkRepositorySupport{
         Long isExist = 0l;
 
         isExist = jpaQueryFactory
-                .select(qBookmark.id)
+                .select(qBookmark.id.count())
                 .from(qBookmark)
                 .where(
                         qBookmark.userId.eq(userId),
                         qBookmark.lessonId.eq(lessonId)
                 ).fetchOne();
 
-        return (isExist == 0)? true: false;
+        return (isExist == 0l)? true: false;
     }
 
     public Long findBookmarkCount(Long userId) {
