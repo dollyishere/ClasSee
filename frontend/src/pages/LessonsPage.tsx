@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Pagination } from '@mui/material';
+import { useRecoilValue } from 'recoil';
 
+import PrivateInfoState from '../models/PrivateInfoAtom';
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
 import SearchBox from '../components/LessonsPage/SearchBox';
@@ -15,6 +17,7 @@ import {
 import LessonCard from '../components/LessonCard';
 
 const LessonsPage = () => {
+  const userInfo = useRecoilValue(PrivateInfoState);
   // 뷰 모델
   const { searchLessons } = useViewModel();
 
@@ -34,7 +37,6 @@ const LessonsPage = () => {
   const [dayOfWeek, setDayOfWeek] = useState<Array<boolean>>(
     new Array(7).fill(false),
   );
-  const [email, setEmail] = useState<string | undefined>(undefined);
   const [maxPrice, setMaxPrice] = useState<number | undefined>(undefined);
   const [maxStartTime, setMaxStartTime] = useState<number | undefined>(
     undefined,
@@ -85,6 +87,9 @@ const LessonsPage = () => {
     if (location.pathname.split('/')[2] === 'search') {
       keyword = location.pathname.split('/').at(3);
     }
+
+    const email = userInfo === null ? undefined : userInfo.email;
+
     const data = await searchLessons({
       limit,
       offset,

@@ -1,0 +1,23 @@
+.my-bookmark-page {
+  .my-bookmark-page__card {
+    width: 90%;
+    margin: 40px auto;
+    .my-bookmark-page__title {
+      padding: 10px;
+      text-align: left;
+      font-size: 36px;
+      font-weight: bold;
+    }
+    .my-bookmark-page__lessons {
+      width: 90%;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+    .my-bookmark-page__pagination {
+      display: flex;
+      justify-content: center;
+    }
+  }
+}

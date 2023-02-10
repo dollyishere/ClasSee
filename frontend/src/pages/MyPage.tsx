@@ -4,6 +4,7 @@ import { useRecoilValue } from 'recoil';
 import ProfilePage from './ProfilePage';
 import TestPage from './TestPage';
 import MyCreatedLessonDetailPage from './MyCreatedLessonDetailPage';
+import MyBookmarkPage from './MyBookmarkPage';
 
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
@@ -47,6 +48,7 @@ const MyPage = () => {
               path="/created-lesson/:lessonId"
               element={<MyCreatedLessonDetailPage />}
             />
+            <Route path="/bookmark" element={<MyBookmarkPage />} />
             <Route path="/test" element={<TestPage />} />
           </Routes>
         </div>

@@ -18,6 +18,7 @@
 @use './components/sidebar';
 @use './components/search-box';
 @use './components/calendar';
+@use './components/_check-schedule';
 
 // pages
 @use './pages/signup-page';
@@ -29,7 +30,7 @@
 @use './pages/profile-page';
 @use './pages/lessons_page';
 @use './pages/point-charge-page';
-@use './components/_check-schedule';
+@use './pages/my-bookmark-page';
 
 html,
 body,
