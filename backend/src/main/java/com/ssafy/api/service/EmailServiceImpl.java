@@ -22,14 +22,10 @@ public class EmailServiceImpl implements EmailService{
     public EmailServiceImpl(JavaMailSender javaMailSender) {
         this.javaMailSender = javaMailSender;
     }
-
-    //인증번호 생성
-    private final String ePw = createKey();
-
     @Value("${spring.mail.username}")
     private String id;
 
-    public MimeMessage createMessage(String to)throws MessagingException, UnsupportedEncodingException {
+    public MimeMessage createMessage(String to, String ePw) throws MessagingException, UnsupportedEncodingException {
 
         MimeMessage  message = javaMailSender.createMimeMessage();
 
@@ -51,7 +47,7 @@ public class EmailServiceImpl implements EmailService{
     }
 
     // 인증코드 만들기
-    public static String createKey() {
+    public String createKey() {
         StringBuffer key = new StringBuffer();
         Random rnd = new Random();
 
@@ -68,7 +64,8 @@ public class EmailServiceImpl implements EmailService{
         bean으로 등록해둔 javaMailSender 객체를 사용하여 이메일 send
      */
     public String sendSimpleMessage(String to)throws Exception {
-        MimeMessage message = createMessage(to);
+        String ePw = createKey();
+        MimeMessage message = createMessage(to, ePw);
         try{
             javaMailSender.send(message); // 메일 발송
         }catch(MailException es){
