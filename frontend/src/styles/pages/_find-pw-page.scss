@@ -1,0 +1,46 @@
+@use '../base/colors';
+
+.find-pw-page {
+  height: 100%;
+  .find-pw-page__container {
+    width: 40%;
+    margin: 200px auto;
+    .find-pw-page__row {
+      margin: 20px auto;
+      width: 60%;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      .find-pw-page__label {
+        width: 100%;
+        font-size: 13px;
+        text-align: left;
+        font-weight: bold;
+      }
+      .find-pw-page__input {
+        width: 65%;
+        height: 30px;
+        font-size: 13px;
+        border-radius: 10px;
+        outline: none;
+        border-width: 0.5px;
+      }
+    }
+    .find-pw-page__button {
+      background-color: colors.$beige_color;
+      width: 30%;
+      font-size: 13px;
+      &:hover {
+        background-color: colors.$beige_color_focus;
+      }
+    }
+    .find-pw-page__button--color {
+      background-color: colors.$theme_color;
+      color: white;
+      &:hover {
+        background-color: colors.$theme_color_focus;
+      }
+    }
+  }
+}

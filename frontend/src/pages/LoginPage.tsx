@@ -109,7 +109,7 @@ const LoginPage = () => {
           {/* 비밀번호 & 회원가입 페이지로 이동 */}
           <div className="login__find">
             <br />
-            <Link to="/find_pw">
+            <Link to="/find-pw">
               <button type="button" className="find_pw_button">
                 비밀번호 찾기
               </button>
