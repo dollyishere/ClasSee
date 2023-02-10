@@ -3,6 +3,40 @@
 .point-charge-page {
   height: 100%;
   overflow: auto;
+  .point-charge-page__card--success {
+    background-color: colors.$theme_color;
+    color: white;
+    width: 40%;
+    margin: 80px auto;
+    .point-charge-page__contents {
+      margin: 0 auto;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      .point-charge-page__row {
+        display: flex;
+        width: 100%;
+        font-size: 20px;
+        font-weight: bold;
+        .point-charge-page__label {
+          width: 30%;
+          text-align: right;
+          padding: 10px;
+        }
+        .point-charge-page__content {
+          padding: 10px;
+          width: 90%;
+          text-align: left;
+        }
+      }
+    }
+    .point-charge-page__button--back {
+      background-color: colors.$beige-color;
+      width: 20%;
+    }
+  }
   .point-charge-page__card {
     width: 60%;
     margin: 80px auto;

@@ -12,6 +12,22 @@ import {
 
 const UserApi = () => {
   const accesstoken = localStorage.getItem('accessToken');
+  const doGetUserInfo = async (email: string) => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/users/${email}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+          },
+        },
+      );
+      return response.data;
+    } catch (error: any) {
+      console.error(error);
+    }
+    return null;
+  };
   // salt를 가져오는 함수
   const doGetSalt = async (email: string) => {
     try {
@@ -213,6 +229,7 @@ const UserApi = () => {
     doUpdatePassword,
     doWithdrawl,
     doLogout,
+    doGetUserInfo,
   };
 };
 
