@@ -81,6 +81,10 @@ public class OrdersServiceImpl implements OrdersService{
             throw new OpenLessonException("openLesson not found");
         }
 
+        if(ordersRepositorySupport.findOne(user_id, ordersRegistPostReq.getOpenLessonId()) != null){
+            throw new OrdersException("orders duplicated");
+        }
+
         Lesson lesson = ordersRepositorySupport.findOneLesson(openLesson.getLessonId());
 
         if(lesson == null){
