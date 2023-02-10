@@ -40,8 +40,10 @@ public class BookmarkController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<? extends BaseResponseBody> registerBookmark(@PathVariable String email, @PathVariable Long lessonId) {
+        User user = userService.getUserByAuth(email);
+        if (user == null) return ResponseEntity.status(200).body(BaseResponseBody.of(404, "USER NOT FOUND"));
 
-        bookmarkService.create(email, lessonId);
+        bookmarkService.create(user.getAuth().getId(), lessonId);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 
@@ -68,15 +70,17 @@ public class BookmarkController {
             @ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
-    public ResponseEntity<? extends BaseResponseBody> getBookmarkList(@PathVariable String email) {
+    public ResponseEntity<? extends BaseResponseBody> getBookmarkList(@PathVariable String email, int limit, int offset) {
         User user = userService.getUserByAuth(email);
         if(user == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "USER NOT FOUND"));
 
-        List<Lesson> bookmarkList = bookmarkService.getBookmarkList(user.getAuth().getId());
+        List<Lesson> bookmarkList = bookmarkService.getBookmarkList(user.getAuth().getId(), limit, offset);
         List<LessonInfoDto> lessonList = lessonService.setLessonProperty(bookmarkList, user);
+        Long count = bookmarkService.getBookmarkCount(user.getAuth().getId());
 
         LessonInfoListRes res = LessonInfoListRes.builder()
                                                  .lessonInfoList(lessonList)
+                                                 .count(count)
                                                  .build();
 
         return ResponseEntity.status(200).body(LessonInfoListRes.of(200, "SUCCESS", res));
