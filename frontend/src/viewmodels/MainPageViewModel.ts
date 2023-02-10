@@ -5,18 +5,23 @@ import authTokenState from '../models/AuthTokenAtom';
 
 const MainPageViewModel = () => {
   const {
-    getRecommandLessonsApi,
+    getRecommandLessonsApi1,
+    getRecommandLessonsApi2,
     MyCreatedLessonsMainpageApi,
     MyAppliedLessonsMainpageApi,
     deleteMyAppliedLessonsMainpageApi,
     deleteBookmarkApi,
     addBookmarkApi,
   } = useLessonApi();
-  const getRecommandLessons = async () => {
-    const res = await getRecommandLessonsApi();
-
+  const getRecommandLessons1 = async () => {
+    const res = await getRecommandLessonsApi1();
     return res;
   };
+  const getRecommandLessons2 = async (email: string) => {
+    const res = await getRecommandLessonsApi2(email);
+    return res;
+  };
+
   const getMyCreatedLessonsMainpage = async (
     email: string,
     limit: number,
@@ -55,7 +60,8 @@ const MainPageViewModel = () => {
     return res;
   };
   return {
-    getRecommandLessons,
+    getRecommandLessons1,
+    getRecommandLessons2,
     getMyCreatedLessonsMainpage,
     getMyAppliedLessonsMainpage,
     deleteMyAppliedLessonsMainpage,
