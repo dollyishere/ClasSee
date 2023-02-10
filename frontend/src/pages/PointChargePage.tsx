@@ -12,6 +12,7 @@ import useViewModel from '../viewmodels/PointChargeViewModel';
 import privateInfoState from '../models/PrivateInfoAtom';
 
 import kakaoPay from '../assets/payment_icon_yellow_small.png';
+import authTokenState from '../models/AuthTokenAtom';
 
 const PointChargePage = () => {
   const userInfo = useRecoilValue(privateInfoState);
@@ -67,7 +68,9 @@ const PointChargePage = () => {
       return;
     }
 
-    chargePoint(point, payment);
+    if (userInfo !== null) {
+      chargePoint(userInfo?.email, point, payment);
+    }
   };
 
   return (
