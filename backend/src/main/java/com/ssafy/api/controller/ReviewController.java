@@ -13,10 +13,7 @@ import com.ssafy.common.exception.handler.LessonException;
 import com.ssafy.common.exception.handler.OpenLessonException;
 import com.ssafy.common.exception.handler.ReviewException;
 import com.ssafy.common.exception.handler.UserException;
-import com.ssafy.common.model.response.BaseResponseBody;
-import com.ssafy.common.model.response.InvalidErrorResponseBody;
-import com.ssafy.common.model.response.NotFoundErrorResponseBody;
-import com.ssafy.common.model.response.ServerErrorResponseBody;
+import com.ssafy.common.model.response.*;
 import com.ssafy.db.entity.lesson.Review;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -44,6 +41,7 @@ public class ReviewController {
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
             @ApiResponse(code = 401, message = "인증 실패", response = InvalidErrorResponseBody.class),
             @ApiResponse(code = 404, message = "해당 자료 없음", response = NotFoundErrorResponseBody.class),
+            @ApiResponse(code = 409, message = "중복", response = DuplicateErrorResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = ServerErrorResponseBody.class)
     })
     public ResponseEntity<? extends BaseResponseBody> registReview(@RequestBody ReviewRegistPostReq reviewRegistPostReq){
@@ -56,7 +54,9 @@ public class ReviewController {
             return ResponseEntity.status(404).body(BaseResponseBody.of(404,"opneLesson not found"));
         } catch (LessonException l){
             return ResponseEntity.status(404).body(BaseResponseBody.of(404,"lesson not found"));
-        } catch (Exception e){
+        } catch (ReviewException r){
+            return ResponseEntity.status(409).body(BaseResponseBody.of(409,"review duplicated"));
+        }catch (Exception e){
             return ResponseEntity.status(404).body(BaseResponseBody.of(404,"unexpected exception"));
         }
 

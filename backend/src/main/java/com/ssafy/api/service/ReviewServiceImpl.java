@@ -59,6 +59,10 @@ public class ReviewServiceImpl implements ReviewService {
             throw new LessonException("LESSON NOT FOUND");
         }
 
+        if(reviewRepositorySupport.findOne(user_id, lesson.getId()) != null){
+            throw new ReviewException("duplicated review");
+        }
+
         Review review = Review.builder()
                 .title(reviewRegistPostReq.getTitle())
                 .content(reviewRegistPostReq.getContent())
