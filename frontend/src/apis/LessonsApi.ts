@@ -17,18 +17,16 @@ import {
 import { Response } from '../types/BaseType';
 
 const LessonsApi = () => {
-  const doCreateLesson = async (
-    createLessonRequestBody: LessonRequest,
-    accessToken: string | null,
-  ) => {
+  const accesstoken = localStorage.getItem('accessToken');
+
+  const doCreateLesson = async (createLessonRequestBody: LessonRequest) => {
     try {
-      console.log(accessToken);
       const response = await axios.post<CreateLessonResponse>(
         `${process.env.REACT_APP_SERVER_URI}/api/v1/lessons`,
         createLessonRequestBody,
         {
           headers: {
-            Authorization: `Bearer ${accessToken}`,
+            Authorization: `Bearer ${accesstoken}`,
           },
         },
       );
@@ -124,18 +122,16 @@ const LessonsApi = () => {
     limit: number,
     offset: number,
     query: string,
-    accessToken: string,
   ) => {
     try {
       const response = await axios.get(
         `${process.env.REACT_APP_SERVER_URI}/api/v1/teachers/${email}/lessons?limit=${limit}&offset=${offset}&query=${query}`,
         {
           headers: {
-            Authorization: `Bearer ${accessToken}`,
+            Authorization: `Bearer ${accesstoken}`,
           },
         },
       );
-      // console.log(response.data);
       return response.data;
     } catch (error: any) {
       console.error(error);
@@ -147,14 +143,13 @@ const LessonsApi = () => {
     limit: number,
     offset: number,
     query: string,
-    accessToken: string,
   ) => {
     try {
       const response = await axios.get(
         `${process.env.REACT_APP_SERVER_URI}/api/v1/students/${email}/lessons?limit=${limit}&offset=${offset}&query=${query}`,
         {
           headers: {
-            Authorization: `Bearer ${accessToken}`,
+            Authorization: `Bearer ${accesstoken}`,
           },
         },
       );
