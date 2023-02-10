@@ -105,8 +105,9 @@ public class LessonServiceImpl implements LessonService {
         lessonList.forEach((lesson) -> {
             // 대표 이미지
             LessonInfoDto lessonRes = LessonInfoDto.builder()
-                    .lessonId
-                            (lesson.getId())
+                    .lessonId(lesson.getId())
+                    .price(lesson.getPrice())
+                    .kitPrice(lesson.getKitPrice())
                     .name(lesson.getName())
                     .category(lesson.getCategory())
                     .runningTime(lesson.getRunningtime())
@@ -151,6 +152,8 @@ public class LessonServiceImpl implements LessonService {
         Long isBookMarked = bookmarkRepositorySupport.bookmarkedCheck(lessonId, user);
 
         LessonDetailsRes lessonDetailsRes = LessonDetailsRes.builder()
+                .lessonId(lessonId)
+                .price(lesson.get().getPrice())
                 .teacher(teacher.getAuth().getEmail())
                 .lessonName(lesson.get().getName())
                 .lessonDescription(lesson.get().getDescription())
@@ -239,6 +242,8 @@ public class LessonServiceImpl implements LessonService {
                             .isBookMarked(
                                     (bookmarkRepositorySupport.bookmarkedCheck(lesson.get().getId(), userRepositorySupport.findOne(userId))) == 0 ? false: true
                             )
+                            .price(lesson.get().getPrice())
+                            .kitPrice(lesson.get().getKitPrice())
                             .build()
             );
         });
@@ -273,6 +278,8 @@ public class LessonServiceImpl implements LessonService {
                             .isBookMarked(
                                     (bookmarkRepositorySupport.bookmarkedCheck(lesson.get().getId(), userRepositorySupport.findOne(userId))) == 0 ? false: true
                             )
+                            .price(lesson.get().getPrice())
+                            .kitPrice(lesson.get().getKitPrice())
                             .build()
             );
         });

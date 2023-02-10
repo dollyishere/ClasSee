@@ -32,11 +32,13 @@ import java.util.List;
 @Setter
 @ApiModel("LessonDetailsResponse")
 public class LessonDetailsRes extends BaseResponseBody {
+    Long lessonId;
     String teacher;
     String lessonName;
     String cklsDescription;
 
     String lessonDescription;
+    Long price;
     Long kitPrice;
     String kitDescription;
     String category;
