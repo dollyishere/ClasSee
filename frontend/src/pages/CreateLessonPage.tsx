@@ -129,7 +129,7 @@ const CreateLessonPage = () => {
         runningtime: runningtimeState,
       };
 
-      const res = await createLesson(createLessonRequestBody, authToken);
+      const res = await createLesson(createLessonRequestBody);
       if (res?.message === 'SUCCESS') {
         // 만약 강의 개설에 성공했을 시, 이하 코드를 실행함
         // 만약 업로드한 이미지 파일이 하나 이상 존재한다면,
