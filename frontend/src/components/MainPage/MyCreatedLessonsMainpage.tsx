@@ -4,95 +4,27 @@ import LessonCard from '../LessonCard';
 import useViewModel from '../../viewmodels/MainPageViewModel';
 import { LessonsResponse, Lesson } from '../../types/LessonsType';
 import privateInfoState from '../../models/PrivateInfoAtom';
-import AuthTokenState from '../../models/AuthTokenAtom';
-import useUserApi from '../../apis/UserApi';
-import { AccessToken } from '../../utils/AccessToken';
 // 로그인이 되었을 때만 이 컴포넌트가 보여짐
 // 내가 개설한 강의를 get으로 api요청 보냄
 // 강의가 있으면 강의카드를 보여주고
 // 강의가 없다면(빈 배열이라면) 없음을 보여줌
 const MyCreatedLessonsMainpage = () => {
   // 내가 개설한 강의 2개 가져오는 함수
-  const { doGetAccessToken } = useUserApi();
   const { getMyCreatedLessonsMainpage } = useViewModel();
   const [lessons, setLessons] = useState<Lesson[]>();
   const userInfo = useRecoilValue(privateInfoState);
+
   // 메인페이지 마운트 시 강의 정보들 요청
-  const [accessToken, setAccessToken] = useRecoilState(AuthTokenState);
-
   useEffect(() => {
-    const handleAccessToken = async () => {
-      if (userInfo && userInfo.email) {
-        if (accessToken == null) {
-          const res = await AccessToken(
-            userInfo,
-            setAccessToken,
-            doGetAccessToken,
-          );
-          if (res) {
-            getMyCreatedLessonsMainpage(userInfo.email, 2, 0, 'TODO', res).then(
-              (response: LessonsResponse) => {
-                console.log('내가 개설한 강의1', response.lessonInfoList);
-                setLessons(response.lessonInfoList);
-              },
-            );
-          }
-        } else {
-          getMyCreatedLessonsMainpage(
-            userInfo.email,
-            2,
-            0,
-            'TODO',
-            accessToken,
-          ).then((response: LessonsResponse) => {
-            console.log('내가 개설한 강의2', response.lessonInfoList);
-            setLessons(response.lessonInfoList);
-          });
-        }
-      }
-    };
-    handleAccessToken();
+    if (userInfo) {
+      getMyCreatedLessonsMainpage(userInfo.email, 2, 0, 'TODO').then(
+        (response: LessonsResponse) => {
+          console.log('내가 개설한 강의1', response.lessonInfoList);
+          setLessons(response.lessonInfoList);
+        },
+      );
+    }
   }, []);
-
-  // useEffect(() => {
-  //   if (userInfo && userInfo.email) {
-  //     if (!accessToken) {
-  //       const newAccessToken = AccessToken(
-  //         userInfo,
-  //         setAccessToken,
-  //         doGetAccessToken,
-  //       );
-  //       if (newAccessToken) {
-  //         const handleGetAccessToken = async () => {
-  //           getMyCreatedLessonsMainpage(
-  //             userInfo.email,
-  //             2,
-  //             0,
-  //             'TODO',
-  //             newAccessToken,
-  //           ).then((response: LessonsResponse) => {
-  //             console.log('내가 개설한 강의', response.lessonInfoList);
-  //             setLessons(response.lessonInfoList);
-  //           });
-  //         };
-  //       }
-  //     } else {
-  //       const handleGetAccessToken = async () => {
-  //         getMyCreatedLessonsMainpage(
-  //           userInfo.email,
-  //           2,
-  //           0,
-  //           'TODO',
-  //           accessToken,
-  //         ).then((response: LessonsResponse) => {
-  //           console.log('내가 개설한 강의', response.lessonInfoList);
-  //           setLessons(response.lessonInfoList);
-  //         });
-  //       };
-  //       handleGetAccessToken();
-  //     }
-  //   }
-  // }, []);
 
   return (
     <div className="createlessons">
