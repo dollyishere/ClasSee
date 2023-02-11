@@ -16,7 +16,10 @@ public class ReviewListGetRes {
 
     Long id;
     String content;
-    String regtime;
+    String year;
+    String month;
+    String day;
+    String time;
     String img;
     Long score;
     String userEmail;
@@ -27,14 +30,25 @@ public class ReviewListGetRes {
 
     public ReviewListGetRes(Review review){
 
+        DateTimeFormatter yearFormatter = DateTimeFormatter.ofPattern("yyyy");
+        String year = review.getRegtime().toLocalDateTime().format(yearFormatter);
+
+        DateTimeFormatter monthFormatter = DateTimeFormatter.ofPattern("MM");
+        String month = review.getRegtime().toLocalDateTime().format(monthFormatter);
+
+        DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("dd");
+        String day = review.getRegtime().toLocalDateTime().format(dayFormatter);
+
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+        String time = review.getRegtime().toLocalDateTime().format(timeFormatter);
+
         this.userEmail = review.getUser().getAuth().getEmail();
         this.id = review.getId();
         this.content = review.getContent();
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        String formatDate = review.getRegtime().toLocalDateTime().format(formatter);
-
-        this.regtime = formatDate;
+        this.year = year;
+        this.month = month;
+        this.day = day;
+        this.time = time;
         this.img = review.getImg();
         this.score = review.getScore();
         this.userNickname = review.getUser().getNickname();
