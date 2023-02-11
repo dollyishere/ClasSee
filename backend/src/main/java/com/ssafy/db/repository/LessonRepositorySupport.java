@@ -148,24 +148,20 @@ public class LessonRepositorySupport {
         return lessons;
     }
 
-    public List<Long> findAttendLessonListByTeacher(String query, int limit, int offset) {
+    public List<Lesson> findAttendLessonListByTeacher(Long userId, int limit, int offset) {
         BooleanBuilder builder = new BooleanBuilder();
+        builder.and(qLesson.user.auth.id.eq(userId));
 
-        if(query.toUpperCase().equals("DONE")) builder.and(qOpenLesson.startTime.before(LocalDateTime.now()));
-        if(query.toUpperCase().equals("TODO")) builder.and(qOpenLesson.startTime.after(LocalDateTime.now()));
-
-        // 임박 순서
-        List<Long> lessonIdList = jpaQueryFactory
-                .select(qOpenLesson.lessonId).distinct()
-                .from(qOpenLesson)
+        // 최근 생성 순
+        List<Lesson> lessonList = jpaQueryFactory
+                .selectFrom(qLesson)
                 .where(builder)
-                .groupBy(qOpenLesson.lessonId)
-                .orderBy(qOpenLesson.startTime.min().asc())
+                .orderBy(qLesson.id.desc())
                 .offset(offset)
                 .limit(limit)
                 .fetch();
 
-        return lessonIdList;
+        return lessonList;
     }
 
     /*

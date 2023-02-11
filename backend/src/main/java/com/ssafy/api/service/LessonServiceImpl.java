@@ -251,35 +251,31 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public List<AttendLessonInfoDto> getAttendLessonListByTeacher(Long userId, String query, int limit, int offset) {
-        List<Long> lessonIdList = lessonRepositorySupport.findAttendLessonListByTeacher(query, limit, offset);
+    public List<AttendLessonInfoDto> getAttendLessonListByTeacher(Long userId, int limit, int offset) {
+        List<Lesson> lessonList = lessonRepositorySupport.findAttendLessonListByTeacher(userId, limit, offset);
 
         List<AttendLessonInfoDto> attendLessonList = new ArrayList<>();
 
-        lessonIdList.forEach((lessonId) -> {
-            Optional<Lesson> lesson = lessonRepository.findById(lessonId);
-            if(!lesson.isPresent()) return;
-            if(!lesson.get().getUser().getAuth().getId().equals(userId)) return;
-
-            List<Pamphlet> pamphletList = lesson.get().getPamphletList();
+        lessonList.forEach((lesson) -> {
+            List<Pamphlet> pamphletList = lesson.getPamphletList();
 
             attendLessonList.add(
                     AttendLessonInfoDto.builder()
-                            .lessonId(lesson.get().getId())
-                            .name(lesson.get().getName())
-                            .runningTime(lesson.get().getRunningtime())
-                            .category(lesson.get().getCategory())
+                            .lessonId(lesson.getId())
+                            .name(lesson.getName())
+                            .runningTime(lesson.getRunningtime())
+                            .category(lesson.getCategory())
                             .lessonImage(
                                     ((pamphletList.size() <= 0) ? null : pamphletList.get(0).getImg())
                             )
-                            .teacherImage(lesson.get().getUser().getImg())
-                            .teacher(lesson.get().getUser().getAuth().getEmail())
-                            .score(lessonRepositorySupport.setLessonAvgScore(lesson.get()))
+                            .teacherImage(lesson.getUser().getImg())
+                            .teacher(lesson.getUser().getAuth().getEmail())
+                            .score(lessonRepositorySupport.setLessonAvgScore(lesson))
                             .isBookMarked(
-                                    (bookmarkRepositorySupport.bookmarkedCheck(lesson.get().getId(), userRepositorySupport.findOne(userId))) == 0 ? false: true
+                                    (bookmarkRepositorySupport.bookmarkedCheck(lesson.getId(), userRepositorySupport.findOne(userId))) == 0 ? false: true
                             )
-                            .price(lesson.get().getPrice())
-                            .kitPrice(lesson.get().getKitPrice())
+                            .price(lesson.getPrice())
+                            .kitPrice(lesson.getKitPrice())
                             .build()
             );
         });
