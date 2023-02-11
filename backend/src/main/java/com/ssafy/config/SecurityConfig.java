@@ -47,6 +47,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/api/v1/users"
     };
 
+    private static String[] OPEN_API_PUT = new String[] {
+            "/api/v1/users/**/password"
+    };
+
     @Autowired
     private SsafyUserDetailService ssafyUserDetailService;
 
@@ -90,6 +94,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(SWAGGER_PATH).permitAll()
                 .antMatchers(HttpMethod.GET, OPEN_API_GET).permitAll()
                 .antMatchers(HttpMethod.POST, OPEN_API_POST).permitAll()
+                .antMatchers(HttpMethod.PUT, OPEN_API_PUT).permitAll()
                 .anyRequest().authenticated()
                 .and().cors();
 
