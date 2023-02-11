@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Getter
 @Setter
@@ -14,7 +16,7 @@ public class ReviewListGetRes {
 
     Long id;
     String content;
-    Timestamp regtime;
+    String regtime;
     String img;
     Long score;
     String userEmail;
@@ -28,7 +30,11 @@ public class ReviewListGetRes {
         this.userEmail = review.getUser().getAuth().getEmail();
         this.id = review.getId();
         this.content = review.getContent();
-        this.regtime = review.getRegtime();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        String formatDate = review.getRegtime().toLocalDateTime().format(formatter);
+
+        this.regtime = formatDate;
         this.img = review.getImg();
         this.score = review.getScore();
         this.userNickname = review.getUser().getNickname();
