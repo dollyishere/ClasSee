@@ -1,37 +1,37 @@
 @use '../base/colors';
 
-.lesson-page {
+.video-call-page {
   display: flex;
   height: 100%;
-  .lesson-page__content {
+  .video-call-page__content {
     width: 100%;
     height: 100%;
-    .lesson-page__header {
+    .video-call-page__header {
       height: 120px;
     }
-    .lesson-page__videos {
+    .video-call-page__videos {
       display: flex;
       flex-wrap: wrap;
       height: calc(100% - 240px);
-      .lesson-page__video--students-left {
+      .video-call-page__video--students-left {
         width: 50%;
-        .lesson-page__video--student {
+        .video-call-page__video--student {
           display: flex;
-          .lesson-page__student-stream-container {
+          .video-call-page__student-stream-container {
             width: 100%;
             margin: 20px;
             cursor: pointer;
           }
         }
-        .lesson-page__video--students-group {
+        .video-call-page__video--students-group {
           display: flex;
           height: 100%;
-          .lesson-page__video--students-col {
+          .video-call-page__video--students-col {
             width: 33%;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            .lesson-page__stream-container {
+            .video-call-page__stream-container {
               display: flex;
               justify-content: center;
               align-items: center;
@@ -42,10 +42,10 @@
           }
         }
       }
-      .lesson-page__video--teacher {
+      .video-call-page__video--teacher {
         width: 50%;
         display: flex;
-        .lesson-page__teacher-stream-container {
+        .video-call-page__teacher-stream-container {
           width: 100%;
           margin: 20px;
           video {
@@ -53,12 +53,12 @@
           }
         }
       }
-      .lesson-page__video--students-bottom {
+      .video-call-page__video--students-bottom {
         width: 100%;
         display: block;
         overflow: auto;
         white-space: nowrap;
-        .lesson-page__stream-container {
+        .video-call-page__stream-container {
           width: 300px;
           display: inline-block;
           cursor: pointer;
@@ -67,18 +67,18 @@
       }
     }
 
-    .lesson-page__footer {
+    .video-call-page__footer {
       height: 120px;
       display: flex;
       align-items: center;
       justify-content: center;
-      .lesson-page__buttons {
+      .video-call-page__buttons {
         position: absolute;
         margin: 0 auto;
         width: 400px;
         display: flex;
         justify-content: space-around;
-        .lesson-page__button {
+        .video-call-page__button {
           border: none;
           border-radius: 50%;
           width: 48px;
@@ -88,22 +88,22 @@
           cursor: pointer;
         }
 
-        .lesson-page__button--quit {
+        .video-call-page__button--quit {
           background-color: #ff4d4d;
         }
-        .lesson-page__button--msg {
+        .video-call-page__button--msg {
           color: colors.$theme-color;
           background-color: rgba(255, 255, 255, 0);
         }
       }
-      .lesson-page__hands {
+      .video-call-page__hands {
         position: absolute;
         right: 0;
         display: flex;
         width: 400px;
         padding: 0 20px;
         overflow-x: auto;
-        .lesson-page__hand {
+        .video-call-page__hand {
           padding: 20px;
           cursor: pointer;
         }

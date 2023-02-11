@@ -19,14 +19,14 @@ import {
 } from '@mui/icons-material';
 
 import { useRecoilValue } from 'recoil';
-import useViewModel from '../viewmodels/LessonViewModel';
+import useViewModel from '../viewmodels/VideoCallViewModel';
 import UserVideo from '../components/UserVideo';
 import ChatBox from '../components/ChatBox';
 
 import { Device, Msg, ConnectionError } from '../types/OpenviduType';
 import PrivateInfoState from '../models/PrivateInfoAtom';
 
-const LessonPage = () => {
+const VideoCallPage = () => {
   const userInfo = useRecoilValue(PrivateInfoState);
   // 사용자가 강사인지 수강생인지 url로 넘겨받도록 함
   // 이 부분은 로그인시 얻은 데이터로 나중에 바꿔야 돼요
@@ -399,20 +399,20 @@ const LessonPage = () => {
   };
 
   return (
-    <div className="page lesson-page">
+    <div className="page video-call-page">
       {/* 채팅창을 제외한 메인 컨텐츠 영역 */}
-      <div className="lesson-page__content">
+      <div className="video-call-page__content">
         {/* 헤더, 이 부분에는 강의 진행 상황을 표시할 그래프가 있어야 합니다. */}
-        <div className="lesson-page__header">헤더</div>
+        <div className="video-call-page__header">헤더</div>
         {/* 비디오 화면들이 표시되는 영역 */}
-        <div className="lesson-page__videos">
+        <div className="video-call-page__videos">
           {/* isFocused가 true이면 선택한 학생 하나만 왼쪽 화면에 표시하고 나머지는 밑으로 내림 */}
-          <div className="lesson-page__video--students-left">
+          <div className="video-call-page__video--students-left">
             {isFocused ? (
-              <div className="lesson-page__video--student">
+              <div className="video-call-page__video--student">
                 <div
                   role="presentation"
-                  className="lesson-page__student-stream-container"
+                  className="video-call-page__student-stream-container"
                   onClick={() => handleVideoClick(null)}
                 >
                   <UserVideo streamManager={studentStreamManager} />
@@ -420,14 +420,14 @@ const LessonPage = () => {
               </div>
             ) : (
               /* isFocused가 false이면 왼쪽 화면에 학생들의 화면 표시 */
-              <div className="lesson-page__video--students-group">
+              <div className="video-call-page__video--students-group">
                 {/* 열을 3개로 나눠서 피그마대로 표시 */}
-                <div className="lesson-page__video--students-col">
+                <div className="video-call-page__video--students-col">
                   {subscribers.map((sub: StreamManager, i: number) =>
                     i % 3 === 1 ? (
                       <div
                         role="presentation"
-                        className="lesson-page__stream-container"
+                        className="video-call-page__stream-container"
                         onClick={() => handleVideoClick(sub)}
                       >
                         <UserVideo streamManager={sub} />
@@ -435,12 +435,12 @@ const LessonPage = () => {
                     ) : null,
                   )}
                 </div>
-                <div className="lesson-page__video--students-col">
+                <div className="video-call-page__video--students-col">
                   {subscribers.map((sub: StreamManager, i: number) =>
                     i % 3 === 0 ? (
                       <div
                         role="presentation"
-                        className="lesson-page__stream-container"
+                        className="video-call-page__stream-container"
                         onClick={() => handleVideoClick(sub)}
                       >
                         <UserVideo streamManager={sub} />
@@ -448,12 +448,12 @@ const LessonPage = () => {
                     ) : null,
                   )}
                 </div>
-                <div className="lesson-page__video--students-col">
+                <div className="video-call-page__video--students-col">
                   {subscribers.map((sub: StreamManager, i: number) =>
                     i % 3 === 2 ? (
                       <div
                         role="presentation"
-                        className="lesson-page__stream-container"
+                        className="video-call-page__stream-container"
                         onClick={() => handleVideoClick(sub)}
                       >
                         <UserVideo streamManager={sub} />
@@ -465,8 +465,8 @@ const LessonPage = () => {
             )}
           </div>
           {/* 강사의 화면을 표시하는 영역 */}
-          <div className="lesson-page__video--teacher">
-            <div className="lesson-page__teacher-stream-container">
+          <div className="video-call-page__video--teacher">
+            <div className="video-call-page__teacher-stream-container">
               {teacherStreamManager !== undefined ? (
                 <UserVideo streamManager={teacherStreamManager} />
               ) : null}
@@ -474,10 +474,10 @@ const LessonPage = () => {
           </div>
           {isFocused ? (
             /* isFocused가 true이면 왼쪽에 선택된 학생의 화면을 표시하고 아래에는 나머지 학생 화면 표시 */
-            <div className="lesson-page__video--students-bottom">
+            <div className="video-call-page__video--students-bottom">
               {subscribers.map((sub: StreamManager) =>
                 studentStreamManager !== sub ? (
-                  <div className="lesson-page__stream-container">
+                  <div className="video-call-page__stream-container">
                     <UserVideo streamManager={sub} />
                   </div>
                 ) : null,
@@ -486,32 +486,32 @@ const LessonPage = () => {
           ) : null}
         </div>
         {/* 화상통화에 사용하는 각종 기능 버튼들을 배치할 푸터 */}
-        <div className="lesson-page__footer">
-          <div className="lesson-page__buttons">
+        <div className="video-call-page__footer">
+          <div className="video-call-page__buttons">
             {/* 손들기 버튼 */}
             <button
               type="button"
-              className="lesson-page__button"
+              className="video-call-page__button"
               onClick={handleHandClick}
             >
               <PanTool style={{ fontSize: '30px' }} />
             </button>
             {/* 음소거 버튼 */}
-            <button type="button" className="lesson-page__button">
+            <button type="button" className="video-call-page__button">
               <Mic fontSize="large" />
             </button>
             {/* 화면공유 버튼 */}
-            <button type="button" className="lesson-page__button">
+            <button type="button" className="video-call-page__button">
               <Monitor fontSize="large" />
             </button>
             {/* 캠 변경 버튼 */}
-            <button type="button" className="lesson-page__button">
+            <button type="button" className="video-call-page__button">
               <Videocam fontSize="large" />
             </button>
             {/* 나가기 버튼 */}
             <button
               type="button"
-              className="lesson-page__button lesson-page__button--quit"
+              className="video-call-page__button video-call-page__button--quit"
               onClick={window.close}
             >
               <Phone fontSize="large" />
@@ -520,18 +520,18 @@ const LessonPage = () => {
             {/* 채팅창 토글 버튼 */}
             <button
               type="button"
-              className="lesson-page__button lesson-page__button--msg"
+              className="video-call-page__button video-call-page__button--msg"
               onClick={toggleChatBox}
             >
               <Message fontSize="large" />
             </button>
           </div>
-          <div className="lesson-page__hands">
+          <div className="video-call-page__hands">
             {raiseHand.map((hand: StreamManager) => (
               <div
                 role="presentation"
                 key={JSON.parse(hand.stream.connection.data).clientData}
-                className="lesson-page__hand"
+                className="video-call-page__hand"
                 onClick={() => handleVideoClick(hand)}
               >
                 <div>
@@ -559,4 +559,4 @@ const LessonPage = () => {
   );
 };
 
-export default LessonPage;
+export default VideoCallPage;

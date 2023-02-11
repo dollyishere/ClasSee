@@ -4,7 +4,7 @@ import { RecoilRoot, useRecoilValue, useRecoilState } from 'recoil';
 import MainPage from './pages/MainPage';
 import SignUpPage from './pages/SignUpPage';
 import CreateLessonPage from './pages/CreateLessonPage';
-import LessonPage from './pages/LessonPage';
+import VideoCallPage from './pages/VideoCallPage';
 import LoginPage from './pages/LoginPage';
 import LessonDetailPage from './pages/LessonDetailPage';
 import MyPage from './pages/MyPage';
@@ -38,7 +38,7 @@ const Router = () => {
       <Route path="/create-lesson" element={<CreateLessonPage />} />
       <Route path="/lesson/:lessonId" element={<LessonDetailPage />} />
       <Route path="/update-lesson/:lessonId" element={<UpdateLessonPage />} />
-      <Route path="/lesson/:sessionId/:role" element={<LessonPage />} />
+      <Route path="/lesson/:sessionId/:role" element={<VideoCallPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/image" element={<TestPage />} />
       <Route path="/mypage/*" element={<MyPage />} />
