@@ -9,7 +9,7 @@ import useViewModel from '../viewmodels/FindPwViewModel';
 const FindPwPage = () => {
   const navigate = useNavigate();
   const nameRef = useRef<HTMLInputElement>(null);
-  const emailRef = useRef<HTMLInputElement>(null);
+  const [email, setEmail] = useState<string>('');
   const codeRef = useRef<HTMLInputElement>(null);
   const newPasswordRef = useRef<HTMLInputElement>(null);
   const newPasswordCheckRef = useRef<HTMLInputElement>(null);
@@ -18,20 +18,16 @@ const FindPwPage = () => {
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [doMovePage, setDoMovePage] = useState<boolean>(false);
 
-  const { findPw } = useViewModel();
+  const { findPw, updatePw } = useViewModel();
 
   const sendCode = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (
-      emailRef.current !== null &&
+      email !== '' &&
       nameRef.current !== null &&
-      emailRef.current.value !== '' &&
       nameRef.current.value !== ''
     ) {
-      const response = await findPw(
-        nameRef.current.value,
-        emailRef.current.value,
-      );
+      const response = await findPw(nameRef.current.value, email);
       console.log(response);
       setAnswer(response);
     }
@@ -56,18 +52,27 @@ const FindPwPage = () => {
     }
   };
 
-  const changePw = (event: React.FormEvent<HTMLFormElement>) => {
+  const changePw = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (
       newPasswordRef.current !== null &&
       newPasswordCheckRef.current !== null
     ) {
       if (newPasswordRef.current.value === newPasswordCheckRef.current.value) {
-        console.log('비번같음');
+        const response = await updatePw(email, newPasswordRef.current.value);
+        console.log(response);
+      } else {
+        alert('비밀번호가 일치하지 않습니다.');
+        newPasswordCheckRef.current.value = '';
+        newPasswordRef.current.value = '';
       }
     }
   };
 
+  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value);
+    console.log(email);
+  };
   useEffect(() => {
     if (
       newPasswordRef.current !== null &&
@@ -125,7 +130,7 @@ const FindPwPage = () => {
               <div className="find-pw-page__label">이메일</div>
               <input
                 type="email"
-                ref={emailRef}
+                onChange={handleEmailChange}
                 className="find-pw-page__input"
               />
               <button type="submit" className="button find-pw-page__button">
