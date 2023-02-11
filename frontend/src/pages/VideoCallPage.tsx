@@ -54,12 +54,6 @@ const VideoCallPage = () => {
     location.pathname.split('/')[2],
   );
 
-  // 유저 닉네임
-  // 이 부분도 로그인시 얻은 데이터로 나중에 바꿔야돼요 지금은 url로 넘겨받음
-  const [userName, setUserName] = useState<string>(
-    `user${Math.floor(Math.random() * 100)}`,
-  );
-
   // 세션 객체를 저장할 state
   const [session, setSession] = useState<Session>();
 
@@ -88,10 +82,10 @@ const VideoCallPage = () => {
 
   // 손들기 시그널 보내는 함수
   const sendRaiseHandSignal = () => {
-    if (session !== undefined) {
+    if (session !== undefined && userInfo !== null) {
       session
         .signal({
-          data: userName,
+          data: userInfo.nickname,
           to: [],
           type: 'raiseHand',
         })
@@ -106,10 +100,10 @@ const VideoCallPage = () => {
 
   // 손 내리기 시그널 보내는 함수
   const sendDownHandSignal = () => {
-    if (session !== undefined) {
+    if (session !== undefined && userInfo !== null) {
       session
         .signal({
-          data: userName,
+          data: userInfo.nickname,
           to: [],
           type: 'downHand',
         })
@@ -285,7 +279,7 @@ const VideoCallPage = () => {
         createToken(testId, testToken).then((token: string) => {
           // 해당 토큰으로 세션 연결
           newSession
-            .connect(token, { clientData: userName, role })
+            .connect(token, { clientData: userInfo.nickname, role })
             .then(async () => {
               // 비디오stream 생성
               const newPublisher = await newOV.initPublisherAsync(undefined, {
@@ -355,6 +349,10 @@ const VideoCallPage = () => {
     if (!OV) {
       // 마운트시 세션에 참여하는 함수 실행
       joinSession();
+
+      if (role === 'student') {
+        setIsFocused(true);
+      }
     }
     return () => {
       // 혹시 모를 에러를 방지하기 위해 이벤트리스너 제거
@@ -543,7 +541,7 @@ const VideoCallPage = () => {
           </div>
         </div>
       </div>
-      {isChatBoxVisible ? (
+      {isChatBoxVisible && userInfo !== null ? (
         // isChatBoxVisible이 true이면 채팅창 보이게 하기
         <ChatBox
           toggleChatBox={toggleChatBox}
@@ -551,7 +549,7 @@ const VideoCallPage = () => {
           session={session}
           messages={messages}
           setMessages={setMessages}
-          userName={userName}
+          userName={userInfo.nickname}
           role={role}
         />
       ) : null}
