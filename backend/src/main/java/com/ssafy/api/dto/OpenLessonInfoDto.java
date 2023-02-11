@@ -18,9 +18,6 @@ public class OpenLessonInfoDto {
     Long lessonId;
     Long totalCount;
     Long attendCount;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    LocalDateTime startTime;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    LocalDateTime endTime;
-
+    String startTime;
+    String endTime;
 }
