@@ -189,8 +189,8 @@ public class LessonServiceImpl implements LessonService {
                             .lessonId(schedule.getLessonId())
                             .totalCount(totalCount)
                             .attendCount(attendCount)
-                            .startTime(schedule.getStartTime())
-                            .endTime(schedule.getEndTime())
+                            .startTime(schedule.getStartTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
+                            .endTime(schedule.getEndTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
                             .build()
             );
         });
