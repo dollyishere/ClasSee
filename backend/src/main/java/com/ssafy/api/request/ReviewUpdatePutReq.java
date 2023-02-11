@@ -13,9 +13,6 @@ public class ReviewUpdatePutReq {
     @ApiModelProperty(name="리뷰 id", example="review_id")
     Long id;
 
-    @ApiModelProperty(name="리뷰 제목", example="review_title")
-    String title;
-
     @ApiModelProperty(name="리뷰 내용", example="review_content")
     String content;
 

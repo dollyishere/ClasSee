@@ -155,7 +155,7 @@ public class ReviewController {
             @ApiResponse(code = 404, message = "해당 자료 없음", response = NotFoundErrorResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = ServerErrorResponseBody.class)
     })
-    public ResponseEntity<? extends BaseResponseBody> updateQna(@RequestBody ReviewUpdatePutReq reviewUpdatePutReq) {
+    public ResponseEntity<? extends BaseResponseBody> updateReview(@RequestBody ReviewUpdatePutReq reviewUpdatePutReq) {
 
         try {
             reviewService.updateReview(reviewUpdatePutReq);

@@ -80,7 +80,6 @@ public class ReviewRepositorySupport {
         jpaQueryFactory
                 .update(qReview)
                 .where(qReview.id.eq(reviewUpdatePutReq.getId()))
-                .set(qReview.title, reviewUpdatePutReq.getTitle())
                 .set(qReview.content, reviewUpdatePutReq.getContent())
                 .set(qReview.img, reviewUpdatePutReq.getImg())
                 .set(qReview.score, reviewUpdatePutReq.getScore())
