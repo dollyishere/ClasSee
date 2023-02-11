@@ -36,6 +36,8 @@ const LessonDetailPage = () => {
       statusCode: 0 as number,
       teacher: '' as string,
       lessonName: '' as string,
+      lessonId: 0 as number,
+      price: 0 as number,
       cklsDescription: '' as string,
       lessonDescription: '' as string,
       kitPrice: 0 as number,
@@ -191,7 +193,7 @@ const LessonDetailPage = () => {
                 <div className="lesson-detail-page__box">
                   <h2>강의 소개</h2>
                   <div className="lesson-detail-page__lesson-description">
-                    <p>{lessonDetailState.lessonDescription}</p>
+                    <pre>{lessonDetailState.lessonDescription}</pre>
                   </div>
                   <h2>커리큘럼</h2>
                   <div className="lesson-detail-page__curriculum">
@@ -206,7 +208,9 @@ const LessonDetailPage = () => {
                     {checkListImgState.map((image: any) => (
                       <img className="lesson_img" src={image} alt={image} />
                     ))}
-                    <div>{lessonDetailState.cklsDescription}</div>
+                    <div>
+                      <pre>{lessonDetailState.cklsDescription}</pre>
+                    </div>
                   </div>
                   <h2>강사 소개</h2>
                   <div className="lesson-detail-page__teacher">
