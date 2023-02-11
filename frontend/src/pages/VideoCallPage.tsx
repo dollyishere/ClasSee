@@ -343,6 +343,9 @@ const VideoCallPage = () => {
                 // role이 학생이면 스트림을 studentStreamManager에 저장
                 setStudentStreamManager(newPublisher);
               }
+              const newSubscribers = subscribers;
+              newSubscribers.push(newPublisher);
+              setSubscribers([...newSubscribers]);
               setPublisher(newPublisher);
             })
             .catch((error: ConnectionError) => {
