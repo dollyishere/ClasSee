@@ -14,9 +14,6 @@ import java.sql.Timestamp;
 @ApiModel("ReviewRegistPostReq")
 public class ReviewRegistPostReq {
 
-    @ApiModelProperty(name="리뷰 제목", example="review_title")
-    String title;
-
     @ApiModelProperty(name="리뷰 내용", example="review_content")
     String content;
 
