@@ -6,7 +6,7 @@ const FindPwViewModel = () => {
   const findPw = async (name: string, email: string) => {
     const response = await doFindPw(name, email);
 
-    return response.data;
+    return response.message;
   };
 
   return {
