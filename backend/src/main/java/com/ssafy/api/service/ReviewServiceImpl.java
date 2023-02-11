@@ -45,15 +45,8 @@ public class ReviewServiceImpl implements ReviewService {
         User user = userRepositorySupport
                 .findOne(user_id);
 
-        OpenLesson openLesson = ordersRepositorySupport
-                .findOneOpenLesson(reviewRegistPostReq.getOpenLessonId());
-
-        if(openLesson == null){
-            throw new OpenLessonException("OPENLESSON NOT FOUND");
-        }
-
         Lesson lesson = ordersRepositorySupport
-                .findOneLesson(openLesson.getLessonId());
+                .findOneLesson(reviewRegistPostReq.getLessonId());
 
         if (lesson == null){
             throw new LessonException("LESSON NOT FOUND");
