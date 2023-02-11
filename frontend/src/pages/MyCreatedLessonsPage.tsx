@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { atom, selector, useRecoilState, useRecoilValue } from 'recoil';
 import { Stack, Button, Card, CardContent, Pagination } from '@mui/material';
-import LessonCard from '../components/LessonCard';
+import MyPageCards from '../components/MyPageCards';
 import useViewModel from '../viewmodels/MainPageViewModel';
 import { LessonsResponse, Lesson } from '../types/LessonsType';
 import privateInfoState from '../models/PrivateInfoAtom';
@@ -29,11 +29,6 @@ const MyCreatedLessonsPage = () => {
     setPage(value);
   };
 
-  const handleMoveDetail = (event: any, lessonId: number) => {
-    event.preventDefault();
-    navigate(`/mypage/created-lesson/${lessonId}`);
-  };
-
   // 메인페이지 마운트 시 강의 정보들 요청
   useEffect(() => {
     if (userInfo !== null) {
@@ -46,57 +41,43 @@ const MyCreatedLessonsPage = () => {
           offset,
           'DONE',
         );
+        console.log(data.lessonInfoList);
         setLessons(data.lessonInfoList);
-        setCount(Math.ceil(data.count / limit));
+        setCount(Math.ceil(data.lessonInfoList.length / limit));
+        console.log(Math.ceil(data.lessonInfoList.length / limit));
       };
       getData();
     }
   }, [page]);
 
   return (
-    <div>
-      <div className="profile-page">
-        <Card className="profile-page__card">
-          <CardContent>
-            <h1>개설한 클래스</h1>
-            <div className="my-bookmark-page__lessons">
-              {lessons.map((lesson: Lesson) => (
-                <div
-                  role="button"
-                  tabIndex={0}
-                  className="my-bookmark-page__lesson-card"
-                  key={lesson.lessonId}
-                  onClick={(event) => {
-                    if (lesson.teacher) {
-                      event.preventDefault();
-                      navigate(`/mypage/created-lesson/${lesson.lessonId}`);
-                    }
-                  }}
-                  onKeyDown={(event) => {
-                    if (event.key === 'Enter' || event.key === ' ') {
-                      event.preventDefault();
-                      navigate(`/mypage/created-lesson/${lesson.lessonId}`);
-                    }
-                  }}
-                >
-                  <LessonCard lesson={lesson} />
-                </div>
-              ))}
-            </div>
+    <div className="my-created-lessons-page">
+      <Card className="my-created-lessons-page__card">
+        <CardContent>
+          <div className="my-created-lessons-page__title">개설한 클래스</div>
+          <div className="my-created-lessons-page__lessons">
+            {lessons.map((lesson: Lesson) => (
+              <div
+                className="my-created-lessons-page__lesson-card"
+                key={lesson.lessonId}
+              >
+                <MyPageCards lesson={lesson} />
+              </div>
+            ))}
+          </div>
 
-            <div className="my-bookmark-page__pagination">
-              <Pagination
-                variant="outlined"
-                count={count}
-                page={page}
-                shape="rounded"
-                size="large"
-                onChange={handlePageChange}
-              />
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+          <div className="my-created-lessons-page__pagination">
+            <Pagination
+              variant="outlined"
+              count={count}
+              page={page}
+              shape="rounded"
+              size="large"
+              onChange={handlePageChange}
+            />
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };

@@ -12,6 +12,7 @@ import {
   LessonDetailResponse,
   CurriculumsType,
   ImageListType,
+  LessonSchedulesType,
   GetScheduleRequest,
 } from '../types/LessonsType';
 
@@ -20,8 +21,8 @@ import ScheduleViewModel from '../viewmodels/ScheduleViewModel';
 
 import PrivateInfoState from '../models/PrivateInfoAtom';
 
-import CreateScheduleComponent from '../components/CreateSchedule';
-import ScheduleDetail from '../components/ScheduleDetail';
+import CreateScheduleComponent from '../components/MyPage/CreateSchedule';
+import ScheduleDetail from '../components/MyPage/ScheduleDetail';
 
 const MyCreatedLessonDetailPage = () => {
   // url(Router) 통해서 입력된 lessonId를 useParams로 받아옴
@@ -34,6 +35,8 @@ const MyCreatedLessonDetailPage = () => {
       statusCode: 0 as number,
       teacher: '' as string,
       lessonName: '' as string,
+      lessonId: 0 as number,
+      price: 0 as number,
       cklsDescription: '' as string,
       lessonDescription: '' as string,
       kitPrice: 0 as number,
@@ -52,8 +55,12 @@ const MyCreatedLessonDetailPage = () => {
     });
 
   // api 실행할 시 실행될 함수 가져옴
-  const { getLessonDetail, getPamphletImgUrls, getCheckImgUrls } =
-    LessonDetailViewModel();
+  const {
+    getLessonDetail,
+    getPamphletImgUrls,
+    getCheckImgUrls,
+    doDeleteselectedLesson,
+  } = LessonDetailViewModel();
   const { getSchedule } = ScheduleViewModel();
 
   // 컴포넌트 전환에 필요한 useNavigate 재할당
@@ -71,6 +78,24 @@ const MyCreatedLessonDetailPage = () => {
 
   // 강의 스케줄 추가 input 여부 확인할 state 생성
   const [scheduleInputState, setScheduleInputState] = useState(false);
+
+  const handleLessonDelete = async (event: React.MouseEvent<HTMLElement>) => {
+    if (userInfo === null) {
+      alert('로그인 후 이용 가능합니다.');
+      navigate('/login');
+    } else {
+      const res = await doDeleteselectedLesson(
+        userInfo.email,
+        lessonDetailState.lessonId,
+      );
+      if (res?.message === 'SUCCESS') {
+        alert('강의가 삭제되었습니다.');
+        navigate('/mypage/created-lesson');
+      } else {
+        alert('다시 시도해주세요.');
+      }
+    }
+  };
 
   // const handleLessonDelete = (event: React.MouseEvent<HTMLButtonElement>) => {};
   // useEffect로 해당 페이지 렌더링 시 강의 상세 정보를 받아오도록 내부 함수 실행
@@ -108,27 +133,26 @@ const MyCreatedLessonDetailPage = () => {
           alert(res?.message);
         }
       };
-      const getLessonSchedule = async () => {
-        const checkScheduleRequestBody: GetScheduleRequest = {
-          regDate: '',
-          lessonId: Number(lessonId.lessonId),
-        };
-        const res = await getSchedule(checkScheduleRequestBody);
-        if (res?.message === 'SUCCESS') {
-          if (res.lessonSchedules.length) {
-            setSchedulesListState(res.lessonSchedules);
-          } else {
-            // 만약 해당 날짜에 스케줄이 없다면, scheduleList를 초기화함
-            setSchedulesListState([]);
-          }
-        } else {
-          alert('다시 시도해주세요.');
-        }
-      };
+
       fetchData();
-      getLessonSchedule();
     }
   }, []);
+
+  useEffect(() => {
+    const getLessonSchedule = async () => {
+      const checkScheduleRequestBody: GetScheduleRequest = {
+        regDate: '',
+        lessonId: Number(lessonId.lessonId),
+      };
+      const res = await getSchedule(checkScheduleRequestBody);
+      if (res?.message === 'SUCCESS') {
+        setSchedulesListState(res.lessonSchedules);
+      } else {
+        alert('다시 시도해주세요.');
+      }
+    };
+    getLessonSchedule();
+  }, [schedulesListState]);
 
   return (
     <div className="profile-page">
@@ -191,7 +215,9 @@ const MyCreatedLessonDetailPage = () => {
                 >
                   강의 상세 수정
                 </Button>
-                <Button variant="contained">강의 삭제</Button>
+                <Button variant="contained" onClick={handleLessonDelete}>
+                  강의 삭제
+                </Button>
               </Stack>
             </div>
           </div>
@@ -201,20 +227,29 @@ const MyCreatedLessonDetailPage = () => {
             </div>
             <div>
               <ul>
-                <li>일자</li>
-                <li>시간</li>
+                <li>시작 시간</li>
+                <li>종료 시간</li>
                 <li>참여 인원</li>
                 <li>수정/삭제</li>
               </ul>
-              {schedulesListState.map((schedule: any) => (
-                <ScheduleDetail schedule={schedule} />
-              ))}
+              <div className="created-lesson-detail-page__schedules">
+                {schedulesListState.map((schedule: any) => (
+                  <ScheduleDetail
+                    startTime={schedule.startTime}
+                    endTime={schedule.endTime}
+                    openLessonId={schedule.openLessonId}
+                    lessonId={schedule.lessonId}
+                  />
+                ))}
+              </div>
+
               {scheduleInputState ? (
                 <CreateScheduleComponent
                   runningtime={lessonDetailState.runningTime}
                   lessonId={Number(lessonId.lessonId)}
                   scheduleInputState={scheduleInputState}
                   setScheduleInputState={setScheduleInputState}
+                  schedulesListState={schedulesListState}
                 />
               ) : (
                 <Button
@@ -227,8 +262,8 @@ const MyCreatedLessonDetailPage = () => {
             </div>
           </div>
           <div>
-            <Link to="/">
-              <Button variant="contained"> 메뉴로 돌아가기 </Button>
+            <Link to="/mypage/created-lesson">
+              <Button variant="contained"> 강의 목록 보기 </Button>
             </Link>
           </div>
         </CardContent>
