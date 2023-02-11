@@ -13,7 +13,6 @@ import java.sql.Timestamp;
 public class ReviewListGetRes {
 
     Long id;
-    String title;
     String content;
     Timestamp regtime;
     String img;
@@ -28,7 +27,6 @@ public class ReviewListGetRes {
 
         this.userEmail = review.getUser().getAuth().getEmail();
         this.id = review.getId();
-        this.title = review.getTitle();
         this.content = review.getContent();
         this.regtime = review.getRegtime();
         this.img = review.getImg();
