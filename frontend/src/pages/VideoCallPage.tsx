@@ -86,6 +86,23 @@ const VideoCallPage = () => {
   // chat은 메시지 전송
   const { createSession, createToken, chat } = useViewModel();
 
+  const handleScreenShare = () => {
+    const newPublisher = OV?.initPublisher(undefined, {
+      resolution: '640x360',
+      frameRate: 30,
+      videoSource: 'screen',
+    });
+    if (newPublisher !== undefined) {
+      newPublisher.once('accessAllowed', (event: any) => {
+        if (session !== undefined && userInfo !== null) {
+          publisher?.replaceTrack(
+            newPublisher.stream.getMediaStream().getVideoTracks()[0],
+          );
+        }
+      });
+    }
+  };
+
   const handleMute = () => {
     if (publisher !== undefined) {
       publisher.publishAudio(!audioEnabled);
@@ -283,6 +300,7 @@ const VideoCallPage = () => {
           }
         }
       });
+
       if (userInfo !== null) {
         // 세션 토큰 api 요청 함수
         const { testId, testToken } = await createSession(
@@ -520,7 +538,11 @@ const VideoCallPage = () => {
               <Mic fontSize="large" />
             </button>
             {/* 화면공유 버튼 */}
-            <button type="button" className="video-call-page__button">
+            <button
+              type="button"
+              className="video-call-page__button"
+              onClick={handleScreenShare}
+            >
               <Monitor fontSize="large" />
             </button>
             {/* 캠 변경 버튼 */}
