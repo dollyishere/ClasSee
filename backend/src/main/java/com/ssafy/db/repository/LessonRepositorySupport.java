@@ -281,4 +281,12 @@ public class LessonRepositorySupport {
                 .where(qOrders.openLesson.id.eq(openLessonId))
                 .fetchOne();
     }
+
+    public Long findAttendCount(Long id) {
+        return jpaQueryFactory
+                .select(qOrders.id.count())
+                .from(qOrders)
+                .where(qOrders.openLesson.id.eq(id))
+                .fetchOne();
+    }
 }

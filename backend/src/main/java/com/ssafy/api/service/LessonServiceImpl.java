@@ -180,10 +180,15 @@ public class LessonServiceImpl implements LessonService {
         List<OpenLesson> lessonSchedules = lessonRepositorySupport.findScheduleByLessonId(lessonId, regDate);
         List<OpenLessonInfoDto> lessonSchedulesRes = new ArrayList<>();
         lessonSchedules.forEach((schedule) ->{
+            Long totalCount = lessonRepository.getOne(schedule.getLessonId()).getMaximum();
+            Long attendCount = lessonRepositorySupport.findAttendCount(schedule.getId());
+
             lessonSchedulesRes.add(
                     OpenLessonInfoDto.builder()
                             .openLessonId(schedule.getId())
                             .lessonId(schedule.getLessonId())
+                            .totalCount(totalCount)
+                            .attendCount(attendCount)
                             .startTime(schedule.getStartTime())
                             .endTime(schedule.getEndTime())
                             .build()
