@@ -57,7 +57,6 @@ public class ReviewServiceImpl implements ReviewService {
         }
 
         Review review = Review.builder()
-                .title(reviewRegistPostReq.getTitle())
                 .content(reviewRegistPostReq.getContent())
                 .img(reviewRegistPostReq.getImg())
                 .score(reviewRegistPostReq.getScore())
