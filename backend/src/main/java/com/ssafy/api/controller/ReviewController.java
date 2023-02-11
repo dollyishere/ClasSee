@@ -128,7 +128,7 @@ public class ReviewController {
         return ResponseEntity.status(200).body(reviewPage);
     }
 
-    @DeleteMapping()
+    @DeleteMapping("/{id}")
     @ApiOperation(value = "리뷰 삭제, 로그인 O", notes = "리뷰 id를 입력 받아 삭제")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
