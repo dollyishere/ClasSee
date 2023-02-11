@@ -7,6 +7,7 @@ import {
   SignalEvent,
   StreamEvent,
   StreamManager,
+  Publisher,
 } from 'openvidu-browser';
 
 import {
@@ -48,6 +49,9 @@ const VideoCallPage = () => {
   // OpenVidu 객체를 저장할 state
   const [OV, setOV] = useState<OpenVidu | null>(null);
 
+  const [audioEnabled, setAudioEnabled] = useState<boolean>(true);
+  const [videoEnabled, setVideoEnabled] = useState<boolean>(true);
+
   // 현재 세션 ID를 저장할 state => 스케줄 id
   // 이 부분도 실제 스케줄 id로 바꿔야 돼요 일단 지금은 url로 넘겨받음
   const [sessionId, setSessionId] = useState<string>(
@@ -65,6 +69,8 @@ const VideoCallPage = () => {
   const [studentStreamManager, setStudentStreamManager] =
     useState<StreamManager>();
 
+  const [publisher, setPublisher] = useState<Publisher>();
+
   // 세션 참여자들의 streamManager를 저장할 state (배열)
   const [subscribers, setSubscribers] = useState<Array<StreamManager>>([]); // 세션 참여자
 
@@ -79,6 +85,13 @@ const VideoCallPage = () => {
   // getToken은 서버로부터 세션 토큰을 받아옴
   // chat은 메시지 전송
   const { createSession, createToken, chat } = useViewModel();
+
+  const handleMute = () => {
+    if (publisher !== undefined) {
+      publisher.publishAudio(!audioEnabled);
+    }
+    setAudioEnabled((prev: boolean) => !prev);
+  };
 
   // 손들기 시그널 보내는 함수
   const sendRaiseHandSignal = () => {
@@ -330,6 +343,7 @@ const VideoCallPage = () => {
                 // role이 학생이면 스트림을 studentStreamManager에 저장
                 setStudentStreamManager(newPublisher);
               }
+              setPublisher(newPublisher);
             })
             .catch((error: ConnectionError) => {
               console.log('Error', error.code, error.message);
@@ -495,7 +509,11 @@ const VideoCallPage = () => {
               <PanTool style={{ fontSize: '30px' }} />
             </button>
             {/* 음소거 버튼 */}
-            <button type="button" className="video-call-page__button">
+            <button
+              type="button"
+              className="video-call-page__button"
+              onClick={handleMute}
+            >
               <Mic fontSize="large" />
             </button>
             {/* 화면공유 버튼 */}
