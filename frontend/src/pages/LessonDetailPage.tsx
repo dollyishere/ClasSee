@@ -22,7 +22,7 @@ import privateInfoState from '../models/PrivateInfoAtom';
 
 import Header from '../components/Header';
 import BasicRating from '../components/BasicRating';
-import CheckSchedule from '../components/CheckSchedule';
+import CheckSchedule from '../components/LessonDetailPage/CheckSchedule';
 
 const LessonDetailPage = () => {
   // url(Router) 통해서 입력된 lessonId를 useParams로 받아옴

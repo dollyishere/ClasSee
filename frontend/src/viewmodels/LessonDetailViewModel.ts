@@ -10,10 +10,15 @@ import { storage } from '../utils/Firebase';
 
 import LessonsApi from '../apis/LessonsApi';
 
-import { LessonDetailRequest } from '../types/LessonsType';
+import { LessonDetailRequest, LessonEnrollRequest } from '../types/LessonsType';
 
 const LessonDetailViewModel = () => {
-  const { doGetLessonDetail, doDeleteLesson } = LessonsApi();
+  const {
+    doGetLessonDetail,
+    doDeleteLesson,
+    doGetOpenLessonDetail,
+    doEnrollLessonSchedule,
+  } = LessonsApi();
 
   const getLessonDetail = async (data: LessonDetailRequest) => {
     const res = await doGetLessonDetail(data);
@@ -99,6 +104,16 @@ const LessonDetailViewModel = () => {
     const res = await doDeleteLesson(email, lessonId);
     return res;
   };
+
+  const getOpenLessonDetail = async (email: string, openLessonId: number) => {
+    const res = await doGetOpenLessonDetail(email, openLessonId);
+    return res;
+  };
+
+  const doLessonEnroll = async (data: LessonEnrollRequest) => {
+    const res = await doEnrollLessonSchedule(data);
+    return res;
+  };
   return {
     getLessonDetail,
     getPamphletImgUrls,
@@ -108,6 +123,8 @@ const LessonDetailViewModel = () => {
     doUploadImage,
     doDeleteImageFiles,
     doDeleteselectedLesson,
+    getOpenLessonDetail,
+    doLessonEnroll,
   };
 };
 

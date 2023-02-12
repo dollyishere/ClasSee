@@ -28,22 +28,22 @@ const CreateScheduleComponent = ({
     const newStartTime = event.target.value;
     setStartTime(newStartTime);
     const startDate = new Date(newStartTime);
+    const endDate = new Date(
+      startDate.getTime() + runningtime * 60 * 60 * 1000,
+    );
+    setEndTime(
+      new Date(endDate.getTime() - endDate.getTimezoneOffset() * 60 * 1000)
+        .toISOString()
+        .slice(0, 16),
+    );
     schedulesListState.forEach((schedule: any) => {
       const listScheduleStart = new Date(schedule.startTime);
       const listScheduleEnd = new Date(schedule.endTime);
+
       if (listScheduleStart <= startDate && startDate <= listScheduleEnd) {
         alert('중복된 시간은 선택하실 수 없습니다.');
         setStartTime('');
         setEndTime('');
-      } else {
-        const endDate = new Date(
-          startDate.getTime() + runningtime * 60 * 60 * 1000,
-        );
-        setEndTime(
-          new Date(endDate.getTime() - endDate.getTimezoneOffset() * 60 * 1000)
-            .toISOString()
-            .slice(0, 16),
-        );
       }
     });
   };

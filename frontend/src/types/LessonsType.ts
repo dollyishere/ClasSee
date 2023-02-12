@@ -215,3 +215,25 @@ export interface GetScheduleRequest {
 export interface SearchResponse extends LessonsResponse {
   count: number;
 }
+
+export interface OpenLessonResponse extends Response {
+  kitPrice: number;
+  lessonImg: string;
+  lessonName: string;
+  lessonPrice: number;
+  lessonStartTime: string;
+  lessonTeacherName: string;
+  userAddress: string;
+  userEmail: string;
+  userName: string;
+  userNickname: string;
+  userPhone: string;
+  userPoint: number;
+}
+
+export interface LessonEnrollRequest {
+  email: string;
+  openLessonId: number;
+  phone: string;
+  price: number;
+}
