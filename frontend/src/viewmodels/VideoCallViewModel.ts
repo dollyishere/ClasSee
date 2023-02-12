@@ -9,7 +9,7 @@ import useApi from '../apis/UserApi';
 import { decryptToken, encryptToken } from '../utils/Encrypt';
 import AuthTokenState from '../models/AuthTokenAtom';
 
-const LessonViewModel = () => {
+const VideoCallViewModel = () => {
   const [authToken, setAuthToken] = useRecoilState(AuthTokenState);
   const { doGetAccessToken } = useApi();
   const createToken = async (sessionId: string, accessToken: string | null) => {
@@ -92,4 +92,4 @@ const LessonViewModel = () => {
   };
 };
 
-export default LessonViewModel;
+export default VideoCallViewModel;
