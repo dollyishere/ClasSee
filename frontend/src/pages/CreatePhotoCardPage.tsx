@@ -1,11 +1,68 @@
+import React, { useRef, useState } from 'react';
 import { AddCircleOutline } from '@mui/icons-material';
-import React, { useRef } from 'react';
+import { useRecoilValue } from 'recoil';
+
+import useViewModel from '../viewmodels/CreatePhotoCardViewModel';
+import PrivateInfoState from '../models/PrivateInfoAtom';
 
 const CreatePhotoCardPage = () => {
   const titleRef = useRef(null);
   const contentRef = useRef(null);
-  const handleSubmitPhotoCard = (event: React.FormEvent<HTMLFormElement>) => {
+  const [image, setImage] = useState<File>();
+  const [imageSrc, setImageSrc] = useState<string>();
+
+  const userInfo = useRecoilValue(PrivateInfoState);
+
+  const { createPhotoCard } = useViewModel();
+
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.currentTarget.files !== null) {
+      // FileReader()를 이용해 파일 정보를 비동기적으로 읽어옴
+      const result = URL.createObjectURL(event.currentTarget.files[0]);
+      setImageSrc(result);
+      setImage(event.currentTarget.files[0]);
+    }
+  };
+  const handleSubmitPhotoCard = async (
+    event: React.FormEvent<HTMLFormElement>,
+  ) => {
     event.preventDefault();
+    if (titleRef.current !== null && contentRef.current !== null) {
+      const titleTarget = titleRef.current as HTMLInputElement;
+      const contentTarget = contentRef.current as HTMLTextAreaElement;
+
+      if (titleTarget.value === '') {
+        alert('제목을 입력해주세요.');
+        return;
+      }
+      if (contentTarget.value === '') {
+        alert('글귀를 입력해주세요.');
+        return;
+      }
+      if (image === undefined) {
+        alert('사진을 업로드해주세요.');
+        return;
+      }
+      if (userInfo !== null && imageSrc !== undefined) {
+        const response = await createPhotoCard(
+          {
+            userEmail: userInfo.email,
+            img: imageSrc,
+            title: titleTarget.value,
+            content: contentTarget.value,
+            sign: '',
+            lessonId: 2,
+          },
+          image,
+          'test2',
+        );
+
+        if (response === 200) {
+          alert('생성되었습니다.');
+          window.close();
+        }
+      }
+    }
   };
   return (
     <div className="create-photo-card-page page">
@@ -28,8 +85,13 @@ const CreatePhotoCardPage = () => {
                 htmlFor="create-photo-card-page__input-photo"
                 className="create-photo-card-page__input-photo"
               >
-                <AddCircleOutline className="create-photo-card-page__icon--add" />
+                {image === undefined ? (
+                  <AddCircleOutline className="create-photo-card-page__icon--add" />
+                ) : (
+                  <img src={imageSrc} alt="사진" />
+                )}
                 <input
+                  onChange={handleImageUpload}
                   hidden
                   type="file"
                   id="create-photo-card-page__input-photo"
