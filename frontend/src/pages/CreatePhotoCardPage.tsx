@@ -47,7 +47,9 @@ const CreatePhotoCardPage = () => {
         const response = await createPhotoCard(
           {
             userEmail: userInfo.email,
-            img: imageSrc,
+            img: `photo-cards/${encodeURI(userInfo.email)}/${encodeURI(
+              String(2),
+            )}/${encodeURI('test')}/${image.name}`,
             title: titleTarget.value,
             content: contentTarget.value,
             sign: '',
