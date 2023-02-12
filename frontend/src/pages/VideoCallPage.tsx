@@ -7,6 +7,7 @@ import {
   SignalEvent,
   StreamEvent,
   StreamManager,
+  Publisher,
 } from 'openvidu-browser';
 
 import {
@@ -17,16 +18,17 @@ import {
   Videocam,
   Mic,
 } from '@mui/icons-material';
+import { Modal } from '@mui/material';
 
 import { useRecoilValue } from 'recoil';
-import useViewModel from '../viewmodels/LessonViewModel';
+import useViewModel from '../viewmodels/VideoCallViewModel';
 import UserVideo from '../components/UserVideo';
 import ChatBox from '../components/ChatBox';
 
 import { Device, Msg, ConnectionError } from '../types/OpenviduType';
 import PrivateInfoState from '../models/PrivateInfoAtom';
 
-const LessonPage = () => {
+const VideoCallPage = () => {
   const userInfo = useRecoilValue(PrivateInfoState);
   // 사용자가 강사인지 수강생인지 url로 넘겨받도록 함
   // 이 부분은 로그인시 얻은 데이터로 나중에 바꿔야 돼요
@@ -48,16 +50,14 @@ const LessonPage = () => {
   // OpenVidu 객체를 저장할 state
   const [OV, setOV] = useState<OpenVidu | null>(null);
 
+  const [audioEnabled, setAudioEnabled] = useState<boolean>(true);
+  const [videoEnabled, setVideoEnabled] = useState<boolean>(true);
+  const [screenShareEnabled, setScreenShareEnabled] = useState<boolean>(false);
+
   // 현재 세션 ID를 저장할 state => 스케줄 id
   // 이 부분도 실제 스케줄 id로 바꿔야 돼요 일단 지금은 url로 넘겨받음
   const [sessionId, setSessionId] = useState<string>(
     location.pathname.split('/')[2],
-  );
-
-  // 유저 닉네임
-  // 이 부분도 로그인시 얻은 데이터로 나중에 바꿔야돼요 지금은 url로 넘겨받음
-  const [userName, setUserName] = useState<string>(
-    `user${Math.floor(Math.random() * 100)}`,
   );
 
   // 세션 객체를 저장할 state
@@ -71,27 +71,143 @@ const LessonPage = () => {
   const [studentStreamManager, setStudentStreamManager] =
     useState<StreamManager>();
 
+  const [publisher, setPublisher] = useState<Publisher>();
+
   // 세션 참여자들의 streamManager를 저장할 state (배열)
   const [subscribers, setSubscribers] = useState<Array<StreamManager>>([]); // 세션 참여자
 
   // 현재 사용하는 캠 디바이스를 저장할 state
   // 이건 나중에 카메라 변경 기능 구현할 때 건드립니다.
   const [currentVideoDevice, setCurrentVideoDevice] = useState<Device>();
+  const [currentStreamManger, setCurrentStreamManager] =
+    useState<StreamManager>();
+
+  const [toggleVideoModal, setToggleVideoModal] = useState<boolean>(false);
 
   // 채팅 메시지를 저장할 state (배열)
   const [messages, setMessages] = useState<Array<Msg>>([]);
+
+  const [videos, setVideos] = useState<Array<Device>>();
 
   // viewModel의 함수들
   // getToken은 서버로부터 세션 토큰을 받아옴
   // chat은 메시지 전송
   const { createSession, createToken, chat } = useViewModel();
 
+  const handleVideoModalOpen = () => {
+    setToggleVideoModal(true);
+  };
+  const handleVideoModalClose = () => {
+    if (
+      publisher !== undefined &&
+      publisher.stream.getMediaStream().getVideoTracks()[0] !==
+        currentStreamManger?.stream.getMediaStream().getVideoTracks()[0]
+    ) {
+      setCurrentVideoDevice(
+        videos?.find(
+          (video: Device) =>
+            video.deviceId ===
+            publisher?.stream.getMediaStream().getVideoTracks()[0].getSettings()
+              .deviceId,
+        ),
+      );
+      setCurrentStreamManager(publisher);
+    }
+    setToggleVideoModal(false);
+  };
+  const handleCamSelect = async (
+    event: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    const selectedDevice = videos?.find(
+      (video: Device) => event.target.value === video.deviceId,
+    );
+    setCurrentVideoDevice(selectedDevice);
+  };
+  const handleCamChange = () => {
+    if (currentStreamManger !== undefined) {
+      publisher?.replaceTrack(
+        currentStreamManger.stream.getMediaStream().getVideoTracks()[0],
+      );
+      handleVideoModalClose();
+    }
+  };
+
+  const handleScreenShare = () => {
+    setScreenShareEnabled(true);
+  };
+
+  useEffect(() => {
+    const newPublisher = OV?.initPublisher(undefined, {
+      videoSource: currentVideoDevice?.deviceId,
+      publishAudio: true,
+      publishVideo: true,
+      resolution: '640x360',
+      frameRate: 30,
+      mirror: false,
+    });
+    if (newPublisher !== undefined) {
+      setCurrentStreamManager(newPublisher);
+    }
+  }, [currentVideoDevice]);
+
+  useEffect(() => {
+    if (screenShareEnabled) {
+      const newPublisher = OV?.initPublisher(undefined, {
+        resolution: '640x360',
+        frameRate: 30,
+        videoSource: 'screen',
+      });
+      if (newPublisher !== undefined && publisher !== undefined) {
+        newPublisher.once('accessAllowed', (event: any) => {
+          if (session !== undefined && userInfo !== null) {
+            publisher.replaceTrack(
+              newPublisher.stream.getMediaStream().getVideoTracks()[0],
+            );
+            publisher.stream
+              .getMediaStream()
+              .getVideoTracks()[0]
+              .addEventListener('ended', () => {
+                setScreenShareEnabled(false);
+              });
+          }
+        });
+      }
+    } else {
+      const newPublisher = OV?.initPublisher(undefined, {
+        audioSource: undefined,
+        videoSource: undefined,
+        publishAudio: true,
+        publishVideo: true,
+        resolution: '640x360',
+        frameRate: 30,
+        insertMode: 'APPEND',
+        mirror: false,
+      });
+      if (newPublisher !== undefined && publisher !== undefined) {
+        // publisher.replaceTrack(
+        newPublisher.once('accessAllowed', () => {
+          publisher.replaceTrack(
+            newPublisher.stream.getMediaStream().getVideoTracks()[0],
+          );
+        });
+        // );
+      }
+    }
+  }, [screenShareEnabled]);
+
+  const handleMute = () => {
+    if (publisher !== undefined) {
+      publisher.publishAudio(!audioEnabled);
+    }
+    setAudioEnabled((prev: boolean) => !prev);
+  };
+
   // 손들기 시그널 보내는 함수
   const sendRaiseHandSignal = () => {
-    if (session !== undefined) {
+    if (session !== undefined && userInfo !== null) {
       session
         .signal({
-          data: userName,
+          data: userInfo.nickname,
           to: [],
           type: 'raiseHand',
         })
@@ -106,10 +222,10 @@ const LessonPage = () => {
 
   // 손 내리기 시그널 보내는 함수
   const sendDownHandSignal = () => {
-    if (session !== undefined) {
+    if (session !== undefined && userInfo !== null) {
       session
         .signal({
-          data: userName,
+          data: userInfo.nickname,
           to: [],
           type: 'downHand',
         })
@@ -276,6 +392,7 @@ const LessonPage = () => {
           }
         }
       });
+
       if (userInfo !== null) {
         // 세션 토큰 api 요청 함수
         const { testId, testToken } = await createSession(
@@ -285,7 +402,7 @@ const LessonPage = () => {
         createToken(testId, testToken).then((token: string) => {
           // 해당 토큰으로 세션 연결
           newSession
-            .connect(token, { clientData: userName, role })
+            .connect(token, { clientData: userInfo.nickname, role })
             .then(async () => {
               // 비디오stream 생성
               const newPublisher = await newOV.initPublisherAsync(undefined, {
@@ -315,6 +432,8 @@ const LessonPage = () => {
                 (device: Device) => device.kind === 'videoinput',
               );
 
+              setVideos(videoDevices);
+
               // 현재 스트림에서 사용하고 있는 캠 deviceId
               const currentVideoDeviceId = newPublisher.stream
                 .getMediaStream()
@@ -328,7 +447,7 @@ const LessonPage = () => {
 
               // currentVideoDevice state를 현재 사용하고 있는 캠 정보로 저장
               setCurrentVideoDevice(newCurrentVideoDevice);
-
+              setCurrentStreamManager(newPublisher);
               // role이 강사면 스트림을 teacherStreamManager에 저장
               if (role === 'teacher') {
                 setTeacherStreamManager(newPublisher);
@@ -336,6 +455,10 @@ const LessonPage = () => {
                 // role이 학생이면 스트림을 studentStreamManager에 저장
                 setStudentStreamManager(newPublisher);
               }
+              const newSubscribers = subscribers;
+              newSubscribers.push(newPublisher);
+              setSubscribers([...newSubscribers]);
+              setPublisher(newPublisher);
             })
             .catch((error: ConnectionError) => {
               console.log('Error', error.code, error.message);
@@ -355,6 +478,10 @@ const LessonPage = () => {
     if (!OV) {
       // 마운트시 세션에 참여하는 함수 실행
       joinSession();
+
+      if (role === 'student') {
+        setIsFocused(true);
+      }
     }
     return () => {
       // 혹시 모를 에러를 방지하기 위해 이벤트리스너 제거
@@ -399,20 +526,20 @@ const LessonPage = () => {
   };
 
   return (
-    <div className="page lesson-page">
+    <div className="page video-call-page">
       {/* 채팅창을 제외한 메인 컨텐츠 영역 */}
-      <div className="lesson-page__content">
+      <div className="video-call-page__content">
         {/* 헤더, 이 부분에는 강의 진행 상황을 표시할 그래프가 있어야 합니다. */}
-        <div className="lesson-page__header">헤더</div>
+        <div className="video-call-page__header">헤더</div>
         {/* 비디오 화면들이 표시되는 영역 */}
-        <div className="lesson-page__videos">
+        <div className="video-call-page__videos">
           {/* isFocused가 true이면 선택한 학생 하나만 왼쪽 화면에 표시하고 나머지는 밑으로 내림 */}
-          <div className="lesson-page__video--students-left">
+          <div className="video-call-page__video--students-left">
             {isFocused ? (
-              <div className="lesson-page__video--student">
+              <div className="video-call-page__video--student">
                 <div
                   role="presentation"
-                  className="lesson-page__student-stream-container"
+                  className="video-call-page__student-stream-container"
                   onClick={() => handleVideoClick(null)}
                 >
                   <UserVideo streamManager={studentStreamManager} />
@@ -420,14 +547,14 @@ const LessonPage = () => {
               </div>
             ) : (
               /* isFocused가 false이면 왼쪽 화면에 학생들의 화면 표시 */
-              <div className="lesson-page__video--students-group">
+              <div className="video-call-page__video--students-group">
                 {/* 열을 3개로 나눠서 피그마대로 표시 */}
-                <div className="lesson-page__video--students-col">
+                <div className="video-call-page__video--students-col">
                   {subscribers.map((sub: StreamManager, i: number) =>
                     i % 3 === 1 ? (
                       <div
                         role="presentation"
-                        className="lesson-page__stream-container"
+                        className="video-call-page__stream-container"
                         onClick={() => handleVideoClick(sub)}
                       >
                         <UserVideo streamManager={sub} />
@@ -435,12 +562,12 @@ const LessonPage = () => {
                     ) : null,
                   )}
                 </div>
-                <div className="lesson-page__video--students-col">
+                <div className="video-call-page__video--students-col">
                   {subscribers.map((sub: StreamManager, i: number) =>
                     i % 3 === 0 ? (
                       <div
                         role="presentation"
-                        className="lesson-page__stream-container"
+                        className="video-call-page__stream-container"
                         onClick={() => handleVideoClick(sub)}
                       >
                         <UserVideo streamManager={sub} />
@@ -448,12 +575,12 @@ const LessonPage = () => {
                     ) : null,
                   )}
                 </div>
-                <div className="lesson-page__video--students-col">
+                <div className="video-call-page__video--students-col">
                   {subscribers.map((sub: StreamManager, i: number) =>
                     i % 3 === 2 ? (
                       <div
                         role="presentation"
-                        className="lesson-page__stream-container"
+                        className="video-call-page__stream-container"
                         onClick={() => handleVideoClick(sub)}
                       >
                         <UserVideo streamManager={sub} />
@@ -465,8 +592,8 @@ const LessonPage = () => {
             )}
           </div>
           {/* 강사의 화면을 표시하는 영역 */}
-          <div className="lesson-page__video--teacher">
-            <div className="lesson-page__teacher-stream-container">
+          <div className="video-call-page__video--teacher">
+            <div className="video-call-page__teacher-stream-container">
               {teacherStreamManager !== undefined ? (
                 <UserVideo streamManager={teacherStreamManager} />
               ) : null}
@@ -474,10 +601,10 @@ const LessonPage = () => {
           </div>
           {isFocused ? (
             /* isFocused가 true이면 왼쪽에 선택된 학생의 화면을 표시하고 아래에는 나머지 학생 화면 표시 */
-            <div className="lesson-page__video--students-bottom">
+            <div className="video-call-page__video--students-bottom">
               {subscribers.map((sub: StreamManager) =>
                 studentStreamManager !== sub ? (
-                  <div className="lesson-page__stream-container">
+                  <div className="video-call-page__stream-container">
                     <UserVideo streamManager={sub} />
                   </div>
                 ) : null,
@@ -486,32 +613,44 @@ const LessonPage = () => {
           ) : null}
         </div>
         {/* 화상통화에 사용하는 각종 기능 버튼들을 배치할 푸터 */}
-        <div className="lesson-page__footer">
-          <div className="lesson-page__buttons">
+        <div className="video-call-page__footer">
+          <div className="video-call-page__buttons">
             {/* 손들기 버튼 */}
             <button
               type="button"
-              className="lesson-page__button"
+              className="video-call-page__button"
               onClick={handleHandClick}
             >
               <PanTool style={{ fontSize: '30px' }} />
             </button>
             {/* 음소거 버튼 */}
-            <button type="button" className="lesson-page__button">
+            <button
+              type="button"
+              className="video-call-page__button"
+              onClick={handleMute}
+            >
               <Mic fontSize="large" />
             </button>
             {/* 화면공유 버튼 */}
-            <button type="button" className="lesson-page__button">
+            <button
+              type="button"
+              className="video-call-page__button"
+              onClick={handleScreenShare}
+            >
               <Monitor fontSize="large" />
             </button>
             {/* 캠 변경 버튼 */}
-            <button type="button" className="lesson-page__button">
+            <button
+              type="button"
+              className="video-call-page__button"
+              onClick={handleVideoModalOpen}
+            >
               <Videocam fontSize="large" />
             </button>
             {/* 나가기 버튼 */}
             <button
               type="button"
-              className="lesson-page__button lesson-page__button--quit"
+              className="video-call-page__button video-call-page__button--quit"
               onClick={window.close}
             >
               <Phone fontSize="large" />
@@ -520,18 +659,18 @@ const LessonPage = () => {
             {/* 채팅창 토글 버튼 */}
             <button
               type="button"
-              className="lesson-page__button lesson-page__button--msg"
+              className="video-call-page__button video-call-page__button--msg"
               onClick={toggleChatBox}
             >
               <Message fontSize="large" />
             </button>
           </div>
-          <div className="lesson-page__hands">
+          <div className="video-call-page__hands">
             {raiseHand.map((hand: StreamManager) => (
               <div
                 role="presentation"
                 key={JSON.parse(hand.stream.connection.data).clientData}
-                className="lesson-page__hand"
+                className="video-call-page__hand"
                 onClick={() => handleVideoClick(hand)}
               >
                 <div>
@@ -543,7 +682,7 @@ const LessonPage = () => {
           </div>
         </div>
       </div>
-      {isChatBoxVisible ? (
+      {isChatBoxVisible && userInfo !== null ? (
         // isChatBoxVisible이 true이면 채팅창 보이게 하기
         <ChatBox
           toggleChatBox={toggleChatBox}
@@ -551,12 +690,38 @@ const LessonPage = () => {
           session={session}
           messages={messages}
           setMessages={setMessages}
-          userName={userName}
+          userName={userInfo.nickname}
           role={role}
         />
+      ) : null}
+      {toggleVideoModal && currentVideoDevice !== undefined ? (
+        <Modal open={toggleVideoModal} onClose={handleVideoModalClose}>
+          <div className="video-call-page__video-modal">
+            <h1>캠 변경</h1>
+            <select
+              className="video-call-page__video-select"
+              value={currentVideoDevice.deviceId}
+              onChange={handleCamSelect}
+            >
+              {videos?.map((video: Device) => (
+                <option value={video.deviceId}>{video.label}</option>
+              ))}
+            </select>
+            {currentStreamManger ? (
+              <UserVideo streamManager={currentStreamManger} />
+            ) : null}
+            <button
+              type="button"
+              className="button video-call-page__video-button"
+              onClick={handleCamChange}
+            >
+              변경하기
+            </button>
+          </div>
+        </Modal>
       ) : null}
     </div>
   );
 };
 
-export default LessonPage;
+export default VideoCallPage;
