@@ -10,7 +10,25 @@ import { storage } from '../utils/Firebase';
 import useApi from '../apis/PhotoCardApi';
 
 const PhotoCardsViewModel = () => {
-  const { doGetPhotoCards } = useApi();
+  const {
+    doGetPhotoCards,
+    doLikePhotoCard,
+    doDislikePhotoCard,
+    doDeletePhotoCard,
+  } = useApi();
+
+  const deletePhotoCard = async (id: number) => {
+    const response = await doDeletePhotoCard(id);
+    return response;
+  };
+  const likePhotoCard = async (email: string, id: number) => {
+    const response = await doLikePhotoCard(email, id);
+    return response;
+  };
+  const dislikePhotoCard = async (email: string, id: number) => {
+    const response = await doDislikePhotoCard(email, id);
+    return response;
+  };
 
   const getPhotoCards = async (
     email: string | null,
@@ -30,6 +48,9 @@ const PhotoCardsViewModel = () => {
   return {
     getPhotoCards,
     getPhotoCardImage,
+    likePhotoCard,
+    dislikePhotoCard,
+    deletePhotoCard,
   };
 };
 
