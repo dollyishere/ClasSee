@@ -13,7 +13,7 @@ import LessonsApi from '../apis/LessonsApi';
 import { LessonDetailRequest } from '../types/LessonsType';
 
 const LessonDetailViewModel = () => {
-  const { doGetLessonDetail } = LessonsApi();
+  const { doGetLessonDetail, doDeleteLesson } = LessonsApi();
 
   const getLessonDetail = async (data: LessonDetailRequest) => {
     const res = await doGetLessonDetail(data);
@@ -94,6 +94,11 @@ const LessonDetailViewModel = () => {
       const goDeleteImg = await deleteObject(imageRef);
     });
   };
+
+  const doDeleteselectedLesson = async (email: string, lessonId: number) => {
+    const res = await doDeleteLesson(email, lessonId);
+    return res;
+  };
   return {
     getLessonDetail,
     getPamphletImgUrls,
@@ -102,6 +107,7 @@ const LessonDetailViewModel = () => {
     getCheckImgFiles,
     doUploadImage,
     doDeleteImageFiles,
+    doDeleteselectedLesson,
   };
 };
 

@@ -41,15 +41,18 @@ const LessonsApi = () => {
     lessonId: number,
   ) => {
     try {
-      console.log(lessonId);
       const response = await axios.put<Response>(
         `${process.env.REACT_APP_SERVER_URI}/api/v1/lessons/${lessonId}`,
         updateLessonRequestBody,
+        {
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+          },
+        },
       );
       return response.data;
     } catch (error: any) {
       console.error(error);
-      console.log(updateLessonRequestBody);
     }
     return null;
   };
@@ -67,6 +70,22 @@ const LessonsApi = () => {
     return null;
   };
 
+  const doDeleteLesson = async (email: string, lessonId: number) => {
+    try {
+      const response = await axios.delete<Response>(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/teachers/${email}/lessons/${lessonId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+          },
+        },
+      );
+      return response.data;
+    } catch (error: any) {
+      console.error(error);
+    }
+    return null;
+  };
   const doSearchLessons = async (searchOption: LessonSearchOption) => {
     let query = `limit=${searchOption.limit}&offset=${searchOption.offset}`;
     if (searchOption.category) {
@@ -261,7 +280,7 @@ const LessonsApi = () => {
   const doGetSchedule = async (getScheduleRequestBody: GetScheduleRequest) => {
     try {
       let response;
-      if (getScheduleRequestBody.regDate) {
+      if (getScheduleRequestBody.regDate !== '') {
         response = await axios.get<GetScheduleResponse>(
           `${process.env.REACT_APP_SERVER_URI}/api/v1/lessons/${getScheduleRequestBody.lessonId}/schedules?regDate=${getScheduleRequestBody.regDate}`,
         );
@@ -276,9 +295,31 @@ const LessonsApi = () => {
     }
     return null;
   };
+  const doDeleteSchedule = async (
+    email: string,
+    lessonId: number,
+    openLessonId: number,
+  ) => {
+    console.log(email, lessonId, openLessonId);
+    try {
+      const response = await axios.delete<Response>(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/teachers/${email}/lessons/${lessonId}/${openLessonId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+          },
+        },
+      );
+      return response.data;
+    } catch (error: any) {
+      console.error(error);
+    }
+    return null;
+  };
   return {
     doCreateLesson,
     doUpdateLesson,
+    doDeleteLesson,
     doGetLessonDetail,
     getRecommandLessonsApi1,
     getRecommandLessonsApi2,
@@ -290,6 +331,7 @@ const LessonsApi = () => {
     doSearchLessons,
     doCreateSchedule,
     doGetSchedule,
+    doDeleteSchedule,
     doGetBookmark,
   };
 };

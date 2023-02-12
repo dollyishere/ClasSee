@@ -36,6 +36,8 @@ const LessonDetailPage = () => {
       statusCode: 0 as number,
       teacher: '' as string,
       lessonName: '' as string,
+      lessonId: 0 as number,
+      price: 0 as number,
       cklsDescription: '' as string,
       lessonDescription: '' as string,
       kitPrice: 0 as number,
@@ -78,6 +80,7 @@ const LessonDetailPage = () => {
       lessonId: Number(lessonId.lessonId),
     };
     const getTeacherImage = async () => {
+      console.log(lessonDetailState.teacher);
       const imageUrl = await getProfileImage(lessonDetailState.teacher);
       setTeacherImgState(imageUrl);
     };
@@ -137,6 +140,7 @@ const LessonDetailPage = () => {
                   : lessonDetailState.runningTime}{' '}
                 시간
               </p>
+              {/* <h3>{lessonDetailState.}</h3> */}
               {teacherImgState === null ? (
                 <div className="profile-page__image--not">
                   <PersonOutline
@@ -189,7 +193,7 @@ const LessonDetailPage = () => {
                 <div className="lesson-detail-page__box">
                   <h2>강의 소개</h2>
                   <div className="lesson-detail-page__lesson-description">
-                    <p>{lessonDetailState.lessonDescription}</p>
+                    <pre>{lessonDetailState.lessonDescription}</pre>
                   </div>
                   <h2>커리큘럼</h2>
                   <div className="lesson-detail-page__curriculum">
@@ -202,9 +206,11 @@ const LessonDetailPage = () => {
                   <h2>준비물</h2>
                   <div className="lesson-detail-page__checklist">
                     {checkListImgState.map((image: any) => (
-                      <img src={image} alt={image} />
+                      <img className="lesson_img" src={image} alt={image} />
                     ))}
-                    <div>{lessonDetailState.cklsDescription}</div>
+                    <div>
+                      <pre>{lessonDetailState.cklsDescription}</pre>
+                    </div>
                   </div>
                   <h2>강사 소개</h2>
                   <div className="lesson-detail-page__teacher">
