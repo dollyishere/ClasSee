@@ -16,6 +16,7 @@ import LessonsPage from './pages/LessonsPage';
 import useUserApi from './apis/UserApi';
 import privateInfoState from './models/PrivateInfoAtom';
 import { AccessToken } from './utils/AccessToken';
+import PhotoCardQRPage from './pages/PhotoCardQRPage';
 
 const Router = () => {
   const { doGetAccessToken } = useUserApi();
@@ -40,6 +41,10 @@ const Router = () => {
       <Route path="/lesson/:lessonId" element={<LessonDetailPage />} />
       <Route path="/update-lesson/:lessonId" element={<UpdateLessonPage />} />
       <Route path="/lesson/:sessionId/:role" element={<VideoCallPage />} />
+      <Route
+        path="/lesson/:sessionId/:role/photo-card/qr"
+        element={<PhotoCardQRPage />}
+      />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/image" element={<TestPage />} />
       <Route path="/mypage/*" element={<MyPage />} />
