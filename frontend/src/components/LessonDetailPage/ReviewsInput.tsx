@@ -1,13 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
-import { TextField, Button, Box, Typography, Rating } from '@mui/material';
-import ReviewList from './ReviewList';
+import {
+  TextField,
+  Button,
+  Box,
+  Typography,
+  Rating,
+  Pagination,
+} from '@mui/material';
+import ReviewItem from './ReviewItem';
 import BasicRating from '../BasicRating';
 import privateInfoState from '../../models/PrivateInfoAtom';
 import useReviewApi from '../../viewmodels/LessonDetailViewModel';
 import { ReviewRequest } from '../../types/LessonsType';
 
+// 응답받아 넘어오는 후기의 타입 명시
 interface Review {
   id: number;
   content: string;
@@ -22,11 +30,20 @@ interface Review {
 }
 
 const ReviewInput: React.FC = () => {
+  // const [, updateState] = useState({});
+  // const forceUpdate = useCallback(() => updateState({}), []);
   const { doCreateReview, getReviewData, uploadReviewImage } = useReviewApi();
+  // 후기들의 총 갯수 count
+  const [count, setCount] = useState<number>(0);
+  // 페이지네이션을 위한 page 넘버
+  const [page, setPage] = useState<number>(1);
   const userInfo = useRecoilValue(privateInfoState);
   const lessonId = useParams();
+  // 리뷰 이미지
   const [reviewImg, setReviewImg] = useState<File>();
+  // 리뷰 리스트
   const [reviewList, setReviewList] = useState<Review[]>([]);
+  // 리뷰 낱개
   const [review, setReview] = useState<Review>({
     id: 0,
     content: '',
@@ -39,8 +56,7 @@ const ReviewInput: React.FC = () => {
     userEmail: '',
     userNickname: '',
   });
-  const [ratingValue, setRatingValue] = useState<number | null>(0);
-
+  // 리뷰 작성 시 넘기는 데이터 타입 명시
   const createReviewRequestBody: ReviewRequest = {
     content: review.content as string,
     img: review.img as string,
@@ -48,11 +64,23 @@ const ReviewInput: React.FC = () => {
     score: review.score as number,
     userEmail: userInfo?.email as string,
   };
-
+  // 등록 버튼 클릭 시
   const handleSubmit = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    // 작성 데이터를 body에 담아 작성 요청
     const res = await doCreateReview(createReviewRequestBody);
     if (res?.message === 'success') {
-      setReviewList([review, ...reviewList]);
+      // 이미지 등록 시
+      if (reviewImg) {
+        // 파이어베이스에 후기 이미지 저장
+        await uploadReviewImage(Number(lessonId.lessonId), reviewImg);
+      }
+      // 방금 작성한 리뷰 받아오기
+      const response = await getReviewData(Number(lessonId.lessonId), 1, 0);
+      // 작성된 리뷰 데이터
+      const inputReview = response?.data.page[0];
+      // TODO: 새로 작성한 리뷰가 setReviewList에 의해 리뷰리스트 최신화되기전에(재렌더링이 됨) 사진을 파이어베이스에서 받아와서 보여줘야함
+      setReviewList([inputReview, ...reviewList]);
+      // 초기화
       setReview({
         id: 0,
         content: '',
@@ -65,10 +93,8 @@ const ReviewInput: React.FC = () => {
         userEmail: '',
         userNickname: '',
       });
-      if (reviewImg) {
-        await uploadReviewImage(reviewImg);
-      }
     } else {
+      // 중복 시 alert
       alert('리뷰는 한번만 작성 가능합니다');
       setReview({
         id: 0,
@@ -84,17 +110,18 @@ const ReviewInput: React.FC = () => {
       });
     }
   };
-
+  // 후기 내용 작성 handle
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setReview({ ...review, content: event.target.value });
   };
-
+  // 별점 등록 handle
   const handleRatingChange = (
     event: React.ChangeEvent<object>,
     newValue: number | null,
   ) => {
     setReview({ ...review, score: newValue || 0 });
   };
+  // 후기 이미지 작성
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const inputImage = event.target.files[0];
@@ -102,34 +129,37 @@ const ReviewInput: React.FC = () => {
       setReview({ ...review, img: inputImage.name });
       setReviewImg(inputImage);
     }
-    // if (inputImage.files && inputImage.files[0]) {
-    //   const reader = new FileReader();
-    //   reader.onload = (e) => {
-    //     setReview({ ...review, image: e.target?.result as string });
-    //     console.log(review);
-    //   };
-    //   reader.readAsDataURL(inputImage.files[0]);
-    // }
+  };
+  // 페이지네이션 handle
+  const handlePageChange = (
+    event: React.ChangeEvent<unknown>,
+    value: number,
+  ) => {
+    setPage(value);
+  };
+  // 후기 데이터 받아오기
+  const handleReviewData = async () => {
+    // 한 페이지 당 후기 갯수 limit
+    const limit = 10;
+    // 각 페이지의 리뷰 시작 넘버 offset
+    const offset = (page - 1) * limit;
+    // 리뷰 데이터 요청
+    const reviewData = await getReviewData(
+      Number(lessonId.lessonId),
+      limit,
+      offset,
+    );
+    if (reviewData && reviewData.data.count !== undefined) {
+      setCount(Math.ceil(reviewData.data.count / limit));
+      setReviewList(reviewData.data.page);
+      console.log(reviewData.data);
+    }
   };
   useEffect(() => {
-    const handleReviewData = async () => {
-      if (userInfo) {
-        const reviewData = await getReviewData(
-          Number(lessonId.lessonId),
-          10,
-          0,
-        );
-        if (reviewData) {
-          setReviewList(reviewData.data.page);
-          console.log(reviewData.data.page);
-        }
-      }
-    };
     handleReviewData();
-  }, []);
+  }, [page]);
   return (
     <Box m={2}>
-      {/* <Typography variant="h6">Add a Review</Typography> */}
       <TextField
         label="강의에 대한 후기를 남겨주세요"
         value={review.content}
@@ -168,7 +198,23 @@ const ReviewInput: React.FC = () => {
       <Button variant="contained" color="primary" onClick={handleSubmit}>
         등록
       </Button>
-      <ReviewList reviews={reviewList} />
+      <br />
+      <Typography variant="h6">후기</Typography>
+
+      {reviewList.map((reviews) => (
+        <ReviewItem reviews={reviews} />
+        // <ReviewItem reviews={reviews} forceUpdate={forceUpdate} />
+      ))}
+      <div className="lessons-page__pagination">
+        <Pagination
+          variant="outlined"
+          count={count}
+          page={page}
+          shape="rounded"
+          size="large"
+          onChange={handlePageChange}
+        />
+      </div>
     </Box>
   );
 };
