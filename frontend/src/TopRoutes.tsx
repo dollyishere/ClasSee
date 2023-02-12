@@ -18,6 +18,7 @@ import privateInfoState from './models/PrivateInfoAtom';
 import { AccessToken } from './utils/AccessToken';
 import PhotoCardQRPage from './pages/PhotoCardQRPage';
 import CreatePhotoCardPage from './pages/CreatePhotoCardPage';
+import PhotoCardsPage from './pages/PhotoCardsPages';
 
 const Router = () => {
   const { doGetAccessToken } = useUserApi();
@@ -47,6 +48,7 @@ const Router = () => {
         element={<PhotoCardQRPage />}
       />
       <Route path="/photo-card/create" element={<CreatePhotoCardPage />} />
+      <Route path="/photo-card" element={<PhotoCardsPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/image" element={<TestPage />} />
       <Route path="/mypage/*" element={<MyPage />} />
