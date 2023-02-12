@@ -13,6 +13,8 @@ import {
   GetScheduleResponse,
   GetScheduleRequest,
   SearchResponse,
+  ReviewRequest,
+  ReviewResponse,
 } from '../types/LessonsType';
 import { Response } from '../types/BaseType';
 
@@ -204,7 +206,6 @@ const LessonsApi = () => {
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_SERVER_URI}/api/v1/bookmarks/${email}/${lessonId}`,
-        {},
         {
           headers: {
             Authorization: `Bearer ${accesstoken}`,
@@ -276,6 +277,56 @@ const LessonsApi = () => {
     }
     return null;
   };
+  const getReviewDataApi = async (
+    lessonId: number,
+    limit: number,
+    offset: number,
+  ) => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/review/list/${lessonId}?limit=${limit}&offset=${offset}`,
+      );
+      return response;
+    } catch (error: any) {
+      console.log(error);
+    }
+    return null;
+  };
+  // TODO: 상태코드값 돌려받고 싶어요오
+  const doCreateReviewApi = async (createReviewRequestBody: ReviewRequest) => {
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/review/`,
+        createReviewRequestBody,
+        {
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+          },
+        },
+      );
+      return response.data;
+    } catch (error: any) {
+      console.log(error);
+    }
+    return null;
+  };
+  // TODO: delete 메서드 거부당함 / 405에러
+  const doDeleteReviewApi = async (id: number) => {
+    try {
+      const response = await axios.delete(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/review?id=${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+          },
+        },
+      );
+      return response;
+    } catch (error: any) {
+      console.log(error);
+    }
+    return null;
+  };
   return {
     doCreateLesson,
     doUpdateLesson,
@@ -291,6 +342,9 @@ const LessonsApi = () => {
     doCreateSchedule,
     doGetSchedule,
     doGetBookmark,
+    getReviewDataApi,
+    doCreateReviewApi,
+    doDeleteReviewApi,
   };
 };
 
