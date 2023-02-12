@@ -2,172 +2,184 @@
 
 // 회원가입 페이지 css
 
-  .signup-page__container{
-    margin: 200px auto;
-    width: 400px;
-    padding: 30px 30px;
-    height: 850px;
-    align-items: center;
-    background-color: rgb(255, 255, 255);
-
-    .logo {
-      align-items: center;
-      padding: 0 30px;
-      img {
-        height: 50px;
-      }
-    }
-
-    .signup-list{
-      padding-left: 0px;
-    }
-  
-
-  // 회원가입 내용 입력 폼
-  
-    // 입력 태그가 위치하는 행
-    .signup-page__form--row {
-      // 가로로 늘리기 위해 flex container로 만듦
-
-      // 내부 아이템들을 세로 가운데 정렬
-      align-items: center;
-      padding: 0px;
-
-      // 입력 태그 옆에 있는 버튼
-      .signup-page__input--button {
-        // 오른쪽 남은 공간에서 가운데 정렬
-        padding: 10px 10px;
-      color: gray;
-      height: 40px;
-      width: 250px;
-      border-width: 0px;
-      border-radius: 10px;
-      background-color: colors.$beige_color;
-      box-shadow: 0 2px 4px gray;
-      transition: 0.1s;
-      font-size: 13px;
-      font-weight: bold;
-      line-height: 20px;
-      border: 0;
-      outline: 0;
-      margin: 5px;
-      &:hover {
-        cursor: pointer;
-        background-color: colors.$beige_color_focus;
-      }
-      }
-
-      // 생년월일을 위한 select 모음
-      .signup-page__select {
-        // 폼의 70만큼 차지하도록 가로길이 설정, 나머지 30은 버튼을 위한 부분
-        width: 74%;
-
-        position: relative;
-
-
-        // justify-contnet를 사용하기위해 flex container로 만듦
-        display: flex;
-
-        // select 들을 일정한 구간으로 띄워서 배치
-        justify-content: space-between;
-      }
-
-      // select 태그
-      .signup-page__select-item {
-        // 가로길이 세로길이 설정
-        padding: 0px 10px;
-        height: 40px;
-        width: 250px;
-        margin: 10px;
-        border-width: 1px;
-        border-color: colors.$gray_color;
-        font-size: 12px;
-        border-radius: 10px;
-
-        // 마우스 올리면 커서를 포인터로 변경
-        &:hover {
-          cursor: pointer폼;
-        }
-      }
-
-      // 통신사 선택 select
-      #signup-page__select-item--TSP {
-        position: relative;
-        left: 47px;
-        height: 40px;
-        width: 40%;
-      }
-
-      // 휴대전화 입력 폼
-      #signup-page__input--phone {
-        position: relative;
-        left: 48px;
-        height: 40px;
-        width: 60%;
-      }
-    }
-
-    #signup-page__select--birth-year{
-      position: relative;
-      left: 47px;
-      width: 90px;
-    }
-
-    #signup-page__select--birth-month{
-      position: relative;
-      left: 43px;
-      width: 80px;
-    }
-
-    #signup-page__select--birth-day{
-      position: relative;
-      left: 37px;
-      width: 80px;
-    }
-
-    
-
-    // 각 행을 위한 리스트 아이템
-    li {
-      // 리스트 스타일 제거
-      list-style: none;
-
-      // 왼쪽 정렬
-      text-align: center;
-
-      // 아이템마다 일정 거리를 띄우기 위한 margin
-      margin: 0 0 0;
-    }
-
-    // 회원가입 정보 input 태그
-    .signup-page__input {
-      // 폼의 70%만큼 차지하도록 가로길이 설정, 나머지 30은 버튼을 위한 공간
-      padding: 0px 10px;
-        height: 40px;
-        width: 230px;
-        margin: 10px;
-        border-width: 1px;
-        border-color: colors.$gray_color;
-        font-size: 12px;
-        border-radius: 10px;
-
-      // 태그 바깥의 outline 제거
-      outline: none;
-
-    }
-
-    // 회원가입 버튼
-    .signup-page__submit {
-      width: 70%;
-      height: 60px;
-      background-color: colors.$theme_color;
-      color: white;
-
-      // 마우스 커서를 올리면 배경색 변경
-      &:hover {
-        background-color: colors.$theme_color_focus;
-      }
-    }
-  
+.signup-page__container {
+  margin: 200px auto;
+  width: 400px;
+  padding: 30px 30px;
+  height: 950px;
+  align-items: center;
+  padding: 0 30px;
+  img {
+    height: 50px;
+  }
 }
 
+.signup-list {
+  padding-left: 0px;
+}
+
+// 회원가입 내용 입력 폼
+
+// 입력 태그가 위치하는 행
+.signup-page__form--row {
+  // 가로로 늘리기 위해 flex container로 만듦
+
+  // 내부 아이템들을 세로 가운데 정렬
+  align-items: center;
+  padding: 0px;
+
+  // 입력 태그 옆에 있는 버튼
+  .signup-page__input--button {
+    // 오른쪽 남은 공간에서 가운데 정렬
+    padding: 10px 10px;
+    color: gray;
+    height: 40px;
+    width: 250px;
+    border-width: 0px;
+    border-radius: 10px;
+    background-color: colors.$beige_color;
+    box-shadow: 0 2px 4px gray;
+    transition: 0.1s;
+    font-size: 13px;
+    font-weight: bold;
+    line-height: 20px;
+    border: 0;
+    outline: 0;
+    margin: 5px;
+    &:hover {
+      cursor: pointer;
+      background-color: colors.$beige_color_focus;
+    }
+  }
+
+  // 생년월일을 위한 select 모음
+  .signup-page__select {
+    // 폼의 70만큼 차지하도록 가로길이 설정, 나머지 30은 버튼을 위한 부분
+    width: 74%;
+
+    position: relative;
+
+    // justify-contnet를 사용하기위해 flex container로 만듦
+    display: flex;
+
+    // select 들을 일정한 구간으로 띄워서 배치
+    justify-content: space-between;
+  }
+
+  // select 태그
+  .signup-page__select-item {
+    // 가로길이 세로길이 설정
+    padding: 0px 10px;
+    height: 40px;
+    width: 250px;
+    margin: 10px;
+    border-width: 1px;
+    border-color: colors.$gray_color;
+    font-size: 12px;
+    border-radius: 10px;
+
+    // 마우스 올리면 커서를 포인터로 변경
+    &:hover {
+      cursor: pointer폼;
+    }
+  }
+
+  // 통신사 선택 select
+  #signup-page__select-item--TSP {
+    position: relative;
+    left: 47px;
+    height: 40px;
+    width: 40%;
+  }
+
+  // 휴대전화 입력 폼
+  #signup-page__input--phone {
+    position: relative;
+    left: 37px;
+    width: 80px;
+  }
+
+  // 각 행을 위한 리스트 아이템
+  li {
+    // 리스트 스타일 제거
+    list-style: none;
+
+    // 왼쪽 정렬
+    text-align: center;
+  }
+
+  // 회원가입 정보 input 태그
+  .signup-page__input {
+    // 폼의 70%만큼 차지하도록 가로길이 설정, 나머지 30은 버튼을 위한 공간
+    padding: 0px 10px;
+    height: 40px;
+    width: 230px;
+    margin: 10px;
+    border-width: 1px;
+    border-color: colors.$gray_color;
+    font-size: 13px;
+    border-radius: 10px;
+
+    // 태그 바깥의 outline 제거
+    outline: none;
+  }
+}
+
+#signup-page__select--birth-year {
+  position: relative;
+  left: 47px;
+  width: 90px;
+}
+
+#signup-page__select--birth-month {
+  position: relative;
+  left: 43px;
+  width: 80px;
+}
+
+#signup-page__select--birth-day {
+  position: relative;
+  left: 37px;
+  width: 80px;
+}
+
+// 각 행을 위한 리스트 아이템
+li {
+  // 리스트 스타일 제거
+  list-style: none;
+
+  // 왼쪽 정렬
+  text-align: center;
+
+  // 아이템마다 일정 거리를 띄우기 위한 margin
+  margin: 0 0 0;
+}
+
+// 회원가입 정보 input 태그
+.signup-page__input {
+  // 폼의 70%만큼 차지하도록 가로길이 설정, 나머지 30은 버튼을 위한 공간
+  padding: 0px 10px;
+  height: 40px;
+  width: 230px;
+  margin: 10px;
+  border-width: 1px;
+  border-color: colors.$gray_color;
+  font-size: 12px;
+  border-radius: 10px;
+
+  // 태그 바깥의 outline 제거
+  outline: none;
+}
+
+// 회원가입 버튼
+.signup-page__submit {
+  width: 70%;
+  height: 60px;
+  background-color: colors.$theme_color;
+  color: white;
+
+  // 마우스 커서를 올리면 배경색 변경
+  &:hover {
+    background-color: colors.$theme_color_focus;
+  }
+}

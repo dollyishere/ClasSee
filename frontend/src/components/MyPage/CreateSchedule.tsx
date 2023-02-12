@@ -2,20 +2,24 @@ import React, { useState, useRef } from 'react';
 
 import { Stack, TextField, Button } from '@mui/material/';
 
-import ScheduleViewModel from '../viewmodels/ScheduleViewModel';
+import ScheduleViewModel from '../../viewmodels/ScheduleViewModel';
 
-import { CreateScheduleProps, ScheduleRequest } from '../types/LessonsType';
+import { CreateScheduleProps, ScheduleRequest } from '../../types/LessonsType';
 
 const CreateScheduleComponent = ({
   runningtime,
   lessonId,
   setScheduleInputState,
+  schedulesListState,
 }: CreateScheduleProps) => {
   // 강의 시작 시간, 종료 시간을 담을 state 각각 생성
   const [startTime, setStartTime] = useState<string>('');
   const [endTime, setEndTime] = useState<string>('');
 
+  // 등록 가능 여부를 판별하는 데에 쓸 state 생성
+  const [canEnroll, setCanEnroll] = useState(true);
   const { createSchedule } = ScheduleViewModel();
+  const today = new Date();
 
   // 시간 input 값 변경 시, endTime값도 함께 수정(runningTime이 0보다 높을 때 효력 발생함)
   const handleStartTimeChange = (
@@ -23,16 +27,25 @@ const CreateScheduleComponent = ({
   ) => {
     const newStartTime = event.target.value;
     setStartTime(newStartTime);
-
     const startDate = new Date(newStartTime);
-    const endDate = new Date(
-      startDate.getTime() + runningtime * 60 * 60 * 1000,
-    );
-    setEndTime(
-      new Date(endDate.getTime() - endDate.getTimezoneOffset() * 60 * 1000)
-        .toISOString()
-        .slice(0, 16),
-    );
+    schedulesListState.forEach((schedule: any) => {
+      const listScheduleStart = new Date(schedule.startTime);
+      const listScheduleEnd = new Date(schedule.endTime);
+      if (listScheduleStart <= startDate && startDate <= listScheduleEnd) {
+        alert('중복된 시간은 선택하실 수 없습니다.');
+        setStartTime('');
+        setEndTime('');
+      } else {
+        const endDate = new Date(
+          startDate.getTime() + runningtime * 60 * 60 * 1000,
+        );
+        setEndTime(
+          new Date(endDate.getTime() - endDate.getTimezoneOffset() * 60 * 1000)
+            .toISOString()
+            .slice(0, 16),
+        );
+      }
+    });
   };
 
   const handleEndTimeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,6 +67,11 @@ const CreateScheduleComponent = ({
       const selectedEndDate = new Date(endTime);
       if (selectedEndDate <= selectedStartDate) {
         alert('종료 시간은 시작 시간보다 늦은 시간으로 설정해주세요.');
+        setEndTime('');
+      } else if (selectedEndDate <= today) {
+        alert('해당 시간대는 등록이 불가합니다. 다시 선택해주세요.');
+        setStartTime('');
+        setEndTime('');
       } else {
         // datetime input의 경우 중간에 T로 시간을 구분하고 있음
         // 해당 T까지 DB에 보내면 안되기 때문에, sclice로 해당 부분만 제거해서 데이터를 담아줌
@@ -61,6 +79,7 @@ const CreateScheduleComponent = ({
           endTime: `${endTime.slice(0, 10)} ${endTime.slice(-5)}`,
           startTime: `${startTime.slice(0, 10)} ${startTime.slice(-5)}`,
         };
+
         const res = await createSchedule(createScheduleRequestBody, lessonId);
         if (res && res.message === 'SUCCESS') {
           alert('스케줄이 등록되었습니다');

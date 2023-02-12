@@ -3,6 +3,7 @@ import { Routes, Route, useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import ProfilePage from './ProfilePage';
 import TestPage from './TestPage';
+import MyCreatedLessonsPage from './MyCreatedLessonsPage';
 import MyCreatedLessonDetailPage from './MyCreatedLessonDetailPage';
 import MyBookmarkPage from './MyBookmarkPage';
 
@@ -48,6 +49,7 @@ const MyPage = () => {
               path="/created-lesson/:lessonId"
               element={<MyCreatedLessonDetailPage />}
             />
+            <Route path="/created-lesson" element={<MyCreatedLessonsPage />} />
             <Route path="/bookmark" element={<MyBookmarkPage />} />
             <Route path="/test" element={<TestPage />} />
           </Routes>
