@@ -66,7 +66,7 @@ const Header = () => {
           </Link>
         </li>
         <li className="nav__item">
-          <Link to="/proud" className="nav__item--link">
+          <Link to="/photo-card" className="nav__item--link">
             자랑 게시판
           </Link>
         </li>

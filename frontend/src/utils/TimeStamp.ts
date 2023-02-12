@@ -5,8 +5,13 @@ const TimeStamp = () => {
     return moment().format('LT');
   };
 
+  const toDateHourMinute = (timeStamp: string) => {
+    return moment(timeStamp).format('YYYY/MM/DD hh:mm');
+  };
+
   return {
     toHourMinute,
+    toDateHourMinute,
   };
 };
 

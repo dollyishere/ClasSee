@@ -3,7 +3,7 @@
 .chat-box {
   width: 500px;
   background-color: colors.$theme-color;
-
+  z-index: 1;
   .chat-box__header {
     padding: 20px;
     display: flex;

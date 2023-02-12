@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import {
   ExceptionEvent,
   OpenVidu,
@@ -29,6 +29,7 @@ import { Device, Msg, ConnectionError } from '../types/OpenviduType';
 import PrivateInfoState from '../models/PrivateInfoAtom';
 
 const VideoCallPage = () => {
+  const navigate = useNavigate();
   const userInfo = useRecoilValue(PrivateInfoState);
   // 사용자가 강사인지 수강생인지 url로 넘겨받도록 함
   // 이 부분은 로그인시 얻은 데이터로 나중에 바꿔야 돼요
@@ -277,6 +278,8 @@ const VideoCallPage = () => {
     setSession(undefined);
     setStudentStreamManager(undefined);
     setTeacherStreamManager(undefined);
+    setCurrentStreamManager(undefined);
+    setCurrentVideoDevice(undefined);
   };
 
   // beforeunload 이벤트 발생시 실행할 함생
@@ -284,7 +287,10 @@ const VideoCallPage = () => {
   const onbeforeunload = () => {
     leaveSession();
   };
-
+  const movePhotoQRPage = () => {
+    leaveSession();
+    navigate('photo-card/qr');
+  };
   // 세션에 참가하기 위해 실행하는 함수
   const joinSession = () => {
     // OpenVidu 객체 생성
@@ -315,6 +321,7 @@ const VideoCallPage = () => {
           newSubscribers.push(subscriber);
 
           setSubscribers([...newSubscribers]);
+          console.log(subscribers);
         } else {
           // 선생이면 teacherstreamManager에 추가
           setTeacherStreamManager(subscriber);
@@ -651,7 +658,7 @@ const VideoCallPage = () => {
             <button
               type="button"
               className="video-call-page__button video-call-page__button--quit"
-              onClick={window.close}
+              onClick={movePhotoQRPage}
             >
               <Phone fontSize="large" />
             </button>

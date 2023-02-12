@@ -1,0 +1,27 @@
+@use '../base/colors';
+
+.photo-card-qr-page {
+  height: 100%;
+  overflow: hidden;
+
+  .photo-card-qr-page__qr-code {
+    width: 100%;
+  }
+
+  .photo-card-qr-page__buttons {
+    margin: 10px auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    .photo-card-qr-page__button {
+      background-color: colors.$theme-color;
+      color: white;
+      margin: 10px;
+    }
+    .photo-card-qr-page__button--quit {
+      background-color: #ff4d4d;
+      color: white;
+      margin: 10px;
+    }
+  }
+}

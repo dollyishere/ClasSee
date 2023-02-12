@@ -1,0 +1,49 @@
+@use '../base/colors';
+@use '../components/header';
+
+.photo-cards-page__modal {
+  width: 20%;
+  height: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.photo-cards-page {
+  height: 100%;
+  .photo-cards-page__contents {
+    overflow: auto;
+    background-color: colors.$theme_color_light;
+    height: calc(100% - header.$height);
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    .photo-cards-page__title {
+      margin: 0;
+      text-align: left;
+      padding: 20px 40px;
+      font-size: 36px;
+      font-weight: bold;
+      width: 100%;
+    }
+    .photo-cards-page__list {
+      margin: 0 auto;
+      width: 90%;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: left;
+      padding: auto;
+      .photo-cards-page__card {
+        width: 18%;
+        padding: 1%;
+        height: 320px;
+        z-index: 0;
+      }
+    }
+    .photo-cards-page__pagination {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+  }
+}
