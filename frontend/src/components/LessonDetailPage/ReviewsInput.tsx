@@ -1,45 +1,138 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 import { TextField, Button, Box, Typography, Rating } from '@mui/material';
-
 import ReviewList from './ReviewList';
 import BasicRating from '../BasicRating';
+import privateInfoState from '../../models/PrivateInfoAtom';
+import useReviewApi from '../../viewmodels/LessonDetailViewModel';
+import { ReviewRequest } from '../../types/LessonsType';
 
 interface Review {
-  text: string;
-  rating: number;
+  id: number;
+  content: string;
+  score: number;
+  img: string;
+  year: string;
+  month: string;
+  day: string;
+  time: string;
+  userEmail: string;
+  userNickname: string;
 }
 
 const ReviewInput: React.FC = () => {
-  // 기존 강의의 리뷰 데이터를 받아와서 reviews의 디폴트데이터로 넣어줄 필요있음
-  // 사용자명, 작성시간, 이미지첨부, 프로필 사진, 작성 리뷰 수정, 삭제
+  const { doCreateReview, getReviewData, uploadReviewImage } = useReviewApi();
+  const userInfo = useRecoilValue(privateInfoState);
+  const lessonId = useParams();
+  const [reviewImg, setReviewImg] = useState<File>();
   const [reviewList, setReviewList] = useState<Review[]>([]);
-  const [review, setReview] = useState<Review>({ text: '', rating: 0 });
+  const [review, setReview] = useState<Review>({
+    id: 0,
+    content: '',
+    score: 0,
+    img: '',
+    year: '',
+    month: '',
+    day: '',
+    time: '',
+    userEmail: '',
+    userNickname: '',
+  });
   const [ratingValue, setRatingValue] = useState<number | null>(0);
 
-  const handleSubmit = () => {
-    setReviewList([review, ...reviewList]);
-    setReview({ text: '', rating: 0 });
+  const createReviewRequestBody: ReviewRequest = {
+    content: review.content as string,
+    img: review.img as string,
+    lessonId: Number(lessonId.lessonId) as number,
+    score: review.score as number,
+    userEmail: userInfo?.email as string,
+  };
+
+  const handleSubmit = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    const res = await doCreateReview(createReviewRequestBody);
+    if (res?.message === 'success') {
+      setReviewList([review, ...reviewList]);
+      setReview({
+        id: 0,
+        content: '',
+        score: 0,
+        img: '',
+        year: '',
+        month: '',
+        day: '',
+        time: '',
+        userEmail: '',
+        userNickname: '',
+      });
+      if (reviewImg) {
+        await uploadReviewImage(reviewImg);
+      }
+    } else {
+      alert('리뷰는 한번만 작성 가능합니다');
+      setReview({
+        id: 0,
+        content: '',
+        score: 0,
+        img: '',
+        year: '',
+        month: '',
+        day: '',
+        time: '',
+        userEmail: '',
+        userNickname: '',
+      });
+    }
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setReview({ ...review, text: event.target.value });
+    setReview({ ...review, content: event.target.value });
   };
 
   const handleRatingChange = (
     event: React.ChangeEvent<object>,
     newValue: number | null,
   ) => {
-    setReview({ ...review, rating: newValue || 0 });
+    setReview({ ...review, score: newValue || 0 });
   };
-  const handleRatingValue = (event: any) => {
-    setRatingValue(event.target.value);
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      const inputImage = event.target.files[0];
+      console.log(inputImage);
+      setReview({ ...review, img: inputImage.name });
+      setReviewImg(inputImage);
+    }
+    // if (inputImage.files && inputImage.files[0]) {
+    //   const reader = new FileReader();
+    //   reader.onload = (e) => {
+    //     setReview({ ...review, image: e.target?.result as string });
+    //     console.log(review);
+    //   };
+    //   reader.readAsDataURL(inputImage.files[0]);
+    // }
   };
+  useEffect(() => {
+    const handleReviewData = async () => {
+      if (userInfo) {
+        const reviewData = await getReviewData(
+          Number(lessonId.lessonId),
+          10,
+          0,
+        );
+        if (reviewData) {
+          setReviewList(reviewData.data.page);
+          console.log(reviewData.data.page);
+        }
+      }
+    };
+    handleReviewData();
+  }, []);
   return (
     <Box m={2}>
       {/* <Typography variant="h6">Add a Review</Typography> */}
       <TextField
         label="강의에 대한 후기를 남겨주세요"
-        value={review.text}
+        value={review.content}
         onChange={handleChange}
         multiline
         fullWidth
@@ -53,19 +146,24 @@ const ReviewInput: React.FC = () => {
       >
         <Rating
           name="simple-controlled"
-          value={review.rating}
+          value={review.score}
           precision={0.5}
           onChange={handleRatingChange}
           readOnly={false}
         />
-        {review.rating !== null && <Box sx={{ ml: 2 }}>{review.rating}</Box>}
+        {review.score !== null && <Box sx={{ ml: 2 }}>{review.score}</Box>}
       </Box>
-      {/* <BasicRating
-        ratingValue={ratingValue}
-        setRatingValue={setRatingValue}
-        disableValue={false}
-      /> */}
-      {/* <Rating value={review.rating} onChange={handleRatingChange} /> */}
+      <label className="input-file-button" htmlFor="input-file">
+        사진 업로드
+        <input
+          type="file"
+          name="후기사진"
+          accept="image/*"
+          id="input-file"
+          style={{ display: 'none' }}
+          onChange={handleImageChange}
+        />
+      </label>
       <br />
       <Button variant="contained" color="primary" onClick={handleSubmit}>
         등록
@@ -76,56 +174,3 @@ const ReviewInput: React.FC = () => {
 };
 
 export default ReviewInput;
-
-// interface Review {
-//   text: string;
-//   rating: number;
-// }
-
-// const ReviewInput = () => {
-//   const [review, setReview] = useState<Review>({ text: '', rating: 0 });
-
-//   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-//     setReview({ ...review, text: event.target.value });
-//   };
-
-//   const handleRatingChange = (
-//     event: React.ChangeEvent<{}>,
-//     newValue: number,
-//   ) => {
-//     setReview({ ...review, rating: newValue });
-//   };
-
-//   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-//     event.preventDefault();
-//     console.log('Submitting Review: ', review);
-//     setReview({ text: '', rating: 0 });
-//   };
-
-//   return (
-//     <form onSubmit={handleSubmit}>
-//       <Box mb={2}>
-//         <Typography variant="h6">Leave a Review</Typography>
-//         <Rating
-//           name="rating"
-//           value={review.rating}
-//           onChange={handleRatingChange}
-//         />
-//       </Box>
-//       <TextField
-//         label="Write your review"
-//         value={review.text}
-//         onChange={handleChange}
-//         multiline
-//         rows={4}
-//         fullWidth
-//         variant="outlined"
-//       />
-//       <Button type="submit" color="primary" variant="contained">
-//         Submit
-//       </Button>
-//     </form>
-//   );
-// };
-
-// export default ReviewInput;
