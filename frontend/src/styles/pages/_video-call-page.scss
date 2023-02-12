@@ -1,5 +1,33 @@
 @use '../base/colors';
 
+.video-call-page__video-modal {
+  background-color: white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-wrap: wrap;
+  width: 600px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  padding: 10px;
+  h1 {
+    width: 100%;
+    text-align: center;
+  }
+  .video-call-page__video-select {
+    width: 40%;
+    font-size: 20px;
+    border-radius: 10px;
+  }
+  .video-call-page__video-button {
+    width: 40%;
+    background-color: colors.$theme-color;
+    margin: 20px auto;
+  }
+}
 .video-call-page {
   display: flex;
   height: 100%;

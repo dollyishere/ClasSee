@@ -18,6 +18,7 @@ import {
   Videocam,
   Mic,
 } from '@mui/icons-material';
+import { Modal } from '@mui/material';
 
 import { useRecoilValue } from 'recoil';
 import useViewModel from '../viewmodels/VideoCallViewModel';
@@ -78,22 +79,76 @@ const VideoCallPage = () => {
   // 현재 사용하는 캠 디바이스를 저장할 state
   // 이건 나중에 카메라 변경 기능 구현할 때 건드립니다.
   const [currentVideoDevice, setCurrentVideoDevice] = useState<Device>();
+  const [currentStreamManger, setCurrentStreamManager] =
+    useState<StreamManager>();
 
-  const [tmpMediaStreamTrack, setTmpMediaStreamTrack] = useState<
-    MediaStreamTrack | undefined
-  >();
+  const [toggleVideoModal, setToggleVideoModal] = useState<boolean>(false);
 
   // 채팅 메시지를 저장할 state (배열)
   const [messages, setMessages] = useState<Array<Msg>>([]);
+
+  const [videos, setVideos] = useState<Array<Device>>();
 
   // viewModel의 함수들
   // getToken은 서버로부터 세션 토큰을 받아옴
   // chat은 메시지 전송
   const { createSession, createToken, chat } = useViewModel();
 
+  const handleVideoModalOpen = () => {
+    setToggleVideoModal(true);
+  };
+  const handleVideoModalClose = () => {
+    if (
+      publisher !== undefined &&
+      publisher.stream.getMediaStream().getVideoTracks()[0] !==
+        currentStreamManger?.stream.getMediaStream().getVideoTracks()[0]
+    ) {
+      setCurrentVideoDevice(
+        videos?.find(
+          (video: Device) =>
+            video.deviceId ===
+            publisher?.stream.getMediaStream().getVideoTracks()[0].getSettings()
+              .deviceId,
+        ),
+      );
+      setCurrentStreamManager(publisher);
+    }
+    setToggleVideoModal(false);
+  };
+  const handleCamSelect = async (
+    event: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    const selectedDevice = videos?.find(
+      (video: Device) => event.target.value === video.deviceId,
+    );
+    setCurrentVideoDevice(selectedDevice);
+  };
+  const handleCamChange = () => {
+    if (currentStreamManger !== undefined) {
+      publisher?.replaceTrack(
+        currentStreamManger.stream.getMediaStream().getVideoTracks()[0],
+      );
+      handleVideoModalClose();
+    }
+  };
+
   const handleScreenShare = () => {
     setScreenShareEnabled(true);
   };
+
+  useEffect(() => {
+    const newPublisher = OV?.initPublisher(undefined, {
+      videoSource: currentVideoDevice?.deviceId,
+      publishAudio: true,
+      publishVideo: true,
+      resolution: '640x360',
+      frameRate: 30,
+      mirror: false,
+    });
+    if (newPublisher !== undefined) {
+      setCurrentStreamManager(newPublisher);
+    }
+  }, [currentVideoDevice]);
 
   useEffect(() => {
     if (screenShareEnabled) {
@@ -377,6 +432,8 @@ const VideoCallPage = () => {
                 (device: Device) => device.kind === 'videoinput',
               );
 
+              setVideos(videoDevices);
+
               // 현재 스트림에서 사용하고 있는 캠 deviceId
               const currentVideoDeviceId = newPublisher.stream
                 .getMediaStream()
@@ -390,7 +447,7 @@ const VideoCallPage = () => {
 
               // currentVideoDevice state를 현재 사용하고 있는 캠 정보로 저장
               setCurrentVideoDevice(newCurrentVideoDevice);
-
+              setCurrentStreamManager(newPublisher);
               // role이 강사면 스트림을 teacherStreamManager에 저장
               if (role === 'teacher') {
                 setTeacherStreamManager(newPublisher);
@@ -583,7 +640,11 @@ const VideoCallPage = () => {
               <Monitor fontSize="large" />
             </button>
             {/* 캠 변경 버튼 */}
-            <button type="button" className="video-call-page__button">
+            <button
+              type="button"
+              className="video-call-page__button"
+              onClick={handleVideoModalOpen}
+            >
               <Videocam fontSize="large" />
             </button>
             {/* 나가기 버튼 */}
@@ -632,6 +693,32 @@ const VideoCallPage = () => {
           userName={userInfo.nickname}
           role={role}
         />
+      ) : null}
+      {toggleVideoModal && currentVideoDevice !== undefined ? (
+        <Modal open={toggleVideoModal} onClose={handleVideoModalClose}>
+          <div className="video-call-page__video-modal">
+            <h1>캠 변경</h1>
+            <select
+              className="video-call-page__video-select"
+              value={currentVideoDevice.deviceId}
+              onChange={handleCamSelect}
+            >
+              {videos?.map((video: Device) => (
+                <option value={video.deviceId}>{video.label}</option>
+              ))}
+            </select>
+            {currentStreamManger ? (
+              <UserVideo streamManager={currentStreamManger} />
+            ) : null}
+            <button
+              type="button"
+              className="button video-call-page__video-button"
+              onClick={handleCamChange}
+            >
+              변경하기
+            </button>
+          </div>
+        </Modal>
       ) : null}
     </div>
   );
