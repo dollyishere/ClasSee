@@ -119,15 +119,15 @@ const LessonDetailViewModel = () => {
     const res = await doDeleteReviewApi(id);
     return res;
   };
-  const getReviewImage = async (email: string) => {
-    const imageRef = ref(storage, `review/${email}/`);
+  const getReviewImage = async (lessonId: number, email: string) => {
+    const imageRef = ref(storage, `reviews/${lessonId}/${email}/`);
     const res = await listAll(imageRef);
     const ret = await getDownloadURL(res.items[0]);
     return ret;
   };
-  const uploadReviewImage = async (image: File) => {
+  const uploadReviewImage = async (lessonId: number, image: File) => {
     if (userInfo !== null) {
-      const imageRef = ref(storage, `reviews/${userInfo.email}/`);
+      const imageRef = ref(storage, `reviews/${lessonId}/${userInfo.email}/`);
       await listAll(imageRef).then((response: any) => {
         response.items.forEach((item: any) => {
           deleteObject(item);
@@ -135,10 +135,10 @@ const LessonDetailViewModel = () => {
       });
 
       await uploadBytes(
-        ref(storage, `reviews/${userInfo.email}/${image.name}`),
+        ref(storage, `reviews/${lessonId}/${userInfo.email}/${image.name}`),
         image,
       );
-      const res = await getReviewImage(userInfo.email);
+      const res = await getReviewImage(lessonId, userInfo.email);
       if (res) {
         return res;
       }
