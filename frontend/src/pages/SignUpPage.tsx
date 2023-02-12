@@ -263,6 +263,8 @@ const SignUpPage = () => {
                   </div>
                 </label>
               </li>
+              <br />
+              <br />
               <li>
                 <label htmlFor="#signup-page__input--pw">
                   <input
@@ -285,6 +287,8 @@ const SignUpPage = () => {
                   />
                 </label>
               </li>
+              <br />
+              <br />
               <li>
                 <label htmlFor="#signup-page__input--name">
                   <input
@@ -389,6 +393,7 @@ const SignUpPage = () => {
                   </div>
                 </label>
               </li>
+              <br />
               <br />
               <li>
                 <button type="submit" className="button signup-page__submit">
