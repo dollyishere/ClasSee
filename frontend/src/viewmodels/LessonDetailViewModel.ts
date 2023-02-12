@@ -1,3 +1,4 @@
+import { useRecoilValue } from 'recoil';
 import {
   ref,
   getDownloadURL,
@@ -10,15 +11,24 @@ import { storage } from '../utils/Firebase';
 
 import LessonsApi from '../apis/LessonsApi';
 
-import { LessonDetailRequest, LessonEnrollRequest } from '../types/LessonsType';
+import {
+  LessonDetailRequest,
+  LessonEnrollRequest,
+  ReviewRequest,
+} from '../types/LessonsType';
+import PrivateInfoState from '../models/PrivateInfoAtom';
 
 const LessonDetailViewModel = () => {
   const {
-    doGetLessonDetail,
     doDeleteLesson,
+    doGetLessonDetail,
+    getReviewDataApi,
+    doCreateReviewApi,
+    doDeleteReviewApi,
     doGetOpenLessonDetail,
     doEnrollLessonSchedule,
   } = LessonsApi();
+  const userInfo = useRecoilValue(PrivateInfoState);
 
   const getLessonDetail = async (data: LessonDetailRequest) => {
     const res = await doGetLessonDetail(data);
@@ -99,7 +109,48 @@ const LessonDetailViewModel = () => {
       const goDeleteImg = await deleteObject(imageRef);
     });
   };
+  const getReviewData = async (
+    lessonId: number,
+    limit: number,
+    offset: number,
+  ) => {
+    const res = getReviewDataApi(lessonId, limit, offset);
+    return res;
+  };
+  const doCreateReview = async (data: ReviewRequest) => {
+    const res = await doCreateReviewApi(data);
+    return res;
+  };
+  const doDeleteReview = async (id: number) => {
+    const res = await doDeleteReviewApi(id);
+    return res;
+  };
+  const getReviewImage = async (lessonId: number, email: string) => {
+    const imageRef = ref(storage, `reviews/${lessonId}/${email}/`);
+    const res = await listAll(imageRef);
+    const ret = await getDownloadURL(res.items[0]);
+    return ret;
+  };
+  const uploadReviewImage = async (lessonId: number, image: File) => {
+    if (userInfo !== null) {
+      const imageRef = ref(storage, `reviews/${lessonId}/${userInfo.email}/`);
+      await listAll(imageRef).then((response: any) => {
+        response.items.forEach((item: any) => {
+          deleteObject(item);
+        });
+      });
 
+      await uploadBytes(
+        ref(storage, `reviews/${lessonId}/${userInfo.email}/${image.name}`),
+        image,
+      );
+      const res = await getReviewImage(lessonId, userInfo.email);
+      if (res) {
+        return res;
+      }
+    }
+    return null;
+  };
   const doDeleteselectedLesson = async (email: string, lessonId: number) => {
     const res = await doDeleteLesson(email, lessonId);
     return res;
@@ -122,6 +173,11 @@ const LessonDetailViewModel = () => {
     getCheckImgFiles,
     doUploadImage,
     doDeleteImageFiles,
+    getReviewData,
+    doCreateReview,
+    doDeleteReview,
+    uploadReviewImage,
+    getReviewImage,
     doDeleteselectedLesson,
     getOpenLessonDetail,
     doLessonEnroll,

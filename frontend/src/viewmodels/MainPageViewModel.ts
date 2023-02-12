@@ -11,20 +11,15 @@ import { storage } from '../utils/Firebase';
 
 const MainPageViewModel = () => {
   const {
-    getRecommandLessonsApi1,
-    getRecommandLessonsApi2,
+    getRecommandLessonsApi,
     MyCreatedLessonsMainpageApi,
     MyAppliedLessonsMainpageApi,
     deleteMyAppliedLessonsMainpageApi,
     deleteBookmarkApi,
     addBookmarkApi,
   } = useLessonApi();
-  const getRecommandLessons1 = async () => {
-    const res = await getRecommandLessonsApi1();
-    return res;
-  };
-  const getRecommandLessons2 = async (email: string) => {
-    const res = await getRecommandLessonsApi2(email);
+  const getRecommandLessons = async (email: string | null) => {
+    const res = await getRecommandLessonsApi(email);
     return res;
   };
 
@@ -32,9 +27,8 @@ const MainPageViewModel = () => {
     email: string,
     limit: number,
     offset: number,
-    query: string,
   ) => {
-    const res = await MyCreatedLessonsMainpageApi(email, limit, offset, query);
+    const res = await MyCreatedLessonsMainpageApi(email, limit, offset);
     return res;
   };
   const getMyAppliedLessonsMainpage = async (
@@ -72,8 +66,7 @@ const MainPageViewModel = () => {
     return ret;
   };
   return {
-    getRecommandLessons1,
-    getRecommandLessons2,
+    getRecommandLessons,
     getMyCreatedLessonsMainpage,
     getMyAppliedLessonsMainpage,
     deleteMyAppliedLessonsMainpage,

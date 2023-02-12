@@ -237,3 +237,15 @@ export interface LessonEnrollRequest {
   phone: string;
   price: number;
 }
+
+export interface ReviewRequest {
+  content: string;
+  img: string;
+  lessonId: number;
+  score: number;
+  userEmail: string;
+}
+
+export interface ReviewResponse {
+  data: string;
+}

@@ -6,6 +6,7 @@ import TestPage from './TestPage';
 import MyCreatedLessonsPage from './MyCreatedLessonsPage';
 import MyCreatedLessonDetailPage from './MyCreatedLessonDetailPage';
 import MyBookmarkPage from './MyBookmarkPage';
+import MyPhotoBookPage from './MyPhotoBookPage';
 
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
@@ -52,6 +53,7 @@ const MyPage = () => {
             <Route path="/created-lesson" element={<MyCreatedLessonsPage />} />
             <Route path="/bookmark" element={<MyBookmarkPage />} />
             <Route path="/test" element={<TestPage />} />
+            <Route path="/photo-book" element={<MyPhotoBookPage />} />
           </Routes>
         </div>
       </div>

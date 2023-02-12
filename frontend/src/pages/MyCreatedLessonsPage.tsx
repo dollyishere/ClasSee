@@ -39,7 +39,6 @@ const MyCreatedLessonsPage = () => {
           userInfo.email,
           limit,
           offset,
-          '',
         );
         console.log(data.lessonInfoList);
         setLessons(data.lessonInfoList);

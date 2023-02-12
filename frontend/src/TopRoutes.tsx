@@ -4,18 +4,22 @@ import { RecoilRoot, useRecoilValue, useRecoilState } from 'recoil';
 import MainPage from './pages/MainPage';
 import SignUpPage from './pages/SignUpPage';
 import CreateLessonPage from './pages/CreateLessonPage';
-import LessonPage from './pages/LessonPage';
+import VideoCallPage from './pages/VideoCallPage';
 import LoginPage from './pages/LoginPage';
 import LessonDetailPage from './pages/LessonDetailPage';
 import MyPage from './pages/MyPage';
 import UpdateLessonPage from './pages/UpdateLessonPage';
 import LessonEnrollPage from './pages/LessonEnrollPage';
+import FindPwPage from './pages/FindPwPage';
 import TestPage from './pages/TestPage';
 import Footer from './components/Footer';
 import LessonsPage from './pages/LessonsPage';
 import useUserApi from './apis/UserApi';
 import privateInfoState from './models/PrivateInfoAtom';
 import { AccessToken } from './utils/AccessToken';
+import PhotoCardQRPage from './pages/PhotoCardQRPage';
+import CreatePhotoCardPage from './pages/CreatePhotoCardPage';
+import PhotoCardsPage from './pages/PhotoCardsPages';
 
 const Router = () => {
   const { doGetAccessToken } = useUserApi();
@@ -31,6 +35,15 @@ const Router = () => {
       };
       reAccessToken();
     }, 1500000);
+
+    // 새로고침하면 받아옴
+    const rereAccessToken = async () => {
+      if (userInfo) {
+        const response = await AccessToken(userInfo, doGetAccessToken);
+        console.log(response);
+      }
+    };
+    rereAccessToken();
   }, []);
   return (
     <Routes>
@@ -43,10 +56,17 @@ const Router = () => {
         path="/enroll-lesson/:lessonId/:openLessonId"
         element={<LessonEnrollPage />}
       />
-      <Route path="/lesson/:sessionId/:role" element={<LessonPage />} />
+      <Route path="/lesson/:sessionId/:role" element={<VideoCallPage />} />
+      <Route
+        path="/lesson/:sessionId/:role/photo-card/qr"
+        element={<PhotoCardQRPage />}
+      />
+      <Route path="/photo-card/create" element={<CreatePhotoCardPage />} />
+      <Route path="/photo-card" element={<PhotoCardsPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/image" element={<TestPage />} />
       <Route path="/mypage/*" element={<MyPage />} />
+      <Route path="/find-pw" element={<FindPwPage />} />
       <Route path="/lessons/*" element={<LessonsPage />} />
     </Routes>
   );

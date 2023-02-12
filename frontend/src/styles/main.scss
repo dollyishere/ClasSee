@@ -19,10 +19,12 @@
 @use './components/search-box';
 @use './components/calendar';
 @use './components/_check-schedule';
+@use './components/photo-card';
+@use './components/_reviews-input';
 
 // pages
 @use './pages/signup-page';
-@use './pages/lesson-page';
+@use './pages/video-call-page';
 @use './pages/login-page';
 @use './pages/create-lesson-page';
 @use './pages/lesson-detail-page';
@@ -31,7 +33,12 @@
 @use './pages/lessons_page';
 @use './pages/point-charge-page';
 @use './pages/my-bookmark-page';
+@use './pages/find-pw-page';
 @use './pages/my-created-lessons-page';
+@use './pages/photo-card-qr-page';
+@use './pages/create-photo-card-page';
+@use './pages/photo-cards-page';
+@use './pages/my-photo-book-page';
 
 html,
 body,

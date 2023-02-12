@@ -20,7 +20,7 @@ const MyAppliedLessonsMainpage = () => {
     if (userInfo) {
       getMyAppliedLessonsMainpage(userInfo.email, 2, 0, 'TODO').then(
         (response: LessonsResponse) => {
-          console.log('내가 신청한 강의1', response.lessonInfoList);
+          console.log('내가 신청한 강의', response.lessonInfoList);
           setLessons(response.lessonInfoList);
         },
       );
