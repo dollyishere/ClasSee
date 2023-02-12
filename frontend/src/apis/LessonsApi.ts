@@ -43,15 +43,18 @@ const LessonsApi = () => {
     lessonId: number,
   ) => {
     try {
-      console.log(lessonId);
       const response = await axios.put<Response>(
         `${process.env.REACT_APP_SERVER_URI}/api/v1/lessons/${lessonId}`,
         updateLessonRequestBody,
+        {
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+          },
+        },
       );
       return response.data;
     } catch (error: any) {
       console.error(error);
-      console.log(updateLessonRequestBody);
     }
     return null;
   };
@@ -69,6 +72,22 @@ const LessonsApi = () => {
     return null;
   };
 
+  const doDeleteLesson = async (email: string, lessonId: number) => {
+    try {
+      const response = await axios.delete<Response>(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/teachers/${email}/lessons/${lessonId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+          },
+        },
+      );
+      return response.data;
+    } catch (error: any) {
+      console.error(error);
+    }
+    return null;
+  };
   const doSearchLessons = async (searchOption: LessonSearchOption) => {
     let query = `limit=${searchOption.limit}&offset=${searchOption.offset}`;
     if (searchOption.category) {
@@ -107,38 +126,35 @@ const LessonsApi = () => {
     }
     return null;
   };
-  const getRecommandLessonsApi1 = async () => {
+
+  const getRecommandLessonsApi = async (email: string | null) => {
     try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_SERVER_URI}/api/v1/lessons/recommands`,
-      );
+      let response;
+      if (email) {
+        response = await axios.get(
+          `${process.env.REACT_APP_SERVER_URI}/api/v1/lessons/recommands?email=${email}`,
+        );
+      } else {
+        response = await axios.get(
+          `${process.env.REACT_APP_SERVER_URI}/api/v1/lessons/recommands`,
+        );
+      }
       return response.data;
     } catch (error: any) {
       console.log(error);
     }
     return null;
   };
-  const getRecommandLessonsApi2 = async (email: string) => {
-    try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_SERVER_URI}/api/v1/lessons/recommands?email=${email}`,
-      );
-      return response.data;
-    } catch (error: any) {
-      console.log(error);
-    }
-    return null;
-  };
+
   // 내가 개설한 강의 2개 불러오는 함수
   const MyCreatedLessonsMainpageApi = async (
     email: string,
     limit: number,
     offset: number,
-    query: string,
   ) => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_SERVER_URI}/api/v1/teachers/${email}/lessons?limit=${limit}&offset=${offset}&query=${query}`,
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/teachers/${email}/lessons?limit=${limit}&offset=${offset}`,
         {
           headers: {
             Authorization: `Bearer ${accesstoken}`,
@@ -262,7 +278,7 @@ const LessonsApi = () => {
   const doGetSchedule = async (getScheduleRequestBody: GetScheduleRequest) => {
     try {
       let response;
-      if (getScheduleRequestBody.regDate) {
+      if (getScheduleRequestBody.regDate !== '') {
         response = await axios.get<GetScheduleResponse>(
           `${process.env.REACT_APP_SERVER_URI}/api/v1/lessons/${getScheduleRequestBody.lessonId}/schedules?regDate=${getScheduleRequestBody.regDate}`,
         );
@@ -310,6 +326,28 @@ const LessonsApi = () => {
     }
     return null;
   };
+
+  const doDeleteSchedule = async (
+    email: string,
+    lessonId: number,
+    openLessonId: number,
+  ) => {
+    console.log(email, lessonId, openLessonId);
+    try {
+      const response = await axios.delete<Response>(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/teachers/${email}/lessons/${lessonId}/${openLessonId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+          },
+        },
+      );
+      return response.data;
+    } catch (error: any) {
+      console.log(error);
+    }
+    return null;
+  };
   // TODO: delete 메서드 거부당함 / 405에러
   const doDeleteReviewApi = async (id: number) => {
     try {
@@ -330,9 +368,9 @@ const LessonsApi = () => {
   return {
     doCreateLesson,
     doUpdateLesson,
+    doDeleteLesson,
     doGetLessonDetail,
-    getRecommandLessonsApi1,
-    getRecommandLessonsApi2,
+    getRecommandLessonsApi,
     MyCreatedLessonsMainpageApi,
     MyAppliedLessonsMainpageApi,
     deleteMyAppliedLessonsMainpageApi,
@@ -341,6 +379,7 @@ const LessonsApi = () => {
     doSearchLessons,
     doCreateSchedule,
     doGetSchedule,
+    doDeleteSchedule,
     doGetBookmark,
     getReviewDataApi,
     doCreateReviewApi,

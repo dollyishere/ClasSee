@@ -137,6 +137,8 @@ export interface LessonDetailRequest {
 export interface LessonDetailResponse extends Response {
   teacher: string;
   lessonName: string;
+  lessonId: number;
+  price: number;
   cklsDescription: string;
   lessonDescription: string;
   kitPrice: number;
@@ -183,6 +185,7 @@ export interface CreateScheduleProps {
   lessonId: number;
   scheduleInputState: boolean;
   setScheduleInputState: React.Dispatch<React.SetStateAction<boolean>>;
+  schedulesListState: any[];
 }
 
 export interface ScheduleRequest {

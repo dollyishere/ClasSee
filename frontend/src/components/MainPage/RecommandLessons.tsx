@@ -9,18 +9,16 @@ import { LessonsResponse, Lesson } from '../../types/LessonsType';
 import privateInfoState from '../../models/PrivateInfoAtom';
 
 const RecommandLessons = () => {
-  const { getRecommandLessons1, getRecommandLessons2 } = useViewModel();
+  const { getRecommandLessons } = useViewModel();
   const [lessons, setLessons] = useState<Lesson[]>();
   const userInfo = useRecoilValue(privateInfoState);
   useEffect(() => {
-    if (!userInfo) {
-      getRecommandLessons1().then((res: LessonsResponse) => {
-        console.log('추천강의', res.lessonInfoList);
+    if (userInfo) {
+      getRecommandLessons(userInfo.email).then((res: LessonsResponse) => {
         setLessons(res.lessonInfoList);
       });
     } else {
-      getRecommandLessons2(userInfo.email).then((res: LessonsResponse) => {
-        console.log('추천강의', res.lessonInfoList);
+      getRecommandLessons(null).then((res: LessonsResponse) => {
         setLessons(res.lessonInfoList);
       });
     }

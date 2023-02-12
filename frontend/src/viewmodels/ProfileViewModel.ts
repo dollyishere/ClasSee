@@ -124,8 +124,10 @@ const ProfileViewModel = () => {
       if (salt !== null) {
         const hashedPassword = createHashedPassword(password, salt);
         const response = await doUpdatePassword(userInfo.email, hashedPassword);
+        return response;
       }
     }
+    return null;
   };
 
   const withdrawl = async () => {

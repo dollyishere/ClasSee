@@ -16,12 +16,14 @@ import PrivateInfoState from '../models/PrivateInfoAtom';
 
 const LessonDetailViewModel = () => {
   const {
+    doDeleteLesson,
     doGetLessonDetail,
     getReviewDataApi,
     doCreateReviewApi,
     doDeleteReviewApi,
   } = LessonsApi();
   const userInfo = useRecoilValue(PrivateInfoState);
+
   const getLessonDetail = async (data: LessonDetailRequest) => {
     const res = await doGetLessonDetail(data);
     return res;
@@ -143,6 +145,10 @@ const LessonDetailViewModel = () => {
     }
     return null;
   };
+  const doDeleteselectedLesson = async (email: string, lessonId: number) => {
+    const res = await doDeleteLesson(email, lessonId);
+    return res;
+  };
   return {
     getLessonDetail,
     getPamphletImgUrls,
@@ -156,6 +162,7 @@ const LessonDetailViewModel = () => {
     doDeleteReview,
     uploadReviewImage,
     getReviewImage,
+    doDeleteselectedLesson,
   };
 };
 

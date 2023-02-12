@@ -17,9 +17,9 @@ const MyCreatedLessonsMainpage = () => {
   // 메인페이지 마운트 시 강의 정보들 요청
   useEffect(() => {
     if (userInfo) {
-      getMyCreatedLessonsMainpage(userInfo.email, 2, 0, 'TODO').then(
+      getMyCreatedLessonsMainpage(userInfo.email, 2, 0).then(
         (response: LessonsResponse) => {
-          console.log('내가 개설한 강의1', response.lessonInfoList);
+          console.log('내가 개설한 강의', response.lessonInfoList);
           setLessons(response.lessonInfoList);
         },
       );
