@@ -9,6 +9,7 @@ import LoginPage from './pages/LoginPage';
 import LessonDetailPage from './pages/LessonDetailPage';
 import MyPage from './pages/MyPage';
 import UpdateLessonPage from './pages/UpdateLessonPage';
+import FindPwPage from './pages/FindPwPage';
 import TestPage from './pages/TestPage';
 import Footer from './components/Footer';
 import LessonsPage from './pages/LessonsPage';
@@ -42,6 +43,7 @@ const Router = () => {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/image" element={<TestPage />} />
       <Route path="/mypage/*" element={<MyPage />} />
+      <Route path="/find-pw" element={<FindPwPage />} />
       <Route path="/lessons/*" element={<LessonsPage />} />
     </Routes>
   );

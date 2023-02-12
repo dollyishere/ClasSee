@@ -12,6 +12,18 @@ import {
 
 const UserApi = () => {
   const accesstoken = localStorage.getItem('accessToken');
+
+  const doFindPw = async (name: string, email: string) => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/users/${email}/check?name=${name}`,
+      );
+      return response.data;
+    } catch (error: any) {
+      console.error(error);
+    }
+    return null;
+  };
   const doGetUserInfo = async (email: string) => {
     try {
       const response = await axios.get(
@@ -230,6 +242,7 @@ const UserApi = () => {
     doWithdrawl,
     doLogout,
     doGetUserInfo,
+    doFindPw,
   };
 };
 
