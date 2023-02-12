@@ -50,9 +50,6 @@ const LessonCard = ({ lesson }: Props) => {
       if (lessonImageUrl) {
         setLessonImage(lessonImageUrl);
       }
-      // if (teacherImageUrl) {
-      //   setTeacherImage(teacherImageUrl);
-      // }
     };
     const getTeacherImage = async () => {
       const teacherImageUrl = await getProfileImage(lesson.teacher);
