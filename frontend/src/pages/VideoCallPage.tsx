@@ -51,6 +51,7 @@ const VideoCallPage = () => {
 
   const [audioEnabled, setAudioEnabled] = useState<boolean>(true);
   const [videoEnabled, setVideoEnabled] = useState<boolean>(true);
+  const [screenShareEnabled, setScreenShareEnabled] = useState<boolean>(false);
 
   // 현재 세션 ID를 저장할 state => 스케줄 id
   // 이 부분도 실제 스케줄 id로 바꿔야 돼요 일단 지금은 url로 넘겨받음
@@ -78,6 +79,10 @@ const VideoCallPage = () => {
   // 이건 나중에 카메라 변경 기능 구현할 때 건드립니다.
   const [currentVideoDevice, setCurrentVideoDevice] = useState<Device>();
 
+  const [tmpMediaStreamTrack, setTmpMediaStreamTrack] = useState<
+    MediaStreamTrack | undefined
+  >();
+
   // 채팅 메시지를 저장할 state (배열)
   const [messages, setMessages] = useState<Array<Msg>>([]);
 
@@ -87,21 +92,53 @@ const VideoCallPage = () => {
   const { createSession, createToken, chat } = useViewModel();
 
   const handleScreenShare = () => {
-    const newPublisher = OV?.initPublisher(undefined, {
-      resolution: '640x360',
-      frameRate: 30,
-      videoSource: 'screen',
-    });
-    if (newPublisher !== undefined) {
-      newPublisher.once('accessAllowed', (event: any) => {
-        if (session !== undefined && userInfo !== null) {
-          publisher?.replaceTrack(
+    setScreenShareEnabled(true);
+  };
+
+  useEffect(() => {
+    if (screenShareEnabled) {
+      const newPublisher = OV?.initPublisher(undefined, {
+        resolution: '640x360',
+        frameRate: 30,
+        videoSource: 'screen',
+      });
+      if (newPublisher !== undefined && publisher !== undefined) {
+        newPublisher.once('accessAllowed', (event: any) => {
+          if (session !== undefined && userInfo !== null) {
+            publisher.replaceTrack(
+              newPublisher.stream.getMediaStream().getVideoTracks()[0],
+            );
+            publisher.stream
+              .getMediaStream()
+              .getVideoTracks()[0]
+              .addEventListener('ended', () => {
+                setScreenShareEnabled(false);
+              });
+          }
+        });
+      }
+    } else {
+      const newPublisher = OV?.initPublisher(undefined, {
+        audioSource: undefined,
+        videoSource: undefined,
+        publishAudio: true,
+        publishVideo: true,
+        resolution: '640x360',
+        frameRate: 30,
+        insertMode: 'APPEND',
+        mirror: false,
+      });
+      if (newPublisher !== undefined && publisher !== undefined) {
+        // publisher.replaceTrack(
+        newPublisher.once('accessAllowed', () => {
+          publisher.replaceTrack(
             newPublisher.stream.getMediaStream().getVideoTracks()[0],
           );
-        }
-      });
+        });
+        // );
+      }
     }
-  };
+  }, [screenShareEnabled]);
 
   const handleMute = () => {
     if (publisher !== undefined) {
