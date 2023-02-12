@@ -13,6 +13,8 @@ import {
   GetScheduleResponse,
   GetScheduleRequest,
   SearchResponse,
+  OpenLessonResponse,
+  LessonEnrollRequest,
   ReviewRequest,
   ReviewResponse,
 } from '../types/LessonsType';
@@ -367,6 +369,41 @@ const LessonsApi = () => {
     }
     return null;
   };
+  const doGetOpenLessonDetail = async (email: string, openLessonId: number) => {
+    try {
+      const response = await axios.get<OpenLessonResponse>(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/orders?email=${email}&openLessonId=${openLessonId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+          },
+        },
+      );
+      return response.data;
+    } catch (error: any) {
+      console.error(error);
+    }
+    return null;
+  };
+  const doEnrollLessonSchedule = async (
+    LessonEnrollRequestBody: LessonEnrollRequest,
+  ) => {
+    try {
+      const response = await axios.post<Response>(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/orders`,
+        LessonEnrollRequestBody,
+        {
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+          },
+        },
+      );
+      return response.data;
+    } catch (error: any) {
+      console.error(error);
+    }
+    return null;
+  };
   return {
     doCreateLesson,
     doUpdateLesson,
@@ -383,6 +420,8 @@ const LessonsApi = () => {
     doGetSchedule,
     doDeleteSchedule,
     doGetBookmark,
+    doGetOpenLessonDetail,
+    doEnrollLessonSchedule,
     getReviewDataApi,
     doCreateReviewApi,
     doDeleteReviewApi,

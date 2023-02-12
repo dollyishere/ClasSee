@@ -9,6 +9,7 @@ import LoginPage from './pages/LoginPage';
 import LessonDetailPage from './pages/LessonDetailPage';
 import MyPage from './pages/MyPage';
 import UpdateLessonPage from './pages/UpdateLessonPage';
+import LessonEnrollPage from './pages/LessonEnrollPage';
 import FindPwPage from './pages/FindPwPage';
 import TestPage from './pages/TestPage';
 import Footer from './components/Footer';
@@ -51,6 +52,10 @@ const Router = () => {
       <Route path="/create-lesson" element={<CreateLessonPage />} />
       <Route path="/lesson/:lessonId" element={<LessonDetailPage />} />
       <Route path="/update-lesson/:lessonId" element={<UpdateLessonPage />} />
+      <Route
+        path="/enroll-lesson/:lessonId/:openLessonId"
+        element={<LessonEnrollPage />}
+      />
       <Route path="/lesson/:sessionId/:role" element={<VideoCallPage />} />
       <Route
         path="/lesson/:sessionId/:role/photo-card/qr"

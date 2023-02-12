@@ -11,7 +11,11 @@ import { storage } from '../utils/Firebase';
 
 import LessonsApi from '../apis/LessonsApi';
 
-import { LessonDetailRequest, ReviewRequest } from '../types/LessonsType';
+import {
+  LessonDetailRequest,
+  LessonEnrollRequest,
+  ReviewRequest,
+} from '../types/LessonsType';
 import PrivateInfoState from '../models/PrivateInfoAtom';
 
 const LessonDetailViewModel = () => {
@@ -21,6 +25,8 @@ const LessonDetailViewModel = () => {
     getReviewDataApi,
     doCreateReviewApi,
     doDeleteReviewApi,
+    doGetOpenLessonDetail,
+    doEnrollLessonSchedule,
   } = LessonsApi();
   const userInfo = useRecoilValue(PrivateInfoState);
 
@@ -149,6 +155,16 @@ const LessonDetailViewModel = () => {
     const res = await doDeleteLesson(email, lessonId);
     return res;
   };
+
+  const getOpenLessonDetail = async (email: string, openLessonId: number) => {
+    const res = await doGetOpenLessonDetail(email, openLessonId);
+    return res;
+  };
+
+  const doLessonEnroll = async (data: LessonEnrollRequest) => {
+    const res = await doEnrollLessonSchedule(data);
+    return res;
+  };
   return {
     getLessonDetail,
     getPamphletImgUrls,
@@ -163,6 +179,8 @@ const LessonDetailViewModel = () => {
     uploadReviewImage,
     getReviewImage,
     doDeleteselectedLesson,
+    getOpenLessonDetail,
+    doLessonEnroll,
   };
 };
 
