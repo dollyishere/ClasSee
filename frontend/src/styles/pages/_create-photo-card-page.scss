@@ -1,0 +1,74 @@
+@use '../base/colors';
+
+.create-photo-card-page {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .create-photo-card-page__frame {
+    padding: 20px;
+    width: 400px;
+    background-color: colors.$theme_color;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .create-photo-card-page__contents {
+      background-color: white;
+      padding: 20px;
+      width: 90%;
+      height: 90%;
+      display: flex;
+      flex-wrap: wrap;
+      border-radius: 10px;
+      align-items: center;
+      justify-content: center;
+      .create-photo-card-page__form {
+        width: 90%;
+        .create-photo-card-page__row {
+          width: 100%;
+          margin: 10px 0;
+          .create-photo-card-page__title {
+            width: 100%;
+            height: 40px;
+            border-width: 0.5px;
+            font-size: 20px;
+            border-radius: 10px;
+          }
+
+          .create-photo-card-page__input-photo {
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 128px;
+            height: 128px;
+            border-style: solid;
+            border-width: 0.5px;
+            border-radius: 10px;
+            &:hover {
+              cursor: pointer;
+            }
+            .create-photo-card-page__icon--add {
+              color: colors.$gray_color;
+              font-size: 64px;
+            }
+          }
+
+          textarea {
+            width: 100%;
+            resize: none;
+            border-radius: 10px;
+            height: 200px;
+            font-size: 20px;
+          }
+        }
+        .create-photo-card-page__button {
+          background-color: colors.$beige-color;
+          width: 60%;
+          color: colors.$gray_color;
+        }
+      }
+    }
+  }
+}

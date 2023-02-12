@@ -19,7 +19,7 @@ const PhotoCardQRPage = () => {
       <QRCodeSVG
         className="photo-card-qr-page__qr-code"
         size={256}
-        value="http://localhost:3000/photo-card"
+        value="http://localhost:3000/photo-card/create"
       />
       <div className="photo-card-qr-page__buttons">
         <Link to="/photo-card/create">

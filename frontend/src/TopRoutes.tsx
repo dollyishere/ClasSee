@@ -17,6 +17,7 @@ import useUserApi from './apis/UserApi';
 import privateInfoState from './models/PrivateInfoAtom';
 import { AccessToken } from './utils/AccessToken';
 import PhotoCardQRPage from './pages/PhotoCardQRPage';
+import CreatePhotoCardPage from './pages/CreatePhotoCardPage';
 
 const Router = () => {
   const { doGetAccessToken } = useUserApi();
@@ -45,6 +46,7 @@ const Router = () => {
         path="/lesson/:sessionId/:role/photo-card/qr"
         element={<PhotoCardQRPage />}
       />
+      <Route path="/photo-card/create" element={<CreatePhotoCardPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/image" element={<TestPage />} />
       <Route path="/mypage/*" element={<MyPage />} />
