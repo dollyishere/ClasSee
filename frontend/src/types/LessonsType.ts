@@ -212,3 +212,15 @@ export interface GetScheduleRequest {
 export interface SearchResponse extends LessonsResponse {
   count: number;
 }
+
+export interface ReviewRequest {
+  content: string;
+  img: string;
+  lessonId: number;
+  score: number;
+  userEmail: string;
+}
+
+export interface ReviewResponse {
+  data: string;
+}
