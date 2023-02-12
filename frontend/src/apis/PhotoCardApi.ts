@@ -24,8 +24,25 @@ const PhotoCardApi = () => {
     return null;
   };
 
+  const doGetPhotoCards = async (
+    email: string | null,
+    limit: number,
+    offset: number,
+  ) => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/photocard/list?limit=${limit}&offset=${offset}`,
+      );
+      return response.data;
+    } catch (error: any) {
+      console.error(error);
+    }
+    return null;
+  };
+
   return {
     doCreatePhotoCard,
+    doGetPhotoCards,
   };
 };
 

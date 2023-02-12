@@ -24,7 +24,7 @@ const CreatePhotoCardViewModel = () => {
         storage,
         `photo-cards/${encodeURI(data.userEmail)}/${encodeURI(
           String(data.lessonId),
-        )}/${encodeURI(scheduleId)}/${encodeURI(image.name)}`,
+        )}/${encodeURI(scheduleId)}/${image.name}`,
       ),
       image,
     );

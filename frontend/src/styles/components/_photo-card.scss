@@ -1,0 +1,53 @@
+@use '../base/colors';
+
+.photo-card {
+  background-color: colors.$theme_color;
+  width: 240px;
+  height: 320px;
+  border-radius: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 10px 20px;
+  padding: 10px;
+  .photo-card__image {
+    width: 100%;
+    height: 80%;
+    border-radius: 10px;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .photo-card__footer {
+    width: 100%;
+    display: flex;
+    .photo-card__footer-left {
+      width: 80%;
+      .photo-card__title {
+        font-size: 24px;
+        font-weight: bold;
+      }
+      .photo-card__nickname {
+        font-size: 20px;
+        font-weight: bold;
+      }
+    }
+    .photo-card__footer-right {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 20%;
+
+      .photo-card__like {
+        width: 36px;
+        height: 36px;
+      }
+      .photo-card__unlike {
+        width: 36px;
+        height: 36px;
+      }
+    }
+  }
+}

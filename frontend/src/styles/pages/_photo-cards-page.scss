@@ -4,19 +4,27 @@
 .photo-cards-page {
   height: 100%;
   .photo-cards-page__contents {
+    overflow: auto;
     background-color: colors.$theme_color_light;
     height: calc(100% - header.$height);
     display: flex;
     flex-wrap: wrap;
+    width: 100%;
     .photo-cards-page__title {
       margin: 0;
       text-align: left;
       padding: 20px 40px;
       font-size: 36px;
       font-weight: bold;
+      width: 100%;
     }
     .photo-cards-page__list {
-      width: 100%;
+      margin: 0 auto;
+      width: 90%;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: left;
+      padding: auto;
     }
     .photo-cards-page__pagination {
       width: 100%;
