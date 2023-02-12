@@ -23,4 +23,5 @@ export interface PhotoCardType {
 
 export interface PhotoCardProps {
   photoCard: PhotoCardType;
+  back: boolean;
 }

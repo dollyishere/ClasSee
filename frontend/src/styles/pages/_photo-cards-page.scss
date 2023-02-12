@@ -1,6 +1,14 @@
 @use '../base/colors';
 @use '../components/header';
 
+.photo-cards-page__modal {
+  width: 20%;
+  height: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 .photo-cards-page {
   height: 100%;
   .photo-cards-page__contents {
@@ -25,6 +33,11 @@
       flex-wrap: wrap;
       justify-content: left;
       padding: auto;
+      .photo-cards-page__card {
+        width: 18%;
+        padding: 1%;
+        height: 320px;
+      }
     }
     .photo-cards-page__pagination {
       width: 100%;
