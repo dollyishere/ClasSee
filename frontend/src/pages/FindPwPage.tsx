@@ -60,7 +60,10 @@ const FindPwPage = () => {
     ) {
       if (newPasswordRef.current.value === newPasswordCheckRef.current.value) {
         const response = await updatePw(email, newPasswordRef.current.value);
-        console.log(response);
+        if (response === 200) {
+          alert('비밀번호가 변경되었습니다.');
+          navigate('/login');
+        }
       } else {
         alert('비밀번호가 일치하지 않습니다.');
         newPasswordCheckRef.current.value = '';
@@ -71,7 +74,6 @@ const FindPwPage = () => {
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
-    console.log(email);
   };
   useEffect(() => {
     if (

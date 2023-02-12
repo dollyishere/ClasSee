@@ -16,8 +16,9 @@ const FindPwViewModel = () => {
     if (salt !== null) {
       const hashedPassword = createHashedPassword(password, salt);
       const response = await doUpdatePassword(email, hashedPassword);
-      console.log(response);
+      return response;
     }
+    return null;
   };
 
   return {
