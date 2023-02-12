@@ -108,38 +108,35 @@ const LessonsApi = () => {
     }
     return null;
   };
-  const getRecommandLessonsApi1 = async () => {
+
+  const getRecommandLessonsApi = async (email: string | null) => {
     try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_SERVER_URI}/api/v1/lessons/recommands`,
-      );
+      let response;
+      if (email) {
+        response = await axios.get(
+          `${process.env.REACT_APP_SERVER_URI}/api/v1/lessons/recommands?email=${email}`,
+        );
+      } else {
+        response = await axios.get(
+          `${process.env.REACT_APP_SERVER_URI}/api/v1/lessons/recommands`,
+        );
+      }
       return response.data;
     } catch (error: any) {
       console.log(error);
     }
     return null;
   };
-  const getRecommandLessonsApi2 = async (email: string) => {
-    try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_SERVER_URI}/api/v1/lessons/recommands?email=${email}`,
-      );
-      return response.data;
-    } catch (error: any) {
-      console.log(error);
-    }
-    return null;
-  };
+
   // 내가 개설한 강의 2개 불러오는 함수
   const MyCreatedLessonsMainpageApi = async (
     email: string,
     limit: number,
     offset: number,
-    query: string,
   ) => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_SERVER_URI}/api/v1/teachers/${email}/lessons?limit=${limit}&offset=${offset}&query=${query}`,
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/teachers/${email}/lessons?limit=${limit}&offset=${offset}`,
         {
           headers: {
             Authorization: `Bearer ${accesstoken}`,
@@ -283,8 +280,7 @@ const LessonsApi = () => {
     doCreateLesson,
     doUpdateLesson,
     doGetLessonDetail,
-    getRecommandLessonsApi1,
-    getRecommandLessonsApi2,
+    getRecommandLessonsApi,
     MyCreatedLessonsMainpageApi,
     MyAppliedLessonsMainpageApi,
     deleteMyAppliedLessonsMainpageApi,
