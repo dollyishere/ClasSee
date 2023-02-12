@@ -116,12 +116,14 @@ const LessonCard = ({ lesson }: Props) => {
             <Rating
               className="lesson__rating--star"
               name="half-rating-read"
-              value={lesson.score}
+              value={Math.round(lesson.score * 10) / 10}
               precision={0.5}
               readOnly
             />
             {/* 별점 숫자 */}
-            <p className="lesson__rating--number"> {lesson.score}</p>
+            <p className="lesson__rating--number">
+              {Math.round(lesson.score * 10) / 10}
+            </p>
           </div>
           {/* 소요시간 */}
           <p className="lesson__time">
