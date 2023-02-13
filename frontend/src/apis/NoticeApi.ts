@@ -5,6 +5,22 @@ import { CreateNoticeRequest } from '../types/NoticeType';
 const NoticeApi = () => {
   const accesstoken = localStorage.getItem('accessToken');
 
+  const doDeleteNotice = async (email: string, noticeId: string) => {
+    try {
+      const response = await axios.delete(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/notice/${noticeId}?email=${email}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+          },
+        },
+      );
+      return response.data;
+    } catch (error: any) {
+      console.error(error);
+    }
+    return null;
+  };
   const doUpdateNotice = async (
     requestBody: CreateNoticeRequest,
     noticeId: string,
@@ -71,6 +87,7 @@ const NoticeApi = () => {
     doGetNotices,
     doGetNotice,
     doUpdateNotice,
+    doDeleteNotice,
   };
 };
 

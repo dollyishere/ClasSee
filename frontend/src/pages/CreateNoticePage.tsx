@@ -33,7 +33,7 @@ const CreateNoticePage = () => {
       userInfo !== null
     ) {
       const title = titleRef.current.value;
-      const content = titleRef.current.value;
+      const content = contentRef.current.value;
       if (noticeId === undefined) {
         const response = await createNotice({
           email: userInfo.email,

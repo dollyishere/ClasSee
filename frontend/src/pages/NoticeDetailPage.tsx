@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { Divider } from '@mui/material';
 import Header from '../components/Header';
@@ -11,13 +11,27 @@ import PrivateInfoState from '../models/PrivateInfoAtom';
 
 const NoticeDetailPage = () => {
   const userInfo = useRecoilValue(PrivateInfoState);
+  const navigate = useNavigate();
   const location = useLocation();
   const [noticeId, setNoticeId] = useState<string>(
     location.pathname.split('/')[2],
   );
   const [notice, setNotice] = useState<NoticeType>();
-  const { getNotice } = useViewModel();
+  const { getNotice, deleteNotice } = useViewModel();
   const { toDate } = useTimeStamp();
+
+  const handleNoticeDelete = async () => {
+    if (
+      window.confirm('정말 삭제하시겠습니까?') &&
+      userInfo !== null &&
+      userInfo.userRole === 'ROLE_ADMIN'
+    ) {
+      const response = await deleteNotice(userInfo.email, noticeId);
+      if (response.statusCode === 200) {
+        navigate('/notice');
+      }
+    }
+  };
 
   useEffect(() => {
     const getData = async () => {
@@ -30,7 +44,9 @@ const NoticeDetailPage = () => {
     <div className="notice-detail-page">
       <Header />
       <div className="notice-detail-page__contents">
-        <div className="notice-detail-page__title">공지사항</div>
+        <div className="notice-detail-page__title">
+          <Link to="/notice">공지사항</Link>
+        </div>
         {notice !== undefined ? (
           <div className="notice-detail-page__content">
             <div className="notice-detail-page__row">
@@ -57,6 +73,7 @@ const NoticeDetailPage = () => {
                   <button
                     type="button"
                     className="button notice-detail-page__button notice-detail-page__button--delete"
+                    onClick={handleNoticeDelete}
                   >
                     삭제
                   </button>
@@ -70,12 +87,14 @@ const NoticeDetailPage = () => {
                   </Link>
                 </div>
               ) : null}
-              <button
-                type="button"
-                className="button notice-detail-page__button"
-              >
-                목록
-              </button>
+              <Link to="/notice">
+                <button
+                  type="button"
+                  className="button notice-detail-page__button"
+                >
+                  목록
+                </button>
+              </Link>
             </div>
           </div>
         ) : null}

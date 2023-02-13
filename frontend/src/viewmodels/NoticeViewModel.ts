@@ -2,8 +2,18 @@ import useApi from '../apis/NoticeApi';
 import { CreateNoticeRequest } from '../types/NoticeType';
 
 const NoticeViewModel = () => {
-  const { doCreateNotice, doGetNotices, doGetNotice, doUpdateNotice } =
-    useApi();
+  const {
+    doCreateNotice,
+    doGetNotices,
+    doGetNotice,
+    doUpdateNotice,
+    doDeleteNotice,
+  } = useApi();
+
+  const deleteNotice = async (email: string, noticeId: string) => {
+    const response = await doDeleteNotice(email, noticeId);
+    return response;
+  };
 
   const updateNotice = async (
     notice: CreateNoticeRequest,
@@ -32,6 +42,7 @@ const NoticeViewModel = () => {
     getNotices,
     getNotice,
     updateNotice,
+    deleteNotice,
   };
 };
 
