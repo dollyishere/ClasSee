@@ -36,12 +36,8 @@ const Footer = () => {
         </div>
       </div>
       <div className="info">
-        <Link to="announcement" className="announce">
+        <Link to="/notice" className="announce">
           공지사항
-        </Link>
-        <br />
-        <Link to="qna" className="report">
-          1대1문의신고
         </Link>
       </div>
     </footer>
