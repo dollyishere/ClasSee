@@ -41,6 +41,14 @@ const MyAppliedLessonCard = ({ lesson }: Props) => {
     }
   };
 
+  const handleStartLesson = () => {
+    window.open(
+      `/lesson/${lesson.openLessonId}/student`,
+      '강의',
+      `height=${window.screen.height}, width=${window.screen.width}, fullscreen=yes, status=no, scrollbars=no`,
+    );
+  };
+
   useEffect(() => {
     console.log(lesson);
     const getImage = async () => {
@@ -135,14 +143,13 @@ const MyAppliedLessonCard = ({ lesson }: Props) => {
           {/* <Link to={`/participant/${lesson.id}`}> */}
           <div className="applylessons__hover--buttons">
             <div>
-              <Link to="/lesson/test/student">
-                <button
-                  className="applylessons__hover--participantbutton"
-                  type="button"
-                >
-                  <p>강의 시작</p>
-                </button>
-              </Link>
+              <button
+                className="applylessons__hover--participantbutton"
+                type="button"
+                onClick={handleStartLesson}
+              >
+                <p>강의 시작</p>
+              </button>
             </div>
             <div>
               <button

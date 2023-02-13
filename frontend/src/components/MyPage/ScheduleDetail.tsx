@@ -40,6 +40,11 @@ const ScheduleDetail = ({
   };
   const handleLessonStart = (event: React.MouseEvent<HTMLElement>) => {
     console.log('여기에 결제 페이지 이동 함수 작성하면 될 듯함??');
+    window.open(
+      `/lesson/${openLessonId}/teacher`,
+      '강의',
+      `height=${window.screen.height}, width=${window.screen.width}, fullscreen=yes, status=no, scrollbars=no`,
+    );
   };
   // 여기서 useEffect로 감싸지 않으면 무한 렌더링 문제가 발생함
   useEffect(() => {

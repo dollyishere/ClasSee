@@ -32,7 +32,6 @@ const VideoCallPage = () => {
   const navigate = useNavigate();
   const userInfo = useRecoilValue(PrivateInfoState);
   // 사용자가 강사인지 수강생인지 url로 넘겨받도록 함
-  // 이 부분은 로그인시 얻은 데이터로 나중에 바꿔야 돼요
   const location = useLocation();
   const role = location.pathname.split('/')[3];
 
