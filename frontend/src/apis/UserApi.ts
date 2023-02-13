@@ -233,7 +233,12 @@ const UserApi = () => {
   ) => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_SERVER_URI}/api/v1/review/list/users/${email}`,
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/review/list/users/${email}?limit=${limit}&offset=${offset}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+          },
+        },
       );
       return response.data;
     } catch (error: any) {
