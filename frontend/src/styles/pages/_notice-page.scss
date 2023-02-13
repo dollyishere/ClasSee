@@ -6,5 +6,15 @@
   .notice-page__contents {
     height: calc(100% - header.$height);
     background-color: colors.$theme_color_light;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    .notice-page__title {
+      font-size: 24px;
+      font-weight: bold;
+      width: 80%;
+      text-align: left;
+    }
   }
 }
