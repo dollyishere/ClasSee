@@ -7,6 +7,7 @@ import Header from '../components/Header';
 import PrivateInfoState from '../models/PrivateInfoAtom';
 import useViewModel from '../viewmodels/NoticeViewModel';
 import useTimeStamp from '../utils/TimeStamp';
+import Footer from '../components/Footer';
 
 const NoticePage = () => {
   const [page, setPage] = useState<number>(1);
@@ -79,6 +80,7 @@ const NoticePage = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

@@ -11,6 +11,7 @@
   }
   height: 100%;
   .notice-page__contents {
+    overflow: auto;
     height: calc(100% - header.$height);
     background-color: colors.$theme_color_light;
     .notice-page__title {
@@ -19,6 +20,7 @@
       font-size: 24px;
       font-weight: bold;
       width: 60%;
+      height: 60px;
       text-align: left;
     }
     .notice-page__content {

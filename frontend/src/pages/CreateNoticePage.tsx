@@ -8,6 +8,7 @@ import useTimeStamp from '../utils/TimeStamp';
 import useViewModel from '../viewmodels/NoticeViewModel';
 import PrivateInfoState from '../models/PrivateInfoAtom';
 import { NoticeType } from '../types/NoticeType';
+import Footer from '../components/Footer';
 
 const CreateNoticePage = () => {
   const location = useLocation();
@@ -116,6 +117,7 @@ const CreateNoticePage = () => {
           </div>
         </form>
       </div>
+      <Footer />
     </div>
   );
 };

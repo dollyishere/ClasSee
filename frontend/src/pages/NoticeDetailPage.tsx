@@ -8,6 +8,7 @@ import useTimeStamp from '../utils/TimeStamp';
 
 import { NoticeType } from '../types/NoticeType';
 import PrivateInfoState from '../models/PrivateInfoAtom';
+import Footer from '../components/Footer';
 
 const NoticeDetailPage = () => {
   const userInfo = useRecoilValue(PrivateInfoState);
@@ -99,6 +100,7 @@ const NoticeDetailPage = () => {
           </div>
         ) : null}
       </div>
+      <Footer />
     </div>
   );
 };
