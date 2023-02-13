@@ -4,14 +4,13 @@
   .lesson-detail-page__header {
     margin-top: 2%;
     width: 100%;
-    height: 400px;
+    height: 300px;
     box-shadow: 0 5px 5px gray;
     justify-content: center;
     display: flex;
     background-color: colors.$theme_color;
     .carousel-wrapper {
       background-color: white;
-      justify-content: center;
       height: 100%;
       margin-left: 5%;
       // display: flex;
@@ -35,6 +34,41 @@
           }
         }
       }
+      .lesson-detail-page__header-teacher-info {
+        display: flex;
+        .lesson-detail-page__teacher-image {
+          flex-shrink: 0;
+          width: 40px;
+          height: 40px;
+          font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+          font-size: 1.25rem;
+          line-height: 1;
+          border-radius: 50%;
+          overflow: hidden;
+          user-select: none;
+        }
+        .lesson-detail-page__teacher-name {
+          color: #000;
+          margin-left: 2%;
+          font-weight: bold;
+        }
+      }
+      .lesson-detail-page__rating-none {
+        display: flex;
+        color: #000;
+        margin-right: 2%;
+        font-weight: bold;
+        .lesson-detail-page__sad-image {
+          flex-shrink: 0;
+          width: 70px;
+          height: 50px;
+          font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+          font-size: 1.25rem;
+          line-height: 1;
+          overflow: hidden;
+          user-select: none;
+        }
+      }
     }
   }
 }
@@ -45,19 +79,35 @@
   display: flex;
   align-items: 'flex-start';
   justify-content: center;
-
   padding: auto;
+  .lesson-detail-page__part-title {
+    padding: 10px;
+    text-align: left;
+    font-size: 36px;
+    font-weight: bold;
+  }
   .lesson-detail-page__content {
-    width: 80%;
+    width: 70%;
+    margin: auto;
   }
   .lesson-detail-page__reservation {
     margin-top: 3%;
     justify-content: center;
   }
 }
-.lesson_img {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 40%;
+
+.lesson__category {
+  background-color: #b8b8ff;
+  text-align: center;
+  border-radius: 15px;
+  width: 80px;
+  height: 40px;
+  box-shadow: 1px 1px 1px 1px colors.$gray_color;
+  .lesson__category--text {
+    margin: auto;
+    padding: 7px 10px 7px 10px;
+    vertical-align: middle;
+    color: white;
+    font-weight: bold;
+  }
 }
