@@ -26,21 +26,30 @@ interface Review {
   day: string;
   time: string;
   userEmail: string;
+  userImg: string;
   userNickname: string;
 }
 
 const ReviewInput: React.FC = () => {
-  // const [, updateState] = useState({});
-  // const forceUpdate = useCallback(() => updateState({}), []);
-  const { doCreateReview, getReviewData, uploadReviewImage } = useReviewApi();
+  const [flag, setFlag] = useState<boolean>(false);
+  const userInfo = useRecoilValue(privateInfoState);
+  const lessonId = useParams();
+  const {
+    doCreateReview,
+    getReviewData,
+    uploadReviewImage,
+    getReviewImage,
+    doDeleteReview,
+  } = useReviewApi();
   // 후기들의 총 갯수 count
   const [count, setCount] = useState<number>(0);
   // 페이지네이션을 위한 page 넘버
   const [page, setPage] = useState<number>(1);
-  const userInfo = useRecoilValue(privateInfoState);
-  const lessonId = useParams();
   // 리뷰 이미지
   const [reviewImg, setReviewImg] = useState<File>();
+  const [reviewImgUrl, setReviewImgUrl] = useState<string | undefined>('');
+  // 작성자 프로필 이미지
+  const [userImg, setUserImg] = useState<string>();
   // 리뷰 리스트
   const [reviewList, setReviewList] = useState<Review[]>([]);
   // 리뷰 낱개
@@ -54,6 +63,7 @@ const ReviewInput: React.FC = () => {
     day: '',
     time: '',
     userEmail: '',
+    userImg: '',
     userNickname: '',
   });
   // 리뷰 작성 시 넘기는 데이터 타입 명시
@@ -70,12 +80,25 @@ const ReviewInput: React.FC = () => {
     const res = await doCreateReview(createReviewRequestBody);
     if (res?.message === 'success') {
       // 이미지 등록 시
-      if (reviewImg) {
+      if (reviewImg && userInfo) {
         // 파이어베이스에 후기 이미지 저장
         await uploadReviewImage(Number(lessonId.lessonId), reviewImg);
+        const getReviewsImage = async () => {
+          // 사진을 url로 변환
+          const reviewImageUrl = await getReviewImage(
+            Number(lessonId.lessonId),
+            userInfo.email,
+          );
+          if (reviewImageUrl) {
+            // 변환한 이미지를 훅에 저장
+            setReviewImgUrl(reviewImageUrl);
+          }
+          getReviewsImage();
+        };
       }
       // 방금 작성한 리뷰 받아오기
       const response = await getReviewData(Number(lessonId.lessonId), 1, 0);
+      console.log('방금작성한 리뷰', response);
       // 작성된 리뷰 데이터
       const inputReview = response?.data.page[0];
       // TODO: 새로 작성한 리뷰가 setReviewList에 의해 리뷰리스트 최신화되기전에(재렌더링이 됨) 사진을 파이어베이스에서 받아와서 보여줘야함
@@ -91,6 +114,7 @@ const ReviewInput: React.FC = () => {
         day: '',
         time: '',
         userEmail: '',
+        userImg: '',
         userNickname: '',
       });
     } else {
@@ -106,6 +130,7 @@ const ReviewInput: React.FC = () => {
         day: '',
         time: '',
         userEmail: '',
+        userImg: '',
         userNickname: '',
       });
     }
@@ -152,12 +177,12 @@ const ReviewInput: React.FC = () => {
     if (reviewData && reviewData.data.count !== undefined) {
       setCount(Math.ceil(reviewData.data.count / limit));
       setReviewList(reviewData.data.page);
-      console.log(reviewData.data);
     }
   };
   useEffect(() => {
     handleReviewData();
-  }, [page]);
+    console.log(reviewList);
+  }, [page, flag]);
   return (
     <Box m={2}>
       <TextField
@@ -202,7 +227,7 @@ const ReviewInput: React.FC = () => {
       <Typography variant="h6">후기</Typography>
 
       {reviewList.map((reviews) => (
-        <ReviewItem reviews={reviews} />
+        <ReviewItem reviews={reviews} flag={flag} setFlag={setFlag} />
         // <ReviewItem reviews={reviews} forceUpdate={forceUpdate} />
       ))}
       <div className="lessons-page__pagination">

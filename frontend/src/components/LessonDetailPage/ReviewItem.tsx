@@ -1,5 +1,12 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, {
+  useEffect,
+  useState,
+  useCallback,
+  Dispatch,
+  SetStateAction,
+} from 'react';
 import { useParams } from 'react-router-dom';
+
 import { Box, Typography } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
@@ -19,20 +26,22 @@ interface Props {
     day: string;
     time: string;
     userEmail: string;
+    userImg: string | undefined;
     userNickname: string;
   };
-  // forceUpdate: () => void;
+  flag: boolean;
+  setFlag: Dispatch<SetStateAction<boolean>>;
 }
 
-const ReviewItem: React.FC<Props> = ({ reviews }) => {
+const ReviewItem: React.FC<Props> = ({ reviews, flag, setFlag }) => {
   const lessonId = useParams();
   // 작성자 프로필 사진 위해
   const { getProfileImage } = useProfileViewModel();
   const { doDeleteReview, getReviewImage, getReviewData } = useReviewApi();
   // 후기 이미지
-  const [reviewImg, setReviewImg] = useState<string>();
+  const [reviewImg, setReviewImg] = useState<string>('');
   // 작성자 프로필 이미지
-  const [userImg, setUserImg] = useState<string>();
+  const [userImg, setUserImg] = useState<string>('');
   // 후기 삭제 버튼 클릭 시
   const handleDeleteReview = async (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -43,11 +52,14 @@ const ReviewItem: React.FC<Props> = ({ reviews }) => {
       const res = await doDeleteReview(reviews.id);
       // 삭제 성공 시
       if (res?.message === 'success') {
-        // TODO: 컴포넌트 재렌더링
+        setReviewImg('');
+        setUserImg('');
+        setFlag(!flag);
       }
     }
   };
   useEffect(() => {
+    console.log('무한?');
     // 렌더링 시 리뷰 사진을 받아온다
     const getReviewsImage = async () => {
       // 사진을 url로 변환
@@ -58,6 +70,7 @@ const ReviewItem: React.FC<Props> = ({ reviews }) => {
       if (reviewImageUrl) {
         // 변환한 이미지를 훅에 저장
         setReviewImg(reviewImageUrl);
+        setFlag(!flag);
       }
     };
     // 프로필 이미지 받아온다
@@ -67,11 +80,12 @@ const ReviewItem: React.FC<Props> = ({ reviews }) => {
       if (userImageUrl) {
         // 변환한 이미지를 훅에 저장
         setUserImg(userImageUrl);
+        setFlag(!flag);
       }
     };
     getReviewsImage();
     getUserImage();
-  }, []);
+  }, [reviewImg, userImg]);
   return (
     <Box m={2}>
       <ImageListItem>
