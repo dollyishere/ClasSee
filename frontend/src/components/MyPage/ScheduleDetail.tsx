@@ -15,6 +15,8 @@ const ScheduleDetail = ({
   endTime,
   openLessonId,
   lessonId,
+  rerenderSchedule,
+  setRerenderSchedule,
 }: LessonSchedulesType) => {
   const [lessonTime, setLessonTime] = useState<string>('진행 예정');
   const { deleteSchedule } = ScheduleViewModel();
@@ -29,10 +31,11 @@ const ScheduleDetail = ({
     if (userInfo === null) {
       alert('로그인 후 이용 가능합니다.');
       navigate('/login');
-    } else {
+    } else if (window.confirm('스케줄을 삭제하시겠습니까?')) {
       const res = await deleteSchedule(userInfo.email, lessonId, openLessonId);
-      if (res?.message === 'SUCCESS') {
+      if (res?.statusCode === 200) {
         alert('스케줄이 삭제되었습니다.');
+        setRerenderSchedule(!rerenderSchedule);
       } else {
         alert('다시 시도해주세요.');
       }
@@ -40,6 +43,11 @@ const ScheduleDetail = ({
   };
   const handleLessonStart = (event: React.MouseEvent<HTMLElement>) => {
     console.log('여기에 결제 페이지 이동 함수 작성하면 될 듯함??');
+    window.open(
+      `/lesson/${openLessonId}/teacher`,
+      '강의',
+      `height=${window.screen.height}, width=${window.screen.width}, fullscreen=yes, status=no, scrollbars=no`,
+    );
   };
   // 여기서 useEffect로 감싸지 않으면 무한 렌더링 문제가 발생함
   useEffect(() => {
@@ -68,7 +76,7 @@ const ScheduleDetail = ({
       <IconButton onClick={handleScheduleDelete}>
         <DeleteIcon />
       </IconButton>
-      {lessonTime === '임박' ? (
+      {lessonTime === '임박' || lessonTime === '진행 중' ? (
         <Button onClick={handleLessonStart}>시작</Button>
       ) : (
         <Button disabled>입장 불가</Button>

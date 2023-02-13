@@ -11,6 +11,8 @@ const CreateScheduleComponent = ({
   lessonId,
   setScheduleInputState,
   schedulesListState,
+  rerenderSchedule,
+  setRerenderSchedule,
 }: CreateScheduleProps) => {
   // 강의 시작 시간, 종료 시간을 담을 state 각각 생성
   const [startTime, setStartTime] = useState<string>('');
@@ -84,6 +86,7 @@ const CreateScheduleComponent = ({
         if (res && res.message === 'SUCCESS') {
           alert('스케줄이 등록되었습니다');
           setScheduleInputState(false);
+          setRerenderSchedule(!rerenderSchedule);
         } else {
           alert('다시 시도해주세요');
         }

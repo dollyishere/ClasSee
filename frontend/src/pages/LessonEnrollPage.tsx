@@ -50,44 +50,41 @@ const LessonEnrollPage = () => {
   };
 
   const handleLessonEnroll = async (event: React.MouseEvent<HTMLElement>) => {
-    if (phoneNumberState.length < 8) {
-      alert('번호를 입력해주세요.');
-    } else if (phoneNumberState.includes('-')) {
-      alert('"-"를 제외한 번호만 입력해주시기 바랍니다.');
+    let totalPrice;
+    if (checked) {
+      totalPrice = openLessonInfo.lessonPrice + openLessonInfo.kitPrice;
+    } else {
+      totalPrice = openLessonInfo.lessonPrice;
     }
-    {
-      let totalPrice;
-      if (checked) {
-        totalPrice = openLessonInfo.lessonPrice + openLessonInfo.kitPrice;
-      } else {
-        totalPrice = openLessonInfo.lessonPrice;
-      }
-      const LessonEnrollRequestBody: LessonEnrollRequest = {
-        email: openLessonInfo.userEmail as string,
-        openLessonId: Number(openLessonId.openLessonId) as number,
-        phone: phoneNumberState as string,
-        price: totalPrice as number,
-      };
-      console.log(LessonEnrollRequestBody);
-      const res = await doLessonEnroll(LessonEnrollRequestBody);
-      if (res?.message === 'SUCCESS') {
-        alert('신청이 완료되었습니다.');
+    if (window.confirm('클래스를 신청하시겠습니까?')) {
+      if (phoneNumberState.includes('-')) {
+        alert('"-"를 제외한 번호만 입력해주시기 바랍니다.');
+      } else if (phoneNumberState.length < 8) {
+        alert('정확한 번호를 입력해주시기 바랍니다.');
+      } else if (openLessonInfo.userPoint - totalPrice < 0) {
+        alert('잔액이 부족합니다.');
         navigate('/');
       } else {
-        alert('다시 시도해주십시오.');
+        const LessonEnrollRequestBody: LessonEnrollRequest = {
+          email: openLessonInfo.userEmail as string,
+          openLessonId: Number(openLessonId.openLessonId) as number,
+          phone: phoneNumberState as string,
+          price: totalPrice as number,
+        };
+        const res = await doLessonEnroll(LessonEnrollRequestBody);
+        if (res?.statusCode === 200) {
+          alert('신청이 완료되었습니다.');
+          navigate('/');
+        } else {
+          alert('다시 시도해주십시오.');
+        }
       }
     }
   };
 
-  //   useEffect(() => {
-  //       setPhoneNumberState(
-  //         `${openLessonInfo.userPhone.slice(0, 3)}-${openLessonInfo.userPhone.slice(
-  //           3,
-  //           7,
-  //         )}-${openLessonInfo.userPhone.slice(7, 12)}`,
-  //       );
-  //     setPhoneNumberState(openLessonInfo.userPhone);
-  //   }, []);
+  useEffect(() => {
+    setPhoneNumberState(openLessonInfo.userPhone);
+  }, [openLessonInfo]);
 
   const handleInputPhoneNumber = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -105,7 +102,6 @@ const LessonEnrollPage = () => {
           userInfo.email,
           Number(openLessonId.openLessonId),
         );
-        console.log(res);
         if (res) {
           setOpenLessonInfo(res);
           const imgRef = ref(
@@ -178,14 +174,21 @@ const LessonEnrollPage = () => {
               onChange={handleChange}
               inputProps={{ 'aria-label': 'controlled' }}
             />
-            <h4>잔여 포인트</h4>
-            <p>{openLessonInfo.userPoint}</p>
-            <hr />
-            <h4>총 결제 금액</h4>
+            <h3>총 결제 금액</h3>
             <p>
               {checked
                 ? openLessonInfo.lessonPrice + openLessonInfo.kitPrice
                 : openLessonInfo.lessonPrice}
+            </p>
+            <h4>현재 포인트</h4>
+            <p>{openLessonInfo.userPoint}</p>
+            <hr />
+            <h4>결제 후 포인트</h4>
+            <p>
+              {checked
+                ? openLessonInfo.userPoint -
+                  (openLessonInfo.lessonPrice + openLessonInfo.kitPrice)
+                : openLessonInfo.userPoint - openLessonInfo.lessonPrice}
             </p>
           </Card>
           <Button onClick={handleLessonEnroll}>결제하기</Button>
