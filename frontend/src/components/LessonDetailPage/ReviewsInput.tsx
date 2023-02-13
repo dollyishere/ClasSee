@@ -14,21 +14,7 @@ import BasicRating from '../BasicRating';
 import privateInfoState from '../../models/PrivateInfoAtom';
 import useReviewApi from '../../viewmodels/LessonDetailViewModel';
 import { ReviewRequest } from '../../types/LessonsType';
-
-// 응답받아 넘어오는 후기의 타입 명시
-interface Review {
-  id: number;
-  content: string;
-  score: number;
-  img: string;
-  year: string;
-  month: string;
-  day: string;
-  time: string;
-  userEmail: string;
-  userImg: string;
-  userNickname: string;
-}
+import { ReviewType } from '../../types/ReviewType';
 
 const ReviewInput: React.FC = () => {
   const [flag, setFlag] = useState<boolean>(false);
@@ -51,9 +37,9 @@ const ReviewInput: React.FC = () => {
   // 작성자 프로필 이미지
   const [userImg, setUserImg] = useState<string>();
   // 리뷰 리스트
-  const [reviewList, setReviewList] = useState<Review[]>([]);
+  const [reviewList, setReviewList] = useState<Array<ReviewType>>([]);
   // 리뷰 낱개
-  const [review, setReview] = useState<Review>({
+  const [review, setReview] = useState<ReviewType>({
     id: 0,
     content: '',
     score: 0,
