@@ -1,8 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { atom, selector, useRecoilState, useRecoilValue } from 'recoil';
-import { Stack, Button, Card, CardContent, Pagination } from '@mui/material';
+import {
+  Stack,
+  Button,
+  Card,
+  CardContent,
+  Pagination,
+  IconButton,
+} from '@mui/material';
+import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import MyPageCards from '../components/MyPage/MyPageCards';
+import MyAppliedLessonCard from '../components/MyAppliedLessonCard';
 import useViewModel from '../viewmodels/MainPageViewModel';
 import { LessonsResponse, Lesson } from '../types/LessonsType';
 import privateInfoState from '../models/PrivateInfoAtom';
@@ -83,27 +93,79 @@ const MyAppliedLessonsPage = () => {
       <Card className="my-applied-lessons-page__card">
         <CardContent>
           <div className="my-applied-lessons-page__title">신청한 클래스</div>
-          {/* <div className="my-applied-lessons-page__lessons">
-            {lessons.map((lesson: Lesson) => (
-              <div
-                className="my-applied-lessons-page__lesson-card"
-                key={lesson.lessonId}
-              >
-                <MyPageCards lesson={lesson} />
-              </div>
-            ))}
-          </div> */}
+          <div className="my-applied-lessons-page__todo-lessons">
+            <h2>진행 예정 클래스</h2>
+            <div className="my-applied-lessons-page__todo-lessons-body">
+              {todoPage === 1 ? (
+                <IconButton disabled>
+                  <ArrowLeftIcon fontSize="large" color="disabled" />
+                </IconButton>
+              ) : (
+                <IconButton onClick={() => setTodoPage(todoPage - 1)}>
+                  <ArrowLeftIcon fontSize="large" />
+                </IconButton>
+              )}
 
-          {/* <div className="my-applied-lessons-page__pagination">
-            <Pagination
-              variant="outlined"
-              count={count}
-              page={page}
-              shape="rounded"
-              size="large"
-              onChange={handlePageChange}
-            />
-          </div> */}
+              {todoLessons.length ? (
+                todoLessons.map((lesson: Lesson) => (
+                  <div
+                    className="my-applied-lessons-page__lesson-card"
+                    key={lesson.lessonId}
+                  >
+                    <MyAppliedLessonCard lesson={lesson} />
+                  </div>
+                ))
+              ) : (
+                <h1>신청한 강의가 없어요!</h1>
+              )}
+              {todoLessons.length < 3 ? (
+                <IconButton disabled>
+                  <ArrowRightIcon fontSize="large" color="disabled" />
+                </IconButton>
+              ) : (
+                <IconButton onClick={() => setTodoPage(todoPage + 1)}>
+                  <ArrowRightIcon fontSize="large" />
+                </IconButton>
+              )}
+            </div>
+          </div>
+
+          <div className="my-applied-lessons-page__todo-lessons">
+            <h2>완료한 클래스</h2>
+            <div className="my-applied-lessons-page__todo-lessons-body">
+              {donePage === 1 ? (
+                <IconButton disabled>
+                  <ArrowLeftIcon fontSize="large" color="disabled" />
+                </IconButton>
+              ) : (
+                <IconButton onClick={() => setDonePage(donePage - 1)}>
+                  <ArrowLeftIcon fontSize="large" />
+                </IconButton>
+              )}
+
+              {doneLessons.length ? (
+                doneLessons.map((lesson: Lesson) => (
+                  <div
+                    className="my-applied-lessons-page__lesson-card"
+                    key={lesson.lessonId}
+                  >
+                    <MyAppliedLessonCard lesson={lesson} />
+                  </div>
+                ))
+              ) : (
+                <h1>완료한 강의가 없어요!</h1>
+              )}
+              {doneLessons.length < 3 ? (
+                <IconButton disabled>
+                  <ArrowRightIcon fontSize="large" color="disabled" />
+                </IconButton>
+              ) : (
+                <IconButton onClick={() => setDonePage(donePage + 1)}>
+                  <ArrowRightIcon fontSize="large" />
+                </IconButton>
+              )}
+            </div>
+          </div>
         </CardContent>
       </Card>
     </div>
