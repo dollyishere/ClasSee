@@ -6,8 +6,8 @@ import { Stack, Button } from '@mui/material';
 import { PersonOutline } from '@mui/icons-material';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import { Carousel } from 'react-responsive-carousel';
-import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import StickyBox from 'react-sticky-box';
+import sadFace from '../assets/sad_face.png';
 
 import {
   LessonDetailRequest,
@@ -81,16 +81,12 @@ const LessonDetailPage = () => {
     const getLessonDetailRequestBody: LessonDetailRequest = {
       lessonId: Number(lessonId.lessonId),
     };
-    const getTeacherImage = async () => {
-      console.log(lessonDetailState.teacher);
-      const imageUrl = await getProfileImage(lessonDetailState.teacher);
-      setTeacherImgState(imageUrl);
-    };
     const fetchData = async () => {
       const res = await getLessonDetail(getLessonDetailRequestBody);
       if (res?.message === 'SUCCESS') {
         // 만약 강의 상세 정보를 db에서 받아오는 것에 성공했다면, lessonDetailState에 해당 정보를 저장
         setLessonDetailState(res);
+        console.log(res);
         // firebase의 해당 강의가 저장된 폴더의 url에 접근하여 해당하는 이미지 파일을 각각 다운받음
         // 강의 관련 사진 다운로드해서 pamphletsImgState에 저장
         getPamphletImgUrls(res.pamphlets, Number(lessonId.lessonId)).then(
@@ -103,12 +99,15 @@ const LessonDetailPage = () => {
             setCheckListImgState(urls);
           },
         );
+        if (res?.teacher) {
+          const imageUrl = await getProfileImage(res.teacher);
+          setTeacherImgState(imageUrl);
+        }
       } else {
         alert(res?.message);
       }
     };
     fetchData();
-    getTeacherImage();
     setIsReady(true);
   }, []);
   return (
@@ -129,9 +128,6 @@ const LessonDetailPage = () => {
                   })}
                 </Carousel>
               </div>
-              {/* {pamphletsImgState.map((image: any) => (
-                <img src={image} alt={image} />
-              ))} */}
             </div>
             <div className="lesson-detail-page__info">
               <div className="lesson-detail-page__name-time-box">
@@ -141,29 +137,31 @@ const LessonDetailPage = () => {
                     <AccessTimeFilledIcon />
                     {lessonDetailState.runningTime === 0
                       ? '미정'
-                      : lessonDetailState.runningTime}{' '}
-                    시간
+                      : `${lessonDetailState.runningTime}시간`}
                   </span>
                 </h1>
               </div>
-              {/* <h3>{lessonDetailState.}</h3> */}
-              {teacherImgState === null ? (
-                <div className="profile-page__image--not">
-                  <PersonOutline
-                    style={{
-                      fontSize: '200px',
-                    }}
+              <div className="lesson-detail-page__header-teacher-info">
+                {teacherImgState === null ? (
+                  <div className="lesson-detail-page__teacher-image--not">
+                    <PersonOutline
+                      style={{
+                        fontSize: '200px',
+                      }}
+                    />
+                  </div>
+                ) : (
+                  <img
+                    src={teacherImgState}
+                    alt={teacherImgState}
+                    className="lesson-detail-page__teacher-image"
                   />
-                </div>
-              ) : (
-                <img
-                  src={teacherImgState}
-                  alt={teacherImgState}
-                  className="profile-page__image--not"
-                />
-              )}
-              <p>{lessonDetailState.userName}</p>
-              <p>
+                )}
+                <p className="lesson-detail-page__teacher-name">
+                  {lessonDetailState.userName}
+                </p>
+              </div>
+              <div>
                 {lessonDetailState.score ? (
                   <BasicRating
                     ratingValue={lessonDetailState.score}
@@ -171,10 +169,21 @@ const LessonDetailPage = () => {
                     disableValue={disableValue}
                   />
                 ) : (
-                  '평가가 없어요'
+                  <div className="lesson-detail-page__rating-none">
+                    <p>아직 평가가 없어요</p>
+                    <img
+                      src={sadFace}
+                      alt={sadFace}
+                      className="lesson-detail-page__sad-image"
+                    />
+                  </div>
                 )}
-              </p>
-              <div>{lessonDetailState.category}</div>
+              </div>
+              <div className="lesson__category">
+                <div className="lesson__category--text">
+                  {lessonDetailState.category}
+                </div>
+              </div>
             </div>
           </div>
           <div className="lesson-detail-page__body">
@@ -197,11 +206,11 @@ const LessonDetailPage = () => {
               </div>
               {!changeVisiable ? (
                 <div className="lesson-detail-page__box">
-                  <h2>강의 소개</h2>
+                  <h2 className="lesson-detail-page__part-title">강의 소개</h2>
                   <div className="lesson-detail-page__lesson-description">
                     <pre>{lessonDetailState.lessonDescription}</pre>
                   </div>
-                  <h2>커리큘럼</h2>
+                  <h2 className="lesson-detail-page__part-title">커리큘럼</h2>
                   <div className="lesson-detail-page__curriculum">
                     {lessonDetailState.curriculums.map((curri: any) => (
                       <h3>
@@ -209,7 +218,7 @@ const LessonDetailPage = () => {
                       </h3>
                     ))}
                   </div>
-                  <h2>준비물</h2>
+                  <h2 className="lesson-detail-page__part-title">준비물</h2>
                   <div className="lesson-detail-page__checklist">
                     {checkListImgState.map((image: any) => (
                       <img className="lesson_img" src={image} alt={image} />
@@ -218,7 +227,7 @@ const LessonDetailPage = () => {
                       <pre>{lessonDetailState.cklsDescription}</pre>
                     </div>
                   </div>
-                  <h2>강사 소개</h2>
+                  <h2 className="lesson-detail-page__part-title">강사 소개</h2>
                   <div className="lesson-detail-page__teacher">
                     {teacherImgState === null ? (
                       <div className="profile-page__image--not">
@@ -243,7 +252,7 @@ const LessonDetailPage = () => {
                 </div>
               ) : (
                 <div className="lesson-detail-page__review">
-                  <h2>강의 후기</h2>
+                  <h2 className="lesson-detail-page__part-title">강의 후기</h2>
                   <div>
                     <ReviewsInput />
                   </div>
