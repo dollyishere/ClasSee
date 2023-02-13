@@ -15,6 +15,8 @@ const ScheduleDetail = ({
   endTime,
   openLessonId,
   lessonId,
+  rerenderSchedule,
+  setRerenderSchedule,
 }: LessonSchedulesType) => {
   const [lessonTime, setLessonTime] = useState<string>('진행 예정');
   const { deleteSchedule } = ScheduleViewModel();
@@ -29,10 +31,11 @@ const ScheduleDetail = ({
     if (userInfo === null) {
       alert('로그인 후 이용 가능합니다.');
       navigate('/login');
-    } else {
+    } else if (window.confirm('스케줄을 삭제하시겠습니까?')) {
       const res = await deleteSchedule(userInfo.email, lessonId, openLessonId);
-      if (res?.message === 'SUCCESS') {
+      if (res?.statusCode === 200) {
         alert('스케줄이 삭제되었습니다.');
+        setRerenderSchedule(!rerenderSchedule);
       } else {
         alert('다시 시도해주세요.');
       }
