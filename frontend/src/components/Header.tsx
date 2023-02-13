@@ -108,9 +108,7 @@ const Header = () => {
             >
               강의 개설
             </button>
-            <button type="button" className="nav__button--icon">
-              <Notifications fontSize="large" />
-            </button>
+
             <button
               type="button"
               className="nav__button--icon"
