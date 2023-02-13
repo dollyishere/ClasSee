@@ -4,6 +4,18 @@ import { CreateNoticeRequest } from '../types/NoticeType';
 
 const NoticeApi = () => {
   const accesstoken = localStorage.getItem('accessToken');
+  const doGetNotices = async (limit: number, offset: number) => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/notice?limit=${limit}&offset=${offset}`,
+      );
+      return response.data;
+    } catch (error: any) {
+      console.error(error);
+    }
+
+    return null;
+  };
   const doCreateNotice = async (requestBody: CreateNoticeRequest) => {
     try {
       const response = await axios.post(
@@ -24,6 +36,7 @@ const NoticeApi = () => {
   };
   return {
     doCreateNotice,
+    doGetNotices,
   };
 };
 
