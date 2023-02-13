@@ -33,7 +33,6 @@ const Router = () => {
       const reAccessToken = async () => {
         if (userInfo) {
           const response = await AccessToken(userInfo, doGetAccessToken);
-          console.log(response);
         }
       };
       reAccessToken();
@@ -43,7 +42,6 @@ const Router = () => {
     const rereAccessToken = async () => {
       if (userInfo) {
         const response = await AccessToken(userInfo, doGetAccessToken);
-        console.log(response);
       }
     };
     rereAccessToken();

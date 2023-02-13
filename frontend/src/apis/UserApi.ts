@@ -123,6 +123,12 @@ const UserApi = () => {
     try {
       const response = await axios.put<Response>(
         `${process.env.REACT_APP_SERVER_URI}/api/v1/users/${email}/img?img=${url}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+          },
+        },
       );
 
       return response.data.statusCode;

@@ -12,11 +12,7 @@ import { storage } from '../utils/Firebase';
 import useApi from '../apis/UserApi';
 import authTokenState from '../models/AuthTokenAtom';
 import useInfoState from '../models/PrivateInfoAtom';
-import {
-  createHashedPassword,
-  decryptToken,
-  encryptToken,
-} from '../utils/Encrypt';
+import { createHashedPassword } from '../utils/Encrypt';
 
 const ProfileViewModel = () => {
   const [userInfo, setUserInfo] = useRecoilState(useInfoState);
@@ -30,47 +26,38 @@ const ProfileViewModel = () => {
     doUpdatePassword,
     doGetSalt,
     doWithdrawl,
-    doGetAccessToken,
+    doGetUserInfo,
   } = useApi();
 
-  const getProfileImage = async (email: string) => {
-    const imageRef = ref(storage, `profiles/${encodeURI(email)}/`);
-    const response = await listAll(imageRef);
-    const ret = await getDownloadURL(response.items[0]);
+  const getProfileImage = async (imgSrc: string) => {
+    const imageRef = ref(storage, imgSrc);
+    const ret = await getDownloadURL(imageRef);
     return ret;
   };
 
-  const uploadProfileImage = async (image: File) => {
-    if (userInfo !== null) {
-      const imageRef = ref(storage, `profiles/${encodeURI(userInfo.email)}/`);
-      await listAll(imageRef).then((response: any) => {
-        response.items.forEach((item: any) => {
-          deleteObject(item);
-        });
+  const uploadProfileImage = async (image: File, email: string) => {
+    const imgSrc = `profiles/${encodeURI(email)}`;
+    const imageRef = ref(storage, imgSrc);
+    await listAll(imageRef).then((response: any) => {
+      response.items.forEach((item: any) => {
+        deleteObject(item);
       });
+    });
+    await uploadBytes(ref(storage, `${imgSrc}/${image.name}`), image);
 
-      await uploadBytes(
-        ref(
-          storage,
-          `profiles/${encodeURI(userInfo.email)}/${encodeURI(image.name)}`,
-        ),
-        image,
-      );
-
-      const uploadedImage = await getProfileImage(userInfo.email);
-
-      await doUpdateProfileImage(userInfo.email, uploadedImage);
-      if (uploadedImage !== undefined)
-        setUserInfo({
-          ...userInfo,
-          img: uploadedImage,
-        });
-      return uploadedImage;
+    const response = await doUpdateProfileImage(
+      email,
+      `${imgSrc}/${image.name}`,
+    );
+    if (response === 200) {
+      const newUserInfo = await doGetUserInfo(email);
+      setUserInfo({ ...newUserInfo, email });
     }
-    return null;
+    const uploadedImage = await getProfileImage(`${imgSrc}/${image.name}`);
+    return uploadedImage;
   };
 
-  const updateNickName = async (nickname: string) => {
+  const updateNickName = async (email: string, nickname: string) => {
     if (userInfo !== null) {
       const response = await doUpdateNickName(userInfo.email, nickname);
       if (response === 200) {

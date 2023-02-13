@@ -99,8 +99,8 @@ const LessonDetailPage = () => {
             setCheckListImgState(urls);
           },
         );
-        if (res?.teacher) {
-          const imageUrl = await getProfileImage(res.teacher);
+        if (res?.teacherImage) {
+          const imageUrl = await getProfileImage(res.teacherImage);
           setTeacherImgState(imageUrl);
         }
       } else {

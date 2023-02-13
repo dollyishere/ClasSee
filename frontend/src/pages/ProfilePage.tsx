@@ -4,7 +4,6 @@ import { useRecoilValue } from 'recoil';
 import { Card, CardContent, Modal, Box } from '@mui/material';
 import { PersonOutline } from '@mui/icons-material';
 
-import authTokenState from '../models/AuthTokenAtom';
 import privateInfoState from '../models/PrivateInfoAtom';
 import useViewModel from '../viewmodels/ProfileViewModel';
 
@@ -30,8 +29,10 @@ const ProfilePage = () => {
 
   const upload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.currentTarget.files !== null && userInfo !== null) {
-      await uploadProfileImage(e.currentTarget.files[0]);
-      const uploadedImage = await getProfileImage(userInfo.email);
+      const uploadedImage = await uploadProfileImage(
+        e.currentTarget.files[0],
+        userInfo.email,
+      );
       setImage(uploadedImage);
     }
   };
@@ -40,7 +41,7 @@ const ProfilePage = () => {
     if (userInfo !== null) {
       const nickname = prompt('변경할 닉네임을 입력하세요.', userInfo.nickname);
       if (nickname !== null) {
-        updateNickName(nickname);
+        updateNickName(userInfo.email, nickname);
       }
     }
   };
@@ -108,7 +109,7 @@ const ProfilePage = () => {
       navigate('/login');
     } else {
       const getImage = async () => {
-        const imageUrl = await getProfileImage(userInfo.email);
+        const imageUrl = await getProfileImage(userInfo.img);
         console.log(imageUrl);
         setImage(imageUrl);
       };

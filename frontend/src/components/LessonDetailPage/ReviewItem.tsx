@@ -76,11 +76,13 @@ const ReviewItem: React.FC<Props> = ({ reviews, flag, setFlag }) => {
     // 프로필 이미지 받아온다
     const getUserImage = async () => {
       // 사진을 url로 변환
-      const userImageUrl = await getProfileImage(reviews.userEmail);
-      if (userImageUrl) {
-        // 변환한 이미지를 훅에 저장
-        setUserImg(userImageUrl);
-        setFlag(!flag);
+      if (reviews.userImg) {
+        const userImageUrl = await getProfileImage(reviews.userImg);
+        if (userImageUrl) {
+          // 변환한 이미지를 훅에 저장
+          setUserImg(userImageUrl);
+          setFlag(!flag);
+        }
       }
     };
     getReviewsImage();
