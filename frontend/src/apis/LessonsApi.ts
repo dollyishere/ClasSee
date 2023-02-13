@@ -398,6 +398,7 @@ const LessonsApi = () => {
           },
         },
       );
+      console.log(response);
       return response.data;
     } catch (error: any) {
       console.error(error);

@@ -186,6 +186,8 @@ export interface CreateScheduleProps {
   scheduleInputState: boolean;
   setScheduleInputState: React.Dispatch<React.SetStateAction<boolean>>;
   schedulesListState: any[];
+  rerenderSchedule: boolean;
+  setRerenderSchedule: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface ScheduleRequest {
@@ -201,6 +203,8 @@ export interface ScheduleDetailProps {
 export interface LessonSchedulesType extends ScheduleRequest {
   openLessonId: number;
   lessonId: number;
+  rerenderSchedule: boolean;
+  setRerenderSchedule: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface GetScheduleResponse extends Response {

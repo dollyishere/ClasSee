@@ -1,0 +1,87 @@
+@use '../components/header';
+@use '../base/colors';
+
+.notice-page {
+  a {
+    text-decoration: none;
+    color: black;
+    &:focus {
+      color: black;
+    }
+  }
+  height: 100%;
+  .notice-page__contents {
+    overflow: auto;
+    height: calc(100% - header.$height);
+    background-color: colors.$theme_color_light;
+    .notice-page__title {
+      padding: 40px 0 0 0;
+      margin: 0 auto;
+      font-size: 24px;
+      font-weight: bold;
+      width: 60%;
+      height: 60px;
+      text-align: left;
+    }
+    .notice-page__content {
+      width: 60%;
+      margin: 0 auto;
+      .notice-page__write {
+        text-align: right;
+      }
+      .notice-page__pagination {
+        padding: 20px 0;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+      }
+      .notice-page__table {
+        width: 100%;
+        border-style: solid;
+        border-color: black;
+        border-radius: 10px;
+        border-width: 0.5px;
+        border-collapse: collapse;
+        border-style: hidden;
+        box-shadow: 0 0 0 1px #000;
+
+        .notice-page__table-header {
+          background-color: colors.$beige_color_focus;
+          display: flex;
+          width: 100%;
+          border-radius: 10px 10px 0 0;
+          color: colors.$theme_color;
+          box-shadow: 0 0 0 1px #000;
+          font-size: 24px;
+          font-weight: bold;
+        }
+        .notice-page__table-body {
+          width: 100%;
+          border-radius: 0 0 10px 10px;
+          box-shadow: 0 0 0 1px #000;
+          background-color: white;
+          .notice-page__table-row {
+            width: 100%;
+            height: 30px;
+            display: flex;
+            border-top: solid 0.5px black;
+          }
+        }
+        .notice-page__table-col {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        .notice-page__table-col--id {
+          width: 20%;
+        }
+        .notice-page__table-col--title {
+          width: 60%;
+        }
+        .notice-page__table-col--regtime {
+          width: 20%;
+        }
+      }
+    }
+  }
+}

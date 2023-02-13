@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { atom, selector, useRecoilState, useRecoilValue } from 'recoil';
 import { Stack, Button, Card, CardContent, Pagination } from '@mui/material';
-import MyPageCards from '../components/MyPageCards';
+import MyPageCards from '../components/MyPage/MyPageCards';
 import useViewModel from '../viewmodels/MainPageViewModel';
 import { LessonsResponse, Lesson } from '../types/LessonsType';
 import privateInfoState from '../models/PrivateInfoAtom';
@@ -40,10 +40,8 @@ const MyCreatedLessonsPage = () => {
           limit,
           offset,
         );
-        console.log(data.lessonInfoList);
         setLessons(data.lessonInfoList);
         setCount(Math.ceil(data.lessonInfoList.length / limit));
-        console.log(Math.ceil(data.lessonInfoList.length / limit));
       };
       getData();
     }

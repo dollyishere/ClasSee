@@ -79,17 +79,19 @@ const MyCreatedLessonDetailPage = () => {
   // 강의 스케줄 추가 input 여부 확인할 state 생성
   const [scheduleInputState, setScheduleInputState] = useState(false);
 
+  const [rerenderSchedule, setRerenderSchedule] = useState(false);
+
   const handleLessonDelete = async (event: React.MouseEvent<HTMLElement>) => {
     if (userInfo === null) {
       alert('로그인 후 이용 가능합니다.');
       navigate('/login');
-    } else {
+    } else if (window.confirm('클래스를 삭제하시겠습니까?')) {
       const res = await doDeleteselectedLesson(
         userInfo.email,
         lessonDetailState.lessonId,
       );
-      if (res?.message === 'SUCCESS') {
-        alert('강의가 삭제되었습니다.');
+      if (res?.statusCode === 200) {
+        alert('클래스가 삭제되었습니다.');
         navigate('/mypage/created-lesson');
       } else {
         alert('다시 시도해주세요.');
@@ -109,7 +111,7 @@ const MyCreatedLessonDetailPage = () => {
       };
       const fetchData = async () => {
         const res = await getLessonDetail(getLessonDetailRequestBody);
-        if (res?.message === 'SUCCESS') {
+        if (res?.statusCode === 200) {
           // 만약 강의 상세 정보를 db에서 받아오는 것에 성공했다면, lessonDetailState에 해당 정보를 저장
           setLessonDetailState(res);
           if (userInfo.email !== res.teacher) {
@@ -133,8 +135,20 @@ const MyCreatedLessonDetailPage = () => {
           alert(res?.message);
         }
       };
-
+      const getLessonSchedule = async () => {
+        const checkScheduleRequestBody: GetScheduleRequest = {
+          regDate: '',
+          lessonId: Number(lessonId.lessonId),
+        };
+        const res = await getSchedule(checkScheduleRequestBody);
+        if (res?.message === 'SUCCESS') {
+          setSchedulesListState(res.lessonSchedules);
+        } else {
+          alert('다시 시도해주세요.');
+        }
+      };
       fetchData();
+      getLessonSchedule();
     }
   }, []);
 
@@ -152,7 +166,7 @@ const MyCreatedLessonDetailPage = () => {
       }
     };
     getLessonSchedule();
-  }, [schedulesListState]);
+  }, [rerenderSchedule]);
 
   return (
     <div className="profile-page">
@@ -239,6 +253,8 @@ const MyCreatedLessonDetailPage = () => {
                     endTime={schedule.endTime}
                     openLessonId={schedule.openLessonId}
                     lessonId={schedule.lessonId}
+                    rerenderSchedule={rerenderSchedule}
+                    setRerenderSchedule={setRerenderSchedule}
                   />
                 ))}
               </div>
@@ -250,6 +266,8 @@ const MyCreatedLessonDetailPage = () => {
                   scheduleInputState={scheduleInputState}
                   setScheduleInputState={setScheduleInputState}
                   schedulesListState={schedulesListState}
+                  rerenderSchedule={rerenderSchedule}
+                  setRerenderSchedule={setRerenderSchedule}
                 />
               ) : (
                 <Button
