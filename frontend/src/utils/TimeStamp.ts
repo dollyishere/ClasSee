@@ -9,9 +9,14 @@ const TimeStamp = () => {
     return moment(timeStamp).format('YYYY/MM/DD hh:mm');
   };
 
+  const toDate = () => {
+    return moment().format('YYYY.MM.DD');
+  };
+
   return {
     toHourMinute,
     toDateHourMinute,
+    toDate,
   };
 };
 
