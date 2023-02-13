@@ -71,7 +71,7 @@ const ScheduleDetail = ({
       <IconButton onClick={handleScheduleDelete}>
         <DeleteIcon />
       </IconButton>
-      {lessonTime === '임박' ? (
+      {lessonTime === '임박' || lessonTime === '진행 중' ? (
         <Button onClick={handleLessonStart}>시작</Button>
       ) : (
         <Button disabled>입장 불가</Button>

@@ -4,6 +4,7 @@ import { useRecoilValue } from 'recoil';
 
 import { Stack, Button } from '@mui/material';
 import { PersonOutline } from '@mui/icons-material';
+import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import StickyBox from 'react-sticky-box';
@@ -109,7 +110,6 @@ const LessonDetailPage = () => {
     fetchData();
     getTeacherImage();
     setIsReady(true);
-    console.log(pamphletsImgState);
   }, []);
   return (
     <div>
@@ -134,13 +134,18 @@ const LessonDetailPage = () => {
               ))} */}
             </div>
             <div className="lesson-detail-page__info">
-              <h1>{lessonDetailState.lessonName}</h1>
-              <p>
-                {lessonDetailState.runningTime === 0
-                  ? '미정'
-                  : lessonDetailState.runningTime}{' '}
-                시간
-              </p>
+              <div className="lesson-detail-page__name-time-box">
+                <h1 className="lesson-detail-page__lessonName">
+                  {lessonDetailState.lessonName}
+                  <span className="lesson-detail-page__lessonTime">
+                    <AccessTimeFilledIcon />
+                    {lessonDetailState.runningTime === 0
+                      ? '미정'
+                      : lessonDetailState.runningTime}{' '}
+                    시간
+                  </span>
+                </h1>
+              </div>
               {/* <h3>{lessonDetailState.}</h3> */}
               {teacherImgState === null ? (
                 <div className="profile-page__image--not">
