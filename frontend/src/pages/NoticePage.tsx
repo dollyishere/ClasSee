@@ -6,6 +6,7 @@ import { Pagination } from '@mui/material';
 import Header from '../components/Header';
 import PrivateInfoState from '../models/PrivateInfoAtom';
 import useViewModel from '../viewmodels/NoticeViewModel';
+import useTimeStamp from '../utils/TimeStamp';
 
 const NoticePage = () => {
   const [page, setPage] = useState<number>(1);
@@ -13,6 +14,7 @@ const NoticePage = () => {
   const [count, setCount] = useState<number>(0);
   const userInfo = useRecoilValue(PrivateInfoState);
   const { getNotices } = useViewModel();
+  const { toDate } = useTimeStamp();
 
   const handlePageChange = (
     event: React.ChangeEvent<unknown>,
@@ -50,17 +52,19 @@ const NoticePage = () => {
             </div>
             <div className="notice-page__table-body">
               {notices.map((notice: any) => (
-                <div className="notice-page__table-row">
-                  <div className="notice-page__table-col--id notice-page__table-col">
-                    {notice.id}
+                <Link to={`/notice/${notice.id}`} key={notice.id}>
+                  <div className="notice-page__table-row">
+                    <div className="notice-page__table-col--id notice-page__table-col">
+                      {notice.id}
+                    </div>
+                    <div className="notice-page__table-col--title notice-page__table-col">
+                      {notice.title}
+                    </div>
+                    <div className="notice-page__table-col--regtime notice-page__table-col">
+                      {toDate(notice.regtime)}
+                    </div>
                   </div>
-                  <div className="notice-page__table-col--title notice-page__table-col">
-                    {notice.title}
-                  </div>
-                  <div className="notice-page__table-col--regtime notice-page__table-col">
-                    {notice.regtime}
-                  </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>

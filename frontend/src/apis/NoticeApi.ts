@@ -4,6 +4,38 @@ import { CreateNoticeRequest } from '../types/NoticeType';
 
 const NoticeApi = () => {
   const accesstoken = localStorage.getItem('accessToken');
+
+  const doUpdateNotice = async (
+    requestBody: CreateNoticeRequest,
+    noticeId: string,
+  ) => {
+    try {
+      const response = await axios.put(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/notice/${noticeId}`,
+        requestBody,
+        {
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+          },
+        },
+      );
+      return response.data;
+    } catch (error: any) {
+      console.error(error);
+    }
+    return null;
+  };
+  const doGetNotice = async (noticeId: string) => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/notice/${noticeId}`,
+      );
+      return response.data;
+    } catch (error: any) {
+      console.error(error);
+    }
+    return null;
+  };
   const doGetNotices = async (limit: number, offset: number) => {
     try {
       const response = await axios.get(
@@ -37,6 +69,8 @@ const NoticeApi = () => {
   return {
     doCreateNotice,
     doGetNotices,
+    doGetNotice,
+    doUpdateNotice,
   };
 };
 

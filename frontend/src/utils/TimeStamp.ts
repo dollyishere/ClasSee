@@ -9,8 +9,8 @@ const TimeStamp = () => {
     return moment(timeStamp).format('YYYY/MM/DD hh:mm');
   };
 
-  const toDate = () => {
-    return moment().format('YYYY.MM.DD');
+  const toDate = (timeStamp: string | undefined) => {
+    return moment(timeStamp).format('YYYY.MM.DD');
   };
 
   return {

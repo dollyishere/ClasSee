@@ -2,6 +2,13 @@
 @use '../base/colors';
 
 .notice-page {
+  a {
+    text-decoration: none;
+    color: black;
+    &:focus {
+      color: black;
+    }
+  }
   height: 100%;
   .notice-page__contents {
     height: calc(100% - header.$height);
@@ -11,21 +18,14 @@
       margin: 0 auto;
       font-size: 24px;
       font-weight: bold;
-      width: 80%;
+      width: 60%;
       text-align: left;
     }
     .notice-page__content {
-      width: 80%;
+      width: 60%;
       margin: 0 auto;
       .notice-page__write {
         text-align: right;
-        a {
-          text-decoration: none;
-          color: black;
-          &:focus {
-            color: black;
-          }
-        }
       }
       .notice-page__pagination {
         padding: 20px 0;
@@ -60,6 +60,7 @@
           background-color: white;
           .notice-page__table-row {
             width: 100%;
+            height: 30px;
             display: flex;
             border-top: solid 0.5px black;
           }

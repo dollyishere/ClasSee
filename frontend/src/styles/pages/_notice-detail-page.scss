@@ -1,0 +1,62 @@
+@use '../base/colors';
+@use '../components/header';
+
+.notice-detail-page {
+  height: 100%;
+  .notice-detail-page__contents {
+    height: calc(100% - header.$height);
+    background-color: colors.$theme_color_light;
+    .notice-detail-page__title {
+      width: 40%;
+      margin: 0 auto;
+      padding: 40px 0 0 0;
+      text-align: left;
+      font-size: 30px;
+      font-weight: bold;
+    }
+    .notice-detail-page__content {
+      width: 40%;
+      margin: 0 auto;
+      .notice-detail-page__row {
+        padding: 10px 0;
+        width: 100%;
+        display: flex;
+        .notice-detail-page__label {
+          font-size: 24px;
+          font-weight: bold;
+        }
+        .notice-detail-page__regtime {
+          font-size: 18px;
+          font-weight: bold;
+          display: flex;
+          justify-content: center;
+          align-items: end;
+          margin-left: auto;
+        }
+        .notice-detail-page__content {
+          width: 100%;
+          height: 240px;
+          text-align: left;
+          padding: 10px;
+        }
+        .notice-detail-page__nickname {
+          font-size: 20px;
+          font-weight: bold;
+          margin-left: auto;
+        }
+        .notice-detail-page__buttons--admin {
+          margin-left: auto;
+        }
+        .notice-detail-page__button {
+          margin: 0 4px;
+          width: 80px;
+          background-color: colors.$theme_color;
+          color: white;
+        }
+        .notice-detail-page__button--delete {
+          background-color: #ff4d4d;
+        }
+      }
+    }
+  }
+}
