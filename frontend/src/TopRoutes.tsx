@@ -20,6 +20,7 @@ import { AccessToken } from './utils/AccessToken';
 import PhotoCardQRPage from './pages/PhotoCardQRPage';
 import CreatePhotoCardPage from './pages/CreatePhotoCardPage';
 import PhotoCardsPage from './pages/PhotoCardsPages';
+import NoticePage from './pages/NoticePage';
 
 const Router = () => {
   const { doGetAccessToken } = useUserApi();
@@ -68,6 +69,7 @@ const Router = () => {
       <Route path="/mypage/*" element={<MyPage />} />
       <Route path="/find-pw" element={<FindPwPage />} />
       <Route path="/lessons/*" element={<LessonsPage />} />
+      <Route path="/notice" element={<NoticePage />} />
     </Routes>
   );
 };

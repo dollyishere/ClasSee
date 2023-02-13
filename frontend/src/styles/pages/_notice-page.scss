@@ -1,0 +1,10 @@
+@use '../components/header';
+@use '../base/colors';
+
+.notice-page {
+  height: 100%;
+  .notice-page__contents {
+    height: calc(100% - header.$height);
+    background-color: colors.$theme_color_light;
+  }
+}
