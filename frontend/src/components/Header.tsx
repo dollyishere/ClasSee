@@ -82,11 +82,6 @@ const Header = () => {
 
       {/* 버튼 */}
       <ul className="nav">
-        <li className="nav__item">
-          <button type="button" className="nav__button button" onClick={test}>
-            테스트
-          </button>
-        </li>
         {userInfo === null ? (
           <>
             <li className="nav__item">
