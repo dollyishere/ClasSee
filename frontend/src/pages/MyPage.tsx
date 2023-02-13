@@ -7,7 +7,7 @@ import MyCreatedLessonsPage from './MyCreatedLessonsPage';
 import MyCreatedLessonDetailPage from './MyCreatedLessonDetailPage';
 import MyBookmarkPage from './MyBookmarkPage';
 import MyPhotoBookPage from './MyPhotoBookPage';
-
+import MyReviewsPage from './MyReviewsPage';
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
 import { SidebarItem, SidebarProps } from '../types/SidebarType';
@@ -54,6 +54,7 @@ const MyPage = () => {
             <Route path="/bookmark" element={<MyBookmarkPage />} />
             <Route path="/test" element={<TestPage />} />
             <Route path="/photo-book" element={<MyPhotoBookPage />} />
+            <Route path="/review" element={<MyReviewsPage />} />
           </Routes>
         </div>
       </div>
