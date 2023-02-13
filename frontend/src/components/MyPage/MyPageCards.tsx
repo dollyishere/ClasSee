@@ -9,12 +9,12 @@ import AvTimerIcon from '@mui/icons-material/AvTimer';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import { ref, uploadBytes, getDownloadURL, listAll } from 'firebase/storage';
-import { storage } from '../utils/Firebase';
-import { LessonsResponse, Lesson } from '../types/LessonsType';
-import privateInfoState from '../models/PrivateInfoAtom';
-import useMainPageViewModel from '../viewmodels/MainPageViewModel';
-import useProfileViewModel from '../viewmodels/ProfileViewModel';
-import logo from '../assets/logo2.png';
+import { storage } from '../../utils/Firebase';
+import { LessonsResponse, Lesson } from '../../types/LessonsType';
+import privateInfoState from '../../models/PrivateInfoAtom';
+import useMainPageViewModel from '../../viewmodels/MainPageViewModel';
+import useProfileViewModel from '../../viewmodels/ProfileViewModel';
+import logo from '../../assets/logo2.png';
 
 interface Props {
   lesson: Lesson;
@@ -58,7 +58,6 @@ const MyPageCards = ({ lesson }: Props) => {
       const teacherImageUrl = await getProfileImage(lesson.teacher);
       if (teacherImageUrl) {
         setTeacherImage(teacherImageUrl);
-        console.log(teacherImageUrl);
       }
     };
     getImage();
