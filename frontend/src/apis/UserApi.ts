@@ -226,6 +226,21 @@ const UserApi = () => {
     }
     return 403;
   };
+  const getMyReviewsApi = async (
+    email: string,
+    limit: number,
+    offset: number,
+  ) => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/review/list/users/${email}`,
+      );
+      return response.data;
+    } catch (error: any) {
+      console.log(error);
+    }
+    return null;
+  };
 
   return {
     doSignUp,
@@ -243,6 +258,7 @@ const UserApi = () => {
     doLogout,
     doGetUserInfo,
     doFindPw,
+    getMyReviewsApi,
   };
 };
 
