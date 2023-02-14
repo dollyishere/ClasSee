@@ -29,6 +29,14 @@ public class OrdersRepositorySupport {
 
     public Orders findOne(Long id){ return em.find(Orders.class, id); }
 
+    public Long findUserId(String email){
+        return jpaQueryFactory
+                .select(qUser.id)
+                .from(qUser)
+                .where(qUser.auth.email.eq(email))
+                .fetchOne();
+    }
+
     public Orders findOne(Long user_id, Long openLesson_id){
         Orders orders = jpaQueryFactory
                 .selectFrom(qOrders)
