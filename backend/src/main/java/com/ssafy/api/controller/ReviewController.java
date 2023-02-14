@@ -94,6 +94,8 @@ public class ReviewController {
         ReviewPageGetRes reviewPage = new ReviewPageGetRes();
         reviewPage.setCount(reviewCount);
         reviewPage.setPage(reviewListGetResList);
+        reviewPage.setMessage("success");
+        reviewPage.setStatusCode(200);
 
         return ResponseEntity.status(200).body(reviewPage);
     }
@@ -127,6 +129,8 @@ public class ReviewController {
         ReviewPageGetRes reviewPage = new ReviewPageGetRes();
         reviewPage.setCount(reviewCount);
         reviewPage.setPage(reviewListGetResList);
+        reviewPage.setMessage("success");
+        reviewPage.setStatusCode(200);
 
         return ResponseEntity.status(200).body(reviewPage);
     }

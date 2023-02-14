@@ -11,6 +11,10 @@ import java.util.List;
 @ApiModel("ReviewPageGetRes")
 public class ReviewPageGetRes {
 
+    String message;
+
+    Integer statusCode;
+
     Long count;
 
     List<ReviewListGetRes> page;
