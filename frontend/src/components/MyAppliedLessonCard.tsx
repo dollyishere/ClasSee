@@ -13,10 +13,17 @@ import useProfileViewModel from '../viewmodels/ProfileViewModel';
 import privateInfoState from '../models/PrivateInfoAtom';
 import logo from '../assets/logo2.png';
 
-interface Props {
-  lesson: Lesson;
-}
-const MyAppliedLessonCard = ({ lesson }: Props) => {
+// interface Props {
+//   lesson: Lesson;
+//   getMyAppliedLessonsMainpage: (
+//     email: string,
+//     limit: number,
+//     offset: number,
+//     query: string,
+//   ) => void;
+// }
+
+const MyAppliedLessonCard = ({ lesson, flag, setFlag }: any) => {
   const { deleteMyAppliedLessonsMainpage, getLessonImage } =
     useMainPageViewModel();
   const { getProfileImage } = useProfileViewModel();
@@ -24,21 +31,23 @@ const MyAppliedLessonCard = ({ lesson }: Props) => {
   const [lessonImage, setLessonImage] = useState<string>(logo);
   const [teacherImage, setTeacherImage] = useState<string>(logo);
   const [isBookMarked, setIsBookMarked] = useState(lesson.bookMarked);
-
   const [isHovered, setIsHovered] = useState(false);
   const userInfo = useRecoilValue(privateInfoState);
-
+  const limit = 2;
+  const offset = 0;
+  const status = 'TODO';
   const showModal = () => {
     if (window.confirm('해당 강의를 정말 취소 하시겠습니까?')) {
       if (userInfo) {
         deleteMyAppliedLessonsMainpage(
           userInfo.email,
           lesson.openLessonId,
-        ).then((res: string) => {
-          console.log('res', res);
+        ).then((res: any) => {
+          if (res.statusCode === 200) {
+            setFlag(!flag);
+          }
         });
       }
-      console.log('test');
     }
   };
 

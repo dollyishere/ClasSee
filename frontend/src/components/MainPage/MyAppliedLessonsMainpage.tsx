@@ -16,11 +16,15 @@ const MyAppliedLessonsMainpage = () => {
   const { getMyAppliedLessonsMainpage } = useViewModel();
   const [lessons, setLessons] = useState<Lesson[]>();
   const userInfo = useRecoilValue(privateInfoState);
+  const limit = 2;
+  const offset = 0;
+  const status = 'TODO';
+  const [flag, setFlag] = useState<boolean>(false);
   // 메인페이지 마운트 시 강의 정보들 요청
 
   useEffect(() => {
     if (userInfo) {
-      getMyAppliedLessonsMainpage(userInfo.email, 2, 0, 'TODO').then(
+      getMyAppliedLessonsMainpage(userInfo.email, limit, offset, status).then(
         (response: LessonsResponse) => {
           console.log('내가 신청한 강의', response.lessonInfoList.length);
           if (response.lessonInfoList.length === 0) {
@@ -31,14 +35,19 @@ const MyAppliedLessonsMainpage = () => {
         },
       );
     }
-  }, []);
+  }, [flag]);
   return (
     <div className="applylessons">
       <h1 className="applylessons__title"> 신청한 클래스 </h1>
       <div className="applylessons__cards">
         {lessons ? (
           lessons.map((lesson: Lesson) => (
-            <MyAppliedLessonCard lesson={lesson} key={lesson.lessonId} />
+            <MyAppliedLessonCard
+              lesson={lesson}
+              flag={flag}
+              setFlag={setFlag}
+              key={lesson.lessonId}
+            />
           ))
         ) : (
           <Nolesson message={message} />
