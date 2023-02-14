@@ -4,10 +4,7 @@ import com.ssafy.api.request.QnaRegisterPostReq;
 import com.ssafy.api.request.QnaUpdatePutReq;
 import com.ssafy.api.request.ReviewRegistPostReq;
 import com.ssafy.api.request.ReviewUpdatePutReq;
-import com.ssafy.api.response.LessonInfoListRes;
-import com.ssafy.api.response.PageGetRes;
-import com.ssafy.api.response.ReviewListGetRes;
-import com.ssafy.api.response.ReviewPageGetRes;
+import com.ssafy.api.response.*;
 import com.ssafy.api.service.ReviewService;
 import com.ssafy.common.exception.handler.LessonException;
 import com.ssafy.common.exception.handler.OpenLessonException;
@@ -48,6 +45,8 @@ public class ReviewController {
 
         Long reviewId;
 
+        ReviewRegistRes reviewRegistRes = new ReviewRegistRes();
+
         try {
             reviewId = reviewService.createReview(reviewRegistPostReq);
         } catch (UserException u){
@@ -60,7 +59,11 @@ public class ReviewController {
             return ResponseEntity.status(404).body(BaseResponseBody.of(404,"unexpected exception"));
         }
 
-        return ResponseEntity.status(200).body(reviewId);
+        reviewRegistRes.setId(reviewId);
+        reviewRegistRes.setMessage("success");
+        reviewRegistRes.setStatusCode(200);
+
+        return ResponseEntity.status(200).body(reviewRegistRes);
     }
 
     @GetMapping("/list/{lessonId}")
