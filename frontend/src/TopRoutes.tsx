@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { RecoilRoot, useRecoilValue, useRecoilState } from 'recoil';
 import MainPage from './pages/MainPage';
@@ -25,10 +25,16 @@ import CreateNoticePage from './pages/CreateNoticePage';
 import NoticeDetailPage from './pages/NoticeDetailPage';
 
 const Router = () => {
+  // 최초 렌더링 때 localstorage 초기화하기 위한 flag
+  const [flag, setFlag] = useState<boolean>(true);
   const { doGetAccessToken } = useUserApi();
   const userInfo = useRecoilValue(privateInfoState);
   // 25분에 한번 accesstoken을 재발급받아온다
   useEffect(() => {
+    if (flag) {
+      localStorage.clear();
+    }
+    setFlag(!flag);
     const timer = setInterval(() => {
       const reAccessToken = async () => {
         if (userInfo) {
@@ -39,12 +45,12 @@ const Router = () => {
     }, 1500000);
 
     // 새로고침하면 받아옴
-    const rereAccessToken = async () => {
+    const reReAccessToken = async () => {
       if (userInfo) {
         const response = await AccessToken(userInfo, doGetAccessToken);
       }
     };
-    rereAccessToken();
+    reReAccessToken();
   }, []);
   return (
     <Routes>
