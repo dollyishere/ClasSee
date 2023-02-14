@@ -52,10 +52,23 @@ const ReviewViewModel = () => {
     return ret;
   };
 
+  const deleteReviewImage = async (imgSrc: string) => {
+    const imageRef = ref(storage, imgSrc);
+    await deleteObject(imageRef);
+  };
+  const deleteReview = async (reviewId: number, imgSrc: string) => {
+    const response = await doDeleteReview(reviewId);
+    if (response.statusCode === 200) {
+      deleteReviewImage(imgSrc);
+    }
+    return response;
+  };
+
   return {
     createReview,
     getReviews,
     getReviewImage,
+    deleteReview,
   };
 };
 
