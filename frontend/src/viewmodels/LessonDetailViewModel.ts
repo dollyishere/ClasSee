@@ -11,11 +11,7 @@ import { storage } from '../utils/Firebase';
 
 import LessonsApi from '../apis/LessonsApi';
 
-import {
-  LessonDetailRequest,
-  LessonEnrollRequest,
-  ReviewRequest,
-} from '../types/LessonsType';
+import { LessonDetailRequest, LessonEnrollRequest } from '../types/LessonsType';
 import PrivateInfoState from '../models/PrivateInfoAtom';
 
 const LessonDetailViewModel = () => {

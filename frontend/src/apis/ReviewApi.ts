@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { ReviewRequest } from '../types/LessonsType';
+import { CreateReviewRequest } from '../types/ReviewType';
 
 const ReviewApi = () => {
   const accesstoken = localStorage.getItem('accessToken');
@@ -25,7 +25,9 @@ const ReviewApi = () => {
   };
   // TODO: 상태코드값 돌려받고 싶어요오
   // 후기 작성하는 api
-  const doCreateReview = async (createReviewRequestBody: ReviewRequest) => {
+  const doCreateReview = async (
+    createReviewRequestBody: CreateReviewRequest,
+  ) => {
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_SERVER_URI}/api/v1/review`,

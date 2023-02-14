@@ -3,7 +3,6 @@ import { Rating } from '@mui/material';
 import { useRecoilValue } from 'recoil';
 
 import { useParams } from 'react-router-dom';
-import { ReviewType } from '../../types/ReviewType';
 import useViewModel from '../../viewmodels/ReviewViewModel';
 import PrivateInfoState from '../../models/PrivateInfoAtom';
 

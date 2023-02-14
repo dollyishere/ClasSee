@@ -15,8 +15,6 @@ import {
   SearchResponse,
   OpenLessonResponse,
   LessonEnrollRequest,
-  ReviewRequest,
-  ReviewResponse,
 } from '../types/LessonsType';
 import { Response } from '../types/BaseType';
 

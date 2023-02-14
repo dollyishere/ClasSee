@@ -1,13 +1,7 @@
-export interface ReviewType {
-  id: number;
+export interface CreateReviewRequest {
   content: string;
   score: number;
+  lessonId: number;
   img: string;
-  year: string;
-  month: string;
-  day: string;
-  time: string;
   userEmail: string;
-  userImg: string;
-  userNickname: string;
 }

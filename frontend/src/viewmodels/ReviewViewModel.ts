@@ -1,10 +1,10 @@
 import useApi from '../apis/ReviewApi';
-import { ReviewRequest } from '../types/LessonsType';
+import { CreateReviewRequest } from '../types/ReviewType';
 
 const ReviewViewModel = () => {
   const { doGetReview, doCreateReview, doDeleteReview } = useApi();
 
-  const createReview = async (requestBody: ReviewRequest) => {
+  const createReview = async (requestBody: CreateReviewRequest) => {
     const response = await doCreateReview(requestBody);
     return response;
   };
