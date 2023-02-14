@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface ReviewService {
 
-    void createReview(ReviewRegistPostReq reviewRegistPostReq) throws Exception;
+    Long createReview(ReviewRegistPostReq reviewRegistPostReq) throws Exception;
 
     List<Review> readReview(Long lesson_id, int offset, int limit) throws LessonException;
 
