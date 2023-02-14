@@ -43,9 +43,9 @@ const MainPageViewModel = () => {
   };
   const deleteMyAppliedLessonsMainpage = async (
     userId: string,
-    lessonId: number,
+    openLessonId: number,
   ) => {
-    const res = await deleteMyAppliedLessonsMainpageApi(userId, lessonId);
+    const res = await deleteMyAppliedLessonsMainpageApi(userId, openLessonId);
 
     return res;
   };

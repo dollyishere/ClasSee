@@ -31,11 +31,12 @@ const MyAppliedLessonCard = ({ lesson }: Props) => {
   const showModal = () => {
     if (window.confirm('해당 강의를 정말 취소 하시겠습니까?')) {
       if (userInfo) {
-        deleteMyAppliedLessonsMainpage(userInfo.email, lesson.lessonId).then(
-          (res: string) => {
-            console.log('res', res);
-          },
-        );
+        deleteMyAppliedLessonsMainpage(
+          userInfo.email,
+          lesson.openLessonId,
+        ).then((res: string) => {
+          console.log('res', res);
+        });
       }
       console.log('test');
     }
