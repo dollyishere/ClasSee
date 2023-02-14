@@ -1,19 +1,15 @@
-import React, {
-  useEffect,
-  useState,
-  useCallback,
-  Dispatch,
-  SetStateAction,
-} from 'react';
+import React, { useEffect, useState, Dispatch, SetStateAction } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { Box, Typography } from '@mui/material';
+import { Box, Card, CardMedia, Typography, CardContent } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import ImageListItem from '@mui/material/ImageListItem';
 import Rating from '@mui/material/Rating';
+import { useRecoilValue } from 'recoil';
 import useReviewApi from '../../viewmodels/LessonDetailViewModel';
 import useProfileViewModel from '../../viewmodels/ProfileViewModel';
+import PrivateInfoState from '../../models/PrivateInfoAtom';
 
 interface Props {
   reviews: {
@@ -34,6 +30,7 @@ interface Props {
 }
 
 const ReviewItem: React.FC<Props> = ({ reviews, flag, setFlag }) => {
+  const userInfo = useRecoilValue(PrivateInfoState);
   const lessonId = useParams();
   // 작성자 프로필 사진 위해
   const { getProfileImage } = useProfileViewModel();
@@ -89,37 +86,38 @@ const ReviewItem: React.FC<Props> = ({ reviews, flag, setFlag }) => {
     getUserImage();
   }, [reviewImg, userImg]);
   return (
-    <Box m={2}>
-      <ImageListItem>
-        <img
-          src={reviewImg}
-          srcSet={reviewImg}
-          alt={reviews.img}
-          loading="lazy"
-        />
-      </ImageListItem>
-      <Stack
-        className="lesson__teacherImage--image"
-        direction="row"
-        spacing={2}
-      >
-        <Avatar alt="Remy Sharp" src={userImg} />
-      </Stack>
-      <p>{reviews.userNickname}님이 작성하셨습니다</p>
-      <form id="modify" action="" method="post" style={{ display: 'none' }}>
-        수정
-      </form>
-      <button type="submit" onClick={handleDeleteReview}>
-        삭제
-      </button>
-      <Rating value={reviews.score} precision={0.5} readOnly />
-      {reviews.score !== null && <Box sx={{ ml: 2 }}>{reviews.score}</Box>}
-      <Typography>{reviews.content}</Typography>
-      <p>
-        작성일자: {reviews.year}년 {reviews.month}월 {reviews.day}일
-        {reviews.time}
-      </p>
-    </Box>
+    <Card className="review-card">
+      <CardMedia
+        className="review-card__image"
+        image={reviewImg}
+        title={reviewImg}
+      />
+      <CardContent className="review-card__content">
+        <div className="review-card__row">
+          <Avatar alt="Remy Sharp" src={userImg} />
+          <p>
+            <span>{reviews.userNickname}</span>님이 작성하셨습니다.
+          </p>
+          {userInfo !== null && userInfo.email === reviews.userEmail ? (
+            <div className="review-card__buttons">
+              <button type="button">수정</button>
+              <button type="button">삭제</button>
+            </div>
+          ) : null}
+        </div>
+        <div className="review-card__row">
+          <Rating value={reviews.score} precision={0.5} readOnly />
+          <div className="review-card__rating">{reviews.score}</div>
+        </div>
+        <div className="review-card__row">
+          <div className="review-card__detail">{reviews.content}</div>
+        </div>
+        <div className="review-card__row review-card__footer">
+          작성일자: {reviews.year}년 {reviews.month}월 {reviews.day}일
+          {reviews.time}
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 
