@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Rating } from '@mui/material';
+import { Pagination, Rating } from '@mui/material';
 import { useRecoilValue } from 'recoil';
 
 import { useParams } from 'react-router-dom';
@@ -37,8 +37,7 @@ const Review: React.FC = () => {
     const limit = 10;
     const offset = (page - 1) * limit;
     const response = await getReviews(Number(params.lessonId), limit, offset);
-    console.log(response);
-    setCount(response.count);
+    setCount(Math.ceil(response.count / limit));
     setReviews(response.page);
   };
   const handleReviewSubmit = async (
@@ -64,14 +63,22 @@ const Review: React.FC = () => {
       );
       if (response !== null) {
         getData();
+        setScore(0);
+        textRef.current.value = '';
+        setImg(undefined);
       }
     }
   };
-
+  const handlePageChange = (
+    event: React.ChangeEvent<unknown>,
+    value: number,
+  ) => {
+    setPage(value);
+  };
   // 마운트시 리뷰 목록 불러옴
   useEffect(() => {
     getData();
-  }, []);
+  }, [page]);
 
   return (
     <div className="review">
@@ -109,6 +116,16 @@ const Review: React.FC = () => {
         {reviews.map((review: ReviewType, i: number) => (
           <ReviewItem review={review} key={review.id} />
         ))}
+      </div>
+      <div className="review__pagination">
+        <Pagination
+          variant="outlined"
+          count={count}
+          page={page}
+          shape="rounded"
+          size="large"
+          onChange={handlePageChange}
+        />
       </div>
     </div>
   );
