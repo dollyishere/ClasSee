@@ -7,6 +7,12 @@
   .review__review-list {
     width: 80%;
   }
+  .review__pagination {
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    margin: 0 0 60px 0;
+  }
   .review__input-box {
     display: flex;
     flex-wrap: wrap;
