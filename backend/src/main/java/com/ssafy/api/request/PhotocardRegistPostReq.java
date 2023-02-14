@@ -28,4 +28,7 @@ public class PhotocardRegistPostReq {
     @ApiModelProperty(name="lesson_id", example="강의 아이디")
     Long lessonId;
 
+    @ApiModelProperty(name="openLesson_id", example ="열린 강의 아이디")
+    Long openLessonId;
+
 }
