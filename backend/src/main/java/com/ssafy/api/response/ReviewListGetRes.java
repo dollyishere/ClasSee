@@ -31,20 +31,17 @@ public class ReviewListGetRes {
     public ReviewListGetRes(Review review){
 
         if(review.getRegtime() != null){
-
-            Timestamp regtime = review.getRegtime();
-
             DateTimeFormatter yearFormatter = DateTimeFormatter.ofPattern("yyyy");
-            String year = regtime.toLocalDateTime().format(yearFormatter);
+            String year = review.getRegtime().toLocalDateTime().format(yearFormatter);
 
             DateTimeFormatter monthFormatter = DateTimeFormatter.ofPattern("MM");
-            String month = regtime.toLocalDateTime().format(monthFormatter);
+            String month = review.getRegtime().toLocalDateTime().format(monthFormatter);
 
             DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("dd");
-            String day = regtime.toLocalDateTime().format(dayFormatter);
+            String day = review.getRegtime().toLocalDateTime().format(dayFormatter);
 
             DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
-            String time = regtime.toLocalDateTime().format(timeFormatter);
+            String time = review.getRegtime().toLocalDateTime().format(timeFormatter);
 
             this.year = year;
             this.month = month;
