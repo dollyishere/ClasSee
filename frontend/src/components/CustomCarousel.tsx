@@ -2,8 +2,9 @@ import React from 'react';
 import { StorageReference } from 'firebase/storage';
 import Carousel from 'react-material-ui-carousel';
 import CustomCarouselItem from './CustomCarouselItem';
+import { CarouselProps } from '../types/CarouselType';
 
-const CustomCarousel = ({ ads }: any) => {
+const CustomCarousel = ({ ads }: CarouselProps) => {
   return (
     <Carousel
       className="custom-carousel"

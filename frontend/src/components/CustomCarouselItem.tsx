@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import useViewModel from '../viewmodels/AdViewModel';
+import { CarouselItemProps } from '../types/CarouselType';
 
-const CustomCarouselItem = ({ imgRef }: any) => {
+const CustomCarouselItem = ({ imgRef }: CarouselItemProps) => {
   const [imgSrc, setImgSrc] = useState<string>();
   const { getAdImage } = useViewModel();
   useEffect(() => {
