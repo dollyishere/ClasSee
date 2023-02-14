@@ -12,10 +12,7 @@ import { storage } from '../utils/Firebase';
 const ReviewViewModel = () => {
   const { doGetReviews, doCreateReview, doDeleteReview, doUpdateReview } =
     useApi();
-  const deleteReview = async (reviewId: number) => {
-    const response = await doDeleteReview(reviewId);
-    return response;
-  };
+
   const createReview = async (
     requestBody: CreateReviewRequest,
     image: File,
@@ -53,6 +50,18 @@ const ReviewViewModel = () => {
     const imageRef = ref(storage, imgSrc);
     const ret = await getDownloadURL(imageRef);
     return ret;
+  };
+
+  const deleteReviewImage = async (imgSrc: string) => {
+    const imageRef = ref(storage, imgSrc);
+    await deleteObject(imageRef);
+  };
+  const deleteReview = async (reviewId: number, imgSrc: string) => {
+    const response = await doDeleteReview(reviewId);
+    if (response.statusCode === 200) {
+      deleteReviewImage(imgSrc);
+    }
+    return response;
   };
 
   return {

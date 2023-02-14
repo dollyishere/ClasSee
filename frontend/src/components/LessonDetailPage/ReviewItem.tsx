@@ -22,10 +22,6 @@ const ReviewItem = ({ review, handleDeleteReview }: any) => {
   // 작성자 프로필 이미지
   const [userImg, setUserImg] = useState<string>('');
 
-  const handleUpdateReivew = () => {
-    console.log('test');
-  };
-
   useEffect(() => {
     // 프로필 이미지 받아온다
     const getImage = async () => {
@@ -64,14 +60,7 @@ const ReviewItem = ({ review, handleDeleteReview }: any) => {
               <button
                 type="button"
                 className="review-card__button"
-                onClick={handleUpdateReivew}
-              >
-                <BorderColor className="review-card__icon" />
-              </button>
-              <button
-                type="button"
-                className="review-card__button"
-                onClick={() => handleDeleteReview(review.id)}
+                onClick={() => handleDeleteReview(review.id, review.img)}
               >
                 <DeleteForever className="review-card__icon" />
               </button>
