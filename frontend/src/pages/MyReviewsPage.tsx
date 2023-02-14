@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { Pagination } from '@mui/material';
-import MyReviewsItemPage from './MyReviewsItemPage';
+import MyReviewsItem from '../components/MyReviewsItem';
 import PrivateInfoState from '../models/PrivateInfoAtom';
 import useMyReviewViewModel from '../viewmodels/MyReviewsViewModel';
 
-interface Review {
+interface MyReview {
   id: number;
   content: string;
   day: string;
@@ -23,7 +23,22 @@ interface Review {
 const MyReviewsPage = () => {
   const [page, setPage] = useState(1);
   const [count, setCount] = useState<number>(0);
-  const [reviewList, setReviewList] = useState([]);
+  const [reviewList, setReviewList] = useState<MyReview[]>([]);
+  const [review, setReview] = useState<MyReview>({
+    id: 0,
+    content: '',
+    day: '',
+    img: '',
+    lessonId: 0,
+    lessonName: '',
+    month: '',
+    score: 0,
+    time: '',
+    userEmail: '',
+    userImg: 0,
+    userNickname: '',
+    year: '',
+  });
   const userInfo = useRecoilValue(PrivateInfoState);
   const { getMyReviews } = useMyReviewViewModel();
   const handlePageChange = (
@@ -42,16 +57,20 @@ const MyReviewsPage = () => {
         setCount(Math.ceil(MyReviewData.count / limit));
       }
       setReviewList(MyReviewData?.page);
+      console.log(MyReviewData?.page);
     }
   };
 
   useEffect(() => {
     handleMyReviewData();
-  });
+  }, [page]);
   return (
     <div>
-      <p>hi</p>
-      <MyReviewsItemPage reviewList={reviewList} />
+      <h1>작성한 후기</h1>
+      <br />
+      {reviewList.map((myreview) => (
+        <MyReviewsItem key={myreview.id} myreview={myreview} />
+      ))}
       <div className="lessons-page__pagination">
         <Pagination
           variant="outlined"
