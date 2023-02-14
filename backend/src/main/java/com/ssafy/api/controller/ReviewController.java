@@ -44,23 +44,23 @@ public class ReviewController {
             @ApiResponse(code = 409, message = "중복", response = DuplicateErrorResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = ServerErrorResponseBody.class)
     })
-    public ResponseEntity<? extends BaseResponseBody> registReview(@RequestBody ReviewRegistPostReq reviewRegistPostReq){
+    public ResponseEntity<?> registReview(@RequestBody ReviewRegistPostReq reviewRegistPostReq){
+
+        Long reviewId;
 
         try {
-            reviewService.createReview(reviewRegistPostReq);
+            reviewId = reviewService.createReview(reviewRegistPostReq);
         } catch (UserException u){
             return ResponseEntity.status(404).body(BaseResponseBody.of(404,"user not found"));
         } catch (OpenLessonException o){
-            return ResponseEntity.status(404).body(BaseResponseBody.of(404,"opneLesson not found"));
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404,"openLesson not found"));
         } catch (LessonException l){
             return ResponseEntity.status(404).body(BaseResponseBody.of(404,"lesson not found"));
-        } catch (ReviewException r){
-            return ResponseEntity.status(409).body(BaseResponseBody.of(409,"review duplicated"));
-        }catch (Exception e){
+        } catch (Exception e){
             return ResponseEntity.status(404).body(BaseResponseBody.of(404,"unexpected exception"));
         }
 
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"success"));
+        return ResponseEntity.status(200).body(reviewId);
     }
 
     @GetMapping("/list/{lessonId}")
