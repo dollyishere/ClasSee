@@ -4,12 +4,15 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  .review__review-list {
+    width: 80%;
+  }
   .review__input-box {
     display: flex;
     flex-wrap: wrap;
     background-color: colors.$beige_color_focus;
     border-radius: 10px;
-    padding: 20px;
+    padding: 20px 0;
     justify-content: center;
     width: 80%;
     .review__form {
@@ -33,6 +36,7 @@
         box-shadow: 0 0 0 1px colors.$light_gray_color;
         outline: none;
       }
+
       .review__row--input-box {
         padding: 10px;
         display: flex;
