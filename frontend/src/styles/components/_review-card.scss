@@ -31,6 +31,19 @@
       }
       .review-card__buttons {
         margin-left: auto;
+        .review-card__button {
+          background-color: rgba($color: #000000, $alpha: 0);
+          border: none;
+          .review-card__icon {
+            font-size: 30px;
+          }
+          &:hover {
+            cursor: pointer;
+            .review-card__icon {
+              color: colors.$gray_color;
+            }
+          }
+        }
       }
       .review-card__detail {
         font-size: 24px;

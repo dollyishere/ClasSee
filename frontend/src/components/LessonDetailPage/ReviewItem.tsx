@@ -1,10 +1,9 @@
 import React, { useEffect, useState, Dispatch, SetStateAction } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { Box, Card, CardMedia, Typography, CardContent } from '@mui/material';
+import { Card, CardMedia, CardContent, Modal } from '@mui/material';
+import { DeleteForever, BorderColor } from '@mui/icons-material';
 import Avatar from '@mui/material/Avatar';
-import Stack from '@mui/material/Stack';
-import ImageListItem from '@mui/material/ImageListItem';
 import Rating from '@mui/material/Rating';
 import { useRecoilValue } from 'recoil';
 import useReviewApi from '../../viewmodels/LessonDetailViewModel';
@@ -39,10 +38,12 @@ const ReviewItem: React.FC<Props> = ({ reviews, flag, setFlag }) => {
   const [reviewImg, setReviewImg] = useState<string>('');
   // 작성자 프로필 이미지
   const [userImg, setUserImg] = useState<string>('');
+
+  const handleUpdateReivew = () => {
+    console.log('test');
+  };
   // 후기 삭제 버튼 클릭 시
-  const handleDeleteReview = async (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  ) => {
+  const handleDeleteReview = async () => {
     // 삭제확인 컨펌창 팝업
     if (window.confirm('리뷰를 삭제 하시겠습니까?')) {
       // 리뷰삭제 요청
@@ -100,8 +101,20 @@ const ReviewItem: React.FC<Props> = ({ reviews, flag, setFlag }) => {
           </p>
           {userInfo !== null && userInfo.email === reviews.userEmail ? (
             <div className="review-card__buttons">
-              <button type="button">수정</button>
-              <button type="button">삭제</button>
+              <button
+                type="button"
+                className="review-card__button"
+                onClick={handleUpdateReivew}
+              >
+                <BorderColor className="review-card__icon" />
+              </button>
+              <button
+                type="button"
+                className="review-card__button"
+                onClick={handleDeleteReview}
+              >
+                <DeleteForever className="review-card__icon" />
+              </button>
             </div>
           ) : null}
         </div>
