@@ -6,7 +6,6 @@ import { DeleteForever, BorderColor } from '@mui/icons-material';
 import Avatar from '@mui/material/Avatar';
 import Rating from '@mui/material/Rating';
 import { useRecoilValue } from 'recoil';
-import useReviewApi from '../../viewmodels/LessonDetailViewModel';
 import useProfileViewModel from '../../viewmodels/ProfileViewModel';
 import PrivateInfoState from '../../models/PrivateInfoAtom';
 
@@ -33,7 +32,6 @@ const ReviewItem: React.FC<Props> = ({ reviews, flag, setFlag }) => {
   const lessonId = useParams();
   // 작성자 프로필 사진 위해
   const { getProfileImage } = useProfileViewModel();
-  const { doDeleteReview, getReviewImage, getReviewData } = useReviewApi();
   // 후기 이미지
   const [reviewImg, setReviewImg] = useState<string>('');
   // 작성자 프로필 이미지
@@ -43,34 +41,11 @@ const ReviewItem: React.FC<Props> = ({ reviews, flag, setFlag }) => {
     console.log('test');
   };
   // 후기 삭제 버튼 클릭 시
-  const handleDeleteReview = async () => {
-    // 삭제확인 컨펌창 팝업
-    if (window.confirm('리뷰를 삭제 하시겠습니까?')) {
-      // 리뷰삭제 요청
-      const res = await doDeleteReview(reviews.id);
-      // 삭제 성공 시
-      if (res?.message === 'success') {
-        setReviewImg('');
-        setUserImg('');
-        setFlag(!flag);
-      }
-    }
-  };
+
   useEffect(() => {
     console.log('무한?');
     // 렌더링 시 리뷰 사진을 받아온다
-    const getReviewsImage = async () => {
-      // 사진을 url로 변환
-      const reviewImageUrl = await getReviewImage(
-        Number(lessonId.lessonId),
-        reviews.userEmail,
-      );
-      if (reviewImageUrl) {
-        // 변환한 이미지를 훅에 저장
-        setReviewImg(reviewImageUrl);
-        setFlag(!flag);
-      }
-    };
+
     // 프로필 이미지 받아온다
     const getUserImage = async () => {
       // 사진을 url로 변환
@@ -83,7 +58,6 @@ const ReviewItem: React.FC<Props> = ({ reviews, flag, setFlag }) => {
         }
       }
     };
-    getReviewsImage();
     getUserImage();
   }, [reviewImg, userImg]);
   return (
@@ -111,7 +85,7 @@ const ReviewItem: React.FC<Props> = ({ reviews, flag, setFlag }) => {
               <button
                 type="button"
                 className="review-card__button"
-                onClick={handleDeleteReview}
+                // onClick={handleDeleteReview}
               >
                 <DeleteForever className="review-card__icon" />
               </button>

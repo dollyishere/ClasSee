@@ -1,22 +1,50 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState, useRef } from 'react';
+import { Rating } from '@mui/material';
 import { useRecoilValue } from 'recoil';
-import {
-  TextField,
-  Button,
-  Box,
-  Typography,
-  Rating,
-  Pagination,
-} from '@mui/material';
-import ReviewItem from './ReviewItem';
-import BasicRating from '../BasicRating';
-import privateInfoState from '../../models/PrivateInfoAtom';
-import useReviewApi from '../../viewmodels/LessonDetailViewModel';
-import { ReviewRequest } from '../../types/LessonsType';
+
+import { useParams } from 'react-router-dom';
 import { ReviewType } from '../../types/ReviewType';
+import useViewModel from '../../viewmodels/ReviewViewModel';
+import PrivateInfoState from '../../models/PrivateInfoAtom';
 
 const Review: React.FC = () => {
+  const userInfo = useRecoilValue(PrivateInfoState);
+  const params = useParams();
+  const textRef = useRef<HTMLTextAreaElement>(null);
+  const [score, setScore] = useState<number | null>(0);
+  const [img, setImg] = useState<File>();
+  const [imgSrc, setImgSrc] = useState<string>();
+  const { createReview } = useViewModel();
+
+  const handleRatingChange = (
+    event: React.ChangeEvent<object>,
+    newValue: number | null,
+  ) => {
+    setScore(newValue);
+  };
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.currentTarget.files !== null) {
+      const result = URL.createObjectURL(event.currentTarget.files[0]);
+      setImgSrc(result);
+      setImg(event.currentTarget.files[0]);
+    }
+  };
+  const handleReviewSubmit = async (
+    event: React.FormEvent<HTMLFormElement>,
+  ) => {
+    event.preventDefault();
+    if (textRef.current !== null && userInfo !== null && score !== null) {
+      const content = textRef.current.value;
+      const response = await createReview({
+        content,
+        img: '',
+        lessonId: Number(params.lessonId),
+        score,
+        userEmail: userInfo.email,
+      });
+      console.log(response);
+    }
+  };
   // const [flag, setFlag] = useState<boolean>(false);
   // const userInfo = useRecoilValue(privateInfoState);
   // const lessonId = useParams();
@@ -126,12 +154,7 @@ const Review: React.FC = () => {
   //   setReview({ ...review, content: event.target.value });
   // };
   // // 별점 등록 handle
-  // const handleRatingChange = (
-  //   event: React.ChangeEvent<object>,
-  //   newValue: number | null,
-  // ) => {
-  //   setReview({ ...review, score: newValue || 0 });
-  // };
+
   // // 후기 이미지 작성
   // const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
   //   if (event.target.files) {
@@ -171,7 +194,36 @@ const Review: React.FC = () => {
   // }, [page, flag]);
   return (
     <div className="review">
-      <div className="review__input-box">sd</div>
+      <div className="review__input-box">
+        <form className="review__form" onSubmit={handleReviewSubmit}>
+          <textarea ref={textRef} />
+          <div className="review__row--input-box">
+            <Rating
+              name="simple-controlled"
+              value={score}
+              precision={0.5}
+              onChange={handleRatingChange}
+              readOnly={false}
+            />{' '}
+            <label className="review__label" htmlFor="input-file">
+              {img === undefined ? null : img.name}
+              <input
+                type="file"
+                name="후기사진"
+                accept="image/*"
+                id="input-file"
+                className=";"
+                style={{ display: 'none' }}
+                onChange={handleImageChange}
+              />
+              <div className="button review__button--upload">사진 업로드</div>
+            </label>
+          </div>
+          <button type="submit" className="button review__button--submit">
+            등록
+          </button>
+        </form>
+      </div>
       {/* <TextField
         label="강의에 대한 후기를 남겨주세요"
         value={review.content}
@@ -186,13 +238,7 @@ const Review: React.FC = () => {
           alignItems: 'center',
         }}
       >
-        <Rating
-          name="simple-controlled"
-          value={review.score}
-          precision={0.5}
-          onChange={handleRatingChange}
-          readOnly={false}
-        />
+
         {review.score !== null && <Box sx={{ ml: 2 }}>{review.score}</Box>}
       </Box>
       <label className="input-file-button" htmlFor="input-file">
