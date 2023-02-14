@@ -50,12 +50,8 @@ public class StudentController {
         Long userId = user.getAuth().getId();
 
         // 해당 유저가 신청한 강의 리스트
-        List<AttendOpenLessonInfoDto> lessonList = lessonService.getAttendLessonListByStudent(userId, query, limit, offset);
-        if(lessonList == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "LESSON NOT FOUND"));
+        AttendLessonInfoListRes res = lessonService.getAttendLessonListByStudent(userId, query, limit, offset);
 
-        AttendLessonInfoListRes res = AttendLessonInfoListRes.builder()
-                .lessonInfoList(lessonList)
-                .build();
         return ResponseEntity.status(200).body(AttendLessonInfoListRes.of(200, "SUCCESS", res));
     }
 }
