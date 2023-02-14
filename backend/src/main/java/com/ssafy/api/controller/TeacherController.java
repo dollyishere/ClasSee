@@ -47,7 +47,7 @@ public class TeacherController {
             @ApiResponse(code = 404, message = "사용자 없음", response = NotFoundErrorResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = ServerErrorResponseBody.class)
     })
-    public ResponseEntity<? extends BaseResponseBody> getLessonListInfoPaging(@PathVariable String email, @RequestParam String query, @RequestParam int limit, @RequestParam int offset) {
+    public ResponseEntity<? extends BaseResponseBody> getLessonListInfoPaging(@PathVariable String email, @RequestParam int limit, @RequestParam int offset) {
         /*
         리턴 값
         강의 리스트
@@ -62,12 +62,9 @@ public class TeacherController {
         if(user == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "USER NOT FOUND"));
         Long userId = user.getAuth().getId();
 
-        List<AttendLessonInfoDto> lessonList = lessonService.getAttendLessonListByTeacher(userId, query, limit, offset);
-        if(lessonList == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "LESSON NOT FOUND"));
+        AttendLessonInfoListRes res = lessonService.getAttendLessonListByTeacher(userId, limit, offset);
+        if(res.getLessonInfoList() == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "LESSON NOT FOUND"));
 
-        AttendLessonInfoListRes res = AttendLessonInfoListRes.builder()
-                .lessonInfoList(lessonList)
-                .build();
         return ResponseEntity.status(200).body(AttendLessonInfoListRes.of(200, "SUCCESS", res));
     }
 

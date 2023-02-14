@@ -16,9 +16,8 @@ import java.time.LocalDateTime;
 public class OpenLessonInfoDto {
     Long openLessonId;
     Long lessonId;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    LocalDateTime startTime;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    LocalDateTime endTime;
-
+    Long totalCount;
+    Long attendCount;
+    String startTime;
+    String endTime;
 }

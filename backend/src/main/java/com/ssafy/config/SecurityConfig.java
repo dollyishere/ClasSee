@@ -29,6 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/v2/api-docs/**",
             "/swagger-ui/**",
             "/swagger-resources/**",
+            "/webjars/**"
     };
     private static String[] OPEN_API_GET = new String[] {
             "/api/v1/auth/**",
@@ -44,7 +45,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static String[] OPEN_API_POST = new String[] {
             "/api/v1/auth/login",
-            "/api/v1/users"
+            "/api/v1/users",
+            "/api/v1/photocard"
+    };
+
+    private static String[] OPEN_API_PUT = new String[] {
+            "/api/v1/users/**/password"
     };
 
     @Autowired
@@ -90,6 +96,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(SWAGGER_PATH).permitAll()
                 .antMatchers(HttpMethod.GET, OPEN_API_GET).permitAll()
                 .antMatchers(HttpMethod.POST, OPEN_API_POST).permitAll()
+                .antMatchers(HttpMethod.PUT, OPEN_API_PUT).permitAll()
                 .anyRequest().authenticated()
                 .and().cors();
 

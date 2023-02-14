@@ -2,6 +2,7 @@ package com.ssafy.api.service;
 
 import com.querydsl.core.Tuple;
 import com.ssafy.api.dto.*;
+import com.ssafy.api.response.AttendLessonInfoListRes;
 import com.ssafy.api.response.LessonDetailsRes;
 import com.ssafy.api.response.LessonSchedulesRes;
 import com.ssafy.db.entity.lesson.*;
@@ -13,10 +14,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class LessonServiceImpl implements LessonService {
@@ -180,12 +178,17 @@ public class LessonServiceImpl implements LessonService {
         List<OpenLesson> lessonSchedules = lessonRepositorySupport.findScheduleByLessonId(lessonId, regDate);
         List<OpenLessonInfoDto> lessonSchedulesRes = new ArrayList<>();
         lessonSchedules.forEach((schedule) ->{
+            Long totalCount = lessonRepository.getOne(schedule.getLessonId()).getMaximum();
+            Long attendCount = lessonRepositorySupport.findAttendCount(schedule.getId());
+
             lessonSchedulesRes.add(
                     OpenLessonInfoDto.builder()
                             .openLessonId(schedule.getId())
                             .lessonId(schedule.getLessonId())
-                            .startTime(schedule.getStartTime())
-                            .endTime(schedule.getEndTime())
+                            .totalCount(totalCount)
+                            .attendCount(attendCount)
+                            .startTime(schedule.getStartTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
+                            .endTime(schedule.getEndTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
                             .build()
             );
         });
@@ -215,8 +218,10 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public List<AttendOpenLessonInfoDto> getAttendLessonListByStudent(Long userId, String query, int limit, int offset) {
-        List<OpenLesson> openLessonList = lessonRepositorySupport.findAttendLessonListByStudent(userId, query, limit, offset);
+    public AttendLessonInfoListRes getAttendLessonListByStudent(Long userId, String query, int limit, int offset) {
+        Map<String, Object> attendLessonDto = lessonRepositorySupport.findAttendLessonListByStudent(userId, query, limit, offset);
+        List<OpenLesson> openLessonList = (List<OpenLesson>) attendLessonDto.get("LESSON_LIST");
+        Long count = (Long) attendLessonDto.get("COUNT");
 
         List<AttendOpenLessonInfoDto> attendLessonList = new ArrayList<>();
 
@@ -247,43 +252,50 @@ public class LessonServiceImpl implements LessonService {
                             .build()
             );
         });
-        return attendLessonList;
+
+        AttendLessonInfoListRes res = AttendLessonInfoListRes
+                                                    .builder()
+                                                    .lessonInfoList(attendLessonList)
+                                                    .count(count)
+                                                    .build();
+        return res;
     }
 
     @Override
-    public List<AttendLessonInfoDto> getAttendLessonListByTeacher(Long userId, String query, int limit, int offset) {
-        List<Long> lessonIdList = lessonRepositorySupport.findAttendLessonListByTeacher(query, limit, offset);
+    public AttendLessonInfoListRes getAttendLessonListByTeacher(Long userId, int limit, int offset) {
+        HashMap<String, Object> result = lessonRepositorySupport.findAttendLessonListByTeacher(userId, limit, offset);
 
+        List<Lesson> lessonList = (List<Lesson>) result.get("LESSON_LIST");
         List<AttendLessonInfoDto> attendLessonList = new ArrayList<>();
 
-        lessonIdList.forEach((lessonId) -> {
-            Optional<Lesson> lesson = lessonRepository.findById(lessonId);
-            if(!lesson.isPresent()) return;
-            if(!lesson.get().getUser().getAuth().getId().equals(userId)) return;
-
-            List<Pamphlet> pamphletList = lesson.get().getPamphletList();
+        lessonList.forEach((lesson) -> {
+            List<Pamphlet> pamphletList = lesson.getPamphletList();
 
             attendLessonList.add(
                     AttendLessonInfoDto.builder()
-                            .lessonId(lesson.get().getId())
-                            .name(lesson.get().getName())
-                            .runningTime(lesson.get().getRunningtime())
-                            .category(lesson.get().getCategory())
+                            .lessonId(lesson.getId())
+                            .name(lesson.getName())
+                            .runningTime(lesson.getRunningtime())
+                            .category(lesson.getCategory())
                             .lessonImage(
                                     ((pamphletList.size() <= 0) ? null : pamphletList.get(0).getImg())
                             )
-                            .teacherImage(lesson.get().getUser().getImg())
-                            .teacher(lesson.get().getUser().getAuth().getEmail())
-                            .score(lessonRepositorySupport.setLessonAvgScore(lesson.get()))
+                            .teacherImage(lesson.getUser().getImg())
+                            .teacher(lesson.getUser().getAuth().getEmail())
+                            .score(lessonRepositorySupport.setLessonAvgScore(lesson))
                             .isBookMarked(
-                                    (bookmarkRepositorySupport.bookmarkedCheck(lesson.get().getId(), userRepositorySupport.findOne(userId))) == 0 ? false: true
+                                    (bookmarkRepositorySupport.bookmarkedCheck(lesson.getId(), userRepositorySupport.findOne(userId))) == 0 ? false: true
                             )
-                            .price(lesson.get().getPrice())
-                            .kitPrice(lesson.get().getKitPrice())
+                            .price(lesson.getPrice())
+                            .kitPrice(lesson.getKitPrice())
                             .build()
             );
         });
-        return attendLessonList;
+        return AttendLessonInfoListRes
+                .builder()
+                .lessonInfoList(attendLessonList)
+                .count((Long)result.get("COUNT"))
+                .build();
     }
 
     @Override
