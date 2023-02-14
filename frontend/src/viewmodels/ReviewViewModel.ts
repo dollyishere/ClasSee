@@ -10,7 +10,7 @@ import { CreateReviewRequest } from '../types/ReviewType';
 import { storage } from '../utils/Firebase';
 
 const ReviewViewModel = () => {
-  const { doGetReview, doCreateReview, doDeleteReview, doUpdateReview } =
+  const { doGetReviews, doCreateReview, doDeleteReview, doUpdateReview } =
     useApi();
 
   const createReview = async (
@@ -37,8 +37,25 @@ const ReviewViewModel = () => {
     return null;
   };
 
+  const getReviews = async (
+    lessonId: number,
+    limit: number,
+    offset: number,
+  ) => {
+    const response = await doGetReviews(lessonId, limit, offset);
+    return response;
+  };
+
+  const getReviewImage = async (imgSrc: string) => {
+    const imageRef = ref(storage, imgSrc);
+    const ret = await getDownloadURL(imageRef);
+    return ret;
+  };
+
   return {
     createReview,
+    getReviews,
+    getReviewImage,
   };
 };
 

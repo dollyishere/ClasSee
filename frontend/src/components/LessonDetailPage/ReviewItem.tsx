@@ -6,32 +6,18 @@ import { DeleteForever, BorderColor } from '@mui/icons-material';
 import Avatar from '@mui/material/Avatar';
 import Rating from '@mui/material/Rating';
 import { useRecoilValue } from 'recoil';
+import useTimeStamp from '../../utils/TimeStamp';
 import useProfileViewModel from '../../viewmodels/ProfileViewModel';
+import useReviewViewModel from '../../viewmodels/ReviewViewModel';
 import PrivateInfoState from '../../models/PrivateInfoAtom';
 
-interface Props {
-  reviews: {
-    id: number;
-    content: string;
-    score: number;
-    img: string;
-    year: string;
-    month: string;
-    day: string;
-    time: string;
-    userEmail: string;
-    userImg: string | undefined;
-    userNickname: string;
-  };
-  flag: boolean;
-  setFlag: Dispatch<SetStateAction<boolean>>;
-}
-
-const ReviewItem: React.FC<Props> = ({ reviews, flag, setFlag }) => {
+const ReviewItem = ({ review }: any) => {
+  const { toDate } = useTimeStamp();
   const userInfo = useRecoilValue(PrivateInfoState);
   const lessonId = useParams();
   // 작성자 프로필 사진 위해
   const { getProfileImage } = useProfileViewModel();
+  const { getReviewImage } = useReviewViewModel();
   // 후기 이미지
   const [reviewImg, setReviewImg] = useState<string>('');
   // 작성자 프로필 이미지
@@ -43,23 +29,25 @@ const ReviewItem: React.FC<Props> = ({ reviews, flag, setFlag }) => {
   // 후기 삭제 버튼 클릭 시
 
   useEffect(() => {
-    console.log('무한?');
-    // 렌더링 시 리뷰 사진을 받아온다
-
     // 프로필 이미지 받아온다
-    const getUserImage = async () => {
+    const getImage = async () => {
       // 사진을 url로 변환
-      if (reviews.userImg) {
-        const userImageUrl = await getProfileImage(reviews.userImg);
+      if (review.userImg) {
+        const userImageUrl = await getProfileImage(review.userImg);
         if (userImageUrl) {
           // 변환한 이미지를 훅에 저장
           setUserImg(userImageUrl);
-          setFlag(!flag);
+        }
+      }
+      if (review.img) {
+        const reviewImgUrl = await getReviewImage(review.img);
+        if (reviewImgUrl) {
+          setReviewImg(reviewImgUrl);
         }
       }
     };
-    getUserImage();
-  }, [reviewImg, userImg]);
+    getImage();
+  }, []);
   return (
     <Card className="review-card">
       <CardMedia
@@ -71,9 +59,9 @@ const ReviewItem: React.FC<Props> = ({ reviews, flag, setFlag }) => {
         <div className="review-card__row">
           <Avatar alt="Remy Sharp" src={userImg} />
           <p>
-            <span>{reviews.userNickname}</span>님이 작성하셨습니다.
+            <span>{review.userNickname}</span>님이 작성하셨습니다.
           </p>
-          {userInfo !== null && userInfo.email === reviews.userEmail ? (
+          {userInfo !== null && userInfo.email === review.userEmail ? (
             <div className="review-card__buttons">
               <button
                 type="button"
@@ -93,15 +81,14 @@ const ReviewItem: React.FC<Props> = ({ reviews, flag, setFlag }) => {
           ) : null}
         </div>
         <div className="review-card__row">
-          <Rating value={reviews.score} precision={0.5} readOnly />
-          <div className="review-card__rating">{reviews.score}</div>
+          <Rating value={review.score} precision={0.5} readOnly />
+          <div className="review-card__rating">{review.score}</div>
         </div>
         <div className="review-card__row">
-          <div className="review-card__detail">{reviews.content}</div>
+          <div className="review-card__detail">{review.content}</div>
         </div>
         <div className="review-card__row review-card__footer">
-          작성일자: {reviews.year}년 {reviews.month}월 {reviews.day}일
-          {reviews.time}
+          작성일자: {toDate(review.regtime)}
         </div>
       </CardContent>
     </Card>

@@ -12,3 +12,16 @@ export interface UpdateReviewRequest {
   id: number;
   img: string;
 }
+
+export interface ReviewType {
+  id: number;
+  content: string;
+  regtime: string;
+  score: number;
+  img: string;
+  userEmail: string;
+  userNickname: string;
+  userImg: string;
+  lessonId: number;
+  lessonName: string;
+}

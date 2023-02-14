@@ -5,7 +5,8 @@ import { CreateReviewRequest, UpdateReviewRequest } from '../types/ReviewType';
 const ReviewApi = () => {
   const accesstoken = localStorage.getItem('accessToken');
   // 후기 데이터 받아오는 api
-  const doGetReview = async (
+
+  const doGetReviews = async (
     lessonId: number,
     limit: number,
     offset: number,
@@ -14,7 +15,7 @@ const ReviewApi = () => {
       const response = await axios.get(
         `${process.env.REACT_APP_SERVER_URI}/api/v1/review/list/${lessonId}?limit=${limit}&offset=${offset}`,
       );
-      return response;
+      return response.data;
     } catch (error: any) {
       console.log(error);
     }
@@ -76,7 +77,7 @@ const ReviewApi = () => {
 
   return {
     doCreateReview,
-    doGetReview,
+    doGetReviews,
     doDeleteReview,
     doUpdateReview,
   };
