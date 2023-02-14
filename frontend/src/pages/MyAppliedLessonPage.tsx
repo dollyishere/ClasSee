@@ -63,7 +63,7 @@ const MyAppliedLessonsPage = () => {
         );
         console.log(todoData);
         setTodoLessons(todoData.lessonInfoList);
-        setTodoCount(Math.ceil(todoData.lessonInfoList.length / limit));
+        setTodoCount(Math.ceil(todoData.count / limit));
       };
       getTodoData();
     }
@@ -82,7 +82,7 @@ const MyAppliedLessonsPage = () => {
           'DONE',
         );
         setDoneLessons(doneData.lessonInfoList);
-        setDoneCount(Math.ceil(doneData.lessonInfoList.length / limit));
+        setDoneCount(Math.ceil(doneData.count / limit));
       };
       getDoneData();
     }
@@ -118,7 +118,7 @@ const MyAppliedLessonsPage = () => {
               ) : (
                 <h1>신청한 클래스가 없어요!</h1>
               )}
-              {todoLessons.length < 3 ? (
+              {todoPage === todoCount ? (
                 <IconButton disabled>
                   <ArrowRightIcon fontSize="large" color="disabled" />
                 </IconButton>
@@ -155,7 +155,7 @@ const MyAppliedLessonsPage = () => {
               ) : (
                 <h1>완료한 클래스가 없어요!</h1>
               )}
-              {doneLessons.length < 3 ? (
+              {donePage === doneCount ? (
                 <IconButton disabled>
                   <ArrowRightIcon fontSize="large" color="disabled" />
                 </IconButton>
