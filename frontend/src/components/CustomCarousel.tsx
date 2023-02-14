@@ -20,7 +20,7 @@ const CustomCarousel = () => {
       cycleNavigation
       navButtonsAlwaysVisible
       indicators={false}
-      height="300px"
+      height="450px"
     >
       {sample.map((item: any, i: number) => {
         return (

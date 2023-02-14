@@ -64,7 +64,7 @@ const CreatePhotoCardPage = () => {
             openLessonId: Number(openLessonId),
           },
           image,
-          'test',
+          openLessonId,
         );
 
         if (response === 200) {
