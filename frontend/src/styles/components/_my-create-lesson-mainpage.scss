@@ -5,15 +5,13 @@
   margin-bottom: 100px;
 }
 .createlessons {
-  border-right: solid 1px black;
   width: 50%;
+  .createlessons__title {
+    margin-left: 50px;
+    text-align: left;
+  }
   .createlessons__cards {
     display: flex;
     justify-content: space-evenly;
   }
-}
-
-.lesson {
-  //여기다가 hover css 적용하면 원하는 데에만 css 적용
-  //하지만 hover event 찾아봐야함
 }
