@@ -115,9 +115,6 @@ const LessonEnrollPage = () => {
             );
             const url = await getDownloadURL(imgRef);
             setLessonImage(url);
-          } else {
-            alert('자신이 개설한 클래스는 신청이 불가합니다.');
-            navigate(`/`);
           }
         } else {
           alert('다시 시도해주세요.');
