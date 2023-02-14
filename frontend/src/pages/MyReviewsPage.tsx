@@ -8,17 +8,14 @@ import useMyReviewViewModel from '../viewmodels/MyReviewsViewModel';
 interface MyReview {
   id: number;
   content: string;
-  day: string;
   img: string;
+  regtime: string;
   lessonId: number;
   lessonName: string;
-  month: string;
   score: number;
-  time: string;
   userEmail: string;
   userImg: number | null;
   userNickname: string;
-  year: string;
 }
 const MyReviewsPage = () => {
   const [page, setPage] = useState(1);
@@ -27,17 +24,14 @@ const MyReviewsPage = () => {
   const [review, setReview] = useState<MyReview>({
     id: 0,
     content: '',
-    day: '',
     img: '',
+    regtime: '',
     lessonId: 0,
     lessonName: '',
-    month: '',
     score: 0,
-    time: '',
     userEmail: '',
     userImg: 0,
     userNickname: '',
-    year: '',
   });
   const userInfo = useRecoilValue(PrivateInfoState);
   const { getMyReviews } = useMyReviewViewModel();
