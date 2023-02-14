@@ -56,7 +56,7 @@ const CreatePhotoCardPage = () => {
             userEmail: email,
             img: `photo-cards/${encodeURI(email)}/${encodeURI(
               String(2),
-            )}/${encodeURI('test')}/${image.name}`,
+            )}/${encodeURI(String(openLessonId))}/${image.name}`,
             title: titleTarget.value,
             content: contentTarget.value,
             sign: '',
