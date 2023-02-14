@@ -57,13 +57,16 @@ const Router = () => {
         path="/enroll-lesson/:lessonId/:openLessonId"
         element={<LessonEnrollPage />}
       />
-      <Route path="/lesson/:sessionId/:role" element={<VideoCallPage />} />
       <Route
-        path="/lesson/:sessionId/:role/photo-card/qr"
+        path="/lesson/:lessonId/:openLessonId/:role"
+        element={<VideoCallPage />}
+      />
+      <Route
+        path="/lesson/photo-card/qr/:lessonId/:openLessonId"
         element={<PhotoCardQRPage />}
       />
       <Route
-        path="/photo-card/create/:email"
+        path="/photo-card/create/:lessonId/:openLessonId/:email"
         element={<CreatePhotoCardPage />}
       />
       <Route path="/photo-card" element={<PhotoCardsPage />} />

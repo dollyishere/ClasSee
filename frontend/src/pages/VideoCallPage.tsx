@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import {
   ExceptionEvent,
   OpenVidu,
@@ -31,9 +31,9 @@ import PrivateInfoState from '../models/PrivateInfoAtom';
 const VideoCallPage = () => {
   const navigate = useNavigate();
   const userInfo = useRecoilValue(PrivateInfoState);
+  const params = useParams();
   // 사용자가 강사인지 수강생인지 url로 넘겨받도록 함
-  const location = useLocation();
-  const role = location.pathname.split('/')[3];
+  const { role, openLessonId, lessonId } = params;
 
   // 수강생 화면을 클릭했는지
   const [isFocused, setIsFocused] = useState<boolean>(false);
@@ -56,9 +56,7 @@ const VideoCallPage = () => {
 
   // 현재 세션 ID를 저장할 state => 스케줄 id
   // 이 부분도 실제 스케줄 id로 바꿔야 돼요 일단 지금은 url로 넘겨받음
-  const [sessionId, setSessionId] = useState<string>(
-    location.pathname.split('/')[2],
-  );
+  const [sessionId, setSessionId] = useState<string | undefined>(openLessonId);
 
   // 세션 객체를 저장할 state
   const [session, setSession] = useState<Session>();
@@ -288,7 +286,7 @@ const VideoCallPage = () => {
   };
   const movePhotoQRPage = () => {
     leaveSession();
-    navigate('photo-card/qr');
+    navigate(`/lesson/photo-card/qr/${lessonId}/${openLessonId}`);
   };
   // 세션에 참가하기 위해 실행하는 함수
   const joinSession = () => {
@@ -399,7 +397,7 @@ const VideoCallPage = () => {
         }
       });
 
-      if (userInfo !== null) {
+      if (userInfo !== null && sessionId !== undefined) {
         // 세션 토큰 api 요청 함수
         const { testId, testToken } = await createSession(
           userInfo.email,

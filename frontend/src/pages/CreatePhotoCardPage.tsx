@@ -11,10 +11,9 @@ const CreatePhotoCardPage = () => {
   const contentRef = useRef(null);
   const [image, setImage] = useState<File>();
   const [imageSrc, setImageSrc] = useState<string>();
-  const location = useLocation();
 
   const params = useParams();
-  console.log(params.email);
+  const { email, openLessonId, lessonId } = params;
 
   const { createPhotoCard } = useViewModel();
 
@@ -46,17 +45,23 @@ const CreatePhotoCardPage = () => {
         alert('사진을 업로드해주세요.');
         return;
       }
-      if (imageSrc !== undefined && params.email !== undefined) {
+      if (
+        imageSrc !== undefined &&
+        email !== undefined &&
+        lessonId !== undefined &&
+        openLessonId
+      ) {
         const response = await createPhotoCard(
           {
-            userEmail: params.email,
-            img: `photo-cards/${encodeURI(params.email)}/${encodeURI(
+            userEmail: email,
+            img: `photo-cards/${encodeURI(email)}/${encodeURI(
               String(2),
             )}/${encodeURI('test')}/${image.name}`,
             title: titleTarget.value,
             content: contentTarget.value,
             sign: '',
-            lessonId: 2,
+            lessonId: Number(lessonId),
+            openLessonId: Number(openLessonId),
           },
           image,
           'test',
