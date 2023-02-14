@@ -5,6 +5,8 @@ import { useRecoilValue } from 'recoil';
 import { useParams } from 'react-router-dom';
 import useViewModel from '../../viewmodels/ReviewViewModel';
 import PrivateInfoState from '../../models/PrivateInfoAtom';
+import { ReviewType } from '../../types/ReviewType';
+import ReviewItem from './ReviewItem';
 
 const Review: React.FC = () => {
   const userInfo = useRecoilValue(PrivateInfoState);
@@ -13,7 +15,10 @@ const Review: React.FC = () => {
   const [score, setScore] = useState<number | null>(0);
   const [img, setImg] = useState<File>();
   const [imgSrc, setImgSrc] = useState<string>();
-  const { createReview } = useViewModel();
+  const [page, setPage] = useState<number>(1);
+  const [count, setCount] = useState<number>(0);
+  const [reviews, setReviews] = useState<Array<ReviewType>>([]);
+  const { createReview, getReviews } = useViewModel();
 
   const handleRatingChange = (
     event: React.ChangeEvent<object>,
@@ -52,6 +57,19 @@ const Review: React.FC = () => {
       console.log(response);
     }
   };
+
+  // 마운트시 리뷰 목록 불러옴
+  useEffect(() => {
+    const getData = async () => {
+      const limit = 10;
+      const offset = (page - 1) * limit;
+      const response = await getReviews(Number(params.lessonId), limit, offset);
+      console.log(response);
+      setCount(response.count);
+      setReviews(response.page);
+    };
+    getData();
+  }, []);
   // const [flag, setFlag] = useState<boolean>(false);
   // const userInfo = useRecoilValue(privateInfoState);
   // const lessonId = useParams();
@@ -230,6 +248,11 @@ const Review: React.FC = () => {
             등록
           </button>
         </form>
+      </div>
+      <div className="review__review-list">
+        {reviews.map((review: ReviewType) => (
+          <ReviewItem review={review} />
+        ))}
       </div>
       {/* <TextField
         label="강의에 대한 후기를 남겨주세요"

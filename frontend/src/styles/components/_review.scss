@@ -3,12 +3,12 @@
 .review {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   .review__input-box {
     display: flex;
     flex-wrap: wrap;
     background-color: colors.$beige_color_focus;
     border-radius: 10px;
-    margin: 0 auto;
     padding: 20px;
     justify-content: center;
     width: 80%;
