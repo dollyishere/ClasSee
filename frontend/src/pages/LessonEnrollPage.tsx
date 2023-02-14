@@ -39,6 +39,8 @@ const LessonEnrollPage = () => {
     openLessonInfo.userPhone,
   );
 
+  const [showBody, setShowBody] = useState(false);
+
   // 컴포넌트 전환에 필요한 useNavigate 재할당
   const navigate = useNavigate();
 
@@ -103,15 +105,21 @@ const LessonEnrollPage = () => {
           Number(openLessonId.openLessonId),
         );
         if (res) {
-          setOpenLessonInfo(res);
-          const imgRef = ref(
-            storage,
-            `lessons/${Number(
-              openLessonId.lessonId,
-            )}/pamphlet_images/${encodeURI(res.lessonImg)}`,
-          );
-          const url = await getDownloadURL(imgRef);
-          setLessonImage(url);
+          if (res.lessonTeacherName !== res.userName) {
+            setOpenLessonInfo(res);
+            const imgRef = ref(
+              storage,
+              `lessons/${Number(
+                openLessonId.lessonId,
+              )}/pamphlet_images/${encodeURI(res.lessonImg)}`,
+            );
+            const url = await getDownloadURL(imgRef);
+            setLessonImage(url);
+            setShowBody(true);
+          } else {
+            alert('자신이 개설한 클래스는 신청이 불가합니다.');
+            navigate(`/`);
+          }
         } else {
           alert('다시 시도해주세요.');
         }
@@ -120,81 +128,87 @@ const LessonEnrollPage = () => {
     fetchData();
   }, []);
   return (
-    <div className="lesson-enroll-page-container">
-      <Header />
-      <div className="lesson-enroll-page__body">
-        <div className="lesson-enroll-page__left-content">
-          <Card className="lesson-enroll-page__lessonInfo">
-            <div className="lesson-enroll-page__card-header">강의 정보</div>
-            <img src={lessonImage} alt={lessonImage} />
-            <h3>강의명</h3>
-            <p>{openLessonInfo.lessonName}</p>
-            <h3>강사명</h3>
-            <p>{openLessonInfo.lessonTeacherName}</p>
-            <h3>일자</h3>
-            <p>
-              {openLessonInfo.lessonStartTime.slice(0, 4)}년{' '}
-              {openLessonInfo.lessonStartTime.slice(5, 7)}월{' '}
-              {openLessonInfo.lessonStartTime.slice(8, 10)}일{' '}
-              {openLessonInfo.lessonStartTime.slice(11, 13)}시{' '}
-              {openLessonInfo.lessonStartTime.slice(14, 16)}분
-            </p>
-          </Card>
-          <Card className="lesson-enroll-page__userInfo">
-            <div className="lesson-enroll-page__card-header">신청자 정보</div>
-            <h3>이름</h3>
-            <p>{openLessonInfo.userName}</p>
-            <h3>닉네임</h3>
-            <p>{openLessonInfo.userNickname}</p>
-            <h3>전화번호</h3>
-            <p>*전화번호 변경 시, 번호만 입력해주시기 바랍니다.</p>
-            <input
-              type="text"
-              value={phoneNumberState}
-              defaultValue={openLessonInfo.userPhone}
-              placeholder="번호를 입력해주십시오."
-              onChange={handleInputPhoneNumber}
-            />
-            <h3>이메일</h3>
-            <p>{openLessonInfo.userEmail}</p>
-            <h3>주소</h3>
-            <p>{openLessonInfo.userAddress}</p>
-          </Card>
+    <div>
+      {showBody ? (
+        <div className="lesson-enroll-page-container">
+          <Header />
+          <div className="lesson-enroll-page__body">
+            <div className="lesson-enroll-page__left-content">
+              <Card className="lesson-enroll-page__lessonInfo">
+                <div className="lesson-enroll-page__card-header">강의 정보</div>
+                <img src={lessonImage} alt={lessonImage} />
+                <h3>강의명</h3>
+                <p>{openLessonInfo.lessonName}</p>
+                <h3>강사명</h3>
+                <p>{openLessonInfo.lessonTeacherName}</p>
+                <h3>일자</h3>
+                <p>
+                  {openLessonInfo.lessonStartTime.slice(0, 4)}년{' '}
+                  {openLessonInfo.lessonStartTime.slice(5, 7)}월{' '}
+                  {openLessonInfo.lessonStartTime.slice(8, 10)}일{' '}
+                  {openLessonInfo.lessonStartTime.slice(11, 13)}시{' '}
+                  {openLessonInfo.lessonStartTime.slice(14, 16)}분
+                </p>
+              </Card>
+              <Card className="lesson-enroll-page__userInfo">
+                <div className="lesson-enroll-page__card-header">
+                  신청자 정보
+                </div>
+                <h3>이름</h3>
+                <p>{openLessonInfo.userName}</p>
+                <h3>닉네임</h3>
+                <p>{openLessonInfo.userNickname}</p>
+                <h3>전화번호</h3>
+                <p>*전화번호 변경 시, 번호만 입력해주시기 바랍니다.</p>
+                <input
+                  type="text"
+                  value={phoneNumberState}
+                  defaultValue={openLessonInfo.userPhone}
+                  placeholder="번호를 입력해주십시오."
+                  onChange={handleInputPhoneNumber}
+                />
+                <h3>이메일</h3>
+                <p>{openLessonInfo.userEmail}</p>
+                <h3>주소</h3>
+                <p>{openLessonInfo.userAddress}</p>
+              </Card>
+            </div>
+            <div className="lesson-enroll-page__right-content">
+              <Card className="lesson-enroll-page__payment-block">
+                <div className="lesson-enroll-page__card-header">결제 정보</div>
+                <h3>수강료</h3>
+                <p>{openLessonInfo.lessonPrice}</p>
+                {/* <h3>포인트</h3>
+          <p>{openLessonInfo.userPoint}</p> */}
+                <h3>키트 추가</h3>
+                <Checkbox
+                  checked={checked}
+                  onChange={handleChange}
+                  inputProps={{ 'aria-label': 'controlled' }}
+                />
+                <h3>총 결제 금액</h3>
+                <p>
+                  {checked
+                    ? openLessonInfo.lessonPrice + openLessonInfo.kitPrice
+                    : openLessonInfo.lessonPrice}
+                </p>
+                <h4>현재 포인트</h4>
+                <p>{openLessonInfo.userPoint}</p>
+                <hr />
+                <h4>결제 후 포인트</h4>
+                <p>
+                  {checked
+                    ? openLessonInfo.userPoint -
+                      (openLessonInfo.lessonPrice + openLessonInfo.kitPrice)
+                    : openLessonInfo.userPoint - openLessonInfo.lessonPrice}
+                </p>
+              </Card>
+              <Button onClick={handleLessonEnroll}>결제하기</Button>
+              <span>취소, 환불 규정</span>
+            </div>
+          </div>
         </div>
-        <div className="lesson-enroll-page__right-content">
-          <Card className="lesson-enroll-page__payment-block">
-            <div className="lesson-enroll-page__card-header">결제 정보</div>
-            <h3>수강료</h3>
-            <p>{openLessonInfo.lessonPrice}</p>
-            {/* <h3>포인트</h3>
-            <p>{openLessonInfo.userPoint}</p> */}
-            <h3>키트 추가</h3>
-            <Checkbox
-              checked={checked}
-              onChange={handleChange}
-              inputProps={{ 'aria-label': 'controlled' }}
-            />
-            <h3>총 결제 금액</h3>
-            <p>
-              {checked
-                ? openLessonInfo.lessonPrice + openLessonInfo.kitPrice
-                : openLessonInfo.lessonPrice}
-            </p>
-            <h4>현재 포인트</h4>
-            <p>{openLessonInfo.userPoint}</p>
-            <hr />
-            <h4>결제 후 포인트</h4>
-            <p>
-              {checked
-                ? openLessonInfo.userPoint -
-                  (openLessonInfo.lessonPrice + openLessonInfo.kitPrice)
-                : openLessonInfo.userPoint - openLessonInfo.lessonPrice}
-            </p>
-          </Card>
-          <Button onClick={handleLessonEnroll}>결제하기</Button>
-          <span>취소, 환불 규정</span>
-        </div>
-      </div>
+      ) : null}
     </div>
   );
 };
