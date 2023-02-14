@@ -11,7 +11,7 @@ import useProfileViewModel from '../../viewmodels/ProfileViewModel';
 import useReviewViewModel from '../../viewmodels/ReviewViewModel';
 import PrivateInfoState from '../../models/PrivateInfoAtom';
 
-const ReviewItem = ({ review }: any) => {
+const ReviewItem = ({ review, handleDeleteReview }: any) => {
   const { toDate } = useTimeStamp();
   const userInfo = useRecoilValue(PrivateInfoState);
   // 작성자 프로필 사진 위해
@@ -25,7 +25,6 @@ const ReviewItem = ({ review }: any) => {
   const handleUpdateReivew = () => {
     console.log('test');
   };
-  // 후기 삭제 버튼 클릭 시
 
   useEffect(() => {
     // 프로필 이미지 받아온다
@@ -72,7 +71,7 @@ const ReviewItem = ({ review }: any) => {
               <button
                 type="button"
                 className="review-card__button"
-                // onClick={handleDeleteReview}
+                onClick={() => handleDeleteReview(review.id)}
               >
                 <DeleteForever className="review-card__icon" />
               </button>

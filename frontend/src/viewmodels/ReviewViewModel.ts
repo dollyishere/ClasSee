@@ -12,7 +12,10 @@ import { storage } from '../utils/Firebase';
 const ReviewViewModel = () => {
   const { doGetReviews, doCreateReview, doDeleteReview, doUpdateReview } =
     useApi();
-
+  const deleteReview = async (reviewId: number) => {
+    const response = await doDeleteReview(reviewId);
+    return response;
+  };
   const createReview = async (
     requestBody: CreateReviewRequest,
     image: File,
@@ -56,6 +59,7 @@ const ReviewViewModel = () => {
     createReview,
     getReviews,
     getReviewImage,
+    deleteReview,
   };
 };
 

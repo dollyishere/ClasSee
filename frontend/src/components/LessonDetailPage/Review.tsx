@@ -18,7 +18,7 @@ const Review: React.FC = () => {
   const [page, setPage] = useState<number>(1);
   const [count, setCount] = useState<number>(0);
   const [reviews, setReviews] = useState<Array<ReviewType>>([]);
-  const { createReview, getReviews } = useViewModel();
+  const { createReview, getReviews, deleteReview } = useViewModel();
 
   const handleRatingChange = (
     event: React.ChangeEvent<object>,
@@ -39,6 +39,14 @@ const Review: React.FC = () => {
     const response = await getReviews(Number(params.lessonId), limit, offset);
     setCount(Math.ceil(response.count / limit));
     setReviews(response.page);
+  };
+  const handleDeleteReview = async (reviewId: number) => {
+    if (window.confirm('정말 삭제 하시겠습니까?')) {
+      const response = await deleteReview(reviewId);
+      if (response.statusCode === 200) {
+        getData();
+      }
+    }
   };
   const handleReviewSubmit = async (
     event: React.FormEvent<HTMLFormElement>,
@@ -80,6 +88,12 @@ const Review: React.FC = () => {
     getData();
   }, [page]);
 
+  useEffect(() => {
+    if (count < page) {
+      setPage(page - 1);
+    }
+  }, [count]);
+
   return (
     <div className="review">
       <div className="review__input-box">
@@ -114,7 +128,11 @@ const Review: React.FC = () => {
       </div>
       <div className="review__review-list">
         {reviews.map((review: ReviewType, i: number) => (
-          <ReviewItem review={review} key={review.id} />
+          <ReviewItem
+            review={review}
+            key={review.id}
+            handleDeleteReview={handleDeleteReview}
+          />
         ))}
       </div>
       <div className="review__pagination">
