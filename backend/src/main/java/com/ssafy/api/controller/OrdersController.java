@@ -103,7 +103,7 @@ public class OrdersController {
         return ResponseEntity.status(200).body(ordersInfoGetRes);
     }
 
-    @DeleteMapping("/{ordersId}")
+    @DeleteMapping("/{email}")
     @ApiOperation(value = "주문 취소, 로그인 O", notes = "주문 ID ")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
@@ -111,10 +111,10 @@ public class OrdersController {
             @ApiResponse(code = 404, message = "해당 자료 없음", response = NotFoundErrorResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = ServerErrorResponseBody.class)
     })
-    public ResponseEntity<? extends BaseResponseBody> deleteOrders(@PathVariable Long ordersId){
+    public ResponseEntity<? extends BaseResponseBody> deleteOrders(@PathVariable String email, @RequestParam Long openLessonId){
 
         try {
-            ordersService.deleteOrders(ordersId);
+            ordersService.deleteOrders(email, openLessonId);
         } catch (OrdersException o){
             return ResponseEntity.status(404).body(BaseResponseBody.of(404, "orders not found"));
         }

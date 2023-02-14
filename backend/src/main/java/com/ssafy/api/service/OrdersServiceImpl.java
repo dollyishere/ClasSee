@@ -138,13 +138,21 @@ public class OrdersServiceImpl implements OrdersService{
     }
 
     @Override
-    public void deleteOrders(Long ordersId) throws OrdersException {
+    public void deleteOrders(String email, Long openLessonId) throws Exception {
 
-        if(ordersRepositorySupport.findOne(ordersId) == null){
+        Long user_id = ordersRepositorySupport.findUserId(email);
+
+        if(user_id == null){
+            throw new UserException("user not found");
+        }
+
+        Orders orders = ordersRepositorySupport.findOne(user_id, openLessonId);
+
+        if(orders == null){
             throw new OrdersException("orders not found");
         }
 
-        ordersRepositorySupport.deleteOrders(ordersId);
+        ordersRepositorySupport.delete(orders);
 
     }
 

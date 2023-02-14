@@ -13,5 +13,5 @@ public interface OrdersService {
 
     void chargePoint(String email, Long point) throws UserException;
 
-    void deleteOrders(Long ordersId) throws OrdersException;
+    void deleteOrders(String email, Long openLessonId) throws Exception;
 }
