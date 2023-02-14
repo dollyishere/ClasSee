@@ -117,6 +117,10 @@ public class OrdersController {
             ordersService.deleteOrders(email, openLessonId);
         } catch (OrdersException o){
             return ResponseEntity.status(404).body(BaseResponseBody.of(404, "orders not found"));
+        } catch (UserException u) {
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404, "user not found"));
+        } catch (Exception e){
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404, "unexpected error"));
         }
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200,"success"));
