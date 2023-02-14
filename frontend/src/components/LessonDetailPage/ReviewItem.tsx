@@ -14,7 +14,6 @@ import PrivateInfoState from '../../models/PrivateInfoAtom';
 const ReviewItem = ({ review }: any) => {
   const { toDate } = useTimeStamp();
   const userInfo = useRecoilValue(PrivateInfoState);
-  const lessonId = useParams();
   // 작성자 프로필 사진 위해
   const { getProfileImage } = useProfileViewModel();
   const { getReviewImage } = useReviewViewModel();
