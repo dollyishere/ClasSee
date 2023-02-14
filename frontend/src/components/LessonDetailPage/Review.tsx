@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Rating } from '@mui/material';
+import { Pagination, Rating } from '@mui/material';
 import { useRecoilValue } from 'recoil';
 
 import { useParams } from 'react-router-dom';
@@ -14,11 +14,10 @@ const Review: React.FC = () => {
   const textRef = useRef<HTMLTextAreaElement>(null);
   const [score, setScore] = useState<number | null>(0);
   const [img, setImg] = useState<File>();
-  const [imgSrc, setImgSrc] = useState<string>();
   const [page, setPage] = useState<number>(1);
-  const [count, setCount] = useState<number>(0);
+  const [count, setCount] = useState<number>(1);
   const [reviews, setReviews] = useState<Array<ReviewType>>([]);
-  const { createReview, getReviews } = useViewModel();
+  const { createReview, getReviews, deleteReview } = useViewModel();
 
   const handleRatingChange = (
     event: React.ChangeEvent<object>,
@@ -29,7 +28,6 @@ const Review: React.FC = () => {
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.currentTarget.files !== null) {
       const result = URL.createObjectURL(event.currentTarget.files[0]);
-      setImgSrc(result);
       setImg(event.currentTarget.files[0]);
     }
   };
@@ -37,9 +35,21 @@ const Review: React.FC = () => {
     const limit = 10;
     const offset = (page - 1) * limit;
     const response = await getReviews(Number(params.lessonId), limit, offset);
-    console.log(response);
-    setCount(response.count);
+    if (response.count === 0) {
+      setCount(1);
+    } else {
+      setCount(Math.ceil(response.count / limit));
+    }
     setReviews(response.page);
+  };
+
+  const handleDeleteReview = async (reviewId: number, imgSrc: string) => {
+    if (window.confirm('정말 삭제 하시겠습니까?')) {
+      const response = await deleteReview(reviewId, imgSrc);
+      if (response.statusCode === 200) {
+        getData();
+      }
+    }
   };
   const handleReviewSubmit = async (
     event: React.FormEvent<HTMLFormElement>,
@@ -64,14 +74,22 @@ const Review: React.FC = () => {
       );
       if (response !== null) {
         getData();
+        setScore(0);
+        textRef.current.value = '';
+        setImg(undefined);
       }
     }
   };
-
+  const handlePageChange = (
+    event: React.ChangeEvent<unknown>,
+    value: number,
+  ) => {
+    setPage(value);
+  };
   // 마운트시 리뷰 목록 불러옴
   useEffect(() => {
     getData();
-  }, []);
+  }, [page]);
 
   return (
     <div className="review">
@@ -106,9 +124,23 @@ const Review: React.FC = () => {
         </form>
       </div>
       <div className="review__review-list">
-        {reviews.map((review: ReviewType, i: number) => (
-          <ReviewItem review={review} key={review.id} />
+        {reviews.map((review: ReviewType) => (
+          <ReviewItem
+            review={review}
+            key={review.id}
+            handleDeleteReview={handleDeleteReview}
+          />
         ))}
+      </div>
+      <div className="review__pagination">
+        <Pagination
+          variant="outlined"
+          count={count}
+          page={page}
+          shape="rounded"
+          size="large"
+          onChange={handlePageChange}
+        />
       </div>
     </div>
   );

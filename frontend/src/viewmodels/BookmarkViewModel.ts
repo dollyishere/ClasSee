@@ -1,4 +1,3 @@
-import { constSelector } from 'recoil';
 import useApi from '../apis/LessonsApi';
 
 const BookmarkViewModel = () => {
