@@ -44,7 +44,7 @@ const ScheduleDetail = ({
   const handleLessonStart = (event: React.MouseEvent<HTMLElement>) => {
     console.log('여기에 결제 페이지 이동 함수 작성하면 될 듯함??');
     window.open(
-      `/lesson/${openLessonId}/teacher`,
+      `/lesson/${lessonId}/${openLessonId}/teacher`,
       '강의',
       `height=${window.screen.height}, width=${window.screen.width}, fullscreen=yes, status=no, scrollbars=no`,
     );

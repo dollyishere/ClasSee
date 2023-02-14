@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { QRCodeSVG } from 'qrcode.react';
 
@@ -8,6 +8,8 @@ import PrivateInfoState from '../models/PrivateInfoAtom';
 const PhotoCardQRPage = () => {
   const userInfo = useRecoilValue(PrivateInfoState);
   const navigate = useNavigate();
+  const params = useParams();
+  const { lessonId, openLessonId } = useParams();
   useEffect(() => {
     if (userInfo === null) {
       navigate('/');
@@ -20,12 +22,14 @@ const PhotoCardQRPage = () => {
         <QRCodeSVG
           className="photo-card-qr-page__qr-code"
           size={256}
-          value={`http://www.classee.site/photo-card/create/${userInfo.email}`}
+          value={`http://www.classee.site/photo-card/create/${lessonId}/${openLessonId}/${userInfo.email}`}
         />
       ) : null}
       <div className="photo-card-qr-page__buttons">
         {userInfo !== null ? (
-          <Link to={`/photo-card/create/${userInfo.email}`}>
+          <Link
+            to={`/photo-card/create/${lessonId}/${openLessonId}/${userInfo.email}`}
+          >
             <button type="button" className="button photo-card-qr-page__button">
               PC에서 만들기
             </button>

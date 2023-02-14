@@ -25,7 +25,7 @@ import privateInfoState from '../models/PrivateInfoAtom';
 import Header from '../components/Header';
 import BasicRating from '../components/BasicRating';
 import CheckSchedule from '../components/LessonDetailPage/CheckSchedule';
-import ReviewsInput from '../components/LessonDetailPage/Review';
+import Reviews from '../components/LessonDetailPage/Review';
 
 const LessonDetailPage = () => {
   // url(Router) 통해서 입력된 lessonId를 useParams로 받아옴
@@ -262,9 +262,7 @@ const LessonDetailPage = () => {
               ) : (
                 <div className="lesson-detail-page__review">
                   <h2 className="lesson-detail-page__part-title">강의 후기</h2>
-                  <div>
-                    <ReviewsInput />
-                  </div>
+                  <Reviews />
                 </div>
               )}
             </div>

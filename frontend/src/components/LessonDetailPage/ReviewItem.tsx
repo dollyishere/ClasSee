@@ -6,34 +6,17 @@ import { DeleteForever, BorderColor } from '@mui/icons-material';
 import Avatar from '@mui/material/Avatar';
 import Rating from '@mui/material/Rating';
 import { useRecoilValue } from 'recoil';
-import useReviewApi from '../../viewmodels/LessonDetailViewModel';
+import useTimeStamp from '../../utils/TimeStamp';
 import useProfileViewModel from '../../viewmodels/ProfileViewModel';
+import useReviewViewModel from '../../viewmodels/ReviewViewModel';
 import PrivateInfoState from '../../models/PrivateInfoAtom';
 
-interface Props {
-  reviews: {
-    id: number;
-    content: string;
-    score: number;
-    img: string;
-    year: string;
-    month: string;
-    day: string;
-    time: string;
-    userEmail: string;
-    userImg: string | undefined;
-    userNickname: string;
-  };
-  flag: boolean;
-  setFlag: Dispatch<SetStateAction<boolean>>;
-}
-
-const ReviewItem: React.FC<Props> = ({ reviews, flag, setFlag }) => {
+const ReviewItem = ({ review }: any) => {
+  const { toDate } = useTimeStamp();
   const userInfo = useRecoilValue(PrivateInfoState);
-  const lessonId = useParams();
   // 작성자 프로필 사진 위해
   const { getProfileImage } = useProfileViewModel();
-  const { doDeleteReview, getReviewImage, getReviewData } = useReviewApi();
+  const { getReviewImage } = useReviewViewModel();
   // 후기 이미지
   const [reviewImg, setReviewImg] = useState<string>('');
   // 작성자 프로필 이미지
@@ -43,49 +26,27 @@ const ReviewItem: React.FC<Props> = ({ reviews, flag, setFlag }) => {
     console.log('test');
   };
   // 후기 삭제 버튼 클릭 시
-  const handleDeleteReview = async () => {
-    // 삭제확인 컨펌창 팝업
-    if (window.confirm('리뷰를 삭제 하시겠습니까?')) {
-      // 리뷰삭제 요청
-      const res = await doDeleteReview(reviews.id);
-      // 삭제 성공 시
-      if (res?.message === 'success') {
-        setReviewImg('');
-        setUserImg('');
-        setFlag(!flag);
-      }
-    }
-  };
+
   useEffect(() => {
-    console.log('무한?');
-    // 렌더링 시 리뷰 사진을 받아온다
-    const getReviewsImage = async () => {
-      // 사진을 url로 변환
-      const reviewImageUrl = await getReviewImage(
-        Number(lessonId.lessonId),
-        reviews.userEmail,
-      );
-      if (reviewImageUrl) {
-        // 변환한 이미지를 훅에 저장
-        setReviewImg(reviewImageUrl);
-        setFlag(!flag);
-      }
-    };
     // 프로필 이미지 받아온다
-    const getUserImage = async () => {
+    const getImage = async () => {
       // 사진을 url로 변환
-      if (reviews.userImg) {
-        const userImageUrl = await getProfileImage(reviews.userImg);
+      if (review.userImg) {
+        const userImageUrl = await getProfileImage(review.userImg);
         if (userImageUrl) {
           // 변환한 이미지를 훅에 저장
           setUserImg(userImageUrl);
-          setFlag(!flag);
+        }
+      }
+      if (review.img) {
+        const reviewImgUrl = await getReviewImage(review.img);
+        if (reviewImgUrl) {
+          setReviewImg(reviewImgUrl);
         }
       }
     };
-    getReviewsImage();
-    getUserImage();
-  }, [reviewImg, userImg]);
+    getImage();
+  }, []);
   return (
     <Card className="review-card">
       <CardMedia
@@ -97,9 +58,9 @@ const ReviewItem: React.FC<Props> = ({ reviews, flag, setFlag }) => {
         <div className="review-card__row">
           <Avatar alt="Remy Sharp" src={userImg} />
           <p>
-            <span>{reviews.userNickname}</span>님이 작성하셨습니다.
+            <span>{review.userNickname}</span>님이 작성하셨습니다.
           </p>
-          {userInfo !== null && userInfo.email === reviews.userEmail ? (
+          {userInfo !== null && userInfo.email === review.userEmail ? (
             <div className="review-card__buttons">
               <button
                 type="button"
@@ -111,7 +72,7 @@ const ReviewItem: React.FC<Props> = ({ reviews, flag, setFlag }) => {
               <button
                 type="button"
                 className="review-card__button"
-                onClick={handleDeleteReview}
+                // onClick={handleDeleteReview}
               >
                 <DeleteForever className="review-card__icon" />
               </button>
@@ -119,15 +80,14 @@ const ReviewItem: React.FC<Props> = ({ reviews, flag, setFlag }) => {
           ) : null}
         </div>
         <div className="review-card__row">
-          <Rating value={reviews.score} precision={0.5} readOnly />
-          <div className="review-card__rating">{reviews.score}</div>
+          <Rating value={review.score} precision={0.5} readOnly />
+          <div className="review-card__rating">{review.score}</div>
         </div>
         <div className="review-card__row">
-          <div className="review-card__detail">{reviews.content}</div>
+          <div className="review-card__detail">{review.content}</div>
         </div>
         <div className="review-card__row review-card__footer">
-          작성일자: {reviews.year}년 {reviews.month}월 {reviews.day}일
-          {reviews.time}
+          작성일자: {toDate(review.regtime)}
         </div>
       </CardContent>
     </Card>

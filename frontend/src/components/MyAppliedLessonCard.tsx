@@ -43,7 +43,7 @@ const MyAppliedLessonCard = ({ lesson }: Props) => {
 
   const handleStartLesson = () => {
     window.open(
-      `/lesson/${lesson.openLessonId}/student`,
+      `/lesson/${lesson.lessonId}/${lesson.openLessonId}/student`,
       '강의',
       `height=${window.screen.height}, width=${window.screen.width}, fullscreen=yes, status=no, scrollbars=no`,
     );
