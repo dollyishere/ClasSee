@@ -189,12 +189,12 @@ const LessonsApi = () => {
     return null;
   };
   const deleteMyAppliedLessonsMainpageApi = async (
-    userId: string,
+    email: string,
     openLessonId: number,
   ) => {
     try {
       const response = await axios.delete(
-        `${process.env.REACT_APP_SERVER_URI}/api/v1/orders/${userId}/${openLessonId}`,
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/orders/${email}?openLessonId=${openLessonId}`,
         {
           headers: {
             Authorization: `Bearer ${accesstoken}`,
