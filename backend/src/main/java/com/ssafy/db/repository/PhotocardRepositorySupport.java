@@ -6,6 +6,7 @@ import com.ssafy.db.entity.board.Photocard;
 import com.ssafy.db.entity.board.QLikes;
 import com.ssafy.db.entity.board.QPhotocard;
 import com.ssafy.db.entity.lesson.Lesson;
+import com.ssafy.db.entity.lesson.OpenLesson;
 import com.ssafy.db.entity.lesson.QLesson;
 import com.ssafy.db.entity.user.QUser;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +41,14 @@ public class PhotocardRepositorySupport {
 
     public Photocard findOne(Long id) { return em.find(Photocard.class, id); }
 
+    public Photocard findOne(Long user_id, Long openLesson_id){
+        return jpaQueryFactory
+                .select(qPhotocard)
+                .from(qPhotocard)
+                .where(qPhotocard.user.id.eq(user_id), qPhotocard.openLesson_id.eq(openLesson_id))
+                .fetchOne();
+    }
+
     public Likes findOneLikes(Long user_id, Long photocard_id){
         return jpaQueryFactory
                 .select(qLikes)
@@ -49,6 +58,8 @@ public class PhotocardRepositorySupport {
     }
 
     public Lesson findOneLesson(Long id) { return em.find(Lesson.class, id); }
+
+    public OpenLesson findOneOpenLesson(Long id) {return em.find(OpenLesson.class, id); }
 
     public List<Photocard> findAll() {
         return jpaQueryFactory
