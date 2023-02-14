@@ -2,7 +2,14 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
-import { Stack, TextField, Button } from '@mui/material/';
+import {
+  Stack,
+  TextField,
+  Button,
+  Card,
+  createTheme,
+  ThemeProvider,
+} from '@mui/material/';
 import FormatAlignJustifyIcon from '@mui/icons-material/FormatAlignJustify';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
@@ -17,6 +24,17 @@ import {
   GetScheduleRequest,
   LessonSchedulesType,
 } from '../../types/LessonsType';
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#7062c7',
+    },
+    secondary: {
+      main: '#9381ff',
+    },
+  },
+});
 
 const CheckSchedule = () => {
   const lessonIdParams = useParams();
@@ -85,54 +103,63 @@ const CheckSchedule = () => {
   }, []);
 
   return (
-    <div className="check-schedule__container">
-      <div className="check-schedule__header">
-        <h3>
-          <FormatAlignJustifyIcon /> 클래스 예약하기
-        </h3>
-      </div>
-      <div>
+    <ThemeProvider theme={theme}>
+      <Card color="secondary" className="check-schedule__container">
+        <Button
+          color="primary"
+          variant="contained"
+          className="check-schedule__header"
+        >
+          <h2>
+            <FormatAlignJustifyIcon /> 클래스 예약하기
+          </h2>
+        </Button>
         <div>
-          <h3>클래스 시간 선택</h3>
-          <div>
-            <h3>
-              <CalendarMonthIcon /> 일자 |{' '}
-              {moment(selectedDate).format('YYYY-MM-DD')}
-            </h3>
+          <div className="check-schedule__date-part">
+            <h3>클래스 시간 선택</h3>
+            <div className="check-schedule__date-info">
+              <h3>
+                <CalendarMonthIcon /> 일자 |{' '}
+                {moment(selectedDate).format('YYYY-MM-DD')}
+              </h3>
+            </div>
+            <Calendar
+              onChange={handleDateChange}
+              value={selectedDate}
+              // moment를 통해 달력에 각 일이 표시되는 형식을 변환해줌(본래는 뒤에 '일'이 붙음)
+              formatDay={(locale, date) => moment(date).format('DD')}
+            />
+            <ul className="check-schedule__ul">
+              {scheduleList.length !== 0 ? (
+                scheduleList.map((schedule) => {
+                  const { openLessonId, lessonId, startTime, endTime } =
+                    schedule;
+                  return (
+                    <li key={openLessonId}>
+                      강의 시간 : {startTime.slice(11, 16)} -
+                      {endTime.slice(11, 16)}
+                      <Button
+                        onClick={() => {
+                          navigate(
+                            `/enroll-lesson/${lessonId}/${openLessonId}`,
+                          );
+                        }}
+                      >
+                        선택
+                      </Button>
+                    </li>
+                  );
+                })
+              ) : (
+                <div>
+                  <h2>스케줄이 없어요!</h2>
+                </div>
+              )}
+            </ul>
           </div>
-          <Calendar
-            onChange={handleDateChange}
-            value={selectedDate}
-            // moment를 통해 달력에 각 일이 표시되는 형식을 변환해줌(본래는 뒤에 '일'이 붙음)
-            formatDay={(locale, date) => moment(date).format('DD')}
-          />
-          <ul className="check-schedule__ul">
-            {scheduleList.length !== 0 ? (
-              scheduleList.map((schedule) => {
-                const { openLessonId, lessonId, startTime, endTime } = schedule;
-                return (
-                  <li key={openLessonId}>
-                    강의 시간 : {startTime.slice(11, 16)} to{' '}
-                    {endTime.slice(11, 16)}
-                    <Button
-                      onClick={() => {
-                        navigate(`/enroll-lesson/${lessonId}/${openLessonId}`);
-                      }}
-                    >
-                      선택
-                    </Button>
-                  </li>
-                );
-              })
-            ) : (
-              <div>
-                <h1>스케줄이 없어요!</h1>
-              </div>
-            )}
-          </ul>
         </div>
-      </div>
-    </div>
+      </Card>
+    </ThemeProvider>
   );
 };
 export default CheckSchedule;
