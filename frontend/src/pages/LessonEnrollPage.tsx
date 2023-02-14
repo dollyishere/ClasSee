@@ -105,17 +105,15 @@ const LessonEnrollPage = () => {
           Number(openLessonId.openLessonId),
         );
         if (res) {
-          if (res.lessonTeacherName === res.userName) {
-            setOpenLessonInfo(res);
-            const imgRef = ref(
-              storage,
-              `lessons/${Number(
-                openLessonId.lessonId,
-              )}/pamphlet_images/${encodeURI(res.lessonImg)}`,
-            );
-            const url = await getDownloadURL(imgRef);
-            setLessonImage(url);
-          }
+          setOpenLessonInfo(res);
+          const imgRef = ref(
+            storage,
+            `lessons/${Number(
+              openLessonId.lessonId,
+            )}/pamphlet_images/${encodeURI(res.lessonImg)}`,
+          );
+          const url = await getDownloadURL(imgRef);
+          setLessonImage(url);
         } else {
           alert('다시 시도해주세요.');
         }
