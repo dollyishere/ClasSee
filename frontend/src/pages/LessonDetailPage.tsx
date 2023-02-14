@@ -2,11 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
-import { Stack, Button } from '@mui/material';
+import { Stack, Button, Card } from '@mui/material';
 import { PersonOutline } from '@mui/icons-material';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
-import { Carousel } from 'react-responsive-carousel';
 import StickyBox from 'react-sticky-box';
+
+import Carousel from 'react-material-ui-carousel';
 import sadFace from '../assets/sad_face.png';
 
 import {
@@ -86,7 +87,6 @@ const LessonDetailPage = () => {
       if (res?.message === 'SUCCESS') {
         // 만약 강의 상세 정보를 db에서 받아오는 것에 성공했다면, lessonDetailState에 해당 정보를 저장
         setLessonDetailState(res);
-        console.log(res);
         // firebase의 해당 강의가 저장된 폴더의 url에 접근하여 해당하는 이미지 파일을 각각 다운받음
         // 강의 관련 사진 다운로드해서 pamphletsImgState에 저장
         getPamphletImgUrls(res.pamphlets, Number(lessonId.lessonId)).then(
@@ -118,11 +118,20 @@ const LessonDetailPage = () => {
           <div className="lesson-detail-page__header">
             <div className="lesson-detail-page-img-slider">
               <div className="carousel-wrapper">
-                <Carousel infiniteLoop useKeyboardArrows autoPlay width={300}>
-                  {pamphletsImgState.map((image: any) => {
+                <Carousel
+                  autoPlay
+                  swipe
+                  animation="slide"
+                  cycleNavigation
+                  navButtonsAlwaysVisible
+                  indicators={false}
+                  height="300px"
+                >
+                  {pamphletsImgState.map((item: any, i: number) => {
+                    console.log(item);
                     return (
-                      <div>
-                        <img src={image} alt={image} />
+                      <div className="carousel__item">
+                        <img src={item} alt={item} />
                       </div>
                     );
                   })}
@@ -161,10 +170,10 @@ const LessonDetailPage = () => {
                   {lessonDetailState.userName}
                 </p>
               </div>
-              <div>
+              <div className="lesson-detail-page__rating-none">
                 {lessonDetailState.score ? (
                   <BasicRating
-                    ratingValue={lessonDetailState.score}
+                    ratingValue={Math.round(lessonDetailState.score * 10) / 10}
                     setRatingValue={setRatingValue}
                     disableValue={disableValue}
                   />
@@ -211,7 +220,7 @@ const LessonDetailPage = () => {
                     <pre>{lessonDetailState.lessonDescription}</pre>
                   </div>
                   <h2 className="lesson-detail-page__part-title">커리큘럼</h2>
-                  <div className="lesson-detail-page__curriculum">
+                  <div className="lesson-detail-page__lesson-description">
                     {lessonDetailState.curriculums.map((curri: any) => (
                       <h3>
                         Step{curri.stage + 1}. {curri.description}
@@ -219,7 +228,7 @@ const LessonDetailPage = () => {
                     ))}
                   </div>
                   <h2 className="lesson-detail-page__part-title">준비물</h2>
-                  <div className="lesson-detail-page__checklist">
+                  <div className="lesson-detail-page__lesson-description">
                     {checkListImgState.map((image: any) => (
                       <img className="lesson_img" src={image} alt={image} />
                     ))}

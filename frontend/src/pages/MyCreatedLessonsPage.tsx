@@ -40,8 +40,9 @@ const MyCreatedLessonsPage = () => {
           limit,
           offset,
         );
+        console.log(data);
         setLessons(data.lessonInfoList);
-        setCount(Math.ceil(data.lessonInfoList.length / limit));
+        setCount(Math.ceil(data.count / limit));
       };
       getData();
     }
