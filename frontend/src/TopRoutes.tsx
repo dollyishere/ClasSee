@@ -33,7 +33,6 @@ const Router = () => {
       const reAccessToken = async () => {
         if (userInfo) {
           const response = await AccessToken(userInfo, doGetAccessToken);
-          console.log(response);
         }
       };
       reAccessToken();
@@ -43,7 +42,6 @@ const Router = () => {
     const rereAccessToken = async () => {
       if (userInfo) {
         const response = await AccessToken(userInfo, doGetAccessToken);
-        console.log(response);
       }
     };
     rereAccessToken();
@@ -59,12 +57,18 @@ const Router = () => {
         path="/enroll-lesson/:lessonId/:openLessonId"
         element={<LessonEnrollPage />}
       />
-      <Route path="/lesson/:sessionId/:role" element={<VideoCallPage />} />
       <Route
-        path="/lesson/:sessionId/:role/photo-card/qr"
+        path="/lesson/:lessonId/:openLessonId/:role"
+        element={<VideoCallPage />}
+      />
+      <Route
+        path="/lesson/photo-card/qr/:lessonId/:openLessonId"
         element={<PhotoCardQRPage />}
       />
-      <Route path="/photo-card/create" element={<CreatePhotoCardPage />} />
+      <Route
+        path="/photo-card/create/:lessonId/:openLessonId/:email"
+        element={<CreatePhotoCardPage />}
+      />
       <Route path="/photo-card" element={<PhotoCardsPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/image" element={<TestPage />} />

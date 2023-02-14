@@ -61,11 +61,6 @@ const PhotoCardApi = () => {
       const response = await axios.post<Response>(
         `${process.env.REACT_APP_SERVER_URI}/api/v1/photocard`,
         requestBody,
-        {
-          headers: {
-            Authorization: `Bearer ${accesstoken}`,
-          },
-        },
       );
       return response.data;
     } catch (error: any) {

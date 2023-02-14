@@ -39,6 +39,8 @@ const LessonEnrollPage = () => {
     openLessonInfo.userPhone,
   );
 
+  const [showBody, setShowBody] = useState(false);
+
   // 컴포넌트 전환에 필요한 useNavigate 재할당
   const navigate = useNavigate();
 
@@ -167,7 +169,7 @@ const LessonEnrollPage = () => {
             <h3>수강료</h3>
             <p>{openLessonInfo.lessonPrice}</p>
             {/* <h3>포인트</h3>
-            <p>{openLessonInfo.userPoint}</p> */}
+          <p>{openLessonInfo.userPoint}</p> */}
             <h3>키트 추가</h3>
             <Checkbox
               checked={checked}

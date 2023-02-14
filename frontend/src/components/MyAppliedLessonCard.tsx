@@ -43,7 +43,7 @@ const MyAppliedLessonCard = ({ lesson }: Props) => {
 
   const handleStartLesson = () => {
     window.open(
-      `/lesson/${lesson.openLessonId}/student`,
+      `/lesson/${lesson.lessonId}/${lesson.openLessonId}/student`,
       '강의',
       `height=${window.screen.height}, width=${window.screen.width}, fullscreen=yes, status=no, scrollbars=no`,
     );
@@ -53,7 +53,7 @@ const MyAppliedLessonCard = ({ lesson }: Props) => {
     console.log(lesson);
     const getImage = async () => {
       const lessonImageUrl = await getLessonImage(lesson.lessonId);
-      const teacherImageUrl = await getProfileImage(lesson.teacher);
+      const teacherImageUrl = await getProfileImage(lesson.teacherImage);
       if (lessonImageUrl) {
         setLessonImage(lessonImageUrl);
       }

@@ -4,9 +4,6 @@ import { useRecoilValue } from 'recoil';
 
 import { Stack, Button, Card, CardContent } from '@mui/material';
 
-import { ref, getDownloadURL, listAll } from 'firebase/storage';
-import { storage } from '../utils/Firebase';
-
 import {
   LessonDetailRequest,
   LessonDetailResponse,

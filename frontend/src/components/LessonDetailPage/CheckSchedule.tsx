@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 
 import { Stack, TextField, Button } from '@mui/material/';
 import FormatAlignJustifyIcon from '@mui/icons-material/FormatAlignJustify';
@@ -7,6 +8,8 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
 import Calendar from 'react-calendar';
 import moment from 'moment';
+
+import PrivateInfoState from '../../models/PrivateInfoAtom';
 
 import ScheduleViewModel from '../../viewmodels/ScheduleViewModel';
 
@@ -19,6 +22,8 @@ const CheckSchedule = () => {
   const lessonIdParams = useParams();
 
   const navigate = useNavigate();
+
+  const userInfo = useRecoilValue(PrivateInfoState);
 
   // api를 통해 불러올 스케줄 데이터를 담아줄 scheduleList 생성
   const [scheduleList, setScheduleListState] = useState<LessonSchedulesType[]>(
@@ -110,9 +115,9 @@ const CheckSchedule = () => {
                     강의 시간 : {startTime.slice(11, 16)} to{' '}
                     {endTime.slice(11, 16)}
                     <Button
-                      onClick={() =>
-                        navigate(`/enroll-lesson/${lessonId}/${openLessonId}`)
-                      }
+                      onClick={() => {
+                        navigate(`/enroll-lesson/${lessonId}/${openLessonId}`);
+                      }}
                     >
                       선택
                     </Button>

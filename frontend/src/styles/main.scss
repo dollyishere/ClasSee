@@ -20,8 +20,9 @@
 @use './components/calendar';
 @use './components/_check-schedule';
 @use './components/photo-card';
-@use './components/_reviews-input';
+@use './components/review';
 @use './components/lesson_carousel';
+@use './components/review-card';
 
 // pages
 @use './pages/signup-page';
@@ -36,6 +37,7 @@
 @use './pages/my-bookmark-page';
 @use './pages/find-pw-page';
 @use './pages/my-created-lessons-page';
+@use './pages/my-applied-lessons-page';
 @use './pages/photo-card-qr-page';
 @use './pages/create-photo-card-page';
 @use './pages/photo-cards-page';

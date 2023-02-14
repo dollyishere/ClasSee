@@ -1,0 +1,29 @@
+.my-applied-lessons-page {
+  .my-applied-lessons-page__card {
+    width: 90%;
+    margin: 40px auto;
+    .my-applied-lessons-page__title {
+      padding: 10px;
+      text-align: left;
+      font-size: 36px;
+      font-weight: bold;
+    }
+    .my-applied-lessons-page__lessons {
+      width: 90%;
+      margin: 0 auto;
+    }
+  }
+  .my-applied-lessons-page__todo-lessons-body {
+    display: flex;
+    align-content: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    // .my-applied-lessons-page__lesson-card {
+    //   margin: 10px;
+    // }
+  }
+}
+.my-applied-lessons-page__pagination {
+  display: flex;
+  justify-content: center;
+}

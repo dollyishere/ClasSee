@@ -5,6 +5,7 @@ import ProfilePage from './ProfilePage';
 import TestPage from './TestPage';
 import MyCreatedLessonsPage from './MyCreatedLessonsPage';
 import MyCreatedLessonDetailPage from './MyCreatedLessonDetailPage';
+import MyAppliedLessonsPage from './MyAppliedLessonPage';
 import MyBookmarkPage from './MyBookmarkPage';
 import MyPhotoBookPage from './MyPhotoBookPage';
 import MyReviewsPage from './MyReviewsPage';
@@ -51,6 +52,7 @@ const MyPage = () => {
               element={<MyCreatedLessonDetailPage />}
             />
             <Route path="/created-lesson" element={<MyCreatedLessonsPage />} />
+            <Route path="/applied-lesson" element={<MyAppliedLessonsPage />} />
             <Route path="/bookmark" element={<MyBookmarkPage />} />
             <Route path="/test" element={<TestPage />} />
             <Route path="/photo-book" element={<MyPhotoBookPage />} />

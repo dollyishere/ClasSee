@@ -1,109 +1,84 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, Dispatch, SetStateAction } from 'react';
 import { useParams } from 'react-router-dom';
-import { Box, Typography } from '@mui/material';
+
+import { Card, CardMedia, CardContent, Modal } from '@mui/material';
+import { DeleteForever, BorderColor } from '@mui/icons-material';
 import Avatar from '@mui/material/Avatar';
-import Stack from '@mui/material/Stack';
-import ImageListItem from '@mui/material/ImageListItem';
 import Rating from '@mui/material/Rating';
-import useReviewApi from '../../viewmodels/LessonDetailViewModel';
+import { useRecoilValue } from 'recoil';
+import useTimeStamp from '../../utils/TimeStamp';
 import useProfileViewModel from '../../viewmodels/ProfileViewModel';
+import useReviewViewModel from '../../viewmodels/ReviewViewModel';
+import PrivateInfoState from '../../models/PrivateInfoAtom';
 
-interface Props {
-  reviews: {
-    id: number;
-    content: string;
-    score: number;
-    img: string;
-    year: string;
-    month: string;
-    day: string;
-    time: string;
-    userEmail: string;
-    userNickname: string;
-  };
-  // forceUpdate: () => void;
-}
-
-const ReviewItem: React.FC<Props> = ({ reviews }) => {
-  const lessonId = useParams();
+const ReviewItem = ({ review, handleDeleteReview }: any) => {
+  const { toDate } = useTimeStamp();
+  const userInfo = useRecoilValue(PrivateInfoState);
   // 작성자 프로필 사진 위해
   const { getProfileImage } = useProfileViewModel();
-  const { doDeleteReview, getReviewImage, getReviewData } = useReviewApi();
+  const { getReviewImage } = useReviewViewModel();
   // 후기 이미지
-  const [reviewImg, setReviewImg] = useState<string>();
+  const [reviewImg, setReviewImg] = useState<string>('');
   // 작성자 프로필 이미지
-  const [userImg, setUserImg] = useState<string>();
-  // 후기 삭제 버튼 클릭 시
-  const handleDeleteReview = async (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  ) => {
-    // 삭제확인 컨펌창 팝업
-    if (window.confirm('리뷰를 삭제 하시겠습니까?')) {
-      // 리뷰삭제 요청
-      const res = await doDeleteReview(reviews.id);
-      // 삭제 성공 시
-      if (res?.message === 'success') {
-        // TODO: 컴포넌트 재렌더링
-      }
-    }
-  };
+  const [userImg, setUserImg] = useState<string>('');
+
   useEffect(() => {
-    // 렌더링 시 리뷰 사진을 받아온다
-    const getReviewsImage = async () => {
-      // 사진을 url로 변환
-      const reviewImageUrl = await getReviewImage(
-        Number(lessonId.lessonId),
-        reviews.userEmail,
-      );
-      if (reviewImageUrl) {
-        // 변환한 이미지를 훅에 저장
-        setReviewImg(reviewImageUrl);
-      }
-    };
     // 프로필 이미지 받아온다
-    const getUserImage = async () => {
+    const getImage = async () => {
       // 사진을 url로 변환
-      const userImageUrl = await getProfileImage(reviews.userEmail);
-      if (userImageUrl) {
-        // 변환한 이미지를 훅에 저장
-        setUserImg(userImageUrl);
+      if (review.userImg) {
+        const userImageUrl = await getProfileImage(review.userImg);
+        if (userImageUrl) {
+          // 변환한 이미지를 훅에 저장
+          setUserImg(userImageUrl);
+        }
+      }
+      if (review.img) {
+        const reviewImgUrl = await getReviewImage(review.img);
+        if (reviewImgUrl) {
+          setReviewImg(reviewImgUrl);
+        }
       }
     };
-    getReviewsImage();
-    getUserImage();
+    getImage();
   }, []);
   return (
-    <Box m={2}>
-      <ImageListItem>
-        <img
-          src={reviewImg}
-          srcSet={reviewImg}
-          alt={reviews.img}
-          loading="lazy"
-        />
-      </ImageListItem>
-      <Stack
-        className="lesson__teacherImage--image"
-        direction="row"
-        spacing={2}
-      >
-        <Avatar alt="Remy Sharp" src={userImg} />
-      </Stack>
-      <p>{reviews.userNickname}님이 작성하셨습니다</p>
-      <form id="modify" action="" method="post" style={{ display: 'none' }}>
-        수정
-      </form>
-      <button type="submit" onClick={handleDeleteReview}>
-        삭제
-      </button>
-      <Rating value={reviews.score} precision={0.5} readOnly />
-      {reviews.score !== null && <Box sx={{ ml: 2 }}>{reviews.score}</Box>}
-      <Typography>{reviews.content}</Typography>
-      <p>
-        작성일자: {reviews.year}년 {reviews.month}월 {reviews.day}일
-        {reviews.time}
-      </p>
-    </Box>
+    <Card className="review-card">
+      <CardMedia
+        className="review-card__image"
+        image={reviewImg}
+        title={reviewImg}
+      />
+      <CardContent className="review-card__content">
+        <div className="review-card__row">
+          <Avatar alt="Remy Sharp" src={userImg} />
+          <p>
+            <span>{review.userNickname}</span>님이 작성하셨습니다.
+          </p>
+          {userInfo !== null && userInfo.email === review.userEmail ? (
+            <div className="review-card__buttons">
+              <button
+                type="button"
+                className="review-card__button"
+                onClick={() => handleDeleteReview(review.id, review.img)}
+              >
+                <DeleteForever className="review-card__icon" />
+              </button>
+            </div>
+          ) : null}
+        </div>
+        <div className="review-card__row">
+          <Rating value={review.score} precision={0.5} readOnly />
+          <div className="review-card__rating">{review.score}</div>
+        </div>
+        <div className="review-card__row">
+          <div className="review-card__detail">{review.content}</div>
+        </div>
+        <div className="review-card__row review-card__footer">
+          작성일자: {toDate(review.regtime)}
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 

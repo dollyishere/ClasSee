@@ -52,10 +52,9 @@ const LessonCard = ({ lesson }: Props) => {
       }
     };
     const getTeacherImage = async () => {
-      const teacherImageUrl = await getProfileImage(lesson.teacher);
+      const teacherImageUrl = await getProfileImage(lesson.teacherImage);
       if (teacherImageUrl) {
         setTeacherImage(teacherImageUrl);
-        console.log(teacherImageUrl);
       }
     };
     getImage();

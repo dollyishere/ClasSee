@@ -11,20 +11,13 @@ import { storage } from '../utils/Firebase';
 
 import LessonsApi from '../apis/LessonsApi';
 
-import {
-  LessonDetailRequest,
-  LessonEnrollRequest,
-  ReviewRequest,
-} from '../types/LessonsType';
+import { LessonDetailRequest, LessonEnrollRequest } from '../types/LessonsType';
 import PrivateInfoState from '../models/PrivateInfoAtom';
 
 const LessonDetailViewModel = () => {
   const {
     doDeleteLesson,
     doGetLessonDetail,
-    getReviewDataApi,
-    doCreateReviewApi,
-    doDeleteReviewApi,
     doGetOpenLessonDetail,
     doEnrollLessonSchedule,
   } = LessonsApi();
@@ -109,22 +102,7 @@ const LessonDetailViewModel = () => {
       const goDeleteImg = await deleteObject(imageRef);
     });
   };
-  const getReviewData = async (
-    lessonId: number,
-    limit: number,
-    offset: number,
-  ) => {
-    const res = getReviewDataApi(lessonId, limit, offset);
-    return res;
-  };
-  const doCreateReview = async (data: ReviewRequest) => {
-    const res = await doCreateReviewApi(data);
-    return res;
-  };
-  const doDeleteReview = async (id: number) => {
-    const res = await doDeleteReviewApi(id);
-    return res;
-  };
+
   const getReviewImage = async (lessonId: number, email: string) => {
     const imageRef = ref(storage, `reviews/${lessonId}/${email}/`);
     const res = await listAll(imageRef);
@@ -173,9 +151,6 @@ const LessonDetailViewModel = () => {
     getCheckImgFiles,
     doUploadImage,
     doDeleteImageFiles,
-    getReviewData,
-    doCreateReview,
-    doDeleteReview,
     uploadReviewImage,
     getReviewImage,
     doDeleteselectedLesson,

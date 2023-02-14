@@ -15,8 +15,6 @@ import {
   SearchResponse,
   OpenLessonResponse,
   LessonEnrollRequest,
-  ReviewRequest,
-  ReviewResponse,
 } from '../types/LessonsType';
 import { Response } from '../types/BaseType';
 
@@ -318,58 +316,7 @@ const LessonsApi = () => {
     }
     return null;
   };
-  // 후기 데이터 받아오는 api
-  const getReviewDataApi = async (
-    lessonId: number,
-    limit: number,
-    offset: number,
-  ) => {
-    try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_SERVER_URI}/api/v1/review/list/${lessonId}?limit=${limit}&offset=${offset}`,
-      );
-      return response;
-    } catch (error: any) {
-      console.log(error);
-    }
-    return null;
-  };
-  // TODO: 상태코드값 돌려받고 싶어요오
-  // 후기 작성하는 api
-  const doCreateReviewApi = async (createReviewRequestBody: ReviewRequest) => {
-    try {
-      const response = await axios.post(
-        `${process.env.REACT_APP_SERVER_URI}/api/v1/review/`,
-        createReviewRequestBody,
-        {
-          headers: {
-            Authorization: `Bearer ${accesstoken}`,
-          },
-        },
-      );
-      return response.data;
-    } catch (error: any) {
-      console.log(error);
-    }
-    return null;
-  };
-  // 후기 삭제하는 api, id는 후기 id
-  const doDeleteReviewApi = async (id: number) => {
-    try {
-      const response = await axios.delete(
-        `${process.env.REACT_APP_SERVER_URI}/api/v1/review/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${accesstoken}`,
-          },
-        },
-      );
-      return response.data;
-    } catch (error: any) {
-      console.log(error);
-    }
-    return null;
-  };
+
   const doGetOpenLessonDetail = async (email: string, openLessonId: number) => {
     try {
       const response = await axios.get<OpenLessonResponse>(
@@ -424,9 +371,6 @@ const LessonsApi = () => {
     doGetBookmark,
     doGetOpenLessonDetail,
     doEnrollLessonSchedule,
-    getReviewDataApi,
-    doCreateReviewApi,
-    doDeleteReviewApi,
   };
 };
 

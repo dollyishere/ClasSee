@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { AddCircleOutline } from '@mui/icons-material';
 import { useRecoilValue } from 'recoil';
+import { useLocation, useParams } from 'react-router-dom';
 
 import useViewModel from '../viewmodels/CreatePhotoCardViewModel';
 import PrivateInfoState from '../models/PrivateInfoAtom';
@@ -11,7 +12,8 @@ const CreatePhotoCardPage = () => {
   const [image, setImage] = useState<File>();
   const [imageSrc, setImageSrc] = useState<string>();
 
-  const userInfo = useRecoilValue(PrivateInfoState);
+  const params = useParams();
+  const { email, openLessonId, lessonId } = params;
 
   const { createPhotoCard } = useViewModel();
 
@@ -43,20 +45,26 @@ const CreatePhotoCardPage = () => {
         alert('사진을 업로드해주세요.');
         return;
       }
-      if (userInfo !== null && imageSrc !== undefined) {
+      if (
+        imageSrc !== undefined &&
+        email !== undefined &&
+        lessonId !== undefined &&
+        openLessonId
+      ) {
         const response = await createPhotoCard(
           {
-            userEmail: userInfo.email,
-            img: `photo-cards/${encodeURI(userInfo.email)}/${encodeURI(
-              String(2),
-            )}/${encodeURI('test')}/${image.name}`,
+            userEmail: email,
+            img: `photo-cards/${encodeURI(email)}/${encodeURI(
+              String(lessonId),
+            )}/${encodeURI(String(openLessonId))}/${image.name}`,
             title: titleTarget.value,
             content: contentTarget.value,
             sign: '',
-            lessonId: 2,
+            lessonId: Number(lessonId),
+            openLessonId: Number(openLessonId),
           },
           image,
-          'test',
+          openLessonId,
         );
 
         if (response === 200) {
