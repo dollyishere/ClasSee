@@ -63,6 +63,9 @@ const Review: React.FC = () => {
       );
       if (response !== null) {
         getData();
+        setScore(0);
+        textRef.current.value = '';
+        setImg(undefined);
       }
     }
   };
