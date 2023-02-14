@@ -49,7 +49,7 @@ const MyAppliedLessonsPage = () => {
     setDonePage(value);
   };
 
-  // 메인페이지 마운트 시 강의 정보들 요청
+  // 진행 예정된 강의 목록 불러오기(페이지네이션에 따라 값이 변경)
   useEffect(() => {
     if (userInfo !== null) {
       const getTodoData = async () => {
@@ -69,6 +69,7 @@ const MyAppliedLessonsPage = () => {
     }
   }, [todoPage]);
 
+  // 진행 완료된 강의 목록 불러오기(페이지네이션에 따라 값이 변경)
   useEffect(() => {
     if (userInfo !== null) {
       const getDoneData = async () => {
@@ -80,7 +81,6 @@ const MyAppliedLessonsPage = () => {
           offset,
           'DONE',
         );
-        console.log(doneData);
         setDoneLessons(doneData.lessonInfoList);
         setDoneCount(Math.ceil(doneData.lessonInfoList.length / limit));
       };
@@ -94,7 +94,7 @@ const MyAppliedLessonsPage = () => {
         <CardContent>
           <div className="my-applied-lessons-page__title">신청한 클래스</div>
           <div className="my-applied-lessons-page__todo-lessons">
-            <h2>진행 예정 클래스</h2>
+            <h1>진행 예정 클래스</h1>
             <div className="my-applied-lessons-page__todo-lessons-body">
               {todoPage === 1 ? (
                 <IconButton disabled>
@@ -116,7 +116,7 @@ const MyAppliedLessonsPage = () => {
                   </div>
                 ))
               ) : (
-                <h1>신청한 강의가 없어요!</h1>
+                <h1>신청한 클래스가 없어요!</h1>
               )}
               {todoLessons.length < 3 ? (
                 <IconButton disabled>
@@ -131,7 +131,7 @@ const MyAppliedLessonsPage = () => {
           </div>
 
           <div className="my-applied-lessons-page__todo-lessons">
-            <h2>완료한 클래스</h2>
+            <h1>완료된 클래스</h1>
             <div className="my-applied-lessons-page__todo-lessons-body">
               {donePage === 1 ? (
                 <IconButton disabled>
@@ -153,7 +153,7 @@ const MyAppliedLessonsPage = () => {
                   </div>
                 ))
               ) : (
-                <h1>완료한 강의가 없어요!</h1>
+                <h1>완료한 클래스가 없어요!</h1>
               )}
               {doneLessons.length < 3 ? (
                 <IconButton disabled>

@@ -103,15 +103,20 @@ const LessonEnrollPage = () => {
           Number(openLessonId.openLessonId),
         );
         if (res) {
-          setOpenLessonInfo(res);
-          const imgRef = ref(
-            storage,
-            `lessons/${Number(
-              openLessonId.lessonId,
-            )}/pamphlet_images/${encodeURI(res.lessonImg)}`,
-          );
-          const url = await getDownloadURL(imgRef);
-          setLessonImage(url);
+          if (res.lessonTeacherName !== res.userName) {
+            setOpenLessonInfo(res);
+            const imgRef = ref(
+              storage,
+              `lessons/${Number(
+                openLessonId.lessonId,
+              )}/pamphlet_images/${encodeURI(res.lessonImg)}`,
+            );
+            const url = await getDownloadURL(imgRef);
+            setLessonImage(url);
+          } else {
+            alert('자신이 개설한 클래스는 신청이 불가합니다.');
+            navigate(`/`);
+          }
         } else {
           alert('다시 시도해주세요.');
         }
