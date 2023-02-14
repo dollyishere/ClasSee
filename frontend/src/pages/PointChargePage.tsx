@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 
 import useViewModel from '../viewmodels/PointChargeViewModel';
 import privateInfoState from '../models/PrivateInfoAtom';
+import useApi from '../apis/KakaoApi';
 
 import kakaoPay from '../assets/payment_icon_yellow_small.png';
 
@@ -23,6 +24,8 @@ const PointChargePage = () => {
   const [success, setSuccess] = useState<boolean>(false);
 
   const { chargePoint } = useViewModel();
+
+  const { kakaoPayReady } = useApi();
 
   const paymentMethods = [
     {
@@ -71,10 +74,18 @@ const PointChargePage = () => {
     }
 
     if (userInfo !== null) {
-      const response = await chargePoint(userInfo?.email, point, payment);
-      if (response === 200) {
-        setSuccess(true);
+      const response = await kakaoPayReady();
+      if (response.status === 200) {
+        window.open(
+          response.data.next_redirect_pc_url,
+          '카카오페이 결제',
+          'status=no',
+        );
       }
+      // const response = await chargePoint(userInfo?.email, point, payment);
+      // if (response === 200) {
+      //   setSuccess(true);
+      // }
     }
   };
 
