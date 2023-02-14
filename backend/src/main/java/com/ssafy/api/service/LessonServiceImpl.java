@@ -2,6 +2,7 @@ package com.ssafy.api.service;
 
 import com.querydsl.core.Tuple;
 import com.ssafy.api.dto.*;
+import com.ssafy.api.response.AttendLessonInfoListRes;
 import com.ssafy.api.response.LessonDetailsRes;
 import com.ssafy.api.response.LessonSchedulesRes;
 import com.ssafy.db.entity.lesson.*;
@@ -13,10 +14,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class LessonServiceImpl implements LessonService {
@@ -220,8 +218,10 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public List<AttendOpenLessonInfoDto> getAttendLessonListByStudent(Long userId, String query, int limit, int offset) {
-        List<OpenLesson> openLessonList = lessonRepositorySupport.findAttendLessonListByStudent(userId, query, limit, offset);
+    public AttendLessonInfoListRes getAttendLessonListByStudent(Long userId, String query, int limit, int offset) {
+        Map<String, Object> attendLessonDto = lessonRepositorySupport.findAttendLessonListByStudent(userId, query, limit, offset);
+        List<OpenLesson> openLessonList = (List<OpenLesson>) attendLessonDto.get("LESSON_LIST");
+        Long count = (Long) attendLessonDto.get("COUNT");
 
         List<AttendOpenLessonInfoDto> attendLessonList = new ArrayList<>();
 
@@ -252,7 +252,13 @@ public class LessonServiceImpl implements LessonService {
                             .build()
             );
         });
-        return attendLessonList;
+
+        AttendLessonInfoListRes res = AttendLessonInfoListRes
+                                                    .builder()
+                                                    .lessonInfoList(attendLessonList)
+                                                    .count(count)
+                                                    .build();
+        return res;
     }
 
     @Override
