@@ -32,15 +32,23 @@ const Review: React.FC = () => {
     event: React.FormEvent<HTMLFormElement>,
   ) => {
     event.preventDefault();
-    if (textRef.current !== null && userInfo !== null && score !== null) {
+    if (
+      textRef.current !== null &&
+      userInfo !== null &&
+      score !== null &&
+      img !== undefined
+    ) {
       const content = textRef.current.value;
-      const response = await createReview({
-        content,
-        img: '',
-        lessonId: Number(params.lessonId),
-        score,
-        userEmail: userInfo.email,
-      });
+      const response = await createReview(
+        {
+          content,
+          img: '',
+          lessonId: Number(params.lessonId),
+          score,
+          userEmail: userInfo.email,
+        },
+        img,
+      );
       console.log(response);
     }
   };

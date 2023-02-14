@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { CreateReviewRequest } from '../types/ReviewType';
+import { CreateReviewRequest, UpdateReviewRequest } from '../types/ReviewType';
 
 const ReviewApi = () => {
   const accesstoken = localStorage.getItem('accessToken');
@@ -20,18 +20,30 @@ const ReviewApi = () => {
     }
     return null;
   };
-  const doUpdateReview = async (reuqestBody: any) => {
-    console.log('test');
+  const doUpdateReview = async (requestBody: UpdateReviewRequest) => {
+    try {
+      const response = await axios.put(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/review`,
+        requestBody,
+        {
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+          },
+        },
+      );
+      return response.data;
+    } catch (error: any) {
+      console.error(error);
+    }
+    return null;
   };
   // TODO: 상태코드값 돌려받고 싶어요오
   // 후기 작성하는 api
-  const doCreateReview = async (
-    createReviewRequestBody: CreateReviewRequest,
-  ) => {
+  const doCreateReview = async (requestBody: CreateReviewRequest) => {
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_SERVER_URI}/api/v1/review`,
-        createReviewRequestBody,
+        requestBody,
         {
           headers: {
             Authorization: `Bearer ${accesstoken}`,
@@ -66,6 +78,7 @@ const ReviewApi = () => {
     doCreateReview,
     doGetReview,
     doDeleteReview,
+    doUpdateReview,
   };
 };
 
