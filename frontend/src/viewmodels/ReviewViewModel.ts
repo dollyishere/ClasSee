@@ -22,7 +22,7 @@ const ReviewViewModel = () => {
       const reviewId = createResponse.id;
       const uploadUrl = `reviews/${encodeURI(
         String(requestBody.lessonId),
-      )}/${encodeURI(String(reviewId))}/${requestBody.userEmail}/${image.name}`;
+      )}/${encodeURI(String(reviewId))}/${image.name}`;
       await uploadBytes(ref(storage, uploadUrl), image);
       const updateResponse = await doUpdateReview({
         content: requestBody.content,
