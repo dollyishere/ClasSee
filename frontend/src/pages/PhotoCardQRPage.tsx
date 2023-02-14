@@ -16,17 +16,21 @@ const PhotoCardQRPage = () => {
   return (
     <div className="photo-card-qr-page page">
       <h1>포토카드 생성하기</h1>
-      <QRCodeSVG
-        className="photo-card-qr-page__qr-code"
-        size={256}
-        value="http://www.classee.site/photo-card/create"
-      />
+      {userInfo !== null ? (
+        <QRCodeSVG
+          className="photo-card-qr-page__qr-code"
+          size={256}
+          value={`http://www.classee.site/photo-card/create/${userInfo.email}`}
+        />
+      ) : null}
       <div className="photo-card-qr-page__buttons">
-        <Link to="/photo-card/create">
-          <button type="button" className="button photo-card-qr-page__button">
-            PC에서 만들기
-          </button>
-        </Link>
+        {userInfo !== null ? (
+          <Link to={`/photo-card/create/${userInfo.email}`}>
+            <button type="button" className="button photo-card-qr-page__button">
+              PC에서 만들기
+            </button>
+          </Link>
+        ) : null}
         <button
           type="button"
           className="button photo-card-qr-page__button--quit"

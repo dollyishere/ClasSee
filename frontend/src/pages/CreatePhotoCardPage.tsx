@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { AddCircleOutline } from '@mui/icons-material';
 import { useRecoilValue } from 'recoil';
+import { useLocation, useParams } from 'react-router-dom';
 
 import useViewModel from '../viewmodels/CreatePhotoCardViewModel';
 import PrivateInfoState from '../models/PrivateInfoAtom';
@@ -10,8 +11,10 @@ const CreatePhotoCardPage = () => {
   const contentRef = useRef(null);
   const [image, setImage] = useState<File>();
   const [imageSrc, setImageSrc] = useState<string>();
+  const location = useLocation();
 
-  const userInfo = useRecoilValue(PrivateInfoState);
+  const params = useParams();
+  console.log(params.email);
 
   const { createPhotoCard } = useViewModel();
 
@@ -43,11 +46,11 @@ const CreatePhotoCardPage = () => {
         alert('사진을 업로드해주세요.');
         return;
       }
-      if (userInfo !== null && imageSrc !== undefined) {
+      if (imageSrc !== undefined && params.email !== undefined) {
         const response = await createPhotoCard(
           {
-            userEmail: userInfo.email,
-            img: `photo-cards/${encodeURI(userInfo.email)}/${encodeURI(
+            userEmail: params.email,
+            img: `photo-cards/${encodeURI(params.email)}/${encodeURI(
               String(2),
             )}/${encodeURI('test')}/${image.name}`,
             title: titleTarget.value,

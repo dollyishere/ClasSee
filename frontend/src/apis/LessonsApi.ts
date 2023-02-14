@@ -224,6 +224,7 @@ const LessonsApi = () => {
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_SERVER_URI}/api/v1/bookmarks/${email}/${lessonId}`,
+        {},
         {
           headers: {
             Authorization: `Bearer ${accesstoken}`,
