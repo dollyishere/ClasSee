@@ -1,19 +1,13 @@
 import React from 'react';
+import { StorageReference } from 'firebase/storage';
 import Carousel from 'react-material-ui-carousel';
+import CustomCarouselItem from './CustomCarouselItem';
+import { CarouselProps } from '../types/CarouselType';
 
-const CustomCarousel = () => {
-  const sample = [
-    {
-      name: '샘플 1',
-      description: '샘플 1 설명',
-    },
-    {
-      name: '샘플 2',
-      description: '샘플 2 설명',
-    },
-  ];
+const CustomCarousel = ({ ads }: CarouselProps) => {
   return (
     <Carousel
+      className="custom-carousel"
       autoPlay
       swipe
       animation="slide"
@@ -22,15 +16,11 @@ const CustomCarousel = () => {
       indicators={false}
       height="450px"
     >
-      {sample.map((item: any, i: number) => {
-        return (
-          <div className="carousel__item">
-            <h2>{item.name}</h2>
-            <p>{i}</p>
-            <p>{item.description}</p>
-          </div>
-        );
-      })}
+      {ads === undefined
+        ? null
+        : ads.items.map((ad: StorageReference) => (
+            <CustomCarouselItem imgRef={ad} />
+          ))}
     </Carousel>
   );
 };
