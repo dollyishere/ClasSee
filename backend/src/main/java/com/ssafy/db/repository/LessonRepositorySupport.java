@@ -160,7 +160,8 @@ public class LessonRepositorySupport {
         return res;
     }
 
-    public List<Lesson> findAttendLessonListByTeacher(Long userId, int limit, int offset) {
+    public HashMap<String, Object> findAttendLessonListByTeacher(Long userId, int limit, int offset) {
+        HashMap<String, Object> res = new HashMap<>();
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(qLesson.user.auth.id.eq(userId));
 
@@ -173,7 +174,15 @@ public class LessonRepositorySupport {
                 .limit(limit)
                 .fetch();
 
-        return lessonList;
+        Long count = jpaQueryFactory
+                .select(qLesson.count())
+                .from(qLesson)
+                .where(builder)
+                .fetchOne();
+
+        res.put("LESSON_LIST", lessonList);
+        res.put("COUNT", count);
+        return res;
     }
 
     /*

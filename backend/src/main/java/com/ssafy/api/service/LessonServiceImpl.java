@@ -262,9 +262,10 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public List<AttendLessonInfoDto> getAttendLessonListByTeacher(Long userId, int limit, int offset) {
-        List<Lesson> lessonList = lessonRepositorySupport.findAttendLessonListByTeacher(userId, limit, offset);
+    public AttendLessonInfoListRes getAttendLessonListByTeacher(Long userId, int limit, int offset) {
+        HashMap<String, Object> result = lessonRepositorySupport.findAttendLessonListByTeacher(userId, limit, offset);
 
+        List<Lesson> lessonList = (List<Lesson>) result.get("LESSON_LIST");
         List<AttendLessonInfoDto> attendLessonList = new ArrayList<>();
 
         lessonList.forEach((lesson) -> {
@@ -290,7 +291,11 @@ public class LessonServiceImpl implements LessonService {
                             .build()
             );
         });
-        return attendLessonList;
+        return AttendLessonInfoListRes
+                .builder()
+                .lessonInfoList(attendLessonList)
+                .count((Long)result.get("COUNT"))
+                .build();
     }
 
     @Override

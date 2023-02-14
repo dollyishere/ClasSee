@@ -33,7 +33,7 @@ public interface LessonService {
 
     LessonSchedulesRes getLessonSchedules(Long lessonId, LocalDate regDate);
 
-    List<AttendLessonInfoDto> getAttendLessonListByTeacher(Long userId, int limit, int offset);
+    AttendLessonInfoListRes getAttendLessonListByTeacher(Long userId, int limit, int offset);
     AttendLessonInfoListRes getAttendLessonListByStudent(Long userId, String query, int limit, int offset);
 
     List<Lesson> getPopularLessonList();
