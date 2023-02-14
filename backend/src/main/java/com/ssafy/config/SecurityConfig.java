@@ -45,7 +45,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static String[] OPEN_API_POST = new String[] {
             "/api/v1/auth/login",
-            "/api/v1/users"
+            "/api/v1/users",
+            "/api/v1/photocard"
     };
 
     private static String[] OPEN_API_PUT = new String[] {
