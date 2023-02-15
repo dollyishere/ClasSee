@@ -19,6 +19,7 @@ const LoginViewModel = () => {
     await doLogout(email);
 
     setPrivateInfo(null);
+    sessionStorage.clear();
     localStorage.setItem('accessToken', '');
   };
 
@@ -48,6 +49,7 @@ const LoginViewModel = () => {
         setAuthToken(accessToken);
         const encryptedToken = encryptToken(refreshToken, res.data.email);
         localStorage.setItem('refreshToken', encryptedToken);
+        sessionStorage.setItem('isLogin', 'true');
         return {
           statusCode: 200,
         };

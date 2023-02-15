@@ -23,6 +23,7 @@ import PhotoCardsPage from './pages/PhotoCardsPages';
 import NoticePage from './pages/NoticePage';
 import CreateNoticePage from './pages/CreateNoticePage';
 import NoticeDetailPage from './pages/NoticeDetailPage';
+import PointChargeCompletePage from './pages/PointChargeCompletePage';
 
 const Router = () => {
   // 최초 렌더링 때 localstorage 초기화하기 위한 flag
@@ -32,7 +33,7 @@ const Router = () => {
   // 25분에 한번 accesstoken을 재발급받아온다
   useEffect(() => {
     if (flag) {
-      localStorage.clear();
+      if (!sessionStorage.getItem('isLogin')) localStorage.clear();
     }
     setFlag(!flag);
     const timer = setInterval(() => {
@@ -85,6 +86,10 @@ const Router = () => {
       <Route path="/notice/write" element={<CreateNoticePage />} />
       <Route path="/notice/write/:noticeId" element={<CreateNoticePage />} />
       <Route path="/notice/:noticeId" element={<NoticeDetailPage />} />
+      <Route
+        path="/mypage/point/:status"
+        element={<PointChargeCompletePage />}
+      />
     </Routes>
   );
 };
