@@ -10,6 +10,8 @@
     box-shadow: 0 5px 5px gray;
     justify-content: center;
     display: flex;
+    position: relative;
+    align-items: flex-start;
     background-color: colors.$theme_color;
     .lesson-detail-page-img-slider {
       background-color: white;
@@ -18,9 +20,17 @@
       margin-left: 5%;
       justify-content: center;
       .carousel-wrapper {
+        // display: flex;
+        align-items: center; // 세로 중앙 정렬
+        justify-content: center; // 가로 중앙 정렬
         width: 100%;
         height: 100%;
-        display: inline-block;
+        .carousel__img {
+          // width: -webkit-fill-available;
+          // height: -webkit-fill-available;
+          width: 80%;
+          height: 80%;
+        }
       }
     }
     .lesson-detail-page__info {
@@ -83,6 +93,11 @@
         }
       }
     }
+    .lesson-detail-page__bookmark {
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
   }
 }
 .lesson-detail-page__body {
@@ -108,12 +123,26 @@
     }
     .lesson-detail-page__lesson-description {
       width: 100%;
-      // height: 500px;
-      // background-color: white;
-      // border-radius: 10px;
       align-items: center;
-    }
-    .lesson-detail-page__lesson-checklist-img {
+      font-weight: bolder;
+      padding: 5px;
+      .lesson-detail-page__lesson-check {
+        margin: 5%;
+        .lesson-detail-page__lesson-check-img {
+          width: -webkit-fill-available;
+        }
+      }
+      .lesson-detail-page__no-img {
+        padding: 5%;
+        margin: auto;
+        background-color: colors.$gray_color;
+      }
+      .lesson-detail-page__ckls-desc {
+        margin-block: 5%;
+        padding: 5px;
+        background-color: colors.$beige-color;
+        font-weight: bolder;
+      }
     }
   }
 

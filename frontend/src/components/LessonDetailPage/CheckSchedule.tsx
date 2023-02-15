@@ -36,17 +36,21 @@ const theme = createTheme({
   },
 });
 
-const CheckSchedule = () => {
+const CheckSchedule = (teacherEmail: any) => {
   const lessonIdParams = useParams();
 
+  const { email } = teacherEmail;
   const navigate = useNavigate();
 
   const userInfo = useRecoilValue(PrivateInfoState);
+
+  const today = moment();
 
   // api를 통해 불러올 스케줄 데이터를 담아줄 scheduleList 생성
   const [scheduleList, setScheduleListState] = useState<LessonSchedulesType[]>(
     [],
   );
+  const [hiddenState, setHiddenState] = useState(true);
 
   // 달력의 값을 주관할 selectedDate 생성
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -79,8 +83,29 @@ const CheckSchedule = () => {
 
   // 사용자가 달력에서 다른 값을 선택했을 시, 해당 값으로 value를 바꿔준 후, 스케줄을 가져옴
   const handleDateChange = (date: Date) => {
-    setSelectedDate(date);
-    getScheduleSelected(date);
+    const selecteDate = moment(date);
+    if (selecteDate.isBefore(today, 'day')) {
+      alert('지나간 스케줄은 선택할 수 없습니다.');
+    } else {
+      setSelectedDate(date);
+      getScheduleSelected(date);
+    }
+  };
+
+  const handleDoEnroll = (lessonId: number, openLessonId: number) => {
+    if (userInfo) {
+      console.log(userInfo.email);
+      console.log(email);
+      if (userInfo.email === teacherEmail) {
+        console.log(teacherEmail);
+        alert('본인이 개설한 클래스는 수강 신청할 수 없습니다.');
+      } else {
+        navigate(`/enroll-lesson/${lessonId}/${openLessonId}`);
+      }
+    } else {
+      alert('로그인 후에 이용이 가능합니다.');
+      navigate('/');
+    }
   };
 
   useEffect(() => {
@@ -104,16 +129,21 @@ const CheckSchedule = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Card color="secondary" className="check-schedule__container">
-        <Button
-          color="primary"
-          variant="contained"
-          className="check-schedule__header"
-        >
-          <h2>
-            <FormatAlignJustifyIcon /> 클래스 예약하기
-          </h2>
-        </Button>
+      <Button
+        color="primary"
+        variant="contained"
+        className="check-schedule__header"
+        onClick={() => setHiddenState(!hiddenState)}
+      >
+        <h2>
+          <FormatAlignJustifyIcon /> 클래스 예약하기
+        </h2>
+      </Button>
+      <Card
+        color="secondary"
+        className="check-schedule__container"
+        hidden={hiddenState}
+      >
         <div>
           <div className="check-schedule__date-part">
             <h3>클래스 시간 선택</h3>
@@ -136,17 +166,21 @@ const CheckSchedule = () => {
                     schedule;
                   return (
                     <li key={openLessonId}>
-                      강의 시간 : {startTime.slice(11, 16)} -
-                      {endTime.slice(11, 16)}
-                      <Button
-                        onClick={() => {
-                          navigate(
-                            `/enroll-lesson/${lessonId}/${openLessonId}`,
-                          );
-                        }}
-                      >
-                        선택
-                      </Button>
+                      <Card className="check-schedule__li">
+                        <div className="check-schedule__class-time">
+                          강의 시간 :{' '}
+                        </div>{' '}
+                        <div>
+                          {startTime.slice(11, 16)} -{endTime.slice(11, 16)}
+                        </div>
+                        <Button
+                          onClick={() => {
+                            handleDoEnroll(lessonId, openLessonId);
+                          }}
+                        >
+                          선택
+                        </Button>
+                      </Card>
                     </li>
                   );
                 })
