@@ -167,15 +167,17 @@ const MyCreatedLessonDetailPage = () => {
   }, [rerenderSchedule]);
 
   return (
-    <div className="profile-page">
-      <Card className="profile-page__card">
-        <h1>개설한 클래스 관리</h1>
-        <CardContent>
-          <div className="created-lesson-detail-page__box">
-            <div className="created-lesson-detail-page__header">
+    <div className="my-created-lesson-detail-page">
+      <Card className="my-created-lesson-detail-page__card">
+        <h1 className="my-created-lesson-detail-page__title">
+          개설한 클래스 관리
+        </h1>
+        <CardContent className="my-created-lesson-detail-page__body">
+          <Card className="my-created-lesson-detail-page__lesson-card">
+            <div className="my-created-lesson-detail-page__header">
               클래스 상세
             </div>
-            <div className="created-lesson-detail-page__lesson-name">
+            <div className="my-created-lesson-detail-page__lesson-name">
               <h3>클래스 명:</h3>
               <p>{lessonDetailState.lessonName}</p>
               {/* span 태그로 제작된 텍스트만 눌러도 페이지 이동할 수 있도록 button과 같은 기능을 부여 */}
@@ -193,7 +195,7 @@ const MyCreatedLessonDetailPage = () => {
                 상세 페이지 바로 가기
               </span>
             </div>
-            <div className="created-lesson-detail-page__runningtime">
+            <div className="my-created-lesson-detail-page__runningtime">
               <h3>소요 시간:</h3>
               <p>
                 {lessonDetailState.runningTime === 0
@@ -202,11 +204,11 @@ const MyCreatedLessonDetailPage = () => {
                 시간
               </p>
             </div>
-            <div className="created-lesson-detail-page__category">
+            <div className="my-created-lesson-detail-page__category">
               <h3>카테고리</h3>
               <div>{lessonDetailState.category}</div>
             </div>
-            <div className="created-lesson-detail-page__enrolled-image">
+            <div className="my-created-lesson-detail-page__enrolled-image">
               <h3>등록한 사진:</h3>
               <div>
                 {pamphletsImgState.map((image: any) => (
@@ -217,7 +219,7 @@ const MyCreatedLessonDetailPage = () => {
                 ))}
               </div>
             </div>
-            <div className="created-lesson-detail-page__button">
+            <div className="my-created-lesson-detail-page__button">
               <Stack spacing={2} direction="row">
                 <Button
                   variant="contained"
@@ -232,9 +234,9 @@ const MyCreatedLessonDetailPage = () => {
                 </Button>
               </Stack>
             </div>
-          </div>
-          <div>
-            <div className="created-lesson-detail-page__header">
+          </Card>
+          <Card>
+            <div className="my-created-lesson-detail-page__header">
               스케줄 관리
             </div>
             <div>
@@ -244,7 +246,7 @@ const MyCreatedLessonDetailPage = () => {
                 <li>참여 인원</li>
                 <li>수정/삭제</li>
               </ul>
-              <div className="created-lesson-detail-page__schedules">
+              <div className="my-created-lesson-detail-page__schedules">
                 {schedulesListState.map((schedule: any) => (
                   <ScheduleDetail
                     startTime={schedule.startTime}
@@ -276,7 +278,7 @@ const MyCreatedLessonDetailPage = () => {
                 </Button>
               )}
             </div>
-          </div>
+          </Card>
           <div>
             <Link to="/mypage/created-lesson">
               <Button variant="contained"> 강의 목록 보기 </Button>
