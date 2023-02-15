@@ -18,7 +18,7 @@ const MyPhotoBookPage = () => {
   const [showBack, setShowBack] = useState<boolean>(false);
   const [selectedCard, setSelectedCard] = useState<PhotoCardType>();
 
-  const { getPhotoCards, deletePhotoCard } = useViewModel();
+  const { getMyPhotoCards, deletePhotoCard } = useViewModel();
 
   const handlePageChange = (
     event: React.ChangeEvent<unknown>,
@@ -59,7 +59,8 @@ const MyPhotoBookPage = () => {
       const getData = async () => {
         const limit = 6;
         const offset = (page - 1) * limit;
-        const response = await getPhotoCards(userInfo.email, limit, offset);
+        const response = await getMyPhotoCards(userInfo.email, limit, offset);
+        console.log('adwwdw', response);
         setCount(Math.ceil(response.count / limit));
         setPhotoCards(response.page);
       };
