@@ -2,7 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
-import { Stack, Button, Card, CardContent } from '@mui/material';
+import {
+  Stack,
+  Button,
+  Card,
+  CardContent,
+  createTheme,
+  ThemeProvider,
+  ImageList,
+  ImageListItem,
+} from '@mui/material';
 
 import {
   LessonDetailRequest,
@@ -20,6 +29,17 @@ import PrivateInfoState from '../models/PrivateInfoAtom';
 
 import CreateScheduleComponent from '../components/MyPage/CreateSchedule';
 import ScheduleDetail from '../components/MyPage/ScheduleDetail';
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#7062c7',
+    },
+    secondary: {
+      main: '#a9a9a9',
+    },
+  },
+});
 
 const MyCreatedLessonDetailPage = () => {
   // url(Router) 통해서 입력된 lessonId를 useParams로 받아옴
@@ -167,126 +187,167 @@ const MyCreatedLessonDetailPage = () => {
   }, [rerenderSchedule]);
 
   return (
-    <div className="my-created-lesson-detail-page">
-      <Card className="my-created-lesson-detail-page__card">
-        <h1 className="my-created-lesson-detail-page__title">
-          개설한 클래스 관리
-        </h1>
-        <CardContent className="my-created-lesson-detail-page__body">
-          <Card className="my-created-lesson-detail-page__lesson-card">
-            <div className="my-created-lesson-detail-page__header">
-              클래스 상세
-            </div>
-            <div className="my-created-lesson-detail-page__lesson-name">
-              <h3>클래스 명:</h3>
-              <p>{lessonDetailState.lessonName}</p>
-              {/* span 태그로 제작된 텍스트만 눌러도 페이지 이동할 수 있도록 button과 같은 기능을 부여 */}
-              <span
-                role="button"
-                tabIndex={0}
-                onClick={() => navigate(`/lesson/${Number(lessonId.lessonId)}`)}
-                onKeyDown={(event) => {
-                  if (event.key === 'Enter' || event.key === ' ') {
-                    event.preventDefault();
-                    navigate(`/lesson/${Number(lessonId.lessonId)}`);
-                  }
-                }}
-              >
-                상세 페이지 바로 가기
-              </span>
-            </div>
-            <div className="my-created-lesson-detail-page__runningtime">
-              <h3>소요 시간:</h3>
-              <p>
-                {lessonDetailState.runningTime === 0
-                  ? '미정'
-                  : lessonDetailState.runningTime}{' '}
-                시간
-              </p>
-            </div>
-            <div className="my-created-lesson-detail-page__category">
-              <h3>카테고리</h3>
-              <div>{lessonDetailState.category}</div>
-            </div>
-            <div className="my-created-lesson-detail-page__enrolled-image">
-              <h3>등록한 사진:</h3>
-              <div>
-                {pamphletsImgState.map((image: any) => (
-                  <img src={image} alt={image} />
-                ))}
-                {checkListImgState.map((image: any) => (
-                  <img src={image} alt={image} />
-                ))}
+    <ThemeProvider theme={theme}>
+      <div className="my-created-lesson-detail-page">
+        <Card className="my-created-lesson-detail-page__card">
+          <h1 className="my-created-lesson-detail-page__title">
+            개설한 클래스 관리
+          </h1>
+          <CardContent className="my-created-lesson-detail-page__body">
+            <Card className="my-created-lesson-detail-page__lesson-card">
+              <div className="my-created-lesson-detail-page__header">
+                클래스 상세
               </div>
-            </div>
-            <div className="my-created-lesson-detail-page__button">
-              <Stack spacing={2} direction="row">
-                <Button
-                  variant="contained"
-                  onClick={() =>
-                    navigate(`/update-lesson/${Number(lessonId.lessonId)}`)
-                  }
+              <div className="my-created-lesson-detail-page__content-container">
+                <div className="my-created-lesson-detail-page__lesson-part-div">
+                  <h2 className="my-created-lesson-detail-page__lesson-part-title">
+                    클래스 명:
+                  </h2>
+                  <p>{lessonDetailState.lessonName}</p>
+                  <Link to={`/lesson/${Number(lessonId.lessonId)}`}>
+                    <Button className="my-created-lesson-detail-page__go-detail">
+                      상세 페이지 바로 가기
+                    </Button>
+                  </Link>
+                </div>
+                <div className="my-created-lesson-detail-page__lesson-part-div">
+                  <h2 className="my-created-lesson-detail-page__lesson-part-title">
+                    소요 시간:
+                  </h2>
+                  <p>
+                    {lessonDetailState.runningTime === 0
+                      ? '미정'
+                      : lessonDetailState.runningTime}{' '}
+                    시간
+                  </p>
+                </div>
+                <div className="my-created-lesson-detail-page__lesson-part-div">
+                  <h2 className="my-created-lesson-detail-page__lesson-part-title">
+                    카테고리:{' '}
+                  </h2>
+                  <div className="lesson__category">
+                    <div className="lesson__category--text">
+                      {lessonDetailState.category}
+                    </div>
+                  </div>
+                </div>
+                <div className="my-created-lesson-detail-page__lesson-part-div">
+                  <h2 className="my-created-lesson-detail-page__lesson-part-title">
+                    등록한 사진:
+                  </h2>
+                  <ImageList
+                    sx={{ width: 500, height: 450 }}
+                    cols={3}
+                    rowHeight={164}
+                  >
+                    {pamphletsImgState.map((img: string) => (
+                      <ImageListItem key={img}>
+                        <img
+                          src={img}
+                          srcSet={`${img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                          alt={img}
+                          loading="lazy"
+                        />
+                      </ImageListItem>
+                    ))}
+                    {checkListImgState.map((img: string) => (
+                      <ImageListItem key={img}>
+                        <img
+                          src={img}
+                          srcSet={`${img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                          alt={img}
+                          loading="lazy"
+                        />
+                      </ImageListItem>
+                    ))}
+                  </ImageList>
+                </div>
+                <Stack
+                  spacing={2}
+                  direction="row"
+                  justifyContent="center"
+                  marginTop={2}
+                  marginBottom={2}
                 >
-                  강의 상세 수정
-                </Button>
-                <Button variant="contained" onClick={handleLessonDelete}>
-                  강의 삭제
-                </Button>
-              </Stack>
-            </div>
-          </Card>
-          <Card>
-            <div className="my-created-lesson-detail-page__header">
-              스케줄 관리
-            </div>
-            <div>
-              <ul>
-                <li>시작 시간</li>
-                <li>종료 시간</li>
-                <li>참여 인원</li>
-                <li>수정/삭제</li>
-              </ul>
-              <div className="my-created-lesson-detail-page__schedules">
-                {schedulesListState.map((schedule: any) => (
-                  <ScheduleDetail
-                    startTime={schedule.startTime}
-                    endTime={schedule.endTime}
-                    openLessonId={schedule.openLessonId}
-                    lessonId={schedule.lessonId}
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    onClick={() =>
+                      navigate(`/update-lesson/${Number(lessonId.lessonId)}`)
+                    }
+                  >
+                    강의 상세 수정
+                  </Button>
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    onClick={handleLessonDelete}
+                  >
+                    강의 삭제
+                  </Button>
+                </Stack>
+              </div>
+            </Card>
+            <Card className="my-created-lesson-detail-page__schedule-card">
+              <div className="my-created-lesson-detail-page__header">
+                스케줄 관리
+              </div>
+              <div>
+                <ul className="my-created-lesson-detail-page__lesson-part-div">
+                  <li>시작 시간</li>
+                  <li>종료 시간</li>
+                  <li>참여 인원</li>
+                  <li>수정/삭제</li>
+                </ul>
+                <div className="my-created-lesson-detail-page__schedules">
+                  {schedulesListState.map((schedule: any) => (
+                    <ScheduleDetail
+                      startTime={schedule.startTime}
+                      endTime={schedule.endTime}
+                      openLessonId={schedule.openLessonId}
+                      lessonId={schedule.lessonId}
+                      rerenderSchedule={rerenderSchedule}
+                      setRerenderSchedule={setRerenderSchedule}
+                    />
+                  ))}
+                </div>
+
+                {scheduleInputState ? (
+                  <CreateScheduleComponent
+                    runningtime={lessonDetailState.runningTime}
+                    lessonId={Number(lessonId.lessonId)}
+                    scheduleInputState={scheduleInputState}
+                    setScheduleInputState={setScheduleInputState}
+                    schedulesListState={schedulesListState}
                     rerenderSchedule={rerenderSchedule}
                     setRerenderSchedule={setRerenderSchedule}
                   />
-                ))}
+                ) : (
+                  <Stack
+                    direction="row"
+                    justifyContent="center"
+                    marginTop={2}
+                    marginBottom={2}
+                  >
+                    <Button
+                      variant="contained"
+                      onClick={() => setScheduleInputState(true)}
+                    >
+                      스케줄 추가
+                    </Button>
+                  </Stack>
+                )}
               </div>
-
-              {scheduleInputState ? (
-                <CreateScheduleComponent
-                  runningtime={lessonDetailState.runningTime}
-                  lessonId={Number(lessonId.lessonId)}
-                  scheduleInputState={scheduleInputState}
-                  setScheduleInputState={setScheduleInputState}
-                  schedulesListState={schedulesListState}
-                  rerenderSchedule={rerenderSchedule}
-                  setRerenderSchedule={setRerenderSchedule}
-                />
-              ) : (
-                <Button
-                  variant="contained"
-                  onClick={() => setScheduleInputState(true)}
-                >
-                  스케줄 추가
-                </Button>
-              )}
+            </Card>
+            <div>
+              <Link to="/mypage/created-lesson">
+                <Button variant="contained"> 강의 목록 보기 </Button>
+              </Link>
             </div>
-          </Card>
-          <div>
-            <Link to="/mypage/created-lesson">
-              <Button variant="contained"> 강의 목록 보기 </Button>
-            </Link>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+          </CardContent>
+        </Card>
+      </div>
+    </ThemeProvider>
   );
 };
 export default MyCreatedLessonDetailPage;

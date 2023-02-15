@@ -3,24 +3,60 @@
 .my-created-lesson-detail-page {
   .my-created-lesson-detail-page__card {
     width: 90%;
-    margin: 40px auto;
+    margin: auto;
     .my-created-lesson-detail-page__title {
       padding: 10px;
       text-align: left;
-      font-size: 36px;
-      font-weight: bold;
       margin-left: 3%;
     }
     .my-created-lesson-detail-page__body {
-      align-items: centera;
+      justify-content: center;
+      text-align: center;
       .my-created-lesson-detail-page__lesson-card {
-        width: 80%;
+        width: 70%;
         margin: 10px;
+        display: inline-block;
+        background-color: colors.$light_gray_color;
+        .my-created-lesson-detail-page__content-container {
+          margin-inline: 5%;
+          margin-block: 3%;
+        }
       }
       .my-created-lesson-detail-page__schedule-card {
-        width: 80%;
+        width: 70%;
         margin: 10px;
+        display: inline-block;
+        background-color: colors.$light_gray_color;
       }
     }
   }
+}
+
+.my-created-lesson-detail-page__header {
+  width: 100%;
+  padding-block: 3%;
+  background-color: colors.$theme_color_focus;
+  text-align: center;
+  font-weight: bold;
+  font-size: 30px;
+  color: white;
+  text-shadow: 2px 2px 2px gray;
+}
+
+.my-created-lesson-detail-page__lesson-part-div {
+  display: flex;
+  align-items: center;
+}
+
+.my-created-lesson-detail-page__button {
+  background-color: colors.$theme_color;
+}
+
+.my-created-lesson-detail-page__lesson-part-title {
+  margin-right: 10px;
+}
+
+.my-created-lesson-detail-page__go-detail {
+  margin-left: 5px;
+  text-decoration: underline;
 }
