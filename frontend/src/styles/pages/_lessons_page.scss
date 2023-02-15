@@ -13,18 +13,14 @@
     .lessons-page__sub-page {
       width: calc(100% - sidebar.$width);
       overflow: auto;
-      .lessons-page__lesson-list {
-        width: 90%;
-        margin: 0 auto;
+
+      .lessons-page__lesson-card {
         display: flex;
-        flex-wrap: wrap;
-        .lessons-page__lesson-card {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 33%;
-        }
+        align-items: center;
+        justify-content: center;
+        width: 33%;
       }
+
       .lessons-page__pagination {
         display: flex;
         justify-content: center;
@@ -33,3 +29,56 @@
     }
   }
 }
+@media screen and (min-width: 1024px) {
+  .lessons-page__lesson-list {
+    width: 80%;
+    margin: 0 auto 0 300px;
+    // display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    flex-wrap: wrap;
+  }
+}
+@media screen and (min-width: 700px) and (max-width: 1024px) {
+  .lessons-page__lesson-list {
+    width: 80%;
+    margin: 0 auto 0 300px;
+    // display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    flex-wrap: wrap;
+  }
+}
+@media screen and (max-width: 700px) {
+  .recommandlessons__cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    // display: flex;
+    // justify-content: space-evenly;
+  }
+}
+// @media screen and (min-width: 1024px) {
+//   .lessons-page__lesson-list {
+//     display: grid;
+//     grid-template-columns: 1fr 1fr 1fr 1fr;
+//     // display: flex;
+//     // justify-content: space-evenly;
+//   }
+// }
+
+// @media screen and (min-width: 700px) and (max-width: 1024px) {
+//   .recommandlessons__cards {
+//     display: grid;
+//     grid-template-columns: 1fr 1fr 1fr;
+//     // display: flex;
+//     // justify-content: space-evenly;
+//   }
+// }
+// @media screen and (max-width: 700px) {
+//   .recommandlessons__cards {
+//     display: grid;
+//     grid-template-columns: 2fr 2fr;
+//     // display: flex;
+//     // justify-content: space-evenly;
+//   }
+// }
