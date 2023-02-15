@@ -123,7 +123,7 @@ const LessonsPage = () => {
       case 'exercise':
         currentCategory = '운동';
         break;
-      case 'cook':
+      case 'cooking':
         currentCategory = '요리';
         break;
       case 'beauty':
