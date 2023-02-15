@@ -78,7 +78,7 @@ const LessonsPage = () => {
     let day = '';
     for (let i = 0; i < 7; i += 1) {
       if (dayOfWeek[i]) {
-        day += `${i},`;
+        day += `${i + 1},`;
       }
     }
     day = day.substring(0, day.length - 1);

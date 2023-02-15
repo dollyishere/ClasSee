@@ -63,6 +63,16 @@ const SearchBox = ({
     setDayOfWeek([...newDayOfWeek]);
   };
 
+  const days = [
+    '일요일',
+    '월요일',
+    '화요일',
+    '수요일',
+    '목요일',
+    '금요일',
+    '토요일',
+  ];
+
   return (
     <div className="search-box">
       <Card className="search-box__card">
@@ -70,83 +80,19 @@ const SearchBox = ({
           <div className="search-box__row">
             <div className="search-box__label">요일</div>
             <div className="search-box__content">
-              <button
-                type="button"
-                className={
-                  dayOfWeek[0]
-                    ? 'button search-box__button--day clicked'
-                    : 'button search-box__button--day'
-                }
-                onClick={() => handleDayClick(0)}
-              >
-                월요일
-              </button>
-              <button
-                type="button"
-                className={
-                  dayOfWeek[1]
-                    ? 'button search-box__button--day clicked'
-                    : 'button search-box__button--day'
-                }
-                onClick={() => handleDayClick(1)}
-              >
-                화요일
-              </button>{' '}
-              <button
-                type="button"
-                className={
-                  dayOfWeek[2]
-                    ? 'button search-box__button--day clicked'
-                    : 'button search-box__button--day'
-                }
-                onClick={() => handleDayClick(2)}
-              >
-                수요일
-              </button>{' '}
-              <button
-                type="button"
-                className={
-                  dayOfWeek[3]
-                    ? 'button search-box__button--day clicked'
-                    : 'button search-box__button--day'
-                }
-                onClick={() => handleDayClick(3)}
-              >
-                목요일
-              </button>{' '}
-              <button
-                type="button"
-                className={
-                  dayOfWeek[4]
-                    ? 'button search-box__button--day clicked'
-                    : 'button search-box__button--day'
-                }
-                onClick={() => handleDayClick(4)}
-              >
-                금요일
-              </button>{' '}
-              <button
-                type="button"
-                className={
-                  dayOfWeek[5]
-                    ? 'button search-box__button--day clicked'
-                    : 'button search-box__button--day'
-                }
-                onClick={() => handleDayClick(5)}
-              >
-                토요일
-              </button>{' '}
-              <button
-                type="button"
-                className={
-                  dayOfWeek[6]
-                    ? 'button search-box__button--day clicked'
-                    : 'button search-box__button--day'
-                }
-                onClick={() => handleDayClick(6)}
-              >
-                일요일
-              </button>
+              {days.map((day: string, i: number) => (
+                <button
+                  type="button"
+                  className={
+                    dayOfWeek[i]
+                      ? 'button search-box__button--day clicked'
+                      : 'button search-box__button--day'
+                  }
+                  onClick={() => handleDayClick(i)}
+                >
+                  {day}
+                </button>
+              ))}
             </div>
           </div>
           <div className="search-box__row">
