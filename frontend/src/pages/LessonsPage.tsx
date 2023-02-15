@@ -78,7 +78,7 @@ const LessonsPage = () => {
     let day = '';
     for (let i = 0; i < 7; i += 1) {
       if (dayOfWeek[i]) {
-        day += `${i},`;
+        day += `${i + 1},`;
       }
     }
     day = day.substring(0, day.length - 1);
@@ -123,7 +123,7 @@ const LessonsPage = () => {
       case 'exercise':
         currentCategory = '운동';
         break;
-      case 'cook':
+      case 'cooking':
         currentCategory = '요리';
         break;
       case 'beauty':
