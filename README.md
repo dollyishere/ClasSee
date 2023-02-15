@@ -116,6 +116,7 @@
 ## ✔ 프로젝트 산출물
 
 - [와이어 프레임](./output/Wireframe)
-- [기능정의서](./output)
+- [기능정의서](./output/FunctionalSpecification)
 - [시퀀스 다이어그램](./output/SequenceDiagram)
 - [시스템 구성도](./output/SystemConfiguration)
+- [ERD](./output/ERD)
