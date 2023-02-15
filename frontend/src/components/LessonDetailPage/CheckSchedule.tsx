@@ -157,6 +157,7 @@ const CheckSchedule = (teacherEmail: any) => {
               onChange={handleDateChange}
               value={selectedDate}
               // moment를 통해 달력에 각 일이 표시되는 형식을 변환해줌(본래는 뒤에 '일'이 붙음)
+              calendarType="US"
               formatDay={(locale, date) => moment(date).format('DD')}
             />
             <ul className="check-schedule__ul">
