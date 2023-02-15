@@ -118,4 +118,4 @@
 - [와이어 프레임](./output/Wireframe)
 - [기능정의서](./output)
 - [시퀀스 다이어그램](./output/SequenceDiagram)
-- [시스템 구성도](./output)
+- [시스템 구성도](./output/SystemConfiguration)
