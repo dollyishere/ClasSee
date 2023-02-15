@@ -2,9 +2,20 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
-import { Stack, Button, Card } from '@mui/material';
+import {
+  Stack,
+  Button,
+  Card,
+  ImageList,
+  ImageListItem,
+  createTheme,
+  ThemeProvider,
+  IconButton,
+} from '@mui/material';
 import { PersonOutline } from '@mui/icons-material';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
+import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
 import StickyBox from 'react-sticky-box';
 
 import Carousel from 'react-material-ui-carousel';
@@ -19,6 +30,7 @@ import {
 
 import LessonDetailViewModel from '../viewmodels/LessonDetailViewModel';
 import useViewModel from '../viewmodels/ProfileViewModel';
+import useMainPageViewModel from '../viewmodels/MainPageViewModel';
 
 import privateInfoState from '../models/PrivateInfoAtom';
 
@@ -26,6 +38,17 @@ import Header from '../components/Header';
 import BasicRating from '../components/BasicRating';
 import CheckSchedule from '../components/LessonDetailPage/CheckSchedule';
 import Reviews from '../components/LessonDetailPage/Review';
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#7062c7',
+    },
+    secondary: {
+      main: '#a9a9a9',
+    },
+  },
+});
 
 const LessonDetailPage = () => {
   // url(Router) 통해서 입력된 lessonId를 useParams로 받아옴
@@ -63,6 +86,8 @@ const LessonDetailPage = () => {
     LessonDetailViewModel();
   const { getProfileImage } = useViewModel();
   const [isReady, setIsReady] = useState(false);
+  const { getLessonImage, deleteBookmark, addBookmark } =
+    useMainPageViewModel();
 
   // 강의 개설을 신청하는 유저의 이메일 정보를 useRecoilValue를 통해 불러옴
   const userInfo = useRecoilValue(privateInfoState);
@@ -76,17 +101,48 @@ const LessonDetailPage = () => {
 
   const [ratingValue, setRatingValue] = useState<number | null>(0);
   const disableValue = true as boolean;
+  const [userEmail, setUserEmail] = useState('');
+
+  const [isBookMarked, setIsBookMarked] = useState(
+    lessonDetailState.bookMarked,
+  );
+
+  // 북마크 아이콘 클릭 시 북마크 추가, 삭제 토글 버튼 함수
+  const getBookmarkStatus = (event: React.MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+    if (userInfo) {
+      if (isBookMarked) {
+        const res = deleteBookmark(userInfo.email, Number(lessonId.lessonId));
+        setIsBookMarked(false);
+      } else {
+        const res = addBookmark(userInfo.email, Number(lessonId.lessonId));
+        setIsBookMarked(true);
+      }
+    } else {
+      window.confirm('로그인 후 사용 가능합니다');
+    }
+  };
 
   // useEffect로 해당 페이지 렌더링 시 강의 상세 정보를 받아오도록 내부 함수 실행
   useEffect(() => {
-    const getLessonDetailRequestBody: LessonDetailRequest = {
-      lessonId: Number(lessonId.lessonId),
-    };
     const fetchData = async () => {
+      let email;
+      if (userInfo) {
+        email = userInfo.email;
+      } else {
+        email = '';
+      }
+      const getLessonDetailRequestBody: LessonDetailRequest = {
+        email,
+        lessonId: Number(lessonId.lessonId) as number,
+      };
       const res = await getLessonDetail(getLessonDetailRequestBody);
       if (res?.message === 'SUCCESS') {
         // 만약 강의 상세 정보를 db에서 받아오는 것에 성공했다면, lessonDetailState에 해당 정보를 저장
+        console.log(res);
         setLessonDetailState(res);
+        setIsBookMarked(res.bookMarked);
+
         // firebase의 해당 강의가 저장된 폴더의 url에 접근하여 해당하는 이미지 파일을 각각 다운받음
         // 강의 관련 사진 다운로드해서 pamphletsImgState에 저장
         getPamphletImgUrls(res.pamphlets, Number(lessonId.lessonId)).then(
@@ -110,8 +166,9 @@ const LessonDetailPage = () => {
     fetchData();
     setIsReady(true);
   }, []);
+
   return (
-    <div>
+    <ThemeProvider theme={theme}>
       {isReady ? (
         <div className="lesson-detail-page__container">
           <Header />
@@ -131,7 +188,7 @@ const LessonDetailPage = () => {
                     console.log(item);
                     return (
                       <div className="carousel__item">
-                        <img src={item} alt={item} />
+                        <img src={item} alt={item} className="carousel__img" />
                       </div>
                     );
                   })}
@@ -170,13 +227,17 @@ const LessonDetailPage = () => {
                   {lessonDetailState.userName}
                 </p>
               </div>
-              <div className="lesson-detail-page__rating-none">
+              <div>
                 {lessonDetailState.score ? (
-                  <BasicRating
-                    ratingValue={Math.round(lessonDetailState.score * 10) / 10}
-                    setRatingValue={setRatingValue}
-                    disableValue={disableValue}
-                  />
+                  <div className="lesson-detail-page__rating-none">
+                    <BasicRating
+                      ratingValue={
+                        Math.round(lessonDetailState.score * 10) / 10
+                      }
+                      setRatingValue={setRatingValue}
+                      disableValue={disableValue}
+                    />
+                  </div>
                 ) : (
                   <div className="lesson-detail-page__rating-none">
                     <p>아직 평가가 없어요</p>
@@ -194,18 +255,40 @@ const LessonDetailPage = () => {
                 </div>
               </div>
             </div>
+            <IconButton
+              className="lesson-detail-page__bookmark"
+              size="large"
+              onClick={getBookmarkStatus}
+            >
+              {isBookMarked ? (
+                <BookmarkIcon
+                  fontSize="large"
+                  color="error"
+                  className="lesson__bookmark--icon"
+                />
+              ) : (
+                <BookmarkBorderIcon
+                  fontSize="large"
+                  color="action"
+                  className="lesson__bookmark--icon"
+                />
+              )}
+            </IconButton>
           </div>
           <div className="lesson-detail-page__body">
             <div className="lesson-detail-page__content">
               <div className="lesson-detail-page__button">
                 <Stack spacing={2} direction="row">
                   <Button
+                    color="primary"
                     variant={changeVisiable ? 'outlined' : 'contained'}
                     onClick={() => setChangeVisiable(false)}
                   >
                     강의 상세
                   </Button>
+
                   <Button
+                    color="primary"
                     variant={changeVisiable ? 'contained' : 'outlined'}
                     onClick={() => setChangeVisiable(true)}
                   >
@@ -216,30 +299,54 @@ const LessonDetailPage = () => {
               {!changeVisiable ? (
                 <div className="lesson-detail-page__box">
                   <h2 className="lesson-detail-page__part-title">강의 소개</h2>
-                  <div className="lesson-detail-page__lesson-description">
+                  <Card className="lesson-detail-page__lesson-description">
                     <pre>{lessonDetailState.lessonDescription}</pre>
-                  </div>
+                  </Card>
                   <h2 className="lesson-detail-page__part-title">커리큘럼</h2>
-                  <div className="lesson-detail-page__lesson-description">
+                  <Card className="lesson-detail-page__lesson-description">
                     {lessonDetailState.curriculums.map((curri: any) => (
                       <h3>
                         Step{curri.stage + 1}. {curri.description}
                       </h3>
                     ))}
-                  </div>
+                  </Card>
                   <h2 className="lesson-detail-page__part-title">준비물</h2>
-                  <div className="lesson-detail-page__lesson-description">
-                    {checkListImgState.map((image: any) => (
-                      <img className="lesson_img" src={image} alt={image} />
-                    ))}
-                    <div>
-                      <pre>{lessonDetailState.cklsDescription}</pre>
+                  <Card className="lesson-detail-page__lesson-description">
+                    <div className="lesson-detail-page__lesson-check">
+                      {checkListImgState.length !== 0 ? (
+                        checkListImgState.map((image: any, id: number) => (
+                          <img
+                            src={`${image}?w=164&h=164&fit=crop&auto=format`}
+                            alt={String(id)}
+                            loading="lazy"
+                            className="lesson-detail-page__lesson-check-img"
+                          />
+                        ))
+                      ) : (
+                        <Card className="lesson-detail-page__no-img">
+                          <img
+                            src={sadFace}
+                            alt={sadFace}
+                            className="lesson-detail-page__sad-image"
+                          />
+                          <h1>아직 사진이 없어요!</h1>
+                        </Card>
+                      )}
+                      <Card className="lesson-detail-page__ckls-desc">
+                        {lessonDetailState.cklsDescription === '' ? (
+                          <pre>
+                            <h1>준비물에 대한 설명이 없어요</h1>
+                          </pre>
+                        ) : (
+                          <pre>{lessonDetailState.cklsDescription}</pre>
+                        )}
+                      </Card>
                     </div>
-                  </div>
-                  <h2 className="lesson-detail-page__part-title">강사 소개</h2>
-                  <div className="lesson-detail-page__teacher">
+                  </Card>
+                  <h3 className="lesson-detail-page__part-title">강사 소개</h3>
+                  <Card className="lesson-detail-page__teacher">
                     {teacherImgState === null ? (
-                      <div className="profile-page__image--not">
+                      <div className="lesson-detail-page__teacher-image--not">
                         <PersonOutline
                           style={{
                             fontSize: '200px',
@@ -250,14 +357,22 @@ const LessonDetailPage = () => {
                       <img
                         src={teacherImgState}
                         alt={teacherImgState}
-                        className="profile-page__image--not"
+                        className="lesson-detail-page__teacher-image"
                       />
                     )}
+
                     <div className="lesson-detail-page__teacher-text">
-                      <h3>{lessonDetailState.userName}</h3>
-                      <p>{lessonDetailState.userDesciption}</p>
+                      <h2 className="lesson-detail-page__teacher-name">
+                        {lessonDetailState.userName}
+                      </h2>
+
+                      {lessonDetailState.userDesciption !== null ? (
+                        <p>{lessonDetailState.userDesciption}</p>
+                      ) : (
+                        <p>아직 소개글을 작성하지 않았어요!</p>
+                      )}
                     </div>
-                  </div>
+                  </Card>
                 </div>
               ) : (
                 <div className="lesson-detail-page__review">
@@ -268,13 +383,13 @@ const LessonDetailPage = () => {
             </div>
             <div className="lesson-detail-page__reservation">
               <StickyBox offsetTop={100} offsetBottom={100}>
-                <CheckSchedule />
+                <CheckSchedule teacherEmail={lessonDetailState.teacher} />
               </StickyBox>
             </div>
           </div>
         </div>
       ) : null}
-    </div>
+    </ThemeProvider>
   );
 };
 export default LessonDetailPage;

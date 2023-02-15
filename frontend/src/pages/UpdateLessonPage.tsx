@@ -108,6 +108,7 @@ const UpdateLessonPage = () => {
       navigate('/login');
     } else {
       const getLessonDetailRequestBody: LessonDetailRequest = {
+        email: userInfo.email,
         lessonId: Number(lessonId.lessonId),
       };
       const fetchData = async () => {

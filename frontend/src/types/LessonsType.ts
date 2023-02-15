@@ -131,6 +131,7 @@ export interface CreateLessonResponse extends Response {
 }
 
 export interface LessonDetailRequest {
+  email: string;
   lessonId: number;
 }
 

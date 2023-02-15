@@ -62,9 +62,17 @@ const LessonsApi = () => {
     getLessonDetailRequestBody: LessonDetailRequest,
   ) => {
     try {
-      const response = await axios.get<LessonDetailResponse>(
-        `${process.env.REACT_APP_SERVER_URI}/api/v1/lessons/${getLessonDetailRequestBody.lessonId}`,
-      );
+      let response;
+      if (getLessonDetailRequestBody.email === '') {
+        response = await axios.get<LessonDetailResponse>(
+          `${process.env.REACT_APP_SERVER_URI}/api/v1/lessons/${getLessonDetailRequestBody.lessonId}`,
+        );
+      } else {
+        response = await axios.get<LessonDetailResponse>(
+          `${process.env.REACT_APP_SERVER_URI}/api/v1/lessons/${getLessonDetailRequestBody.lessonId}?email=${getLessonDetailRequestBody.email}`,
+        );
+        console.log(getLessonDetailRequestBody.email);
+      }
       return response.data;
     } catch (error: any) {
       console.error(error);
