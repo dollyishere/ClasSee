@@ -249,6 +249,7 @@ public class LessonRepositorySupport {
                 .from(qLesson)
                 .leftJoin(qLesson.openLessonList, qOpenLesson)
                 .where(builder)
+                .orderBy(qLesson.id.desc())
                 .offset(offset)
                 .limit(limit)
                 .fetch();
