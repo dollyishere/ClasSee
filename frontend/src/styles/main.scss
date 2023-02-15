@@ -23,6 +23,7 @@
 @use './components/review';
 @use './components/lesson_carousel';
 @use './components/review-card';
+@use './components/no_lesson';
 
 // pages
 @use './pages/signup-page';
@@ -46,6 +47,7 @@
 @use './pages/create-notice-page';
 @use './pages/notice-detail-page';
 @use './pages/lesson-enroll-page';
+@use './pages/my-review-page';
 
 html,
 body,

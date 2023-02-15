@@ -25,6 +25,7 @@ const ProfilePage = () => {
     updateDescription,
     updatePassword,
     withdrawl,
+    getUserInfo,
   } = useViewModel();
 
   const upload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -108,12 +109,12 @@ const ProfilePage = () => {
       alert('로그인 후 이용 가능합니다.');
       navigate('/login');
     } else {
-      const getImage = async () => {
-        const imageUrl = await getProfileImage(userInfo.img);
-        console.log(imageUrl);
+      const getData = async () => {
+        const response = await getUserInfo(userInfo.email);
+        const imageUrl = await getProfileImage(response.img);
         setImage(imageUrl);
       };
-      getImage();
+      getData();
     }
   }, []);
 

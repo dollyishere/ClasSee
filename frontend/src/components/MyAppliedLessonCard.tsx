@@ -13,10 +13,17 @@ import useProfileViewModel from '../viewmodels/ProfileViewModel';
 import privateInfoState from '../models/PrivateInfoAtom';
 import logo from '../assets/logo2.png';
 
-interface Props {
-  lesson: Lesson;
-}
-const MyAppliedLessonCard = ({ lesson }: Props) => {
+// interface Props {
+//   lesson: Lesson;
+//   getMyAppliedLessonsMainpage: (
+//     email: string,
+//     limit: number,
+//     offset: number,
+//     query: string,
+//   ) => void;
+// }
+
+const MyAppliedLessonCard = ({ lesson, flag, setFlag }: any) => {
   const { deleteMyAppliedLessonsMainpage, getLessonImage } =
     useMainPageViewModel();
   const { getProfileImage } = useProfileViewModel();
@@ -24,20 +31,20 @@ const MyAppliedLessonCard = ({ lesson }: Props) => {
   const [lessonImage, setLessonImage] = useState<string>(logo);
   const [teacherImage, setTeacherImage] = useState<string>(logo);
   const [isBookMarked, setIsBookMarked] = useState(lesson.bookMarked);
-
   const [isHovered, setIsHovered] = useState(false);
   const userInfo = useRecoilValue(privateInfoState);
-
   const showModal = () => {
     if (window.confirm('해당 강의를 정말 취소 하시겠습니까?')) {
       if (userInfo) {
-        deleteMyAppliedLessonsMainpage(userInfo.email, lesson.lessonId).then(
-          (res: string) => {
-            console.log('res', res);
-          },
-        );
+        deleteMyAppliedLessonsMainpage(
+          userInfo.email,
+          lesson.openLessonId,
+        ).then((res: any) => {
+          if (res.statusCode === 200) {
+            setFlag(!flag);
+          }
+        });
       }
-      console.log('test');
     }
   };
 
@@ -62,7 +69,7 @@ const MyAppliedLessonCard = ({ lesson }: Props) => {
       }
     };
     getImage();
-  });
+  }, []);
   return (
     <div
       className="lesson__card"
@@ -75,7 +82,7 @@ const MyAppliedLessonCard = ({ lesson }: Props) => {
     >
       {/* 강의 대표이미지와 북마크 버튼 담는 div */}
       <div className="lesson__backImg">
-        <img className="lesson__img" src={logo} alt={lesson.name} />
+        <img className="lesson__img" src={lessonImage} alt={lesson.name} />
         {/* 북마크 버튼 클릭 시 true, false 값변경으로 아이콘 변경 */}
         <button type="button" className="lesson__bookmark">
           {isBookMarked ? (
@@ -103,7 +110,7 @@ const MyAppliedLessonCard = ({ lesson }: Props) => {
           direction="row"
           spacing={2}
         >
-          <Avatar alt="Remy Sharp" src={logo} />
+          <Avatar alt="Remy Sharp" src={teacherImage} />
         </Stack>
       </div>
       {/* 강의명 */}
@@ -142,24 +149,20 @@ const MyAppliedLessonCard = ({ lesson }: Props) => {
         <div className="applylessons__hover">
           {/* <Link to={`/participant/${lesson.id}`}> */}
           <div className="applylessons__hover--buttons">
-            <div>
-              <button
-                className="applylessons__hover--participantbutton"
-                type="button"
-                onClick={handleStartLesson}
-              >
-                <p>강의 시작</p>
-              </button>
-            </div>
-            <div>
-              <button
-                className="applylessons__hover--deletebutton"
-                type="button"
-                onClick={showModal}
-              >
-                <p>강의 취소</p>
-              </button>
-            </div>
+            <button
+              className="applylessons__hover--participantbutton"
+              type="button"
+              onClick={handleStartLesson}
+            >
+              <p className="applylessons__hover--begin">강의 시작</p>
+            </button>
+            <button
+              className="applylessons__hover--deletebutton"
+              type="button"
+              onClick={showModal}
+            >
+              <p className="applylessons__hover--cancel">강의 취소</p>
+            </button>
           </div>
         </div>
       )}
