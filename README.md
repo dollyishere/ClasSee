@@ -77,6 +77,7 @@
 - React.js
 - TypeScript.js
 - Node.js
+- SockJS
 - Openvidu
 - SASS
 - Recoil
