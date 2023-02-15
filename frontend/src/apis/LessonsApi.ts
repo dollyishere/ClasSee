@@ -102,7 +102,7 @@ const LessonsApi = () => {
       query += `&category=${searchOption.category}`;
     }
     if (searchOption.dayOfWeek) {
-      query += `&dayofWeek=${searchOption.dayOfWeek}`;
+      query += `&dayOfWeek=${searchOption.dayOfWeek}`;
     }
     if (searchOption.minPrice) {
       query += `&minPrice=${searchOption.minPrice}`;
