@@ -106,15 +106,6 @@
 <br />
 <!-- 자유 양식 -->
 
-## 프로젝트 상세 설명
----
-// 개발 환경, 기술 스택, 시스템 구성도, ERD, 기능 상세 설명 등
+## ✔ 프로젝트 산출물
 
-|제목|내용|설명|
-|---|-------|----------|
-|Convention|Back-End|https://cocobi.tistory.com/27|
-||Front-End||
-||Git|https://inpa.tistory.com/entry/GIT-%E2%9A%A1%EF%B8%8F-github-flow-git-flow-%F0%9F%93%88-%EB%B8%8C%EB%9E%9C%EC%B9%98-%EC%A0%84%EB%9E%B5|
-|||https://github.com/hotsix-turtles/TUPLI/blob/dev/docs/%EC%BB%A8%EB%B2%A4%EC%85%98.md|
-||Commit|https://string.tistory.com/112|
-
+- [기능명세서]
