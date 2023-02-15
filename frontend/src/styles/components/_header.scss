@@ -37,8 +37,11 @@ header {
       }
     }
     .nav__item--link {
+      background-color: #9381ff;
       text-decoration: none;
-      color: black;
+      color: white;
+      padding: 3px 15px 4px 15px;
+      border-radius: 10px;
     }
 
     .nav__button {
@@ -64,6 +67,7 @@ header {
 
   .search {
     margin-left: auto;
+    margin-right: 20px;
     display: flex;
     align-items: center;
     background-color: colors.$gray_color;
@@ -104,5 +108,16 @@ header {
     height: 300px;
     top: 60px;
     right: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav__item--link {
+    font-size: 10px;
+  }
+}
+@media (min-width: 480px) and (max-width: 1024px) {
+  .nav__item--link {
+    font-size: 15px;
   }
 }
