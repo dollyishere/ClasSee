@@ -33,7 +33,7 @@ const Router = () => {
   // 25분에 한번 accesstoken을 재발급받아온다
   useEffect(() => {
     if (flag) {
-      localStorage.clear();
+      if (!sessionStorage.getItem('isLogin')) localStorage.clear();
     }
     setFlag(!flag);
     const timer = setInterval(() => {

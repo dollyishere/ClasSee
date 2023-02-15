@@ -18,6 +18,7 @@ const PointChargeViewModel = () => {
         '카카오페이 결제',
         'fullscreen=no, status=no',
       );
+
       localStorage.setItem('kakaoTid', response.data.tid);
     }
   };
