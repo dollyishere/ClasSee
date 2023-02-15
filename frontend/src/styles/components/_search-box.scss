@@ -36,12 +36,16 @@
       }
       .clicked {
         background-color: colors.$beige_color_focus;
+        color: black;
       }
       .search-box__button {
         background-color: colors.$theme_color;
         color: white;
-        width: 100px;
+        width: 20%;
         margin: 0 16px;
+        &:hover {
+          font-size: 25px;
+        }
       }
     }
   }
