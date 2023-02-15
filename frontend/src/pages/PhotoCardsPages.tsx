@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Pagination } from '@mui/material';
+import { atom, selector, useRecoilState, useRecoilValue } from 'recoil';
 
 import Header from '../components/Header';
 import PhotoCard from '../components/PhotoCard';
 import { PhotoCardType } from '../types/PhotoCardType';
 import useViewModel from '../viewmodels/PhotoCardsViewModel';
+import PrivateInfoState from '../models/PrivateInfoAtom';
 
 const PhotoCardsPage = () => {
   const [count, setCount] = useState<number>(0);
@@ -13,7 +15,7 @@ const PhotoCardsPage = () => {
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [showBack, setShowBack] = useState<boolean>(false);
   const [selectedCard, setSelectedCard] = useState<PhotoCardType>();
-
+  const userInfo = useRecoilValue(PrivateInfoState);
   const { getPhotoCards, deletePhotoCard } = useViewModel();
 
   const handlePageChange = (
@@ -50,9 +52,17 @@ const PhotoCardsPage = () => {
     const getData = async () => {
       const limit = 10;
       const offset = (page - 1) * limit;
-      const response = await getPhotoCards(null, limit, offset);
-      setCount(Math.ceil(response.count / limit));
-      setPhotoCards(response.page);
+      if (userInfo) {
+        const response = await getPhotoCards(userInfo.email, limit, offset);
+        setCount(Math.ceil(response.count / limit));
+        setPhotoCards(response.page);
+        console.log(response);
+      } else {
+        const response = await getPhotoCards(null, limit, offset);
+        setCount(Math.ceil(response.count / limit));
+        setPhotoCards(response.page);
+        console.log(response);
+      }
     };
     getData();
   }, [page]);

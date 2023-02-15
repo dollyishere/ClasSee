@@ -82,7 +82,7 @@ const PhotoCardApi = () => {
         return response.data;
       }
       const response = await axios.get(
-        `${process.env.REACT_APP_SERVER_URI}/api/v1/photocard/list/${email}?limit=${limit}&offset=${offset}`,
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/photocard/list?email=${email}&limit=${limit}&offset=${offset}`,
         {
           headers: {
             Authorization: `Bearer ${accesstoken}`,
