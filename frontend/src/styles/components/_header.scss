@@ -115,9 +115,19 @@ header {
   .nav__item--link {
     font-size: 10px;
   }
+  .search,
+  .search__searchbar,
+  .search__button {
+    width: 10%;
+  }
 }
 @media (min-width: 480px) and (max-width: 1024px) {
   .nav__item--link {
     font-size: 15px;
+  }
+  .search,
+  .search__searchbar,
+  .search__button {
+    width: 50%;
   }
 }
