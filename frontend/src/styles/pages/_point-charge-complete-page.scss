@@ -1,0 +1,5 @@
+@use '../base//colors';
+.point-charge-complete-page {
+  height: 100%;
+  background-color: colors.$theme-color;
+}
