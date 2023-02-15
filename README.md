@@ -96,14 +96,15 @@
 - Docker
 - SSL
 
-* 배포 환경
-  - URL
-    - http://www.classee.site
-    - https://www.classee.site
+**배포 환경**
 
-  - 테스트 계정: 
-    - ID: test1234@gmail.com
-    - PW: Ttest1234!
+- URL
+  - http://www.classee.site
+  - https://www.classee.site
+
+- 테스트 계정: 
+  - ID: test1234@gmail.com
+  - PW: Ttest1234!
 
 <!-- 자유 양식 -->
 <br />
