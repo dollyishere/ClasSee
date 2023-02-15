@@ -163,6 +163,12 @@ const UserApi = () => {
     try {
       const response = await axios.put<Response>(
         `${process.env.REACT_APP_SERVER_URI}/api/v1/users/${email}/phone?phone=${phone}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+          },
+        },
       );
       return response.data.statusCode;
     } catch (error: any) {
@@ -175,6 +181,12 @@ const UserApi = () => {
     try {
       const respnose = await axios.put<Response>(
         `${process.env.REACT_APP_SERVER_URI}/api/v1/users/${email}/address?address=${address}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+          },
+        },
       );
       return respnose.data.statusCode;
     } catch (error: any) {
@@ -187,6 +199,12 @@ const UserApi = () => {
     try {
       const response = await axios.put<Response>(
         `${process.env.REACT_APP_SERVER_URI}/api/v1/users/${email}/description?description=${description}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+          },
+        },
       );
       return response.data.statusCode;
     } catch (error: any) {
@@ -214,6 +232,11 @@ const UserApi = () => {
     try {
       const response = await axios.delete<Response>(
         `${process.env.REACT_APP_SERVER_URI}/api/v1/users/${email}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+          },
+        },
       );
       return response.data.statusCode;
     } catch (error: any) {
@@ -225,6 +248,12 @@ const UserApi = () => {
     try {
       const response = await axios.post<Response>(
         `${process.env.REACT_APP_SERVER_URI}/api/v1/auth/logout?email=${email}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+          },
+        },
       );
       return response.data.statusCode;
     } catch (error) {
