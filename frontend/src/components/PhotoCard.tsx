@@ -23,7 +23,7 @@ const PhotoCard = ({
   const { toDateHourMinute } = useTimeStamp();
   const [like, setLike] = useState<boolean>(photoCard.isLiked);
   const userInfo = useRecoilValue(PrivateInfoState);
-
+  const [likeCount, setLikeCount] = useState<number>(photoCard.likesCount);
   const handleLike = async (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
     if (userInfo) {
@@ -34,6 +34,11 @@ const PhotoCard = ({
         console.log(response);
       }
       setLike((prev: boolean) => !prev);
+      if (!like) {
+        setLikeCount(likeCount + 1);
+      } else {
+        setLikeCount(likeCount - 1);
+      }
     }
   };
 
@@ -92,11 +97,16 @@ const PhotoCard = ({
               role="presentation"
               onClick={handleLike}
             >
-              {like ? (
-                <Favorite className="photo-card__like" />
-              ) : (
-                <FavoriteBorder className="photo-card__unlike" />
-              )}
+              <div>
+                {like ? (
+                  <Favorite className="photo-card__like" />
+                ) : (
+                  <FavoriteBorder className="photo-card__unlike" />
+                )}
+              </div>
+              <div className="photo-card__likecount">
+                <p className="photo-card__likecount--text">{likeCount} Likes</p>
+              </div>
             </div>
           </div>
         </div>

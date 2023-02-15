@@ -96,7 +96,7 @@
         }
       }
       .photo-card__footer-right {
-        display: flex;
+        // display: flex;
         justify-content: center;
         align-items: center;
         width: 20%;
@@ -109,6 +109,14 @@
         .photo-card__unlike {
           width: 36px;
           height: 36px;
+        }
+        // .photo-card__likecount {
+        //   margin: 0px 0px;
+        // }
+        .photo-card__likecount--text {
+          font-weight: bold;
+          color: #ffd8be;
+          margin: 0px 0px;
         }
       }
     }
