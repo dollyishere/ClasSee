@@ -24,6 +24,7 @@ import NoticePage from './pages/NoticePage';
 import CreateNoticePage from './pages/CreateNoticePage';
 import NoticeDetailPage from './pages/NoticeDetailPage';
 import PointChargeCompletePage from './pages/PointChargeCompletePage';
+import KakaoLoginPage from './pages/KakaoLoginPage';
 
 const Router = () => {
   // 최초 렌더링 때 localstorage 초기화하기 위한 flag
@@ -90,6 +91,7 @@ const Router = () => {
         path="/mypage/point/:status"
         element={<PointChargeCompletePage />}
       />
+      <Route path="/kakao" element={<KakaoLoginPage />} />
     </Routes>
   );
 };

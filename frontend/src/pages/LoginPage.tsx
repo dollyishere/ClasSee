@@ -59,6 +59,10 @@ const LoginPage = () => {
       }
     }
   };
+
+  const handleKakaoLogin = () => {
+    window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_KAKAO_LOGIN_KEY}&redirect_uri=${process.env.REACT_APP_PRODUCTION_URL}/kakao&response_type=code&scope=profile_nickname birthday account_email`;
+  };
   return (
     <div className="page login-page">
       <Header />
@@ -133,7 +137,11 @@ const LoginPage = () => {
             </button>
           </form>
           {/* 소셜(카카오) 로그인 */}
-          <button type="button" className="login__button social-login">
+          <button
+            type="button"
+            className="login__button social-login"
+            onClick={handleKakaoLogin}
+          >
             <ChatBubbleIcon className="kakao__icon" />
             <div className="kakao__text">카카오 로그인</div>
           </button>
