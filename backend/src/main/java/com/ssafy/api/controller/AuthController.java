@@ -239,10 +239,25 @@ public class AuthController {
 			userService.createUser(userInfo);
 
 		}
-
 		// 로그인 처리
 		String accessToken = JwtTokenUtil.getToken(JwtTokenUtil.atkExpirationTime, email);
 		String refreshToken = JwtTokenUtil.getToken(JwtTokenUtil.rtkExpirationTime, email);
+
+		User user = userService.getUserByAuth(email);
+		if(user == null) return ResponseEntity.status(404).body(BaseResponseBody.of(404, "USER NOT FOUND"));
+
+		UserLoginPostRes userLoginPostRes = UserLoginPostRes.builder()
+				.email(user.getAuth().getEmail())
+				.name(user.getName())
+				.nickname(user.getNickname())
+				.address(user.getAddress())
+				.birth(user.getBirth())
+				.phone(user.getPhone())
+				.point(user.getPoint())
+				.img(user.getImg())
+				.description(user.getDescription())
+				.userRole(user.getRole())
+				.build();
 
 		redisService.setValues(refreshToken, email);
 
@@ -253,6 +268,6 @@ public class AuthController {
 			return ResponseEntity.status(401).body(BaseResponseBody.of(401, "TOKEN RESPONSE FAILED"));
 		}
 
-		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "SUCCESS"));
+		return ResponseEntity.ok(UserLoginPostRes.of(200, "SUCCESS", userLoginPostRes));
 	}
 }
