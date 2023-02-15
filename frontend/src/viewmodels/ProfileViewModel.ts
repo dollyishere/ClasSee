@@ -29,6 +29,12 @@ const ProfileViewModel = () => {
     doGetUserInfo,
   } = useApi();
 
+  const getUserInfo = async (email: string) => {
+    const response = await doGetUserInfo(email);
+    setUserInfo({ ...response, email });
+    return response;
+  };
+
   const getProfileImage = async (imgSrc: string) => {
     const imageRef = ref(storage, imgSrc);
     const ret = await getDownloadURL(imageRef);
@@ -135,6 +141,7 @@ const ProfileViewModel = () => {
   };
 
   return {
+    getUserInfo,
     updateNickName,
     uploadProfileImage,
     getProfileImage,

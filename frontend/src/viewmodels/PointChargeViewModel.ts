@@ -47,6 +47,7 @@ const PointChargeViewModel = () => {
           response.data.amount.total,
         );
         if (chargeResponse === 200) {
+          localStorage.removeItem('kakaoTid');
           return 200;
         }
       }
