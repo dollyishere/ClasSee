@@ -276,6 +276,7 @@ const VideoCallPage = () => {
     setStudentStreamManager(undefined);
     setTeacherStreamManager(undefined);
     setCurrentStreamManager(undefined);
+    setPublisher(undefined);
     setCurrentVideoDevice(undefined);
   };
 
@@ -284,7 +285,7 @@ const VideoCallPage = () => {
   const onbeforeunload = () => {
     leaveSession();
   };
-  const movePhotoQRPage = () => {
+  const movePhotoQRPage = async () => {
     leaveSession();
     navigate(`/lesson/photo-card/qr/${lessonId}/${openLessonId}`);
   };
