@@ -50,12 +50,21 @@ const LoginPage = () => {
       // id와 password의 value가 모두 null이 아닐 시, 로그인이 가능
       if (id.value && password.value) {
         const res = await login(id.value, password.value);
-        if (res.statusCode && res.statusCode === 200) {
+        console.log('asdasdasd', res);
+        if (res.statusCode === 200) {
           navigate('/');
-        } else {
+        } else if (res.statusCode === 401) {
           // 만약 둘 중 하나의 value가 null일 시 alert
-          alert('아이디, 비밀번호를 확인해주세요.');
+          alert('비밀번호를 확인해주세요.');
+        } else if (res.statusCode === 404) {
+          alert('아이디를 확인해주세요.');
+        } else if (res.statusCode === 500) {
+          alert('서버오류 입니다');
+        } else {
+          alert('알 수 없는 오류 입니다');
         }
+      } else {
+        alert('아이디와 비밀번호를 입력해주세요');
       }
     }
   };

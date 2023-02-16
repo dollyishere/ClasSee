@@ -26,13 +26,14 @@ const LoginViewModel = () => {
 
   const login = async (email: string, password: string) => {
     const saltResponse = await doGetSalt(email);
-    if (saltResponse.satusCode === 200) {
+    if (saltResponse.statusCode === 200) {
       const hashedPassword = createHashedPassword(password, saltResponse.salt);
       const res = await doLogin({
         email,
         password: hashedPassword,
       });
-      if (res?.data.message === 'SUCCESS') {
+      console.log('sss', res);
+      if (res.statusCode === 200) {
         setPrivateInfo({
           email: res.data.email,
           name: res.data.name,
@@ -51,16 +52,12 @@ const LoginViewModel = () => {
         const encryptedToken = encryptToken(refreshToken, res.data.email);
         localStorage.setItem('refreshToken', encryptedToken);
         sessionStorage.setItem('isLogin', 'true');
-        return {
-          statusCode: 200,
-        };
+        return res.data;
       }
+      return res.data;
     }
-
     // get salt api 응답 코드에 따라 다르게 반환할것
-    return {
-      statusCode: 400,
-    };
+    return saltResponse;
   };
   return {
     login,
