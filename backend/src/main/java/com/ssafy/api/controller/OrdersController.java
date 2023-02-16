@@ -78,7 +78,7 @@ public class OrdersController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = OrdersInfoGetRes.class),
             @ApiResponse(code = 401, message = "인증 실패", response = InvalidErrorResponseBody.class),
-            @ApiResponse(code = 403, message = "인원 수로 인한 거절", response = ForbiddenErrorResponseBody.class),
+            @ApiResponse(code = 406, message = "인원 수로 인한 거절", response = ForbiddenErrorResponseBody.class),
             @ApiResponse(code = 404, message = "해당 자료 없음", response = NotFoundErrorResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = ServerErrorResponseBody.class)
     })
