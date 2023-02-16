@@ -169,7 +169,7 @@ const ProfilePage = () => {
                 </div>
                 <div className="profile-page__section--point">
                   <div className="profile-page__point">
-                    <span>{userInfo.point}</span> P
+                    <span>{userInfo.point.toLocaleString()}</span> P
                   </div>
                   <div className="profile-page__buttons">
                     <button
