@@ -220,13 +220,15 @@ public class AuthController {
 
 		// 카카오 유저 이메일로 가입된 유저가 없다면.
 		if(isExist == null) {
+			String name = (String)kakaoUser.get("nickname");
 			Auth auth = Auth.builder()
-					.email((String)kakaoUser.get("email"))
+					.email(email)
 					.type(UserType.KAKAO)
 					.build();
 			User user = User
 					.builder()
-					.name((String)kakaoUser.get("nickname"))
+					.name(name)
+					.nickname(name)
 					.auth(auth)
 					.point(0l)
 					.role(UserRole.ROLE_USER)
