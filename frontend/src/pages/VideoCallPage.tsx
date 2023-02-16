@@ -17,6 +17,7 @@ import {
   Monitor,
   Videocam,
   Mic,
+  MicOff,
 } from '@mui/icons-material';
 import { Modal } from '@mui/material';
 
@@ -633,7 +634,11 @@ const VideoCallPage = () => {
               className="video-call-page__button"
               onClick={handleMute}
             >
-              <Mic fontSize="large" />
+              {audioEnabled ? (
+                <Mic fontSize="large" />
+              ) : (
+                <MicOff fontSize="large" />
+              )}
             </button>
             {/* 화면공유 버튼 */}
             <button
