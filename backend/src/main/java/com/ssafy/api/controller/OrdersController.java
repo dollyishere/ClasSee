@@ -100,6 +100,9 @@ public class OrdersController {
             return ResponseEntity.status(404).body(BaseResponseBody.of(404,"unexpected exception"));
         }
 
+        ordersInfoGetRes.setStatusCode(200);
+        ordersInfoGetRes.setMessage("SUCCESS");
+
         return ResponseEntity.status(200).body(ordersInfoGetRes);
     }
 
