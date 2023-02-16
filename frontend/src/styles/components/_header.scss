@@ -131,3 +131,43 @@ header {
     width: 50%;
   }
 }
+
+.header__user-info {
+  text-align: center;
+  line-height: center;
+  .user__profile {
+    display: flex;
+    justify-content: space-evenly;
+    .user__profile--img {
+      width: 40px;
+      display: table;
+      filter: drop-shadow(1px 1px 1px black);
+      .avatar {
+        text-align: center;
+        // display: table-cell;
+        vertical-align: middle;
+      }
+    }
+    .user__profile--text {
+      display: flex;
+    }
+    .user__nickname--text {
+      color: orange;
+      margin-right: 3px;
+    }
+  }
+  .user__point--text {
+    margin-top: 0px;
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  .user__info--button {
+    margin-right: 5px;
+    background-color: #ffeedd;
+  }
+  .user__logout--button {
+    margin-left: 5px;
+    background-color: #ffeedd;
+  }
+}
