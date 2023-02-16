@@ -74,7 +74,10 @@ const VideoCallViewModel = () => {
   const chat = (session: Session, message: string) => {
     session
       .signal({
-        data: message,
+        data: JSON.stringify({
+          message,
+          time: new Date(),
+        }),
         to: [],
         type: 'chat',
       })

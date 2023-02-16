@@ -65,7 +65,7 @@ const Review = ({ attended }: any) => {
           score,
           userEmail: userInfo.email,
         },
-        null,
+        img,
       );
       if (response !== null) {
         getData();

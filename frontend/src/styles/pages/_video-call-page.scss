@@ -34,13 +34,12 @@
   .video-call-page__content {
     width: 100%;
     height: 100%;
-    .video-call-page__header {
-      height: 120px;
-    }
+
     .video-call-page__videos {
       display: flex;
       flex-wrap: wrap;
-      height: calc(100% - 240px);
+      align-items: center;
+      height: calc(100% - 120px);
       .video-call-page__video--students-left {
         width: 50%;
         .video-call-page__video--student {
@@ -63,7 +62,6 @@
               display: flex;
               justify-content: center;
               align-items: center;
-              height: 200px;
               cursor: pointer;
               margin: 10px;
             }
@@ -83,11 +81,12 @@
       }
       .video-call-page__video--students-bottom {
         width: 100%;
-        display: block;
         overflow: auto;
         white-space: nowrap;
         .video-call-page__stream-container {
           display: inline-block;
+          display: block;
+          width: 300px;
           cursor: pointer;
           margin: 10px;
         }
