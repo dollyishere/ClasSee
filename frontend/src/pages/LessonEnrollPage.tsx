@@ -59,7 +59,13 @@ const LessonEnrollPage = () => {
 
   // 강의 개설을 신청하는 유저의 이메일 정보를 useRecoilValue를 통해 불러옴
   const userInfo = useRecoilValue(PrivateInfoState);
-
+  const checkedPrice =
+    openLessonInfo.userPoint -
+    (openLessonInfo.lessonPrice + openLessonInfo.kitPrice);
+  const noCheckedPrice = openLessonInfo.userPoint - openLessonInfo.lessonPrice;
+  const checkedTotalPrice =
+    openLessonInfo.lessonPrice + openLessonInfo.kitPrice;
+  const noCheckedTotalPrice = openLessonInfo.lessonPrice;
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setChecked(event.target.checked);
   };
@@ -203,7 +209,7 @@ const LessonEnrollPage = () => {
               <h2>수강료</h2>
               <div className="lesson-enroll-page__payment-value-also-kit">
                 <p className="lesson-enroll-page__payment-value">
-                  {openLessonInfo.lessonPrice}
+                  {openLessonInfo.lessonPrice.toLocaleString()} P
                 </p>
                 {/* <h2>포인트</h2>
           <p>{openLessonInfo.userPoint}</p> */}
@@ -215,26 +221,29 @@ const LessonEnrollPage = () => {
                   />
                   <h4>키트 추가</h4>
                 </div>
-                <p>+{openLessonInfo.kitPrice}원</p>
+                <p>+{openLessonInfo.kitPrice.toLocaleString()} P</p>
               </div>
               <h2>총 결제 금액</h2>
               <p className="lesson-enroll-page__payment-value">
-                {checked
-                  ? openLessonInfo.lessonPrice + openLessonInfo.kitPrice
-                  : openLessonInfo.lessonPrice}
+                {checked ? (
+                  <h5>{checkedTotalPrice.toLocaleString()} P</h5>
+                ) : (
+                  <h5> {noCheckedTotalPrice.toLocaleString()} P </h5>
+                )}
               </p>
               <div className="lesson-enroll-page__payment-content">
                 <h3>현재 포인트</h3>
                 <p className="lesson-enroll-page__payment-value">
-                  {openLessonInfo.userPoint}
+                  {openLessonInfo.userPoint.toLocaleString()} P
                 </p>
                 <hr />
                 <h3>결제 후 포인트</h3>
                 <p className="lesson-enroll-page__payment-value">
-                  {checked
-                    ? openLessonInfo.userPoint -
-                      (openLessonInfo.lessonPrice + openLessonInfo.kitPrice)
-                    : openLessonInfo.userPoint - openLessonInfo.lessonPrice}
+                  {checked ? (
+                    <h3>{checkedPrice.toLocaleString()} P </h3>
+                  ) : (
+                    <h3>{noCheckedPrice.toLocaleString()} P</h3>
+                  )}
                 </p>
               </div>
             </CardContent>
