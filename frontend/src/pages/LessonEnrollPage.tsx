@@ -130,7 +130,6 @@ const LessonEnrollPage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log(userInfo);
       if (userInfo === null) {
         alert('로그인 후 이용 가능합니다.');
         navigate('/login');
@@ -164,7 +163,8 @@ const LessonEnrollPage = () => {
           alert('서버 오류입니다. 다시 시도해주십시오.');
           navigate(`/lesson/${openLessonId.lessonId}`);
         } else {
-          alert('다시 시도해주세요.');
+          alert('다시 시도해주십시오.');
+          navigate(`/lesson/${openLessonId.lessonId}`);
         }
       }
     };

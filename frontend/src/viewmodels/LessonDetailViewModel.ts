@@ -132,6 +132,7 @@ const LessonDetailViewModel = () => {
 
   const getOpenLessonDetail = async (email: string, openLessonId: number) => {
     const res = await doGetOpenLessonDetail(email, openLessonId);
+    console.log(res);
     return res;
   };
 

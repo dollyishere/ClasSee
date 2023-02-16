@@ -35,12 +35,14 @@ const ScheduleDetail = ({
       navigate('/login');
     } else if (window.confirm('스케줄을 삭제하시겠습니까?')) {
       const res = await deleteSchedule(userInfo.email, lessonId, openLessonId);
-      console.log(res);
       if (res?.statusCode === 200) {
         alert('스케줄이 삭제되었습니다.');
         setRerenderSchedule(!rerenderSchedule);
       } else if (res?.statusCode === 401) {
         alert('이미 클래스를 신청한 수강생이 존재합니다.');
+      } else if (res?.statusCode === 404) {
+        alert('로그인 후 이용 가능합니다.');
+        navigate('/login');
       } else {
         alert('다시 시도해주세요.');
       }
