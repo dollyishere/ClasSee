@@ -30,6 +30,7 @@
 }
 .video-call-page {
   display: flex;
+  width: 100%;
   height: 100%;
   .video-call-page__content {
     width: 100%;
@@ -39,6 +40,7 @@
       display: flex;
       flex-wrap: wrap;
       align-items: center;
+      width: 100%;
       height: calc(100% - 120px);
       .video-call-page__video--students-left {
         width: 50%;
@@ -74,18 +76,15 @@
         .video-call-page__teacher-stream-container {
           width: 100%;
           margin: 20px;
-          video {
-            width: 100%;
-          }
         }
       }
       .video-call-page__video--students-bottom {
         width: 100%;
-        overflow: auto;
-        white-space: nowrap;
+        display: flex;
+        overflow-x: auto;
+        flex-wrap: nowrap;
         .video-call-page__stream-container {
-          display: inline-block;
-          display: block;
+          flex: 0 0 auto;
           width: 300px;
           cursor: pointer;
           margin: 10px;
