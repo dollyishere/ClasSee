@@ -32,12 +32,12 @@ const ReviewViewModel = () => {
           score: requestBody.score,
         });
         if (updateResponse.statusCode === 200) {
-          return 200;
+          return updateResponse;
         }
       }
-      return 200;
+      return createResponse;
     }
-    return null;
+    return createResponse;
   };
 
   const getReviews = async (

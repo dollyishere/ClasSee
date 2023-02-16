@@ -36,7 +36,6 @@ const ReviewApi = () => {
       return error.response.data;
     }
   };
-  // TODO: 상태코드값 돌려받고 싶어요오
   // 후기 작성하는 api
   const doCreateReview = async (requestBody: CreateReviewRequest) => {
     try {
