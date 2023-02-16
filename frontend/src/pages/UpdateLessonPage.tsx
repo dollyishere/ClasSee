@@ -70,7 +70,7 @@ const UpdateLessonPage = () => {
   // api 실행할 시 실행될 함수를 불러옴
   const { updateLesson } = CreateLessonViewModel();
 
-  // 강의 개설 완료 시 컴포넌트 전환에 필요한 useNavigate 재할당
+  // 강의 수정 완료 시 컴포넌트 전환에 필요한 useNavigate 재할당
   const navigate = useNavigate();
 
   // api 실행할 시 실행될 CreateLessonViewModel createLesson에 할당
@@ -84,7 +84,7 @@ const UpdateLessonPage = () => {
     doDeleteImageFiles,
   } = LessonDetailViewModel();
 
-  // 강의 개설을 신청하는 유저의 이메일 정보를 useRecoilValue를 통해 불러옴
+  // 강의 수정을 신청하는 유저의 이메일 정보를 useRecoilValue를 통해 불러옴
   const userInfo = useRecoilValue(PrivateInfoState);
 
   // const handleLessonDelete = (event: React.MouseEvent<HTMLButtonElement>) => {};
@@ -153,8 +153,13 @@ const UpdateLessonPage = () => {
               },
             );
           }
+        } else if (res?.statusCode === 404) {
+          alert('해당 클래스는 존재하지 않습니다.');
+          navigate('/');
+        } else if (res?.statusCode === 505) {
+          alert('서버 오류가 발생했습니다. 다시 시도해주십시오.');
         } else {
-          alert(res?.message);
+          alert('다시 시도해주세요.');
         }
       };
       fetchData();
@@ -245,6 +250,14 @@ const UpdateLessonPage = () => {
         // 이후 사용자에게 강의 정보가 수정되었음을 알린 후 메인 페이지로 이동
         alert('강의가 수정되었습니다.');
         navigate(`/`);
+      } else if (res?.statusCode === 401) {
+        alert('로그인 후 이용이 가능합니다.');
+        navigate('/login');
+      } else if (res?.statusCode === 404) {
+        alert('해당 클래스는 존재하지 않습니다.');
+        navigate('/');
+      } else if (res?.statusCode === 505) {
+        alert('서버 오류가 발생했습니다. 다시 시도해주십시오.');
       } else {
         alert('다시 시도해주십시오.');
       }

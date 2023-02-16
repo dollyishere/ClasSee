@@ -161,6 +161,8 @@ const LessonDetailPage = () => {
         navigate('/');
       } else if (res?.statusCode === 505) {
         alert('서버 오류가 발생했습니다. 다시 시도해주십시오.');
+      } else {
+        alert('다시 시도해주십시오.');
       }
     };
     fetchData();

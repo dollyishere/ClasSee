@@ -1,20 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
-import { atom, selector, useRecoilState, useRecoilValue } from 'recoil';
+import { useNavigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 
-import {
-  Stack,
-  Button,
-  Card,
-  CardContent,
-  Pagination,
-  IconButton,
-} from '@mui/material';
+import { Card, CardContent, IconButton } from '@mui/material';
 
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 
 import MyAppliedLessonCardMine from '../components/MyPage/MyAppliedLessonCardMine';
+import MyAppliedLessonCard from '../components/MyAppliedLessonCard';
 import Nolesson from '../components/MainPage/NoLesson';
 
 import useViewModel from '../viewmodels/MainPageViewModel';
@@ -117,7 +111,7 @@ const MyAppliedLessonsPage = () => {
                     className="my-applied-lessons-page__lesson-card"
                     key={lesson.lessonId}
                   >
-                    <MyAppliedLessonCardMine lesson={lesson} />
+                    <MyAppliedLessonCard lesson={lesson} />
                   </div>
                 ))
               ) : (
