@@ -133,7 +133,7 @@ const UpdateLessonPage = () => {
             setKitPriceState(res.kitPrice);
 
             // curriculums, pamphlets, checkList의 경우, 리스트 형태이므로 forEach로 해체하여 따로 저장
-            res.curriculums.forEach((item) => {
+            res.curriculums.forEach((item: any) => {
               const curriDesc = item.description as string;
               setCurriListState((prevState) => [...prevState, curriDesc]);
             });

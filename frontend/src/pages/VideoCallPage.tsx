@@ -406,11 +406,8 @@ const VideoCallPage = () => {
 
       if (userInfo !== null && sessionId !== undefined) {
         // 세션 토큰 api 요청 함수
-        const { testId, testToken } = await createSession(
-          userInfo.email,
-          sessionId,
-        );
-        createToken(testId, testToken).then((token: string) => {
+        const ssid = await createSession(userInfo.email, sessionId);
+        createToken(ssid).then((token: string) => {
           // 해당 토큰으로 세션 연결
           newSession
             .connect(token, { clientData: userInfo.nickname, role })
