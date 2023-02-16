@@ -50,7 +50,6 @@ const LoginPage = () => {
       // id와 password의 value가 모두 null이 아닐 시, 로그인이 가능
       if (id.value && password.value) {
         const res = await login(id.value, password.value);
-        console.log('asdasdasd', res);
         if (res.statusCode === 200) {
           navigate('/');
         } else if (res.statusCode === 401) {

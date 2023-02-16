@@ -32,8 +32,7 @@ const LoginViewModel = () => {
         email,
         password: hashedPassword,
       });
-      console.log('sss', res);
-      if (res.statusCode === 200) {
+      if (res.data.statusCode === 200) {
         setPrivateInfo({
           email: res.data.email,
           name: res.data.name,
