@@ -27,18 +27,20 @@ const style = {
   p: 4,
 };
 const Header = () => {
+  // const data = localStorage.getItem('PrivateInfo');
+  // const privateInfo = data ? JSON.parse(data) : 0;
+  // const points = privateInfo.PrivateInfoData.point;
   const searchbarRef = useRef(null); // 검색창을 접근/제어하기 위한 hook
   const userInfo = useRecoilValue(privateInfoState); // 유저 정보를 사용하기 위한 hook
+  const { getProfileImage, getUserInfo } = useProfileViewModel();
   const { logout } = useLoginViewModel(); // 로그인 viewmodel을 사용하기 위한 hook
   const [toggleUserInfo, setToggleUserInfo] = useState<boolean>(false); // 개인정보 모달을 띄우기 위한 boolean값
   const handleOpen = () => setToggleUserInfo(true);
   const handleClose = () => setToggleUserInfo(false);
+  const [userPoint, setUserPoint] = useState();
   const [teacherImage, setTeacherImage] = useState<string>(logo);
 
-  const { getProfileImage } = useProfileViewModel();
-
   const navigate = useNavigate();
-
   // form 값 제출시 실행할 함수
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // 새로고침 방지
@@ -60,7 +62,15 @@ const Header = () => {
       navigate('/');
     }
   };
-
+  const handleUserPoint = async () => {
+    if (userInfo) {
+      const response = await getUserInfo(userInfo.email);
+      if (response) {
+        setUserPoint(response.point);
+        console.log(response.point);
+      }
+    }
+  };
   useEffect(() => {
     if (userInfo) {
       const getTeacherImage = async () => {
@@ -71,6 +81,7 @@ const Header = () => {
       };
       getTeacherImage();
     }
+    handleUserPoint();
   }, [toggleUserInfo]);
   return (
     <header>

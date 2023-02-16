@@ -8,7 +8,6 @@ import {
   Box,
   Button,
   Modal,
-  Typography,
   Checkbox,
   TextField,
 } from '@mui/material';
@@ -21,7 +20,7 @@ import Header from '../components/Header';
 import PrivateInfoState from '../models/PrivateInfoAtom';
 import LessonDetailViewModel from '../viewmodels/LessonDetailViewModel';
 
-import { OpenLessonResponse, LessonEnrollRequest } from '../types/LessonsType';
+import { LessonEnrollRequest } from '../types/LessonsType';
 
 const LessonEnrollPage = () => {
   const openLessonId = useParams();
@@ -52,14 +51,18 @@ const LessonEnrollPage = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const [showBody, setShowBody] = useState(false);
-
   // 컴포넌트 전환에 필요한 useNavigate 재할당
   const navigate = useNavigate();
 
   // 강의 개설을 신청하는 유저의 이메일 정보를 useRecoilValue를 통해 불러옴
   const userInfo = useRecoilValue(PrivateInfoState);
-
+  const checkedPrice =
+    openLessonInfo.userPoint -
+    (openLessonInfo.lessonPrice + openLessonInfo.kitPrice);
+  const noCheckedPrice = openLessonInfo.userPoint - openLessonInfo.lessonPrice;
+  const checkedTotalPrice =
+    openLessonInfo.lessonPrice + openLessonInfo.kitPrice;
+  const noCheckedTotalPrice = openLessonInfo.lessonPrice;
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setChecked(event.target.checked);
   };
@@ -87,11 +90,10 @@ const LessonEnrollPage = () => {
           price: totalPrice as number,
         };
         const res = await doLessonEnroll(LessonEnrollRequestBody);
-        console.log(res);
         if (res?.statusCode === 200) {
           alert('신청이 완료되었습니다.');
           navigate('/');
-        } else if (res?.data.statusCode === 409) {
+        } else if (res?.statusCode === 409) {
           alert('이미 신청한 클래스입니다.');
           navigate('/');
         } else {
@@ -121,7 +123,7 @@ const LessonEnrollPage = () => {
           userInfo.email,
           Number(openLessonId.openLessonId),
         );
-        if (res) {
+        if (res?.statusCode === 200) {
           if (res.lessonTeacherName !== userInfo.name) {
             setOpenLessonInfo(res);
             const imgRef = ref(
@@ -136,6 +138,9 @@ const LessonEnrollPage = () => {
             alert('자신이 개설한 클래스는 신청이 불가능합니다.');
             navigate(`/lesson/${openLessonId.lessonId}`);
           }
+        } else if (res?.statusCode === 409) {
+          alert('수강 인원이 모두 찼습니다.');
+          navigate(`/lesson/${openLessonId.lessonId}`);
         } else {
           alert('다시 시도해주세요.');
         }
@@ -203,7 +208,7 @@ const LessonEnrollPage = () => {
               <h2>수강료</h2>
               <div className="lesson-enroll-page__payment-value-also-kit">
                 <p className="lesson-enroll-page__payment-value">
-                  {openLessonInfo.lessonPrice}
+                  {openLessonInfo.lessonPrice.toLocaleString()} P
                 </p>
                 {/* <h2>포인트</h2>
           <p>{openLessonInfo.userPoint}</p> */}
@@ -215,26 +220,29 @@ const LessonEnrollPage = () => {
                   />
                   <h4>키트 추가</h4>
                 </div>
-                <p>+{openLessonInfo.kitPrice}원</p>
+                <p>+{openLessonInfo.kitPrice.toLocaleString()} P</p>
               </div>
               <h2>총 결제 금액</h2>
               <p className="lesson-enroll-page__payment-value">
-                {checked
-                  ? openLessonInfo.lessonPrice + openLessonInfo.kitPrice
-                  : openLessonInfo.lessonPrice}
+                {checked ? (
+                  <h5>{checkedTotalPrice.toLocaleString()} P</h5>
+                ) : (
+                  <h5> {noCheckedTotalPrice.toLocaleString()} P </h5>
+                )}
               </p>
               <div className="lesson-enroll-page__payment-content">
                 <h3>현재 포인트</h3>
                 <p className="lesson-enroll-page__payment-value">
-                  {openLessonInfo.userPoint}
+                  {openLessonInfo.userPoint.toLocaleString()} P
                 </p>
                 <hr />
                 <h3>결제 후 포인트</h3>
                 <p className="lesson-enroll-page__payment-value">
-                  {checked
-                    ? openLessonInfo.userPoint -
-                      (openLessonInfo.lessonPrice + openLessonInfo.kitPrice)
-                    : openLessonInfo.userPoint - openLessonInfo.lessonPrice}
+                  {checked ? (
+                    <h3>{checkedPrice.toLocaleString()} P </h3>
+                  ) : (
+                    <h3>{noCheckedPrice.toLocaleString()} P</h3>
+                  )}
                 </p>
               </div>
             </CardContent>

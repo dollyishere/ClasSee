@@ -69,6 +69,14 @@ const ImageUpload = ({
 
   return (
     <div className="img-upload">
+      {imgSrcListState.length === 0 ? (
+        <h3>사진을 업로드 해보세요!</h3>
+      ) : (
+        <h3>
+          {imgSrcListState.length} / {limitNumber}
+        </h3>
+      )}
+
       <div className="img__container">
         {/* 저장해둔 이미지들을 map을 통해 순회하면서 화면에 이미지 출력 */}
         {imgSrcListState.map((image: string, id: number) => (
@@ -92,9 +100,6 @@ const ImageUpload = ({
               onChange={handleAddImages}
             />
             <AddCircleOutlineIcon fill="#646F7C" className="img-upload__btn" />
-            <p>
-              {imgSrcListState.length} / {limitNumber}
-            </p>
           </label>
         ) : null}
       </div>

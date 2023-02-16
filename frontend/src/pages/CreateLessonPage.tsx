@@ -177,7 +177,7 @@ const CreateLessonPage = () => {
     <div className="page create-lesson-page">
       <Header />
       {/* 페이지 제목 지정 */}
-      <h1>강의 간편 개설하기</h1>
+      <h1>클래스 간편 개설하기</h1>
       {/* 카드로 form이 들어갈 영역 지정 */}
       {/* selectedComponent 값이 변환될 시, 해당하는 컴포넌트를 리렌더링함 */}
       {/* 해당하는 component에 필요한 props를 상속시켜줌 */}
@@ -263,7 +263,7 @@ const CreateLessonPage = () => {
                 className="button create-lesson-page__button--right create-lesson-page__button--finish"
                 onClick={handleCreateLessonSubmit}
               >
-                강의 생성
+                클래스 생성
               </button>
             ) : (
               <button

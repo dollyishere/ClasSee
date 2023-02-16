@@ -28,6 +28,7 @@
 @use './components/schedule-detail';
 @use './components/step';
 @use './components/category-select-box';
+@use './components/image-upload';
 
 // pages
 @use './pages/signup-page';
@@ -52,6 +53,7 @@
 @use './pages/create-notice-page';
 @use './pages/notice-detail-page';
 @use './pages/lesson-enroll-page';
+@use './pages/update-lesson-page';
 @use './pages/my-review-page';
 
 html,

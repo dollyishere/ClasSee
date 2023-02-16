@@ -1,0 +1,38 @@
+@use '../base/colors';
+
+.img-upload {
+  width: 100%;
+}
+.img__container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  .img__item {
+    width: 150px;
+    height: 150px;
+    margin: 5%;
+    border-radius: 10px;
+    box-shadow: 0px 0px 5px 5px colors.$gray_color;
+    .img__delete {
+      display: none;
+      transition: 0.5s;
+    }
+  }
+}
+
+.img-upload__label {
+  width: 100px;
+  height: 100px;
+  line-height: 106px;
+  border-width: 3px;
+  border-style: dashed;
+  border-color: colors.$gray_color;
+  border-radius: 10px;
+  margin: 5%;
+  display: block;
+  white-space: nowrap;
+  &:hover {
+    cursor: pointer;
+    box-shadow: 0px 0px 5px 5px colors.$gray_color;
+  }
+}

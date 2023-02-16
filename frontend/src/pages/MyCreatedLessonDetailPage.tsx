@@ -204,7 +204,9 @@ const MyCreatedLessonDetailPage = () => {
                   <h2 className="my-created-lesson-detail-page__lesson-part-title">
                     클래스 명:
                   </h2>
-                  <p>{lessonDetailState.lessonName}</p>
+                  <p className="my-created-lesson-detail-page__lesson-info-p">
+                    {lessonDetailState.lessonName}
+                  </p>
                   <Link to={`/lesson/${Number(lessonId.lessonId)}`}>
                     <Button className="my-created-lesson-detail-page__go-detail">
                       상세 페이지 바로 가기
@@ -215,7 +217,7 @@ const MyCreatedLessonDetailPage = () => {
                   <h2 className="my-created-lesson-detail-page__lesson-part-title">
                     소요 시간:
                   </h2>
-                  <p>
+                  <p className="my-created-lesson-detail-page__lesson-info-p">
                     {lessonDetailState.runningTime === 0
                       ? '미정'
                       : lessonDetailState.runningTime}{' '}

@@ -26,8 +26,6 @@ import {
   LessonRequest,
   ImageListType,
   LessonDetailRequest,
-  LessonDetailResponse,
-  CurriculumsType,
 } from '../types/LessonsType';
 
 const UpdateLessonPage = () => {
@@ -89,17 +87,6 @@ const UpdateLessonPage = () => {
   // 강의 개설을 신청하는 유저의 이메일 정보를 useRecoilValue를 통해 불러옴
   const userInfo = useRecoilValue(PrivateInfoState);
 
-  // firebase storage의 이 경로에 있는 파일들을 가져옴
-
-  const checkListImgRef = ref(
-    storage,
-    `lessons/${lessonId.lessonId}/checklist_images`,
-  );
-  const pamphletsImgRef = ref(
-    storage,
-    `lessons/${lessonId.lessonId}/pamphlet_images/`,
-  );
-
   // const handleLessonDelete = (event: React.MouseEvent<HTMLButtonElement>) => {};
   // useEffect로 해당 페이지 렌더링 시 강의 상세 정보를 받아오도록 내부 함수 실행
   useEffect(() => {
@@ -113,7 +100,7 @@ const UpdateLessonPage = () => {
       };
       const fetchData = async () => {
         const res = await getLessonDetail(getLessonDetailRequestBody);
-        if (res?.message === 'SUCCESS') {
+        if (res?.statusCode === 200) {
           // 만약 강의 상세 정보를 db에서 받아오는 것에 성공했다면, 해당하는 State에 각각 정보를 저장
           // 또한, 각 State에 정보를 전달하기 전에 현재 강의 수정을 시도하는 유저와, 강의를 생성한 유저의 이메일을 대조해봄
           // 시도하는 유저와 강의 생성 유저가 같다면, 그 이후부터 정보를 배분함
@@ -233,7 +220,7 @@ const UpdateLessonPage = () => {
         EditLessonRequestBody,
         Number(lessonId.lessonId),
       );
-      if (res?.message === 'SUCCESS') {
+      if (res?.statusCode === 200) {
         // 만약 강의 수정에 성공했을 시, 이하 코드를 실행함
         // 만약 image의 속성이 Blob이 아닐 시(=이미 db에 저장된 이미지일 시) 그냥 pass함
         // 만약 속성이 Blob이라면, 새로 업로드할 이미지라는 뜻임
@@ -282,14 +269,14 @@ const UpdateLessonPage = () => {
   };
 
   return (
-    <div className="page" id="create-lesson-page">
+    <div className="page update-lesson-page">
       <Header />
       {/* 페이지 제목 지정 */}
-      <h1>강의 간편 개설하기</h1>
+      <h1>클래스 간편 수정하기</h1>
       {/* 카드로 form이 들어갈 영역 지정 */}
       {/* selectedComponent 값이 변환될 시, 해당하는 컴포넌트를 리렌더링함 */}
       {/* 해당하는 component에 필요한 props를 상속시켜줌 */}
-      <Card sx={{ minWidth: 275 }}>
+      <Card className="update-lesson-page__card">
         {selectedComponent === 1 && (
           <StepOne
             lessonNameState={lessonNameState}
@@ -352,34 +339,34 @@ const UpdateLessonPage = () => {
         {/* 만약 selectedComponent의 값이 0이라면, 이전 단계를 볼 필요가 없으므로 해당 버튼을 숨김 */}
         {/* 이전 단계 버튼의 경우, 클릭할 때마다 onClick event로 selectedComponent 값을 1 감소시킴 */}
         {/* 이를 통해 현재 렌더링되는 컴포넌트를 리렌더링을 통해 변화시킴 */}
-        <CardActions>
+        <CardActions className="update-lesson-page__card-footer">
           {selectedComponent === 1 ? null : (
-            <Button
+            <button
               type="button"
-              variant="contained"
+              className="button"
               onClick={() => setSelectedComponent(selectedComponent - 1)}
             >
               이전 단계
-            </Button>
+            </button>
           )}
           {/* 반대로 다음 단계 버튼의 경우, selectedComponent의 값이 6이라면 다음 단계 대신 강의 생성 버튼을 보이도록 함 */}
           {/* 마찬가지로 다음 단계 버튼의 경우 누를 때마다 selectedComponent 값을 1씩 증가시켜 재렌더링을 유도함 */}
           {selectedComponent === 6 ? (
-            <Button
+            <button
               type="button"
-              variant="contained"
               onClick={handleCreateLessonSubmit}
+              className="button update-lesson-page__button--right update-lesson-page__button--finish"
             >
-              강의 수정
-            </Button>
+              클래스 수정
+            </button>
           ) : (
-            <Button
+            <button
               type="button"
-              variant="contained"
               onClick={() => setSelectedComponent(selectedComponent + 1)}
+              className="button update-lesson-page__button--right"
             >
               다음 단계
-            </Button>
+            </button>
           )}
         </CardActions>
       </Card>

@@ -14,7 +14,7 @@ import {
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 
-import MyAppliedLessonCard from '../components/MyAppliedLessonCard';
+import MyAppliedLessonCardMine from '../components/MyPage/MyAppliedLessonCardMine';
 import Nolesson from '../components/MainPage/NoLesson';
 
 import useViewModel from '../viewmodels/MainPageViewModel';
@@ -117,7 +117,7 @@ const MyAppliedLessonsPage = () => {
                     className="my-applied-lessons-page__lesson-card"
                     key={lesson.lessonId}
                   >
-                    <MyAppliedLessonCard lesson={lesson} />
+                    <MyAppliedLessonCardMine lesson={lesson} />
                   </div>
                 ))
               ) : (
@@ -154,7 +154,7 @@ const MyAppliedLessonsPage = () => {
                     className="my-applied-lessons-page__lesson-card"
                     key={lesson.lessonId}
                   >
-                    <MyAppliedLessonCard lesson={lesson} />
+                    <MyAppliedLessonCardMine lesson={lesson} />
                   </div>
                 ))
               ) : (
