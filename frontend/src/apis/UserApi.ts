@@ -90,7 +90,7 @@ const UserApi = () => {
         `${process.env.REACT_APP_SERVER_URI}/api/v1/users/duplicate/email/${email}`,
       );
       // 요청 결과를 리턴
-      return response.status;
+      return response.data;
     } catch (error: any) {
       return error.response.data;
     }

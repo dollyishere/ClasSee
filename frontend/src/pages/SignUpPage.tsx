@@ -27,10 +27,8 @@ const SignUpPage = () => {
   const [yearState, setYearState] = useState<string>(''); // 생년월일 년도를 저장할 state
   const [monthState, setMonthState] = useState<string>(''); // 생년월일 월을 저장할 state
   const [dayState, setDayState] = useState<string>(''); // 생년월일 일을 저장할 state
-  const [agencyState, setAgencyState] = useState<string>(''); // 통신사를 저장할 state
 
   const [isValidEmail, setIsValidEmail] = useState<boolean>(false); // 사용 가능한 이메일인지
-  const [isValidPassword, setIsValidPassword] = useState<boolean>(false); // 사용 가능한 비밀번호인지
 
   const { emailDuplicationCheck, signup } = useViewModel();
 
@@ -165,8 +163,10 @@ const SignUpPage = () => {
         salt,
       };
 
-      const res = await signup(requestData);
-      if (res === 'Success') {
+      const response = await signup(requestData);
+      if (response === undefined) {
+        alert('서버 오류');
+      } else if (response.statusCode === 200) {
         alert('가입 되셨습니다.');
         navigate('/login');
       }
@@ -191,15 +191,15 @@ const SignUpPage = () => {
         return;
       }
       const res = await emailDuplicationCheck(target.value);
-      if (res === null) {
+      if (res === undefined) {
         console.log('서버 오류');
-      } else if (res === 200) {
+      } else if (res.statusCode === 409) {
+        alert('중복된 이메일입니다.');
+        target.value = '';
+      } else if (res.statusCode === 200) {
         setIsValidEmail(true);
         target.readOnly = true;
         alert('사용 가능한 이메일 입니다.');
-      } else if (res === 409) {
-        alert('중복된 이메일입니다.');
-        target.value = '';
       }
     }
   };
@@ -217,13 +217,6 @@ const SignUpPage = () => {
   // 일 select 클릭시 실행할 함수
   const handleDaySelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setDayState(`0${e.target.value}`.slice(-2));
-  };
-
-  // 통신사 select 클릭시 실행할 함수
-  const handleAgencySelectChange = (
-    e: React.ChangeEvent<HTMLSelectElement>,
-  ) => {
-    setAgencyState(e.target.value);
   };
 
   return (
