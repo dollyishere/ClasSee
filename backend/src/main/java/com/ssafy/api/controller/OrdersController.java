@@ -89,15 +89,15 @@ public class OrdersController {
         try {
             ordersInfoGetRes = ordersService.readOrders(email, openLessonId);
         } catch (OpenLessonException o){
-            return ResponseEntity.status(404).body("openLesson not found");
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404,"openLesson not found"));
         } catch (LessonException l){
-            return ResponseEntity.status(404).body("lesson not found");
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404,"lesson not found"));
         } catch (UserException u){
-            return ResponseEntity.status(404).body("user not found");
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404,"user not found"));
         } catch (MaximumException m){
-            return ResponseEntity.status(406).body("exceed the maximum");
+            return ResponseEntity.status(406).body(BaseResponseBody.of(406,"exceed the maximum"));
         } catch (Exception e){
-            return ResponseEntity.status(404).body("unexpected exception");
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404,"unexpected exception"));
         }
 
         return ResponseEntity.status(200).body(ordersInfoGetRes);
