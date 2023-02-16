@@ -206,6 +206,8 @@ export interface LessonSchedulesType extends ScheduleRequest {
   openLessonId: number;
   lessonId: number;
   rerenderSchedule: boolean;
+  attendCount: number;
+  totalCount: number;
   setRerenderSchedule: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
