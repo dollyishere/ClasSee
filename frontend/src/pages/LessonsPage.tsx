@@ -73,7 +73,7 @@ const LessonsPage = () => {
   };
 
   const search = async () => {
-    const limit = 6;
+    const limit = 8;
     const offset = (page - 1) * limit;
     let day = '';
     for (let i = 0; i < 7; i += 1) {

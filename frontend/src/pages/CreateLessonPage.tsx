@@ -245,34 +245,34 @@ const CreateLessonPage = () => {
           {/* 만약 selectedComponent의 값이 0이라면, 이전 단계를 볼 필요가 없으므로 해당 버튼을 숨김 */}
           {/* 이전 단계 버튼의 경우, 클릭할 때마다 onClick event로 selectedComponent 값을 1 감소시킴 */}
           {/* 이를 통해 현재 렌더링되는 컴포넌트를 리렌더링을 통해 변화시킴 */}
-          <CardActions>
+          <CardActions className="create-lesson-page__card-footer">
             {selectedComponent === 1 ? null : (
-              <Button
+              <button
                 type="button"
-                variant="contained"
+                className="button"
                 onClick={() => setSelectedComponent(selectedComponent - 1)}
               >
                 이전 단계
-              </Button>
+              </button>
             )}
             {/* 반대로 다음 단계 버튼의 경우, selectedComponent의 값이 6이라면 다음 단계 대신 강의 생성 버튼을 보이도록 함 */}
             {/* 마찬가지로 다음 단계 버튼의 경우 누를 때마다 selectedComponent 값을 1씩 증가시켜 재렌더링을 유도함 */}
             {selectedComponent === 6 ? (
-              <Button
+              <button
                 type="button"
-                variant="contained"
+                className="button create-lesson-page__button--right create-lesson-page__button--finish"
                 onClick={handleCreateLessonSubmit}
               >
                 강의 생성
-              </Button>
+              </button>
             ) : (
-              <Button
+              <button
                 type="button"
-                variant="contained"
+                className="button create-lesson-page__button--right"
                 onClick={() => setSelectedComponent(selectedComponent + 1)}
               >
                 다음 단계
-              </Button>
+              </button>
             )}
           </CardActions>
         </CardContent>
