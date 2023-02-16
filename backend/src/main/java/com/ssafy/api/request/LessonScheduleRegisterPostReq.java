@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Map;
-import java.util.TimeZone;
 
 @Getter
 @Setter
@@ -27,7 +26,7 @@ public class LessonScheduleRegisterPostReq {
     String endTime;
 
     public OpenLesson getOpenLessonInfoFromReq(Long lessonId, LessonScheduleRegisterPostReq requestInfo) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").withZone(TimeZone.getTimeZone("Asia/Seoul").toZoneId());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime startTime = LocalDateTime.parse(requestInfo.getStartTime(), formatter);
         LocalDateTime endTime = LocalDateTime.parse(requestInfo.getEndTime(), formatter);
         OpenLesson openLesson = OpenLesson.builder()

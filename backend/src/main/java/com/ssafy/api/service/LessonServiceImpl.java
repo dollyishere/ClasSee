@@ -192,8 +192,8 @@ public class LessonServiceImpl implements LessonService {
                             .lessonId(schedule.getLessonId())
                             .totalCount(totalCount)
                             .attendCount(attendCount)
-                            .startTime(schedule.getStartTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").withZone(TimeZone.getTimeZone("Asia/Seoul").toZoneId())))
-                            .endTime(schedule.getEndTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").withZone(TimeZone.getTimeZone("Asia/Seoul").toZoneId())))
+                            .startTime(schedule.getStartTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
+                            .endTime(schedule.getEndTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
                             .build()
             );
         });
