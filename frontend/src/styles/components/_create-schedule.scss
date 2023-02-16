@@ -1,0 +1,20 @@
+@use '../base/colors';
+
+.create-schedule__body {
+  width: 90%;
+  margin-block: 5%;
+  .create-schedule__header {
+    width: 100%;
+    padding-block: 3%;
+    background-color: colors.$theme_color_focus;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+    color: white;
+    text-shadow: 2px 2px 2px gray;
+  }
+}
+
+.create-schedule__button {
+  margin-block: 3%;
+}

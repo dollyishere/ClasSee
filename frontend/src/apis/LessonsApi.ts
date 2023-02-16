@@ -301,6 +301,7 @@ const LessonsApi = () => {
           `${process.env.REACT_APP_SERVER_URI}/api/v1/lessons/${getScheduleRequestBody.lessonId}/schedules`,
         );
       }
+      console.log(response);
       return response.data;
     } catch (error: any) {
       console.error(error);
@@ -313,7 +314,6 @@ const LessonsApi = () => {
     lessonId: number,
     openLessonId: number,
   ) => {
-    console.log(email, lessonId, openLessonId);
     try {
       const response = await axios.delete<Response>(
         `${process.env.REACT_APP_SERVER_URI}/api/v1/teachers/${email}/lessons/${lessonId}/${openLessonId}`,
@@ -325,9 +325,9 @@ const LessonsApi = () => {
       );
       return response.data;
     } catch (error: any) {
-      console.log(error);
+      console.error(error);
+      return error;
     }
-    return null;
   };
 
   const doGetOpenLessonDetail = async (email: string, openLessonId: number) => {
@@ -365,7 +365,6 @@ const LessonsApi = () => {
       console.error(error);
       return error.response;
     }
-    return null;
   };
   return {
     doCreateLesson,

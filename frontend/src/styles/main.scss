@@ -24,6 +24,8 @@
 @use './components/lesson_carousel';
 @use './components/review-card';
 @use './components/no_lesson';
+@use './components/create-schedule';
+@use './components/schedule-detail';
 
 // pages
 @use './pages/signup-page';

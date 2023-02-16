@@ -3,7 +3,7 @@
 .my-created-lesson-detail-page {
   .my-created-lesson-detail-page__card {
     width: 90%;
-    margin: auto;
+    margin: 40px auto;
     .my-created-lesson-detail-page__title {
       padding: 10px;
       text-align: left;
@@ -20,6 +20,7 @@
         .my-created-lesson-detail-page__content-container {
           margin-inline: 5%;
           margin-block: 3%;
+          display: inline-block;
         }
       }
       .my-created-lesson-detail-page__schedule-card {
@@ -27,6 +28,12 @@
         margin: 10px;
         display: inline-block;
         background-color: colors.$light_gray_color;
+        .my-created-lesson-detail-page__schedules {
+          display: flex;
+          flex-direction: column;
+          margin-top: 3px;
+          align-items: center;
+        }
       }
     }
   }
@@ -38,7 +45,7 @@
   background-color: colors.$theme_color_focus;
   text-align: center;
   font-weight: bold;
-  font-size: 30px;
+  font-size: 20px;
   color: white;
   text-shadow: 2px 2px 2px gray;
 }
@@ -59,4 +66,12 @@
 .my-created-lesson-detail-page__go-detail {
   margin-left: 5px;
   text-decoration: underline;
+}
+
+.my-created-lesson-detail-page__lesson-image-container {
+  display: inline-block;
+}
+
+.my-created-class-detail-page-back-menu {
+  margin-bottom: 3%;
 }

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
-import { Stack, Button, IconButton } from '@mui/material';
+import { Stack, Button, IconButton, Card } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 import { LessonSchedulesType } from '../../types/LessonsType';
@@ -15,6 +15,8 @@ const ScheduleDetail = ({
   endTime,
   openLessonId,
   lessonId,
+  attendCount,
+  totalCount,
   rerenderSchedule,
   setRerenderSchedule,
 }: LessonSchedulesType) => {
@@ -33,16 +35,19 @@ const ScheduleDetail = ({
       navigate('/login');
     } else if (window.confirm('스케줄을 삭제하시겠습니까?')) {
       const res = await deleteSchedule(userInfo.email, lessonId, openLessonId);
+      console.log(res);
       if (res?.statusCode === 200) {
         alert('스케줄이 삭제되었습니다.');
         setRerenderSchedule(!rerenderSchedule);
+      } else if (res?.statusCode === 401) {
+        alert('이미 클래스를 신청한 수강생이 존재합니다.');
       } else {
         alert('다시 시도해주세요.');
       }
     }
   };
+  // 만약 시작 버튼 누를 시, 강의가 시작됨.
   const handleLessonStart = (event: React.MouseEvent<HTMLElement>) => {
-    console.log('여기에 결제 페이지 이동 함수 작성하면 될 듯함??');
     window.open(
       `/lesson/${lessonId}/${openLessonId}/teacher`,
       '강의',
@@ -65,23 +70,42 @@ const ScheduleDetail = ({
   }, []);
 
   return (
-    <div className="schedule-detail__body">
-      <div className="schedule-detail__header">{lessonTime}</div>
-      <div className="schedule-detail__startTime">
-        시작 시간 {startTime.slice(0, 16)}
+    <Card className="schedule-detail__body">
+      {lessonTime === '진행 예정' ? (
+        <div className="schedule-detail__header-planned">{lessonTime}</div>
+      ) : null}
+      {lessonTime === '임박' ? (
+        <div className="schedule-detail__header-impending">{lessonTime}</div>
+      ) : null}
+      {lessonTime === '진행 중' ? (
+        <div className="schedule-detail__header-ongoing">{lessonTime}</div>
+      ) : null}
+      {lessonTime === '종료' ? (
+        <div className="schedule-detail__header-terminated">{lessonTime}</div>
+      ) : null}
+      <div className="schedule-detail__part">
+        <h4 className="schedule-detail__part-title">시작 시간</h4>
+        {startTime.slice(0, 16)}
       </div>
-      <div className="schedule-detail__endTime">
-        종료 시간 {endTime.slice(0, 16)}
+      <div className="schedule-detail__part">
+        <h4 className="schedule-detail__part-title">종료 시간</h4>
+        {endTime.slice(0, 16)}
       </div>
-      <IconButton onClick={handleScheduleDelete}>
-        <DeleteIcon />
-      </IconButton>
-      {lessonTime === '임박' || lessonTime === '진행 중' ? (
-        <Button onClick={handleLessonStart}>시작</Button>
-      ) : (
-        <Button disabled>입장 불가</Button>
-      )}
-    </div>
+      <div className="schedule-detail__part">
+        <h4 className="schedule-detail__part-title">수강 인원</h4>
+        {attendCount} 명 / {totalCount} 명
+      </div>
+      <div className="schedule-detail__part">
+        <IconButton onClick={handleScheduleDelete}>
+          <DeleteIcon />
+        </IconButton>
+        {lessonTime === '임박' || lessonTime === '진행 중' ? (
+          <Button onClick={handleLessonStart}>강의 시작</Button>
+        ) : (
+          <Button disabled>입장 불가</Button>
+        )}
+      </div>
+    </Card>
   );
 };
 export default ScheduleDetail;
