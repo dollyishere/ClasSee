@@ -55,12 +55,7 @@ const Review = ({ attended }: any) => {
     event: React.FormEvent<HTMLFormElement>,
   ) => {
     event.preventDefault();
-    if (
-      textRef.current !== null &&
-      userInfo !== null &&
-      score !== null &&
-      img !== undefined
-    ) {
+    if (textRef.current !== null && userInfo !== null && score !== null) {
       const content = textRef.current.value;
       const response = await createReview(
         {
@@ -70,7 +65,7 @@ const Review = ({ attended }: any) => {
           score,
           userEmail: userInfo.email,
         },
-        img,
+        null,
       );
       if (response !== null) {
         getData();
