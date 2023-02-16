@@ -28,8 +28,15 @@ const FindPwPage = () => {
       nameRef.current.value !== ''
     ) {
       const response = await findPw(nameRef.current.value, email);
-      console.log(response);
-      setAnswer(response);
+      if (response.statusCode === 200) {
+        console.log(response);
+        alert('인증코드가 전송되었습니다.');
+        setAnswer(response.message);
+      } else if (response === undefined) {
+        alert('서버 오류');
+      } else {
+        alert('없는 사용자입니다.');
+      }
     }
   };
 
@@ -60,7 +67,7 @@ const FindPwPage = () => {
     ) {
       if (newPasswordRef.current.value === newPasswordCheckRef.current.value) {
         const response = await updatePw(email, newPasswordRef.current.value);
-        if (response === 200) {
+        if (response.statusCode === 200) {
           alert('비밀번호가 변경되었습니다.');
           navigate('/login');
         }
