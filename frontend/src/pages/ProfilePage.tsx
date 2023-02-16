@@ -42,7 +42,12 @@ const ProfilePage = () => {
     if (userInfo !== null) {
       const nickname = prompt('변경할 닉네임을 입력하세요.', userInfo.nickname);
       if (nickname !== null) {
-        updateNickName(userInfo.email, nickname);
+        const response = await updateNickName(nickname);
+        console.log(response);
+        if (response.statusCode === 401 || response.status === 401) {
+          alert('로그인이 필요한 서비스입니다.');
+          navigate('/login');
+        }
       }
     }
   };
@@ -93,7 +98,7 @@ const ProfilePage = () => {
     );
     if (email === userInfo?.email) {
       const response = await withdrawl();
-      if (response === 200) {
+      if (response.statusCode === 200) {
         alert('탈퇴 처리되셨습니다.');
         navigate('/');
       }
@@ -106,7 +111,6 @@ const ProfilePage = () => {
 
   useEffect(() => {
     if (userInfo === null) {
-      alert('로그인 후 이용 가능합니다.');
       navigate('/login');
     } else {
       const getData = async () => {

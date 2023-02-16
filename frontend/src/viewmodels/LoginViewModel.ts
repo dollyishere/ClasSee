@@ -17,38 +17,45 @@ const LoginViewModel = () => {
   const { doGetSalt, doLogin, doLogout, doGetAccessToken } = useApi();
 
   const logout = async (email: string) => {
-    await doLogout(email);
+    const response = await doLogout(email);
 
     setPrivateInfo(null);
     sessionStorage.clear();
     localStorage.setItem('accessToken', '');
+    return response;
   };
 
   const login = async (email: string, password: string) => {
     const saltResponse = await doGetSalt(email);
-    if (saltResponse.satusCode === 200) {
+    if (saltResponse.statusCode === 200) {
       const hashedPassword = createHashedPassword(password, saltResponse.salt);
-      const res = await doLogin({
+      const loginResponse = await doLogin({
         email,
         password: hashedPassword,
       });
-      if (res?.data.message === 'SUCCESS') {
+      if (loginResponse.statusCode === 401) {
+        return loginResponse.statusCode;
+      }
+      if (loginResponse.data?.statusCode === 200) {
         setPrivateInfo({
-          email: res.data.email,
-          name: res.data.name,
-          nickname: res.data.nickname,
-          address: res.data.address,
-          birth: res.data.birth,
-          img: res.data.img,
-          description: res.data.description,
-          phone: res.data.phone,
-          userRole: res.data.userRole,
-          point: res.data.point,
+          email: loginResponse.data.email,
+          name: loginResponse.data.name,
+          nickname: loginResponse.data.nickname,
+          address: loginResponse.data.address,
+          birth: loginResponse.data.birth,
+          img: loginResponse.data.img,
+          description: loginResponse.data.description,
+          phone: loginResponse.data.phone,
+          userRole: loginResponse.data.userRole,
+          point: loginResponse.data.point,
         });
-        const accessToken = res.headers.authorization.substr(7);
-        const refreshToken = res.headers['refresh-token'];
+        const accessToken = loginResponse.headers.authorization.substr(7);
+        const refreshToken = loginResponse.headers['refresh-token'];
         setAuthToken(accessToken);
-        const encryptedToken = encryptToken(refreshToken, res.data.email);
+        const encryptedToken = encryptToken(
+          refreshToken,
+          loginResponse.data.email,
+        );
         localStorage.setItem('refreshToken', encryptedToken);
         sessionStorage.setItem('isLogin', 'true');
         return {
@@ -56,11 +63,8 @@ const LoginViewModel = () => {
         };
       }
     }
-
     // get salt api 응답 코드에 따라 다르게 반환할것
-    return {
-      statusCode: 400,
-    };
+    return saltResponse;
   };
   return {
     login,

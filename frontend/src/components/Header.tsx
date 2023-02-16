@@ -58,7 +58,10 @@ const Header = () => {
 
   const handleLogout = async () => {
     if (userInfo?.email) {
-      const result = await logout(userInfo?.email);
+      const response = await logout(userInfo?.email);
+      if (response === undefined) {
+        alert('내부 서버 오류');
+      }
       navigate('/');
     }
   };
@@ -67,7 +70,6 @@ const Header = () => {
       const response = await getUserInfo(userInfo.email);
       if (response) {
         setUserPoint(response.point);
-        console.log(response.point);
       }
     }
   };
