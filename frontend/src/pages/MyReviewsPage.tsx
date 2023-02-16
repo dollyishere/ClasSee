@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Pagination, Rating } from '@mui/material';
 import { useRecoilValue } from 'recoil';
 import PrivateInfoState from '../models/PrivateInfoAtom';
@@ -15,6 +16,7 @@ const MyReviewsPage: React.FC = () => {
   const [count, setCount] = useState<number>(1);
   const [reviews, setReviews] = useState<Array<ReviewType>>([]);
   const { deleteReview } = useViewModel();
+  const navigate = useNavigate();
 
   const handlePageChange = (
     event: React.ChangeEvent<unknown>,
@@ -27,10 +29,19 @@ const MyReviewsPage: React.FC = () => {
     const offset = (page - 1) * limit;
     if (userInfo) {
       const MyReviewData = await getMyReviews(userInfo.email, limit, offset);
-      if (MyReviewData !== null && MyReviewData.count !== undefined) {
+      if (MyReviewData.statusCode === 200) {
         setCount(Math.ceil(MyReviewData.count / limit));
+        setReviews(MyReviewData?.page);
+      } else if (MyReviewData.statusCode === 401) {
+        alert('로그인 후 이용 바랍니다');
+        navigate('/login');
+      } else if (MyReviewData.statusCode === 404) {
+        alert('유효하지 않은 접근입니다');
+      } else if (MyReviewData.statusCode === 500) {
+        alert('서버오류 입니다');
+      } else {
+        alert('알 수 없는 오류입니다');
       }
-      setReviews(MyReviewData?.page);
     }
   };
   const handleDeleteReview = async (reviewId: number, imgSrc: string) => {
@@ -38,6 +49,15 @@ const MyReviewsPage: React.FC = () => {
       const response = await deleteReview(reviewId, imgSrc);
       if (response.statusCode === 200) {
         handleMyReviewData();
+      } else if (response.statusCode === 401) {
+        alert('로그인 후 이용 바랍니다');
+        navigate('/login');
+      } else if (response.statusCode === 404) {
+        alert('유효하지 않은 접근입니다');
+      } else if (response.statusCode === 500) {
+        alert('서버오류 입니다');
+      } else {
+        alert('알 수 없는 오류입니다');
       }
     }
   };
