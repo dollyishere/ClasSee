@@ -314,7 +314,7 @@ const LessonsApi = () => {
 
   const doGetOpenLessonDetail = async (email: string, openLessonId: number) => {
     try {
-      const response = await axios.get<OpenLessonResponse>(
+      const response = await axios.get<any>(
         `${process.env.REACT_APP_SERVER_URI}/api/v1/orders?email=${email}&openLessonId=${openLessonId}`,
         {
           headers: {
