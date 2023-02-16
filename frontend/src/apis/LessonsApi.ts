@@ -69,7 +69,6 @@ const LessonsApi = () => {
         response = await axios.get<LessonDetailResponse>(
           `${process.env.REACT_APP_SERVER_URI}/api/v1/lessons/${getLessonDetailRequestBody.lessonId}?email=${getLessonDetailRequestBody.email}`,
         );
-        console.log(getLessonDetailRequestBody.email);
       }
       return response.data;
     } catch (error: any) {

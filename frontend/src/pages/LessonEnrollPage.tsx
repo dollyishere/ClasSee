@@ -8,7 +8,6 @@ import {
   Box,
   Button,
   Modal,
-  Typography,
   Checkbox,
   TextField,
 } from '@mui/material';
@@ -21,7 +20,7 @@ import Header from '../components/Header';
 import PrivateInfoState from '../models/PrivateInfoAtom';
 import LessonDetailViewModel from '../viewmodels/LessonDetailViewModel';
 
-import { OpenLessonResponse, LessonEnrollRequest } from '../types/LessonsType';
+import { LessonEnrollRequest } from '../types/LessonsType';
 
 const LessonEnrollPage = () => {
   const openLessonId = useParams();
@@ -51,8 +50,6 @@ const LessonEnrollPage = () => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
-  const [showBody, setShowBody] = useState(false);
 
   // 컴포넌트 전환에 필요한 useNavigate 재할당
   const navigate = useNavigate();
@@ -93,11 +90,10 @@ const LessonEnrollPage = () => {
           price: totalPrice as number,
         };
         const res = await doLessonEnroll(LessonEnrollRequestBody);
-        console.log(res);
         if (res?.statusCode === 200) {
           alert('신청이 완료되었습니다.');
           navigate('/');
-        } else if (res?.data.statusCode === 409) {
+        } else if (res?.statusCode === 409) {
           alert('이미 신청한 클래스입니다.');
           navigate('/');
         } else {
@@ -127,7 +123,7 @@ const LessonEnrollPage = () => {
           userInfo.email,
           Number(openLessonId.openLessonId),
         );
-        if (res) {
+        if (res?.statusCode === 200) {
           if (res.lessonTeacherName !== userInfo.name) {
             setOpenLessonInfo(res);
             const imgRef = ref(
@@ -142,6 +138,9 @@ const LessonEnrollPage = () => {
             alert('자신이 개설한 클래스는 신청이 불가능합니다.');
             navigate(`/lesson/${openLessonId.lessonId}`);
           }
+        } else if (res?.statusCode === 409) {
+          alert('수강 인원이 모두 찼습니다.');
+          navigate(`/lesson/${openLessonId.lessonId}`);
         } else {
           alert('다시 시도해주세요.');
         }

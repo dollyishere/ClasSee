@@ -26,8 +26,6 @@ import {
   LessonRequest,
   ImageListType,
   LessonDetailRequest,
-  LessonDetailResponse,
-  CurriculumsType,
 } from '../types/LessonsType';
 
 const UpdateLessonPage = () => {
@@ -89,17 +87,6 @@ const UpdateLessonPage = () => {
   // 강의 개설을 신청하는 유저의 이메일 정보를 useRecoilValue를 통해 불러옴
   const userInfo = useRecoilValue(PrivateInfoState);
 
-  // firebase storage의 이 경로에 있는 파일들을 가져옴
-
-  const checkListImgRef = ref(
-    storage,
-    `lessons/${lessonId.lessonId}/checklist_images`,
-  );
-  const pamphletsImgRef = ref(
-    storage,
-    `lessons/${lessonId.lessonId}/pamphlet_images/`,
-  );
-
   // const handleLessonDelete = (event: React.MouseEvent<HTMLButtonElement>) => {};
   // useEffect로 해당 페이지 렌더링 시 강의 상세 정보를 받아오도록 내부 함수 실행
   useEffect(() => {
@@ -113,7 +100,7 @@ const UpdateLessonPage = () => {
       };
       const fetchData = async () => {
         const res = await getLessonDetail(getLessonDetailRequestBody);
-        if (res?.message === 'SUCCESS') {
+        if (res?.statusCode === 200) {
           // 만약 강의 상세 정보를 db에서 받아오는 것에 성공했다면, 해당하는 State에 각각 정보를 저장
           // 또한, 각 State에 정보를 전달하기 전에 현재 강의 수정을 시도하는 유저와, 강의를 생성한 유저의 이메일을 대조해봄
           // 시도하는 유저와 강의 생성 유저가 같다면, 그 이후부터 정보를 배분함
@@ -233,7 +220,7 @@ const UpdateLessonPage = () => {
         EditLessonRequestBody,
         Number(lessonId.lessonId),
       );
-      if (res?.message === 'SUCCESS') {
+      if (res?.statusCode === 200) {
         // 만약 강의 수정에 성공했을 시, 이하 코드를 실행함
         // 만약 image의 속성이 Blob이 아닐 시(=이미 db에 저장된 이미지일 시) 그냥 pass함
         // 만약 속성이 Blob이라면, 새로 업로드할 이미지라는 뜻임
