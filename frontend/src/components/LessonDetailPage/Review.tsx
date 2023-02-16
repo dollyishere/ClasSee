@@ -8,7 +8,7 @@ import PrivateInfoState from '../../models/PrivateInfoAtom';
 import { ReviewType } from '../../types/ReviewType';
 import ReviewItem from './ReviewItem';
 
-const Review: React.FC = () => {
+const Review = ({ attended }: any) => {
   const userInfo = useRecoilValue(PrivateInfoState);
   const params = useParams();
   const textRef = useRef<HTMLTextAreaElement>(null);
@@ -93,36 +93,38 @@ const Review: React.FC = () => {
 
   return (
     <div className="review">
-      <div className="review__input-box">
-        <form className="review__form" onSubmit={handleReviewSubmit}>
-          <textarea ref={textRef} />
-          <div className="review__row--input-box">
-            <Rating
-              name="simple-controlled"
-              value={score}
-              precision={0.5}
-              onChange={handleRatingChange}
-              readOnly={false}
-            />{' '}
-            <label className="review__label" htmlFor="input-file">
-              {img === undefined ? null : img.name}
-              <input
-                type="file"
-                name="후기사진"
-                accept="image/*"
-                id="input-file"
-                className=";"
-                style={{ display: 'none' }}
-                onChange={handleImageChange}
-              />
-              <div className="button review__button--upload">사진 업로드</div>
-            </label>
-          </div>
-          <button type="submit" className="button review__button--submit">
-            등록
-          </button>
-        </form>
-      </div>
+      {attended ? (
+        <div className="review__input-box">
+          <form className="review__form" onSubmit={handleReviewSubmit}>
+            <textarea ref={textRef} />
+            <div className="review__row--input-box">
+              <Rating
+                name="simple-controlled"
+                value={score}
+                precision={0.5}
+                onChange={handleRatingChange}
+                readOnly={false}
+              />{' '}
+              <label className="review__label" htmlFor="input-file">
+                {img === undefined ? null : img.name}
+                <input
+                  type="file"
+                  name="후기사진"
+                  accept="image/*"
+                  id="input-file"
+                  className=";"
+                  style={{ display: 'none' }}
+                  onChange={handleImageChange}
+                />
+                <div className="button review__button--upload">사진 업로드</div>
+              </label>
+            </div>
+            <button type="submit" className="button review__button--submit">
+              등록
+            </button>
+          </form>
+        </div>
+      ) : null}
       <div className="review__review-list">
         {reviews.map((review: ReviewType) => (
           <ReviewItem
