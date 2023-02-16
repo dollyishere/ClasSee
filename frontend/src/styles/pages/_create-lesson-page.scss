@@ -1,6 +1,12 @@
 @use '../base/colors';
+@use '../components/header';
 
-#create-lesson-page {
+.create-lesson-page {
+  height: 100%;
+  .create-lesson-page__card {
+    width: 50%;
+    margin: 0 auto;
+  }
 }
 
 .img__container {

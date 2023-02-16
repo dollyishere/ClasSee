@@ -23,7 +23,7 @@ const CategorySelectBox = ({
     // 각 MenuItem value에 해당하는 강의명을 배정함
     // 이후 선택한 값이 바뀔 시(Select), onChange로 handleCategoryChange 함수를 실행시킴
     // 이를 통해 categorySelectState 값을 해당 event.target.value로 변경해줌
-    <Box sx={{ maxWidth: 200, maxHeight: 40 }}>
+    <Box className="category-select-box">
       <FormControl fullWidth>
         <InputLabel id="demo-simple-select-label">카테고리</InputLabel>
         <Select

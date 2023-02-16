@@ -15,20 +15,21 @@ const StepOne = ({
     setLessonNameState(e.target.value);
   };
   return (
-    <div>
-      <h2>Step 1. 강의명 입력</h2>
-      <div>
+    <div className="step">
+      <div className="step__title">Step 1. 강의명 입력</div>
+      <div className="step__row step__right">
         {/* 카테고리 선택의 경우 하위 컴포넌트를 배정하고 그 안에 해당하는 props를 전달하는 것으로 작성함 */}
         <CategorySelectBox
           categorySelectState={categorySelectState}
           setCategorySelectState={setCategorySelectState}
         />
       </div>
-      <div>
+      <div className="step__row step__center">
         {/* 강의명을 입력하는 input */}
         <input
           value={lessonNameState}
           onChange={handleInputLessonName}
+          className="step__lesson-title"
           placeholder="강의명을 입력해주세요"
         />
       </div>
