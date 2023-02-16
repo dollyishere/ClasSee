@@ -48,12 +48,14 @@ const PhotoCard = ({
   return (
     <div className="photo-card">
       {userInfo && userInfo.email === photoCard.userEmail ? (
-        <div
-          className="photo-card__menu"
-          role="presentation"
-          onClick={handleDeleteThisCard}
-        >
-          <Delete />
+        <div className="photo-card__menu">
+          <div
+            className="photo-card__delete"
+            role="presentation"
+            onClick={handleDeleteThisCard}
+          >
+            <Delete />
+          </div>
         </div>
       ) : null}
       {back ? (

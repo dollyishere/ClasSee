@@ -10,21 +10,25 @@
   justify-content: center;
   padding: 10px;
   box-shadow: 0px 5px 10px gray;
+  position: relative;
   &:hover {
     cursor: pointer;
   }
   .photo-card__menu {
-    position: relative;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #ff4d4d;
-    border-radius: 50%;
-    width: 32px;
-    height: 32px;
+    position: absolute;
+    width: 95%;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    justify-content: right;
     z-index: 1;
+    .photo-card__delete {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #ff4d4d;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+    }
   }
   .photo-card__back {
     width: 100%;
