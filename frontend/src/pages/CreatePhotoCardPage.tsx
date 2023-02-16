@@ -66,9 +66,17 @@ const CreatePhotoCardPage = () => {
           image,
           openLessonId,
         );
-
-        if (response === 200) {
+        if (response === undefined) {
+          alert('내부 서버 오류');
+          window.close();
+        } else if (response.statusCode === 401) {
+          alert('로그인이 필요한 서비스입니다.');
+          window.close();
+        } else if (response.statusCode === 200) {
           alert('생성되었습니다.');
+          window.close();
+        } else if (response.statusCode === 409) {
+          alert('한 강의에는 하나의 포토카드만 생성할 수 있습니다.');
           window.close();
         }
       }
