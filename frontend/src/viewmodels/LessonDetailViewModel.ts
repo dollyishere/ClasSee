@@ -34,7 +34,7 @@ const LessonDetailViewModel = () => {
       const imageName = item.img as string;
       const imgRef = ref(
         storage,
-        `lessons/${lessonId}/pamphlet_images/${encodeURI(imageName)}`,
+        `lessons/${lessonId}/pamphlet_images/${imageName}`,
       );
       const url = await getDownloadURL(imgRef);
       return url;
@@ -47,7 +47,7 @@ const LessonDetailViewModel = () => {
       const imageName = item.img as string;
       const imgRef = ref(
         storage,
-        `lessons/${lessonId}/checklist_images/${encodeURI(imageName)}`,
+        `lessons/${lessonId}/checklist_images/${imageName}`,
       );
       const url = await getDownloadURL(imgRef);
       return url;
@@ -59,7 +59,7 @@ const LessonDetailViewModel = () => {
       const imageName = item.img as string;
       const imgRef = ref(
         storage,
-        `lessons/${lessonId}/pamphlet_images/${encodeURI(imageName)}`,
+        `lessons/${lessonId}/pamphlet_images/${imageName}`,
       );
       // const file = await getBlob(imgRef);
       return imgRef;
@@ -72,7 +72,7 @@ const LessonDetailViewModel = () => {
       const imageName = item.img as string;
       const imgRef = ref(
         storage,
-        `lessons/${lessonId}/checklist_images/${encodeURI(imageName)}`,
+        `lessons/${lessonId}/checklist_images/${imageName}`,
       );
       // CORS 오류 발생하기에 일단 막아둠
       // const file = await getBlob(imgRef);

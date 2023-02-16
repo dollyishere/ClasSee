@@ -156,6 +156,8 @@ const LessonDetailPage = () => {
             setCheckListImgState(urls);
           },
         );
+        console.log(pamphletsImgState);
+        console.log(checkListImgState);
         if (res?.teacherImage) {
           const imageUrl = await getProfileImage(res.teacherImage);
           setTeacherImgState(imageUrl);
@@ -339,7 +341,7 @@ const LessonDetailPage = () => {
                             <h1>준비물에 대한 설명이 없어요</h1>
                           </pre>
                         ) : (
-                          <p>{lessonDetailState.cklsDescription}</p>
+                          <pre>{lessonDetailState.cklsDescription}</pre>
                         )}
                       </Card>
                     </div>
@@ -368,9 +370,9 @@ const LessonDetailPage = () => {
                       </h2>
 
                       {lessonDetailState.userDesciption !== null ? (
-                        <p>{lessonDetailState.userDesciption}</p>
+                        <pre>{lessonDetailState.userDesciption}</pre>
                       ) : (
-                        <p>아직 소개글을 작성하지 않았어요!</p>
+                        <pre>아직 소개글을 작성하지 않았어요!</pre>
                       )}
                     </div>
                   </Card>
