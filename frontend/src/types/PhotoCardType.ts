@@ -26,4 +26,5 @@ export interface PhotoCardProps {
   photoCard: PhotoCardType;
   back: boolean;
   handleDeletePhotoCard: (photoCard: PhotoCardType) => void;
+  handleLike: (photoCard: PhotoCardType) => void;
 }

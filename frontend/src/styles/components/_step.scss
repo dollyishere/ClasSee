@@ -1,0 +1,30 @@
+.step {
+  display: flex;
+  flex-wrap: wrap;
+  width: 90%;
+  margin: 20px auto;
+  .step__title {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  .step__row {
+    padding: 10px 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+  }
+  .step__right {
+    justify-content: right;
+  }
+
+  .step__center {
+    justify-content: center;
+  }
+
+  .step__lesson-title {
+    width: 60%;
+    height: 40px;
+    font-size: 24px;
+    font-weight: bold;
+  }
+}

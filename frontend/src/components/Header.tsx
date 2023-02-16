@@ -41,14 +41,6 @@ const Header = () => {
     }
   };
 
-  const test = () => {
-    window.open(
-      '/lesson/test/student',
-      '강의',
-      `height=${window.screen.height}, width=${window.screen.width}, fullscreen=yes, status=no, scrollbars=no`,
-    );
-  };
-
   return (
     <header>
       {/* 로고 */}
