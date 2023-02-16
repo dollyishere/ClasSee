@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Pagination, Rating } from '@mui/material';
 import { useRecoilValue } from 'recoil';
 
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import useViewModel from '../../viewmodels/ReviewViewModel';
 import PrivateInfoState from '../../models/PrivateInfoAtom';
 import { ReviewType } from '../../types/ReviewType';
@@ -11,6 +11,7 @@ import ReviewItem from './ReviewItem';
 const Review = ({ attended }: any) => {
   const userInfo = useRecoilValue(PrivateInfoState);
   const params = useParams();
+  const navigate = useNavigate();
   const textRef = useRef<HTMLTextAreaElement>(null);
   const [score, setScore] = useState<number | null>(0);
   const [img, setImg] = useState<File>();
@@ -48,6 +49,15 @@ const Review = ({ attended }: any) => {
       const response = await deleteReview(reviewId, imgSrc);
       if (response.statusCode === 200) {
         getData();
+      } else if (response.statusCode === 401) {
+        alert('로그인 후 이용 바랍니다');
+        navigate('/login');
+      } else if (response.statusCode === 404) {
+        alert('유효하지 않은 접근입니다');
+      } else if (response.statusCode === 500) {
+        alert('서버오류 입니다');
+      } else {
+        alert('알 수 없는 오류입니다');
       }
     }
   };
@@ -57,21 +67,40 @@ const Review = ({ attended }: any) => {
     event.preventDefault();
     if (textRef.current !== null && userInfo !== null && score !== null) {
       const content = textRef.current.value;
-      const response = await createReview(
-        {
-          content,
-          img: '',
-          lessonId: Number(params.lessonId),
-          score,
-          userEmail: userInfo.email,
-        },
-        img,
-      );
-      if (response !== null) {
-        getData();
-        setScore(0);
-        textRef.current.value = '';
-        setImg(undefined);
+      if (content) {
+        const response = await createReview(
+          {
+            content,
+            img: '',
+            lessonId: Number(params.lessonId),
+            score,
+            userEmail: userInfo.email,
+          },
+          img,
+        );
+        if (response.statusCode === 200) {
+          getData();
+          setScore(0);
+          textRef.current.value = '';
+          setImg(undefined);
+        } else if (response.statusCode === 401) {
+          alert('로그인이 필요합니다');
+          navigate('/login');
+        } else if (response.statusCode === 404) {
+          alert('유효하지 않은 접근입니다');
+        } else if (response.statusCode === 500) {
+          alert('서버오류 입니다');
+        } else {
+          alert('알 수 없는 오류입니다');
+        }
+        if (response !== null) {
+          getData();
+          setScore(0);
+          textRef.current.value = '';
+          setImg(undefined);
+        }
+      } else {
+        alert('리뷰 내용을 작성해 주세요');
       }
     }
   };

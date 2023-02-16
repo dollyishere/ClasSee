@@ -29,7 +29,6 @@ const FindPwPage = () => {
     ) {
       const response = await findPw(nameRef.current.value, email);
       if (response.statusCode === 200) {
-        console.log(response);
         alert('인증코드가 전송되었습니다.');
         setAnswer(response.message);
       } else if (response === undefined) {
