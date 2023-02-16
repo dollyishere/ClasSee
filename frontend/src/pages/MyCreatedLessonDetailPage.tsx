@@ -69,6 +69,7 @@ const MyCreatedLessonDetailPage = () => {
       pamphlets: [] as ImageListType[],
       score: 0 as number,
       bookMarked: false as boolean,
+      attended: false as boolean,
     });
 
   // api 실행할 시 실행될 함수 가져옴

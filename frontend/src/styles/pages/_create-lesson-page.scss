@@ -1,8 +1,37 @@
 @use '../base/colors';
+@use '../components/header';
 
-#create-lesson-page {
+.create-lesson-page {
+  height: 100%;
+  .create-lesson-page__card {
+    width: 50%;
+    margin: 0 auto;
+    .create-lesson-page__card-footer {
+      display: flex;
+      button {
+        background-color: colors.$beige_color;
+        &:hover {
+          transform: scale(1.2, 1.2);
+          background-color: colors.$beige_color_focus;
+        }
+      }
+      .create-lesson-page__button--right {
+        margin-left: auto;
+      }
+      .create-lesson-page__button--finish {
+        background-color: colors.$theme_color;
+        color: white;
+        &:hover {
+          background-color: colors.$theme_color_focus;
+        }
+      }
+    }
+  }
 }
 
+.img-upload {
+  width: 100%;
+}
 .img__container {
   display: flex;
   justify-content: center;

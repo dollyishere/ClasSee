@@ -356,41 +356,13 @@ const SignUpPage = () => {
               </li>
               <li>
                 <label htmlFor="#signup-page__input--phone">
-                  <div className="signup-page__form--row">
-                    <div className="signup-page__select">
-                      <select
-                        className="signup-page__select-item"
-                        id="signup-page__select-item--TSP"
-                        onChange={handleAgencySelectChange}
-                      >
-                        <option defaultValue="nothing">통신사</option>
-                        <option value="lg">LG U+</option>
-                        <option value="skt">SKT</option>
-                        <option value="kt">KT</option>
-                      </select>
-                      <input
-                        type="text"
-                        className="signup-page__input"
-                        id="signup-page__input--phone"
-                        placeholder="01012345678"
-                        ref={phoneNumRef}
-                      />
-                    </div>
-                    <button
-                      type="button"
-                      className="button signup-page__input--button"
-                    >
-                      인증번호 받기
-                    </button>
-                  </div>
-                  <div className="signup-page__form--row">
-                    <input
-                      type="text"
-                      className="signup-page__input"
-                      placeholder="인증번호를 입력하세요."
-                      ref={certificationNumref}
-                    />
-                  </div>
+                  <input
+                    type="text"
+                    className="signup-page__input"
+                    id="signup-page__input--phone"
+                    placeholder="전화번호 '-'없이 입력"
+                    ref={phoneNumRef}
+                  />
                 </label>
               </li>
               <br />

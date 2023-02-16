@@ -26,6 +26,8 @@
 @use './components/no_lesson';
 @use './components/create-schedule';
 @use './components/schedule-detail';
+@use './components/step';
+@use './components/category-select-box';
 
 // pages
 @use './pages/signup-page';

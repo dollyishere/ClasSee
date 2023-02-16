@@ -155,6 +155,7 @@ export interface LessonDetailResponse extends Response {
   pamphlets: ImageListType[];
   score: number;
   bookMarked: boolean;
+  attended: boolean;
 }
 
 export interface LessonDetailProps {
