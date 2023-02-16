@@ -32,10 +32,9 @@ const PointChargeViewModel = () => {
           ...newUserInfo,
           email,
         });
-        return 200;
       }
     }
-    return null;
+    return response;
   };
   const kakaoPayApprove = async (email: string, pgToken: string) => {
     const tid = localStorage.getItem('kakaoTid');
@@ -48,11 +47,14 @@ const PointChargeViewModel = () => {
         );
         if (chargeResponse === 200) {
           localStorage.removeItem('kakaoTid');
-          return 200;
+          return chargeResponse;
         }
       }
+      return response;
     }
-    return null;
+    return {
+      statusCode: 400,
+    };
   };
   return {
     chargePoint,

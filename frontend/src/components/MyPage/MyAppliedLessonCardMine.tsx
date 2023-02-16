@@ -57,7 +57,6 @@ const MyAppliedLessonCardMine = ({ lesson, flag, setFlag }: any) => {
   };
 
   useEffect(() => {
-    console.log(lesson);
     const getImage = async () => {
       const lessonImageUrl = await getLessonImage(lesson.lessonId);
       const teacherImageUrl = await getProfileImage(lesson.teacherImage);

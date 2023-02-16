@@ -23,7 +23,6 @@ const TestPage = () => {
       ref(storage, `profiles/images/${image.name}`),
       image,
     );
-    console.log(typeof image);
   };
 
   // 마운트시 imageRef에 있는 storage 경로에서 이미지를 다운로드

@@ -159,7 +159,7 @@ const UserApi = () => {
           },
         },
       );
-      return response.data.statusCode;
+      return response.data;
     } catch (error: any) {
       return error.response.data;
     }

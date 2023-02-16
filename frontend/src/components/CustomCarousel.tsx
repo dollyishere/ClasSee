@@ -19,7 +19,7 @@ const CustomCarousel = ({ ads }: CarouselProps) => {
       {ads === undefined
         ? null
         : ads.items.map((ad: StorageReference) => (
-            <CustomCarouselItem imgRef={ad} />
+            <CustomCarouselItem imgRef={ad} key={ad.name} />
           ))}
     </Carousel>
   );

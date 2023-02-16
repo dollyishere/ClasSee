@@ -24,6 +24,15 @@ const PointChargeCompletePage = () => {
           userInfo.email,
           location.search.split('=')[1],
         );
+        console.log(kakaoResponse);
+        if (kakaoResponse === undefined) {
+          alert('내부 서버 오류');
+          window.close();
+        }
+        if (kakaoResponse.statusCode === 400) {
+          alert('권한이 없습니다.');
+          window.close();
+        }
       };
       sendData();
     }

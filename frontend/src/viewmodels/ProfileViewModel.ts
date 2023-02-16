@@ -63,70 +63,83 @@ const ProfileViewModel = () => {
     return uploadedImage;
   };
 
-  const updateNickName = async (email: string, nickname: string) => {
+  const updateNickName = async (nickname: string) => {
     if (userInfo !== null) {
       const response = await doUpdateNickName(userInfo.email, nickname);
-      if (response === 200) {
+      if (response.statusCode === 200) {
         setUserInfo({
           ...userInfo,
           nickname,
         });
       }
+      return response;
     }
+    return { statusCode: 401 };
   };
 
   const updatePhone = async (phone: string) => {
     if (userInfo !== null) {
       const response = await doUpdatePhone(userInfo.email, phone);
-      if (response === 200) {
+      console.log(response);
+      if (response.statusCode === 200) {
         setUserInfo({
           ...userInfo,
           phone,
         });
       }
+      return response;
     }
+    return { statusCode: 401 };
   };
 
   const updateAddress = async (address: string) => {
     if (userInfo !== null) {
       const response = await doUpdateAddress(userInfo.email, address);
-      if (response === 200) {
+      if (response.statusCode === 200) {
         setUserInfo({
           ...userInfo,
           address,
         });
       }
+      return response;
     }
+    return { statusCode: 401 };
   };
 
   const updateDescription = async (description: string) => {
     if (userInfo !== null) {
       const response = await doUpdateDescription(userInfo.email, description);
-      if (response === 200) {
+      if (response.statusCode === 200) {
         setUserInfo({
           ...userInfo,
           description,
         });
       }
+      return response;
     }
+    return { statusCode: 401 };
   };
 
   const updatePassword = async (password: string) => {
     if (userInfo !== null) {
-      const salt = await doGetSalt(userInfo.email);
-      if (salt !== null) {
-        const hashedPassword = createHashedPassword(password, salt);
+      const saltResponse = await doGetSalt(userInfo.email);
+      if (saltResponse.statusCode === 200) {
+        const hashedPassword = createHashedPassword(
+          password,
+          saltResponse.salt,
+        );
         const response = await doUpdatePassword(userInfo.email, hashedPassword);
         return response;
       }
+      return saltResponse;
     }
-    return null;
+    return { statusCode: 401 };
   };
 
   const withdrawl = async () => {
     if (userInfo !== null) {
       const response = await doWithdrawl(userInfo.email);
-      if (response === 200) {
+      if (response.statusCode === 200) {
         const imageRef = ref(storage, `profiles/${encodeURI(userInfo.email)}/`);
         await listAll(imageRef).then((res: any) => {
           res.items.forEach((item: any) => {
@@ -134,10 +147,12 @@ const ProfileViewModel = () => {
           });
         });
         setUserInfo(null);
+        localStorage.clear();
+        sessionStorage.clear();
       }
       return response;
     }
-    return 400;
+    return { statusCode: 401 };
   };
 
   return {

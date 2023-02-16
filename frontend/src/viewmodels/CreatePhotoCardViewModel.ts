@@ -29,7 +29,7 @@ const CreatePhotoCardViewModel = () => {
       image,
     );
 
-    return response?.statusCode;
+    return response;
   };
 
   return {
