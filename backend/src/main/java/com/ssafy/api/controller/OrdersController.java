@@ -95,7 +95,7 @@ public class OrdersController {
         } catch (UserException u){
             return ResponseEntity.status(404).body("user not found");
         } catch (MaximumException m){
-            return ResponseEntity.status(403).body("exceed the maximum");
+            return ResponseEntity.status(406).body("exceed the maximum");
         } catch (Exception e){
             return ResponseEntity.status(404).body("unexpected exception");
         }
