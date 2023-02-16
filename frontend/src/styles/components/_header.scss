@@ -32,23 +32,13 @@ header {
       margin: 0;
       text-shadow: 0 2px 4px gray;
       transition: 0.1s;
-      &:hover {
-        font-size: 28px;
-      }
     }
-    .nav__item--link {
-      background-color: #9381ff;
-      text-decoration: none;
-      color: white;
-      padding: 3px 15px 4px 15px;
-      border-radius: 10px;
-    }
-
     .nav__button {
       background-color: colors.$theme_color;
       color: white;
 
-      width: 120px;
+      width: 140px;
+      font-size: 20px;
 
       &:hover {
         background-color: colors.$theme_color_focus;
@@ -93,21 +83,12 @@ header {
       background-color: transparent;
       border-width: 0;
       padding: 0 20px;
+      transition: 0.1s;
       &:hover {
         cursor: pointer;
+        transform: scale(1.2);
       }
     }
-  }
-
-  .header__user-info {
-    border-style: solid;
-    border-radius: 10px;
-    position: absolute;
-    background-color: white;
-    width: 300px;
-    height: 300px;
-    top: 60px;
-    right: 0;
   }
 }
 
@@ -168,6 +149,7 @@ header {
   }
   .user__logout--button {
     margin-left: 5px;
-    background-color: #ffeedd;
+    background-color: #ff4d4d;
+    color: white;
   }
 }

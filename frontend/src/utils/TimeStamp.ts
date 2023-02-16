@@ -1,8 +1,8 @@
 import moment from 'moment';
 
 const TimeStamp = () => {
-  const toHourMinute = () => {
-    return moment().format('LT');
+  const toHourMinute = (timeStamp: string | undefined) => {
+    return moment(timeStamp).format('LT');
   };
 
   const toDateHourMinute = (timeStamp: string) => {

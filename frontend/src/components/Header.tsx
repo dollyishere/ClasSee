@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
 import Modal from '@mui/material/Modal';
 import { Notifications, Person } from '@mui/icons-material';
-import useViewModel from '../viewmodels/LoginViewModel';
+import useLoginViewModel from '../viewmodels/LoginViewModel';
 import logo from '../assets/logo2.png';
 import privateInfoState from '../models/PrivateInfoAtom';
 import useProfileViewModel from '../viewmodels/ProfileViewModel';
@@ -29,7 +29,7 @@ const style = {
 const Header = () => {
   const searchbarRef = useRef(null); // 검색창을 접근/제어하기 위한 hook
   const userInfo = useRecoilValue(privateInfoState); // 유저 정보를 사용하기 위한 hook
-  const viewModel = useViewModel(); // 로그인 viewmodel을 사용하기 위한 hook
+  const { logout } = useLoginViewModel(); // 로그인 viewmodel을 사용하기 위한 hook
   const [toggleUserInfo, setToggleUserInfo] = useState<boolean>(false); // 개인정보 모달을 띄우기 위한 boolean값
   const handleOpen = () => setToggleUserInfo(true);
   const handleClose = () => setToggleUserInfo(false);
@@ -54,12 +54,9 @@ const Header = () => {
     }
   };
 
-  const handleToggleUserInfo = () => {
-    setToggleUserInfo((prev: boolean) => !prev);
-  };
   const handleLogout = async () => {
     if (userInfo?.email) {
-      const result = await viewModel.logout(userInfo?.email);
+      const result = await logout(userInfo?.email);
       navigate('/');
     }
   };
@@ -87,14 +84,22 @@ const Header = () => {
       {/* 네비게이션 */}
       <ul className="nav">
         <li className="nav__item">
-          <Link to="/lessons" className="nav__item--link">
+          <button
+            type="button"
+            className="button nav__button"
+            onClick={() => navigate('/lessons')}
+          >
             강의
-          </Link>
+          </button>
         </li>
         <li className="nav__item">
-          <Link to="/photo-card" className="nav__item--link">
+          <button
+            type="button"
+            className="button nav__button"
+            onClick={() => navigate('/photo-card')}
+          >
             자랑 게시판
-          </Link>
+          </button>
         </li>
       </ul>
 

@@ -276,6 +276,7 @@ const VideoCallPage = () => {
     setStudentStreamManager(undefined);
     setTeacherStreamManager(undefined);
     setCurrentStreamManager(undefined);
+    setPublisher(undefined);
     setCurrentVideoDevice(undefined);
   };
 
@@ -284,7 +285,7 @@ const VideoCallPage = () => {
   const onbeforeunload = () => {
     leaveSession();
   };
-  const movePhotoQRPage = () => {
+  const movePhotoQRPage = async () => {
     leaveSession();
     navigate(`/lesson/photo-card/qr/${lessonId}/${openLessonId}`);
   };
@@ -458,10 +459,10 @@ const VideoCallPage = () => {
               } else {
                 // role이 학생이면 스트림을 studentStreamManager에 저장
                 setStudentStreamManager(newPublisher);
+                const newSubscribers = subscribers;
+                newSubscribers.push(newPublisher);
+                setSubscribers([...newSubscribers]);
               }
-              const newSubscribers = subscribers;
-              newSubscribers.push(newPublisher);
-              setSubscribers([...newSubscribers]);
               setPublisher(newPublisher);
             })
             .catch((error: ConnectionError) => {
@@ -533,8 +534,6 @@ const VideoCallPage = () => {
     <div className="page video-call-page">
       {/* 채팅창을 제외한 메인 컨텐츠 영역 */}
       <div className="video-call-page__content">
-        {/* 헤더, 이 부분에는 강의 진행 상황을 표시할 그래프가 있어야 합니다. */}
-        <div className="video-call-page__header">헤더</div>
         {/* 비디오 화면들이 표시되는 영역 */}
         <div className="video-call-page__videos">
           {/* isFocused가 true이면 선택한 학생 하나만 왼쪽 화면에 표시하고 나머지는 밑으로 내림 */}
