@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, Fab } from '@mui/material';
+import { Box, Divider, Fab } from '@mui/material';
 
 import AddIcon from '@mui/icons-material/Add';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
@@ -52,24 +52,26 @@ const StepFive = ({
   };
 
   return (
-    <div>
-      <h2>Step 6. 가격 설정</h2>
+    <div className="step">
+      <div className="step__title">Step 6. 가격 설정</div>
       {/* 기본 수강 가격을 결정하는 input */}
-      <label htmlFor="basicPrice">
-        기본 수강 가격
-        <input
-          type="number"
-          id="basicPrice"
-          placeholder="금액"
-          step={1000}
-          min={0}
-          value={basicPriceState}
-          onChange={handleInputBasicPrice}
-        />
-        원
-      </label>
+      <div className="step__price">
+        <label htmlFor="basicPrice">
+          <span className="step__price-label">기본 수강 가격</span>
+          <input
+            type="number"
+            id="basicPrice"
+            placeholder="금액"
+            step={1000}
+            min={0}
+            value={basicPriceState}
+            onChange={handleInputBasicPrice}
+          />
+          원
+        </label>
+      </div>
 
-      <hr />
+      <Divider />
       {/* 만약 kitPriceState가 0이고, inputVisiable 값이 false일 시, 추가 버튼이 보이도록 함 */}
       {/* 둘 중 하나라도 성립하지 않는다면, 키트 가격을 입력할 수 있는 input이 보이도록 함 */}
       {kitPriceState === 0 && inputVisiable === false ? (
@@ -79,34 +81,40 @@ const StepFive = ({
           </Fab>
         </Box>
       ) : (
-        <label htmlFor="option">
-          <h5>키트</h5>
-          <input
-            type="number"
-            id="option"
-            step={1000}
-            min={0}
-            placeholder="금액"
-            value={kitPriceState}
-            onChange={handleInputKitPrice}
-          />
-          원
-          {/* 만약 아래 삭제 버튼을 누를 시, 추가한 키트 가격이 초기화되고 및 입력 input이 보이지 않게 됨 */}
-          <br />
-          <p>* 키트의 경우, 무료가 아닐 시에만 등록이 가능합니다.</p>
-          {kitPriceState !== 0 ? (
-            <textarea
-              cols={30}
-              rows={10}
+        <div className="step__price">
+          <label htmlFor="option">
+            <span className="step__price-label">키트</span>
+            <input
+              type="number"
               id="option"
-              placeholder="키트에 대한 설명을 입력해주세요."
-              value={kitDescState}
-              onChange={handleInputKitDesc}
+              step={1000}
+              min={0}
+              placeholder="금액"
+              value={kitPriceState}
+              onChange={handleInputKitPrice}
             />
-          ) : null}
-          <br />
-          <RemoveCircleOutlineIcon type="button" onClick={deleteBtn} />
-        </label>
+            원
+            {/* 만약 아래 삭제 버튼을 누를 시, 추가한 키트 가격이 초기화되고 및 입력 input이 보이지 않게 됨 */}
+            <br />
+            <div>* 키트의 경우, 무료가 아닐 시에만 등록이 가능합니다.</div>
+            {kitPriceState !== 0 ? (
+              <textarea
+                cols={30}
+                rows={10}
+                id="option"
+                placeholder="키트에 대한 설명을 입력해주세요."
+                value={kitDescState}
+                onChange={handleInputKitDesc}
+              />
+            ) : null}
+            <br />
+            <RemoveCircleOutlineIcon
+              type="button"
+              onClick={deleteBtn}
+              className="step__price-button"
+            />
+          </label>
+        </div>
       )}
       <h3>총 합계: {basicPriceState + kitPriceState} 원</h3>
     </div>

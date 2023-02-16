@@ -25,8 +25,8 @@ const StepFour = ({
     setMaterialDescState(e.target.value);
   };
   return (
-    <div>
-      <h2>Step 4. 준비물 등록</h2>
+    <div className="step">
+      <div className="step__title">Step 4. 준비물 등록</div>
       {/* props로 ImageUpload에 전달할 사진 개수를 limit 변수에 지정 */}
       <ImageUpload
         deleteImgList={deleteImgList}
@@ -42,6 +42,7 @@ const StepFour = ({
         cols={30}
         rows={10}
         placeholder="준비물에 대해 입력해주세요."
+        className="step__textarea"
         value={materialDescState}
         onChange={handleInputMaterialDesc}
       />
