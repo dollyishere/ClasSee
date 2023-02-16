@@ -11,6 +11,10 @@ import java.util.List;
 @ApiModel("PhotocardPageGetRes")
 public class PhotocardPageGetRes {
 
+    Integer statusCode;
+
+    String message;
+
     Long count;
 
     List<PhotocardListGetRes> page;
