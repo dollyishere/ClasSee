@@ -24,6 +24,10 @@
 @use './components/lesson_carousel';
 @use './components/review-card';
 @use './components/no_lesson';
+@use './components/create-schedule';
+@use './components/schedule-detail';
+@use './components/step';
+@use './components/category-select-box';
 
 // pages
 @use './pages/signup-page';
@@ -38,6 +42,7 @@
 @use './pages/my-bookmark-page';
 @use './pages/find-pw-page';
 @use './pages/my-created-lessons-page';
+@use './pages/my-created-lesson-detail-page';
 @use './pages/my-applied-lessons-page';
 @use './pages/photo-card-qr-page';
 @use './pages/create-photo-card-page';

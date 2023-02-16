@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 
-import { IconButton, Box, Fab } from '@mui/material';
+import { IconButton, Box, Fab, Divider } from '@mui/material';
 
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
@@ -74,17 +74,18 @@ const StepFive = ({
   };
 
   return (
-    <div>
-      <h2>Step 5. 커리큘럼 등록</h2>
+    <div className="step">
+      <div className="step__title">Step 5. 커리큘럼 등록</div>
       {/* 만약 curriListState 길이가 0 이상이라면, 내부의 item들을 하나 하나 list로 보여줌 */}
       {curriListState.length > 0 ? (
         <ul>
           {curriListState.map((stage: string, id: number) => (
-            <li>
-              <h3>Step {id + 1}.</h3>
+            <li className="step__curriculum">
+              <div className="step__curriculum-label">Stage {id + 1}.</div>
               {stage}
               <RemoveCircleOutlineIcon
                 type="button"
+                className="step__curriculum-button"
                 onClick={() => deleteBtn(id)}
               />
             </li>
@@ -93,19 +94,22 @@ const StepFive = ({
       ) : (
         <p>* 커리큘럼을 최소 1개 이상 추가해주세요.</p>
       )}
-      <hr />
+      <Divider variant="middle" />
       {/* inputVisiable이 true거나 아직 curriListState에 아무 값도 없다면, 커리큘럼을 추가하는 것이 가능함(input 태그가 보임) */}
       {/* 만약 curriListState.length가 0이라면(현재 추가된 커리큘럼이 하나도 없다면), 그 때도 input 태그는 자동으로 보임 */}
       {inputVisiable || curriListState.length === 0 ? (
-        <form onSubmit={onCurriSubmit}>
-          <h3>Stage {curriListState.length + 1}.</h3>
+        <form onSubmit={onCurriSubmit} className="step__curriculum">
+          <div className="step__curriculum-label">
+            Stage {curriListState.length + 1}.
+          </div>
           <input
             ref={curriRef}
             type="text"
+            className="step__curriculum-content"
             placeholder="커리큘럼을 단계별로 입력해주세요"
             required
           />
-          <IconButton type="submit" aria-label="add">
+          <IconButton type="submit" className="step__curriculum-button">
             <AddCircleOutlineIcon />
           </IconButton>
         </form>
@@ -119,7 +123,10 @@ const StepFive = ({
       )}
       {/* 최대 참가 가능 인원 수를 입력하는 input 태그임 */}
       {/* 최저값은 0, 최대 값은 10으로 지정함 */}
-      <label htmlFor="number_of_participants">
+      <label htmlFor="number_of_participants" className="step__etc">
+        {maximumState === 0 ? (
+          <p>클래스 최대 참여 인원은 최소 1명이어야 합니다.</p>
+        ) : null}
         최대 참여 인원
         <input
           id="number_of_participants"
@@ -130,15 +137,12 @@ const StepFive = ({
           value={maximumState}
           onChange={handleInputMaximum}
         />
-        명
+        <span>명</span>
       </label>
-      {maximumState === 0 ? (
-        <p>클래스 최대 참여 인원은 최소 1명이어야 합니다.</p>
-      ) : null}
       <br />
       {/* 예상 강의 시간을 입력하는 input 태그임 */}
       {/* 마찬가지로 최저값 0, 최대값 1로 지정 */}
-      <label htmlFor="time_of_lesson">
+      <label htmlFor="time_of_lesson" className="step__etc">
         예상 강의 시간
         <input
           id="time_of_lesson"
@@ -150,7 +154,7 @@ const StepFive = ({
           value={runningtimeState}
           onChange={handleInputRunningtime}
         />{' '}
-        시간
+        <span>시간</span>
       </label>
     </div>
   );

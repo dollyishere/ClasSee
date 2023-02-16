@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 
-import { Stack, TextField, Button } from '@mui/material/';
+import { Stack, TextField, Button, Card } from '@mui/material/';
 
 import ScheduleViewModel from '../../viewmodels/ScheduleViewModel';
 
@@ -54,6 +54,11 @@ const CreateScheduleComponent = ({
     setEndTime(event.target.value);
   };
 
+  const handleCloseInput = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setScheduleInputState(false);
+    setStartTime('');
+    setEndTime('');
+  };
   // 만약 스케줄 등록 버튼을 눌렀을 시, api 요청을 보냄
   // 그 전에 해당 값을 입력했는지를 먼저 검증하고, 입력하지 않았을 시 alert로 입력하라고 지시함
   const handelSubmitSchedule = async (
@@ -95,39 +100,65 @@ const CreateScheduleComponent = ({
   };
 
   return (
-    <div>
-      <Stack component="form" noValidate spacing={3}>
-        <h3>시작 시간</h3>
-        <TextField
-          id="datetime-local"
-          label="시작 시간"
-          type="datetime-local"
-          value={startTime}
-          sx={{ width: 250 }}
-          InputLabelProps={{
-            shrink: true,
-          }}
-          onChange={handleStartTimeChange}
-        />
-        <h3>종료 시간</h3>
-        <TextField
-          id="datetime-local"
-          label="종료 시간"
-          type="datetime-local"
-          value={endTime}
-          sx={{ width: 250 }}
-          InputLabelProps={{
-            shrink: true,
-          }}
-          // 만약 기존 강의 예상 시간이 0 이상이라면, 수정 불가
-          disabled={runningtime !== 0}
-          onChange={handleEndTimeChange}
-        />
+    <Card className="create-schedule__body">
+      <div className="create-schedule__header"> 스케줄 생성</div>
+      <Stack
+        component="form"
+        noValidate
+        direction="row"
+        spacing={3}
+        justifyContent="space-around"
+      >
+        <div className="create-schedule__container">
+          <h3>시작 시간</h3>
+          <TextField
+            id="datetime-local"
+            label="시작 시간"
+            type="datetime-local"
+            value={startTime}
+            sx={{ width: 250 }}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            onChange={handleStartTimeChange}
+          />
+        </div>
+        <div className="create-schedule__container">
+          <h3>종료 시간</h3>
+          <TextField
+            id="datetime-local"
+            label="종료 시간"
+            type="datetime-local"
+            value={endTime}
+            sx={{ width: 250 }}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            // 만약 기존 강의 예상 시간이 0 이상이라면, 수정 불가
+            disabled={runningtime !== 0}
+            onChange={handleEndTimeChange}
+          />
+        </div>
       </Stack>
-      <Button type="button" onClick={handelSubmitSchedule} variant="contained">
-        등록
-      </Button>
-    </div>
+      <Stack
+        direction="row"
+        justifyContent="center"
+        spacing={2}
+        marginTop={2}
+        marginBottom={2}
+      >
+        <Button
+          type="button"
+          onClick={handelSubmitSchedule}
+          variant="contained"
+        >
+          등록
+        </Button>
+        <Button type="button" onClick={handleCloseInput} variant="contained">
+          닫기
+        </Button>
+      </Stack>
+    </Card>
   );
 };
 export default CreateScheduleComponent;

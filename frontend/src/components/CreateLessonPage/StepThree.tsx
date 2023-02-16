@@ -9,14 +9,15 @@ const StepThree = ({ lessonDescState, setLessonDescState }: StepThreeProps) => {
   };
 
   return (
-    <div>
-      <h2>Step 3. 강의 소개 입력</h2>
+    <div className="step">
+      <div className="step__title">Step 3. 강의 소개 입력</div>
       {/* 강의 소개를 입력하는 textarea */}
       <textarea
         cols={30}
         rows={10}
         placeholder="강의 소개를 입력해주세요."
         value={lessonDescState}
+        className="step__textarea"
         onChange={handleInputLessonName}
       />
     </div>

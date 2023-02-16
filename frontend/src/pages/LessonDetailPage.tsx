@@ -37,7 +37,7 @@ import privateInfoState from '../models/PrivateInfoAtom';
 import Header from '../components/Header';
 import BasicRating from '../components/BasicRating';
 import CheckSchedule from '../components/LessonDetailPage/CheckSchedule';
-import Reviews from '../components/LessonDetailPage/Review';
+import Review from '../components/LessonDetailPage/Review';
 
 const theme = createTheme({
   palette: {
@@ -79,6 +79,7 @@ const LessonDetailPage = () => {
       pamphlets: [] as ImageListType[],
       score: 0 as number,
       bookMarked: false as boolean,
+      attended: false as boolean,
     });
 
   // api 실행할 시 실행될 CreateLessonModel createLesson에 할당
@@ -139,8 +140,8 @@ const LessonDetailPage = () => {
       const res = await getLessonDetail(getLessonDetailRequestBody);
       if (res?.message === 'SUCCESS') {
         // 만약 강의 상세 정보를 db에서 받아오는 것에 성공했다면, lessonDetailState에 해당 정보를 저장
-        console.log(res);
         setLessonDetailState(res);
+        console.log(res);
         setIsBookMarked(res.bookMarked);
 
         // firebase의 해당 강의가 저장된 폴더의 url에 접근하여 해당하는 이미지 파일을 각각 다운받음
@@ -338,7 +339,7 @@ const LessonDetailPage = () => {
                             <h1>준비물에 대한 설명이 없어요</h1>
                           </pre>
                         ) : (
-                          <pre>{lessonDetailState.cklsDescription}</pre>
+                          <p>{lessonDetailState.cklsDescription}</p>
                         )}
                       </Card>
                     </div>
@@ -377,7 +378,7 @@ const LessonDetailPage = () => {
               ) : (
                 <div className="lesson-detail-page__review">
                   <h2 className="lesson-detail-page__part-title">강의 후기</h2>
-                  <Reviews />
+                  <Review attended={lessonDetailState.attended} />
                 </div>
               )}
             </div>

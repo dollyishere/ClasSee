@@ -49,6 +49,7 @@ const ImageUpload = ({
       // URL.createObjectURL을 통해 해당 파일의 상대경로를 생성, imgSrcListState에 저장함
       const result = URL.createObjectURL(compressedFile);
       setImgSrcListState([...imgSrcListState, result]);
+      if (fileRef.current) fileRef.current.value = '';
     }
   };
 
@@ -67,11 +68,11 @@ const ImageUpload = ({
   };
 
   return (
-    <div>
+    <div className="img-upload">
       <div className="img__container">
         {/* 저장해둔 이미지들을 map을 통해 순회하면서 화면에 이미지 출력 */}
         {imgSrcListState.map((image: string, id: number) => (
-          <div id={image}>
+          <div className={image}>
             <img className="img__item" src={image} alt={`${image}-${id}`} />
             <RemoveCircleOutlineIcon
               className="img__delete"

@@ -3,6 +3,7 @@ import {
   Delete,
   Favorite,
   FavoriteBorder,
+  FlareSharp,
   FormatQuote,
   MoreHoriz,
 } from '@mui/icons-material';
@@ -17,28 +18,17 @@ const PhotoCard = ({
   photoCard,
   back,
   handleDeletePhotoCard,
+  handleLike,
 }: PhotoCardProps) => {
-  const { getPhotoCardImage, likePhotoCard, dislikePhotoCard } = useViewModel();
+  const { getPhotoCardImage } = useViewModel();
   const [imgSrc, setImgSrc] = useState<string>();
   const { toDateHourMinute } = useTimeStamp();
-  const [like, setLike] = useState<boolean>(photoCard.isLiked);
   const userInfo = useRecoilValue(PrivateInfoState);
-  const [likeCount, setLikeCount] = useState<number>(photoCard.likesCount);
-  const handleLike = async (event: React.MouseEvent<HTMLElement>) => {
+
+  const handleLikeClick = async (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
     if (userInfo) {
-      if (like) {
-        const response = await dislikePhotoCard(userInfo.email, photoCard.id);
-      } else {
-        const response = await likePhotoCard(userInfo.email, photoCard.id);
-        console.log(response);
-      }
-      setLike((prev: boolean) => !prev);
-      if (!like) {
-        setLikeCount(likeCount + 1);
-      } else {
-        setLikeCount(likeCount - 1);
-      }
+      handleLike(photoCard);
     }
   };
 
@@ -58,12 +48,14 @@ const PhotoCard = ({
   return (
     <div className="photo-card">
       {userInfo && userInfo.email === photoCard.userEmail ? (
-        <div
-          className="photo-card__menu"
-          role="presentation"
-          onClick={handleDeleteThisCard}
-        >
-          <Delete />
+        <div className="photo-card__menu">
+          <div
+            className="photo-card__delete"
+            role="presentation"
+            onClick={handleDeleteThisCard}
+          >
+            <Delete />
+          </div>
         </div>
       ) : null}
       {back ? (
@@ -95,17 +87,19 @@ const PhotoCard = ({
             <div
               className="photo-card__footer-right"
               role="presentation"
-              onClick={handleLike}
+              onClick={handleLikeClick}
             >
               <div>
-                {like ? (
+                {photoCard.isLiked ? (
                   <Favorite className="photo-card__like" />
                 ) : (
                   <FavoriteBorder className="photo-card__unlike" />
                 )}
               </div>
               <div className="photo-card__likecount">
-                <p className="photo-card__likecount--text">{likeCount} Likes</p>
+                <p className="photo-card__likecount--text">
+                  {photoCard.likesCount} Likes
+                </p>
               </div>
             </div>
           </div>

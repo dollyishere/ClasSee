@@ -128,8 +128,15 @@
       padding: 5px;
       .lesson-detail-page__lesson-check {
         margin: 5%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         .lesson-detail-page__lesson-check-img {
-          width: -webkit-fill-available;
+          // width: -webkit-fill-available;
+          width: 50%;
+          height: 50%;
+          margin-bottom: 2%;
+          border-radius: 10px;
         }
       }
       .lesson-detail-page__no-img {
@@ -138,7 +145,8 @@
         background-color: colors.$gray_color;
       }
       .lesson-detail-page__ckls-desc {
-        margin-block: 5%;
+        width: 90%;
+        margin-bottom: 3%;
         padding: 5px;
         background-color: colors.$beige-color;
         font-weight: bolder;

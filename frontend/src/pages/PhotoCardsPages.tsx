@@ -15,8 +15,10 @@ const PhotoCardsPage = () => {
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [showBack, setShowBack] = useState<boolean>(false);
   const [selectedCard, setSelectedCard] = useState<PhotoCardType>();
+  const [reRender, setReRender] = useState<boolean>(false);
   const userInfo = useRecoilValue(PrivateInfoState);
-  const { getPhotoCards, deletePhotoCard } = useViewModel();
+  const { getPhotoCards, deletePhotoCard, dislikePhotoCard, likePhotoCard } =
+    useViewModel();
 
   const handlePageChange = (
     event: React.ChangeEvent<unknown>,
@@ -25,14 +27,55 @@ const PhotoCardsPage = () => {
     setPage(value);
   };
 
+  const getData = async () => {
+    const limit = 10;
+    const offset = (page - 1) * limit;
+    if (userInfo) {
+      const response = await getPhotoCards(userInfo.email, limit, offset);
+      setPhotoCards([...response.page]);
+      setCount(Math.ceil(response.count / limit));
+    } else {
+      const response = await getPhotoCards(null, limit, offset);
+      setPhotoCards([...response.page]);
+      setCount(Math.ceil(response.count / limit));
+    }
+    setReRender((prev: boolean) => !prev);
+  };
+  const handleLike = async (photoCard: PhotoCardType) => {
+    if (userInfo !== null) {
+      if (photoCard.isLiked) {
+        if (photoCard === selectedCard) {
+          setSelectedCard({
+            ...selectedCard,
+            isLiked: false,
+            likesCount: selectedCard.likesCount - 1,
+          });
+        }
+        await dislikePhotoCard(userInfo.email, photoCard.id);
+      } else {
+        if (photoCard === selectedCard) {
+          setSelectedCard({
+            ...selectedCard,
+            isLiked: true,
+            likesCount: selectedCard.likesCount + 1,
+          });
+        }
+        await likePhotoCard(userInfo.email, photoCard.id);
+      }
+      getData();
+    }
+  };
+
   const handleIsFocusedTrue = (idx: number) => {
     setSelectedCard(photoCards[idx]);
     setIsFocused(true);
   };
   const handleIsFocusedFalse = () => {
+    setSelectedCard(undefined);
     setShowBack(false);
     setIsFocused(false);
   };
+
   const handleDeletePhotoCard = async (photoCard: PhotoCardType) => {
     if (window.confirm('정말 삭제하시겠습니까?')) {
       const response = await deletePhotoCard(photoCard.id);
@@ -49,23 +92,9 @@ const PhotoCardsPage = () => {
   };
 
   useEffect(() => {
-    const getData = async () => {
-      const limit = 10;
-      const offset = (page - 1) * limit;
-      if (userInfo) {
-        const response = await getPhotoCards(userInfo.email, limit, offset);
-        setCount(Math.ceil(response.count / limit));
-        setPhotoCards(response.page);
-        console.log(response);
-      } else {
-        const response = await getPhotoCards(null, limit, offset);
-        setCount(Math.ceil(response.count / limit));
-        setPhotoCards(response.page);
-        console.log(response);
-      }
-    };
     getData();
   }, [page]);
+
   return (
     <div className="photo-cards-page">
       <Header />
@@ -83,6 +112,7 @@ const PhotoCardsPage = () => {
                 photoCard={photoCard}
                 back={false}
                 handleDeletePhotoCard={handleDeletePhotoCard}
+                handleLike={handleLike}
               />
             </div>
           ))}
@@ -109,6 +139,7 @@ const PhotoCardsPage = () => {
               photoCard={selectedCard}
               back={showBack}
               handleDeletePhotoCard={handleDeletePhotoCard}
+              handleLike={handleLike}
             />
           </div>
         </Modal>

@@ -2,10 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
-import { Button, Card, CardActions } from '@mui/material';
-
-import { ref, uploadBytes } from 'firebase/storage';
-import { storage } from '../utils/Firebase';
+import { Button, Card, CardActions, CardContent } from '@mui/material';
 
 import privateInfoState from '../models/PrivateInfoAtom';
 import authTokenState from '../models/AuthTokenAtom';
@@ -22,7 +19,6 @@ import CreateLessonViewModel from '../viewmodels/CreateLessonViewModel';
 import LessonDetailViewModel from '../viewmodels/LessonDetailViewModel';
 
 import { ImageType, CurriculumType, LessonRequest } from '../types/LessonsType';
-import { UserInfo } from '../types/UserType';
 
 const CreateLessonPage = () => {
   // component 전환의 기준이 되는 selectedComponent를 useState로 생성(기본값 1)
@@ -62,8 +58,6 @@ const CreateLessonPage = () => {
 
   // 강의 개설을 신청하는 유저의 정보를 useRecoilValue를 통해 불러옴
   const userInfo = useRecoilValue(privateInfoState);
-
-  const authToken = useRecoilValue(authTokenState);
 
   // api 실행할 시 실행될 CreateLessonModel createLesson에 할당
   const { createLesson } = CreateLessonViewModel();
@@ -180,106 +174,108 @@ const CreateLessonPage = () => {
     }
   }, []);
   return (
-    <div className="page" id="create-lesson-page">
+    <div className="page create-lesson-page">
       <Header />
       {/* 페이지 제목 지정 */}
       <h1>강의 간편 개설하기</h1>
       {/* 카드로 form이 들어갈 영역 지정 */}
       {/* selectedComponent 값이 변환될 시, 해당하는 컴포넌트를 리렌더링함 */}
       {/* 해당하는 component에 필요한 props를 상속시켜줌 */}
-      <Card sx={{ minWidth: 275 }}>
-        {selectedComponent === 1 && (
-          <StepOne
-            lessonNameState={lessonNameState}
-            setLessonNameState={setLessonNameState}
-            categorySelectState={categorySelectState}
-            setCategorySelectState={setCategorySelectState}
-          />
-        )}
-        {selectedComponent === 2 && (
-          <StepTwo
-            limitNumber={5}
-            deleteImgList={deleteImgList}
-            setDeleteImgList={setDeleteImgList}
-            imgFileListState={lessonImgFileListState}
-            setImgFileListState={setLessonImgFileListState}
-            imgSrcListState={lessonImgSrcListState}
-            setImgSrcListState={setLessonImgSrcListState}
-          />
-        )}
-        {selectedComponent === 3 && (
-          <StepThree
-            lessonDescState={lessonDescState}
-            setLessonDescState={setlessonDescState}
-          />
-        )}
-        {selectedComponent === 4 && (
-          <StepFour
-            limitNumber={10}
-            deleteImgList={deleteImgList}
-            setDeleteImgList={setDeleteImgList}
-            imgSrcListState={materialImgSrcListState}
-            setImgSrcListState={setMaterialImgSrcListState}
-            imgFileListState={materialImgFileListState}
-            setImgFileListState={setMaterialImgFileListState}
-            materialDescState={materialDescState}
-            setMaterialDescState={setMaterialDescState}
-          />
-        )}
-        {selectedComponent === 5 && (
-          <StepFive
-            curriListState={curriListState}
-            setCurriListState={setCurriListState}
-            maximumState={maximumState}
-            setMaximumState={setMaximumState}
-            runningtimeState={runningtimeState}
-            setRunningtimeState={setRunningtimeState}
-          />
-        )}
-        {selectedComponent === 6 && (
-          <StepSix
-            basicPriceState={basicPriceState}
-            setBasicPriceState={setBasicPriceState}
-            kitDescState={kitDescState}
-            setKitDescState={setKitDescState}
-            kitPriceState={kitPriceState}
-            setKitPriceState={setKitPriceState}
-          />
-        )}
-        {/* 렌더링되는 컴포넌트가 무엇인지에 따라 버튼의 모습도 변화함 */}
-        {/* 만약 selectedComponent의 값이 0이라면, 이전 단계를 볼 필요가 없으므로 해당 버튼을 숨김 */}
-        {/* 이전 단계 버튼의 경우, 클릭할 때마다 onClick event로 selectedComponent 값을 1 감소시킴 */}
-        {/* 이를 통해 현재 렌더링되는 컴포넌트를 리렌더링을 통해 변화시킴 */}
-        <CardActions>
-          {selectedComponent === 1 ? null : (
-            <Button
-              type="button"
-              variant="contained"
-              onClick={() => setSelectedComponent(selectedComponent - 1)}
-            >
-              이전 단계
-            </Button>
+      <Card className="create-lesson-page__card">
+        <CardContent>
+          {selectedComponent === 1 && (
+            <StepOne
+              lessonNameState={lessonNameState}
+              setLessonNameState={setLessonNameState}
+              categorySelectState={categorySelectState}
+              setCategorySelectState={setCategorySelectState}
+            />
           )}
-          {/* 반대로 다음 단계 버튼의 경우, selectedComponent의 값이 6이라면 다음 단계 대신 강의 생성 버튼을 보이도록 함 */}
-          {/* 마찬가지로 다음 단계 버튼의 경우 누를 때마다 selectedComponent 값을 1씩 증가시켜 재렌더링을 유도함 */}
-          {selectedComponent === 6 ? (
-            <Button
-              type="button"
-              variant="contained"
-              onClick={handleCreateLessonSubmit}
-            >
-              강의 생성
-            </Button>
-          ) : (
-            <Button
-              type="button"
-              variant="contained"
-              onClick={() => setSelectedComponent(selectedComponent + 1)}
-            >
-              다음 단계
-            </Button>
+          {selectedComponent === 2 && (
+            <StepTwo
+              limitNumber={5}
+              deleteImgList={deleteImgList}
+              setDeleteImgList={setDeleteImgList}
+              imgFileListState={lessonImgFileListState}
+              setImgFileListState={setLessonImgFileListState}
+              imgSrcListState={lessonImgSrcListState}
+              setImgSrcListState={setLessonImgSrcListState}
+            />
           )}
-        </CardActions>
+          {selectedComponent === 3 && (
+            <StepThree
+              lessonDescState={lessonDescState}
+              setLessonDescState={setlessonDescState}
+            />
+          )}
+          {selectedComponent === 4 && (
+            <StepFour
+              limitNumber={10}
+              deleteImgList={deleteImgList}
+              setDeleteImgList={setDeleteImgList}
+              imgSrcListState={materialImgSrcListState}
+              setImgSrcListState={setMaterialImgSrcListState}
+              imgFileListState={materialImgFileListState}
+              setImgFileListState={setMaterialImgFileListState}
+              materialDescState={materialDescState}
+              setMaterialDescState={setMaterialDescState}
+            />
+          )}
+          {selectedComponent === 5 && (
+            <StepFive
+              curriListState={curriListState}
+              setCurriListState={setCurriListState}
+              maximumState={maximumState}
+              setMaximumState={setMaximumState}
+              runningtimeState={runningtimeState}
+              setRunningtimeState={setRunningtimeState}
+            />
+          )}
+          {selectedComponent === 6 && (
+            <StepSix
+              basicPriceState={basicPriceState}
+              setBasicPriceState={setBasicPriceState}
+              kitDescState={kitDescState}
+              setKitDescState={setKitDescState}
+              kitPriceState={kitPriceState}
+              setKitPriceState={setKitPriceState}
+            />
+          )}
+          {/* 렌더링되는 컴포넌트가 무엇인지에 따라 버튼의 모습도 변화함 */}
+          {/* 만약 selectedComponent의 값이 0이라면, 이전 단계를 볼 필요가 없으므로 해당 버튼을 숨김 */}
+          {/* 이전 단계 버튼의 경우, 클릭할 때마다 onClick event로 selectedComponent 값을 1 감소시킴 */}
+          {/* 이를 통해 현재 렌더링되는 컴포넌트를 리렌더링을 통해 변화시킴 */}
+          <CardActions className="create-lesson-page__card-footer">
+            {selectedComponent === 1 ? null : (
+              <button
+                type="button"
+                className="button"
+                onClick={() => setSelectedComponent(selectedComponent - 1)}
+              >
+                이전 단계
+              </button>
+            )}
+            {/* 반대로 다음 단계 버튼의 경우, selectedComponent의 값이 6이라면 다음 단계 대신 강의 생성 버튼을 보이도록 함 */}
+            {/* 마찬가지로 다음 단계 버튼의 경우 누를 때마다 selectedComponent 값을 1씩 증가시켜 재렌더링을 유도함 */}
+            {selectedComponent === 6 ? (
+              <button
+                type="button"
+                className="button create-lesson-page__button--right create-lesson-page__button--finish"
+                onClick={handleCreateLessonSubmit}
+              >
+                강의 생성
+              </button>
+            ) : (
+              <button
+                type="button"
+                className="button create-lesson-page__button--right"
+                onClick={() => setSelectedComponent(selectedComponent + 1)}
+              >
+                다음 단계
+              </button>
+            )}
+          </CardActions>
+        </CardContent>
       </Card>
     </div>
   );

@@ -18,7 +18,13 @@ const MyPhotoBookPage = () => {
   const [showBack, setShowBack] = useState<boolean>(false);
   const [selectedCard, setSelectedCard] = useState<PhotoCardType>();
 
-  const { getMyPhotoCards, deletePhotoCard } = useViewModel();
+  const {
+    getPhotoCards,
+    deletePhotoCard,
+    likePhotoCard,
+    dislikePhotoCard,
+    getMyPhotoCards,
+  } = useViewModel();
 
   const handlePageChange = (
     event: React.ChangeEvent<unknown>,
@@ -51,19 +57,46 @@ const MyPhotoBookPage = () => {
     }
   };
 
+  const getData = async () => {
+    if (userInfo !== null) {
+      const limit = 6;
+      const offset = (page - 1) * limit;
+      const response = await getMyPhotoCards(userInfo.email, limit, offset);
+      console.log(response);
+      setCount(Math.ceil(response.count / limit));
+      setPhotoCards(response.page);
+    }
+  };
+  const handleLike = async (photoCard: PhotoCardType) => {
+    if (userInfo !== null) {
+      if (photoCard.isLiked) {
+        if (photoCard === selectedCard) {
+          setSelectedCard({
+            ...selectedCard,
+            isLiked: false,
+            likesCount: selectedCard.likesCount - 1,
+          });
+        }
+        await dislikePhotoCard(userInfo.email, photoCard.id);
+      } else {
+        if (photoCard === selectedCard) {
+          setSelectedCard({
+            ...selectedCard,
+            isLiked: true,
+            likesCount: selectedCard.likesCount + 1,
+          });
+        }
+        await likePhotoCard(userInfo.email, photoCard.id);
+      }
+      getData();
+    }
+  };
+
   useEffect(() => {
     if (userInfo === null) {
       alert('로그인이 필요한 서비스입니다.');
       navigate('/login');
     } else {
-      const getData = async () => {
-        const limit = 6;
-        const offset = (page - 1) * limit;
-        const response = await getMyPhotoCards(userInfo.email, limit, offset);
-        console.log('adwwdw', response);
-        setCount(Math.ceil(response.count / limit));
-        setPhotoCards(response.page);
-      };
       getData();
     }
   }, [page]);
@@ -84,6 +117,7 @@ const MyPhotoBookPage = () => {
                   photoCard={photoCard}
                   back={false}
                   handleDeletePhotoCard={handleDeletePhotoCard}
+                  handleLike={handleLike}
                 />
               </div>
             ))}
@@ -112,6 +146,7 @@ const MyPhotoBookPage = () => {
               photoCard={selectedCard}
               back={showBack}
               handleDeletePhotoCard={handleDeletePhotoCard}
+              handleLike={handleLike}
             />
           </div>
         </Modal>

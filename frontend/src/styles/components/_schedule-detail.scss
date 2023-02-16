@@ -1,0 +1,50 @@
+@use '../base/colors';
+
+.schedule-detail__body {
+  margin-block: 1%;
+  width: 90%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.schedule-detail__header-planned {
+  padding-block: 2%;
+  font-size: large;
+  font-weight: bold;
+  width: 16%;
+  height: fit-content;
+  background-color: blue;
+}
+
+.schedule-detail__header-impending {
+  padding-block: 2%;
+  font-size: large;
+  font-weight: bold;
+  width: 16%;
+  background-color: red;
+}
+
+.schedule-detail__header-ongoing {
+  padding-block: 2%;
+  font-size: large;
+  font-weight: bold;
+  width: 16%;
+  background-color: greenyellow;
+}
+
+.schedule-detail__header-terminated {
+  padding-block: 2%;
+  font-size: large;
+  font-weight: bold;
+  width: 16%;
+  background-color: colors.$gray_color;
+}
+
+.schedule-detail__part {
+  margin: 3px;
+  .schedule-detail__part-title {
+    margin-block: 5px;
+  }
+}
