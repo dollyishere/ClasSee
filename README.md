@@ -121,3 +121,4 @@
 - [시퀀스 다이어그램](./output/SequenceDiagram)
 - [시스템 구성도](./output/SystemConfiguration)
 - [ERD](./output/ERD)
+- [E2E TEST](./output/E2ETest)
