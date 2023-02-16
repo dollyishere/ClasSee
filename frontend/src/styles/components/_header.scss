@@ -90,43 +90,6 @@ header {
       }
     }
   }
-
-  .header__user-info {
-    border-style: solid;
-    border-width: 0.5px;
-    border-color: colors.$gray_color;
-    border-radius: 10px;
-    position: absolute;
-    background-color: white;
-    padding: 20px;
-    top: 60px;
-    right: 0;
-    .header__user-img {
-      width: 160px;
-      height: 160px;
-      border-radius: 50%;
-    }
-    .header__nickname {
-      font-size: 24px;
-      font-weight: bold;
-    }
-    .button {
-      color: white;
-      margin: 4px 6px;
-    }
-    .header__user-button {
-      background-color: colors.$theme_color;
-      &:hover {
-        background-color: colors.$theme_color_focus;
-      }
-    }
-    .header__user-logout {
-      background-color: #ff4d4d;
-      &:hover {
-        background-color: #dd2b2b;
-      }
-    }
-  }
 }
 
 @media (max-width: 480px) {
@@ -147,5 +110,46 @@ header {
   .search__searchbar,
   .search__button {
     width: 50%;
+  }
+}
+
+.header__user-info {
+  text-align: center;
+  line-height: center;
+  .user__profile {
+    display: flex;
+    justify-content: space-evenly;
+    .user__profile--img {
+      width: 40px;
+      display: table;
+      filter: drop-shadow(1px 1px 1px black);
+      .avatar {
+        text-align: center;
+        // display: table-cell;
+        vertical-align: middle;
+      }
+    }
+    .user__profile--text {
+      display: flex;
+    }
+    .user__nickname--text {
+      color: orange;
+      margin-right: 3px;
+    }
+  }
+  .user__point--text {
+    margin-top: 0px;
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  .user__info--button {
+    margin-right: 5px;
+    background-color: #ffeedd;
+  }
+  .user__logout--button {
+    margin-left: 5px;
+    background-color: #ff4d4d;
+    color: white;
   }
 }
