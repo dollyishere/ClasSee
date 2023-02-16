@@ -339,7 +339,7 @@ const LessonDetailPage = () => {
                             <h1>준비물에 대한 설명이 없어요</h1>
                           </pre>
                         ) : (
-                          <pre>{lessonDetailState.cklsDescription}</pre>
+                          <p>{lessonDetailState.cklsDescription}</p>
                         )}
                       </Card>
                     </div>

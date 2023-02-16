@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { atom, selector, useRecoilState, useRecoilValue } from 'recoil';
+
 import {
   Stack,
   Button,
@@ -9,13 +10,17 @@ import {
   Pagination,
   IconButton,
 } from '@mui/material';
+
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
-import MyPageCards from '../components/MyPage/MyPageCards';
+
 import MyAppliedLessonCard from '../components/MyAppliedLessonCard';
+import Nolesson from '../components/MainPage/NoLesson';
+
 import useViewModel from '../viewmodels/MainPageViewModel';
 import { LessonsResponse, Lesson } from '../types/LessonsType';
 import privateInfoState from '../models/PrivateInfoAtom';
+
 // 로그인이 되었을 때만 이 컴포넌트가 보여짐
 // 내가 개설한 강의를 get으로 api요청 보냄
 // 강의가 있으면 강의카드를 보여주고
@@ -116,7 +121,7 @@ const MyAppliedLessonsPage = () => {
                   </div>
                 ))
               ) : (
-                <h1>신청한 클래스가 없어요!</h1>
+                <Nolesson message="신청" />
               )}
               {todoPage === todoCount ? (
                 <IconButton disabled>
@@ -153,7 +158,7 @@ const MyAppliedLessonsPage = () => {
                   </div>
                 ))
               ) : (
-                <h1>완료한 클래스가 없어요!</h1>
+                <Nolesson message="신청" />
               )}
               {donePage === doneCount ? (
                 <IconButton disabled>
