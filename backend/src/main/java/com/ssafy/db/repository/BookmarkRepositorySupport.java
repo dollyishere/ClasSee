@@ -41,16 +41,16 @@ public class BookmarkRepositorySupport{
         return bookmarkList;
     }
 
-    public Long bookmarkedCheck(Long lessonId, User user) {
-        if (user == null) return 0l;
+    public boolean bookmarkedCheck(Long lessonId, User user) {
+        if (user == null) return false;
 
         return jpaQueryFactory.
-                select(qBookmark.count())
+                select(qBookmark.id)
                 .from(qBookmark)
                 .where(
                         qBookmark.userId.eq(user.getAuth().getId()),
                         qBookmark.lessonId.eq(lessonId)
-                ).fetchOne();
+                ).fetchFirst() != null;
     }
 
     public boolean isExist(Long userId, Long lessonId){

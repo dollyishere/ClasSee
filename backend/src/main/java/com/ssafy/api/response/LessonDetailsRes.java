@@ -55,6 +55,8 @@ public class LessonDetailsRes extends BaseResponseBody {
 
     boolean isBookMarked;
 
+    boolean isAttended;
+
     public static LessonDetailsRes of(Integer statusCode, String message, LessonDetailsRes lessonDetailsRes) {
         lessonDetailsRes.setMessage(message);
         lessonDetailsRes.setStatusCode(statusCode);
