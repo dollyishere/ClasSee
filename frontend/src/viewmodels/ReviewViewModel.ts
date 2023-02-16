@@ -15,7 +15,7 @@ const ReviewViewModel = () => {
 
   const createReview = async (
     requestBody: CreateReviewRequest,
-    image: File | null,
+    image: File | undefined,
   ) => {
     const createResponse = await doCreateReview(requestBody);
     if (createResponse.statusCode === 200) {
