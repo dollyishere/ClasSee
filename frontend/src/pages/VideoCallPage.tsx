@@ -326,7 +326,10 @@ const VideoCallPage = () => {
         }
         const newMessages = messages;
         newMessages.push({
-          message: `${data.clientData}님이 참가하셨습니다.`,
+          message: JSON.stringify({
+            message: `${data.clientData}님이 참가하셨습니다.`,
+            time: new Date(),
+          }),
           from: data.clientData,
           role: data.role,
         });
@@ -341,7 +344,10 @@ const VideoCallPage = () => {
         deleteSubscriber(event.stream.streamManager);
         const newMessages = messages;
         newMessages.push({
-          message: `${data.clientData}님이 나가셨습니다.`,
+          message: JSON.stringify({
+            message: `${data.clientData}님이 나가셨습니다.`,
+            time: new Date(),
+          }),
           from: data.clientData,
           role: data.role,
         });
