@@ -17,9 +17,8 @@ const PhotoCardApi = () => {
       );
       return response.data;
     } catch (error: any) {
-      console.error(error);
+      return error.response.data;
     }
-    return null;
   };
   const doLikePhotoCard = async (email: string, id: number) => {
     try {
@@ -34,9 +33,8 @@ const PhotoCardApi = () => {
       );
       return response.data;
     } catch (error: any) {
-      console.error(error);
+      return error.response.data;
     }
-    return null;
   };
 
   const doDislikePhotoCard = async (email: string, id: number) => {
@@ -51,9 +49,8 @@ const PhotoCardApi = () => {
       );
       return response.data;
     } catch (error: any) {
-      console.error(error);
+      return error.response.data;
     }
-    return null;
   };
 
   const doCreatePhotoCard = async (requestBody: CreatePhotoCardRequest) => {
@@ -64,9 +61,8 @@ const PhotoCardApi = () => {
       );
       return response.data;
     } catch (error: any) {
-      console.error(error);
+      return error.response.data;
     }
-    return null;
   };
 
   const doGetPhotoCards = async (
@@ -91,9 +87,8 @@ const PhotoCardApi = () => {
       );
       return response.data;
     } catch (error: any) {
-      console.error(error);
+      return error.response.data;
     }
-    return null;
   };
   const doGetMyPhotoCards = async (
     email: string,
@@ -111,9 +106,8 @@ const PhotoCardApi = () => {
       );
       return response.data;
     } catch (error: any) {
-      console.error(error);
+      return error.response.data;
     }
-    return null;
   };
   return {
     doCreatePhotoCard,

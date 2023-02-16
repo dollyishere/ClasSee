@@ -20,9 +20,8 @@ const UserApi = () => {
       );
       return response.data;
     } catch (error: any) {
-      console.error(error);
+      return error.response.data;
     }
-    return null;
   };
   const doGetUserInfo = async (email: string) => {
     try {
@@ -36,22 +35,20 @@ const UserApi = () => {
       );
       return response.data;
     } catch (error: any) {
-      console.error(error);
+      return error.response.data;
     }
-    return null;
   };
   // salt를 가져오는 함수
   const doGetSalt = async (email: string) => {
     try {
-      const response = await axios.get<SaltResponse>(
+      const response = await axios.get(
         `${process.env.REACT_APP_SERVER_URI}/api/v1/auth/salt?email=${email}`,
       );
       // salt를 반환
-      return response.data.salt;
+      return response.data;
     } catch (error: any) {
-      console.error(error);
+      return error.response.data;
     }
-    return null;
   };
 
   // 로그인 함수
@@ -68,10 +65,8 @@ const UserApi = () => {
       // 로그인 헤더와 데이터를 반환
       return { headers, data };
     } catch (error: any) {
-      // console.log(error);
-      return error;
+      return error.response.data;
     }
-    return null;
   };
 
   // 회원가입 함수
@@ -82,11 +77,10 @@ const UserApi = () => {
         signupRequestBody,
       );
 
-      return response.data.message;
+      return response.data;
     } catch (error: any) {
-      console.error(error);
+      return error.response.data;
     }
-    return null;
   };
 
   // 이메일 중복 확인 함수
@@ -98,9 +92,8 @@ const UserApi = () => {
       // 요청 결과를 리턴
       return response.status;
     } catch (error: any) {
-      console.error(error);
+      return error.response.data;
     }
-    return null;
   };
   const doGetAccessToken = async (email: string, refreshtoken: string) => {
     try {
@@ -115,9 +108,8 @@ const UserApi = () => {
       const { headers, data } = response;
       return { headers, data };
     } catch (error: any) {
-      console.error(error);
+      return error.response.data;
     }
-    return null;
   };
 
   const doUpdateProfileImage = async (email: string, url: string) => {
@@ -132,11 +124,10 @@ const UserApi = () => {
         },
       );
 
-      return response.data.statusCode;
+      return response.data;
     } catch (error: any) {
-      console.error(error);
+      return error.response.data;
     }
-    return null;
   };
 
   const doUpdateNickName = async (email: string, nickname: string) => {
@@ -150,14 +141,10 @@ const UserApi = () => {
           },
         },
       );
-      return response.data.statusCode;
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error(error);
-      }
-      console.error('Unexpected Error', error);
+      return response.data;
+    } catch (error: any) {
+      return error.response.data;
     }
-    return 403;
   };
 
   const doUpdatePhone = async (email: string, phone: string) => {
@@ -173,9 +160,8 @@ const UserApi = () => {
       );
       return response.data.statusCode;
     } catch (error: any) {
-      console.error(error);
+      return error.response.data;
     }
-    return null;
   };
 
   const doUpdateAddress = async (email: string, address: string) => {
@@ -189,11 +175,10 @@ const UserApi = () => {
           },
         },
       );
-      return respnose.data.statusCode;
+      return respnose.data;
     } catch (error: any) {
-      console.error(error);
+      return error.response.data;
     }
-    return null;
   };
 
   const doUpdateDescription = async (email: string, description: string) => {
@@ -207,11 +192,10 @@ const UserApi = () => {
           },
         },
       );
-      return response.data.statusCode;
+      return response.data;
     } catch (error: any) {
-      console.error(error);
+      return error.response.data;
     }
-    return null;
   };
 
   const doUpdatePassword = async (email: string, hashedPassword: string) => {
@@ -222,11 +206,10 @@ const UserApi = () => {
           password: hashedPassword,
         },
       );
-      return response.data.statusCode;
+      return response.data;
     } catch (error: any) {
-      console.error(error);
+      return error.response.data;
     }
-    return null;
   };
 
   const doWithdrawl = async (email: string) => {
@@ -239,11 +222,10 @@ const UserApi = () => {
           },
         },
       );
-      return response.data.statusCode;
+      return response.data;
     } catch (error: any) {
-      console.error(error);
+      return error.response.data;
     }
-    return null;
   };
   const doLogout = async (email: string) => {
     try {
@@ -256,11 +238,10 @@ const UserApi = () => {
           },
         },
       );
-      return response.data.statusCode;
-    } catch (error) {
-      console.error(error);
+      return response.data;
+    } catch (error: any) {
+      return error.response.data;
     }
-    return 403;
   };
   const getMyReviewsApi = async (
     email: string,
@@ -278,9 +259,8 @@ const UserApi = () => {
       );
       return response.data;
     } catch (error: any) {
-      console.log(error);
+      return error.response.data;
     }
-    return null;
   };
 
   return {

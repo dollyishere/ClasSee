@@ -1,5 +1,6 @@
 import { useRecoilState } from 'recoil';
 
+import { AxiosError } from 'axios';
 import useApi from '../apis/UserApi';
 import privateInfoState from '../models/PrivateInfoAtom';
 import authTokenState from '../models/AuthTokenAtom';
@@ -24,9 +25,9 @@ const LoginViewModel = () => {
   };
 
   const login = async (email: string, password: string) => {
-    const salt = await doGetSalt(email);
-    if (salt !== null) {
-      const hashedPassword = createHashedPassword(password, salt);
+    const saltResponse = await doGetSalt(email);
+    if (saltResponse.satusCode === 200) {
+      const hashedPassword = createHashedPassword(password, saltResponse.salt);
       const res = await doLogin({
         email,
         password: hashedPassword,

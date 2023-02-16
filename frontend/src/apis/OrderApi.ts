@@ -16,9 +16,8 @@ const OrderApi = () => {
       );
       return response.data;
     } catch (error: any) {
-      console.error(error);
+      return error.response.data;
     }
-    return null;
   };
 
   return {
