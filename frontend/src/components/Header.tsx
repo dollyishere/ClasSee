@@ -45,7 +45,7 @@ const Header = () => {
   };
 
   useEffect(() => {
-    if (userInfo !== null) {
+    if (userInfo !== null && userInfo.img !== null) {
       const getImage = async () => {
         const response = await getProfileImage(userInfo.img);
         setImg(response);
@@ -133,7 +133,13 @@ const Header = () => {
       </ul>
       {toggleUserInfo && userInfo !== null ? (
         <div className="header__user-info">
-          <img src={img} alt={userInfo.nickname} className="header__user-img" />
+          {userInfo.img !== null ? (
+            <img
+              src={img}
+              alt={userInfo.nickname}
+              className="header__user-img"
+            />
+          ) : null}
           <div className="header__nickname">{userInfo.nickname}</div>
           <div>{userInfo.point} pt</div>
           <div>
