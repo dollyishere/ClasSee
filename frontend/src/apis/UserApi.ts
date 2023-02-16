@@ -65,6 +65,7 @@ const UserApi = () => {
       // 로그인 헤더와 데이터를 반환
       return { headers, data };
     } catch (error: any) {
+      // 로그인과 return 형식을 맞추기 위해 error.response를 return
       return error.response;
     }
   };
