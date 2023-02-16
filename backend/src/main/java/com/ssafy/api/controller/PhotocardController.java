@@ -166,6 +166,8 @@ public class PhotocardController {
 
         photocardPage.setCount(photocardCount);
         photocardPage.setPage(photocardListGetResList);
+        photocardPage.setStatusCode(200);
+        photocardPage.setMessage("SUCCESS");
 
         return ResponseEntity.status(200).body(photocardPage);
     }
