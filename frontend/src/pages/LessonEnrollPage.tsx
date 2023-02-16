@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
@@ -47,6 +47,7 @@ const LessonEnrollPage = () => {
     openLessonInfo.userPhone,
   );
 
+  // 주의사항 modal 열지 말지 결정하는 state와 함수 생성
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -56,6 +57,7 @@ const LessonEnrollPage = () => {
 
   // 강의 개설을 신청하는 유저의 이메일 정보를 useRecoilValue를 통해 불러옴
   const userInfo = useRecoilValue(PrivateInfoState);
+
   const checkedPrice =
     openLessonInfo.userPoint -
     (openLessonInfo.lessonPrice + openLessonInfo.kitPrice);
@@ -63,6 +65,7 @@ const LessonEnrollPage = () => {
   const checkedTotalPrice =
     openLessonInfo.lessonPrice + openLessonInfo.kitPrice;
   const noCheckedTotalPrice = openLessonInfo.lessonPrice;
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setChecked(event.target.checked);
   };
@@ -94,8 +97,20 @@ const LessonEnrollPage = () => {
           alert('신청이 완료되었습니다.');
           navigate('/');
         } else if (res?.statusCode === 409) {
-          alert('이미 신청한 클래스입니다.');
+          alert('이미 신청한 스케줄입니다.');
+          navigate(`/lesson/${openLessonId.lessonId}`);
+        } else if (res?.statusCode === 401) {
+          alert('로그인이 필요합니다.');
+          navigate(`/login`);
+        } else if (res?.statusCode === 403) {
+          alert('신청이 거부되었습니다.');
+          navigate(`/lesson/${openLessonId.lessonId}`);
+        } else if (res?.statusCode === 404) {
+          alert('해당 스케줄 또는 클래스가 존재하지 않습니다.');
           navigate('/');
+        } else if (res?.statusCode === 500) {
+          alert('서버 오류입니다. 다시 시도해주십시오.');
+          navigate(`/lesson/${openLessonId.lessonId}`);
         } else {
           alert('다시 시도해주십시오.');
         }
@@ -115,6 +130,7 @@ const LessonEnrollPage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      console.log(userInfo);
       if (userInfo === null) {
         alert('로그인 후 이용 가능합니다.');
         navigate('/login');
@@ -138,8 +154,14 @@ const LessonEnrollPage = () => {
             alert('자신이 개설한 클래스는 신청이 불가능합니다.');
             navigate(`/lesson/${openLessonId.lessonId}`);
           }
-        } else if (res?.statusCode === 409) {
-          alert('수강 인원이 모두 찼습니다.');
+        } else if (res?.status === 401) {
+          alert('로그인이 필요합니다.');
+          navigate(`/login`);
+        } else if (res?.status === 404) {
+          alert('해당 스케줄 또는 클래스가 존재하지 않습니다.');
+          navigate(`/lesson/${openLessonId.lessonId}`);
+        } else if (res?.status === 500) {
+          alert('서버 오류입니다. 다시 시도해주십시오.');
           navigate(`/lesson/${openLessonId.lessonId}`);
         } else {
           alert('다시 시도해주세요.');
@@ -210,8 +232,6 @@ const LessonEnrollPage = () => {
                 <p className="lesson-enroll-page__payment-value">
                   {openLessonInfo.lessonPrice.toLocaleString()} P
                 </p>
-                {/* <h2>포인트</h2>
-          <p>{openLessonInfo.userPoint}</p> */}
                 <div className="lesson-enroll-page__kit-check">
                   <Checkbox
                     checked={checked}

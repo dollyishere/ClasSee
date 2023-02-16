@@ -2,14 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
-import {
-  Stack,
-  TextField,
-  Button,
-  Card,
-  createTheme,
-  ThemeProvider,
-} from '@mui/material/';
+import { Button, Card, createTheme, ThemeProvider } from '@mui/material/';
 import FormatAlignJustifyIcon from '@mui/icons-material/FormatAlignJustify';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
@@ -39,7 +32,6 @@ const theme = createTheme({
 const CheckSchedule = (teacherEmail: any) => {
   const lessonIdParams = useParams();
 
-  const { email } = teacherEmail;
   const navigate = useNavigate();
 
   const userInfo = useRecoilValue(PrivateInfoState);
@@ -68,22 +60,25 @@ const CheckSchedule = (teacherEmail: any) => {
         lessonId: Number(lessonIdParams.lessonId),
       };
       const res = await getSchedule(checkScheduleRequestBody);
-      if (res?.message === 'SUCCESS') {
+      if (res?.statusCode === 200) {
         if (res.lessonSchedules.length) {
           setScheduleListState(res.lessonSchedules);
         } else {
           // 만약 해당 날짜에 스케줄이 없다면, scheduleList를 초기화함
           setScheduleListState([]);
         }
-      } else {
-        alert('다시 시도해주세요.');
+      } else if (res?.statusCode === 401) {
+        alert('인증에 실패했습니다.');
+      } else if (res?.statusCode === 404) {
+        alert('사용자가 존재하지 않습니다.');
+      } else if (res?.statusCode === 500) {
+        alert('서버 오류가 발생했습니다. 다시 시도해주십시오.');
       }
     }
   };
 
   // 사용자가 달력에서 다른 값을 선택했을 시, 해당 값으로 value를 바꿔준 후, 스케줄을 가져옴
   const handleDateChange = (date: Date) => {
-    console.log(date);
     const selecteDate = moment(date);
     if (selecteDate.isBefore(today, 'day')) {
       alert('지나간 스케줄은 선택할 수 없습니다.');
@@ -96,7 +91,6 @@ const CheckSchedule = (teacherEmail: any) => {
   const handleDoEnroll = (lessonId: number, openLessonId: number) => {
     if (userInfo) {
       if (userInfo.email === teacherEmail) {
-        console.log(teacherEmail);
         alert('본인이 개설한 클래스는 수강 신청할 수 없습니다.');
       } else {
         navigate(`/enroll-lesson/${lessonId}/${openLessonId}`);
@@ -114,13 +108,19 @@ const CheckSchedule = (teacherEmail: any) => {
         lessonId: Number(lessonIdParams.lessonId),
       };
       const res = await getSchedule(checkScheduleRequestBody);
-      if (res?.message === 'SUCCESS') {
+      if (res?.statusCode === 200) {
         if (res.lessonSchedules.length) {
           setScheduleListState(res.lessonSchedules);
         } else {
           // 만약 해당 날짜에 스케줄이 없다면, scheduleList를 초기화함
           setScheduleListState([]);
         }
+      } else if (res?.statusCode === 401) {
+        alert('인증에 실패했습니다.');
+      } else if (res?.statusCode === 404) {
+        alert('사용자가 존재하지 않습니다.');
+      } else if (res?.statusCode === 500) {
+        alert('서버 오류가 발생했습니다. 다시 시도해주십시오.');
       }
     };
     getTodaysSchedule();

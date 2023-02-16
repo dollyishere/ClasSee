@@ -2,10 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
-import { Button, Card, CardActions, CardContent } from '@mui/material';
+import { Card, CardActions, CardContent } from '@mui/material';
 
 import privateInfoState from '../models/PrivateInfoAtom';
-import authTokenState from '../models/AuthTokenAtom';
 
 import StepOne from '../components/CreateLessonPage/StepOne';
 import StepTwo from '../components/CreateLessonPage/StepTwo';
@@ -124,7 +123,7 @@ const CreateLessonPage = () => {
       };
 
       const res = await createLesson(createLessonRequestBody);
-      if (res?.message === 'SUCCESS') {
+      if (res?.statusCode === 200) {
         // 만약 강의 개설에 성공했을 시, 이하 코드를 실행함
         // 만약 업로드한 이미지 파일이 하나 이상 존재한다면,
         // 파일을 Firebase에 업로드한 후 해당 이름을 checkListState에 집어넣어줌

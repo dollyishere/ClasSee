@@ -3,7 +3,6 @@ import {
   ref,
   getDownloadURL,
   uploadBytes,
-  getBlob,
   listAll,
   deleteObject,
 } from 'firebase/storage';
@@ -24,7 +23,6 @@ const LessonDetailViewModel = () => {
   const userInfo = useRecoilValue(PrivateInfoState);
 
   const getLessonDetail = async (data: LessonDetailRequest) => {
-    console.log(data);
     const res = await doGetLessonDetail(data);
     return res;
   };
@@ -61,7 +59,6 @@ const LessonDetailViewModel = () => {
         storage,
         `lessons/${lessonId}/pamphlet_images/${imageName}`,
       );
-      // const file = await getBlob(imgRef);
       return imgRef;
     });
     return Promise.all(promises);
@@ -74,8 +71,6 @@ const LessonDetailViewModel = () => {
         storage,
         `lessons/${lessonId}/checklist_images/${imageName}`,
       );
-      // CORS 오류 발생하기에 일단 막아둠
-      // const file = await getBlob(imgRef);
       return imgRef;
     });
     return Promise.all(promises);

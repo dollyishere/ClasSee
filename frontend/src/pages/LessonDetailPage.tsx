@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
@@ -6,8 +6,6 @@ import {
   Stack,
   Button,
   Card,
-  ImageList,
-  ImageListItem,
   createTheme,
   ThemeProvider,
   IconButton,
@@ -102,7 +100,6 @@ const LessonDetailPage = () => {
 
   const [ratingValue, setRatingValue] = useState<number | null>(0);
   const disableValue = true as boolean;
-  const [userEmail, setUserEmail] = useState('');
 
   const [isBookMarked, setIsBookMarked] = useState(
     lessonDetailState.bookMarked,
@@ -138,10 +135,9 @@ const LessonDetailPage = () => {
         lessonId: Number(lessonId.lessonId) as number,
       };
       const res = await getLessonDetail(getLessonDetailRequestBody);
-      if (res?.message === 'SUCCESS') {
+      if (res?.statusCode === 200) {
         // 만약 강의 상세 정보를 db에서 받아오는 것에 성공했다면, lessonDetailState에 해당 정보를 저장
         setLessonDetailState(res);
-        console.log(res);
         setIsBookMarked(res.bookMarked);
 
         // firebase의 해당 강의가 저장된 폴더의 url에 접근하여 해당하는 이미지 파일을 각각 다운받음
@@ -156,14 +152,15 @@ const LessonDetailPage = () => {
             setCheckListImgState(urls);
           },
         );
-        console.log(pamphletsImgState);
-        console.log(checkListImgState);
         if (res?.teacherImage) {
           const imageUrl = await getProfileImage(res.teacherImage);
           setTeacherImgState(imageUrl);
         }
-      } else {
-        alert(res?.message);
+      } else if (res?.statusCode === 404) {
+        alert('해당 클래스는 존재하지 않습니다.');
+        navigate('/');
+      } else if (res?.statusCode === 505) {
+        alert('서버 오류가 발생했습니다. 다시 시도해주십시오.');
       }
     };
     fetchData();
@@ -188,7 +185,6 @@ const LessonDetailPage = () => {
                   height="300px"
                 >
                   {pamphletsImgState.map((item: any, i: number) => {
-                    console.log(item);
                     return (
                       <div className="carousel__item">
                         <img src={item} alt={item} className="carousel__img" />
