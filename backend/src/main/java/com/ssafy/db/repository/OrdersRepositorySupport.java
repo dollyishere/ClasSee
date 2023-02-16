@@ -71,6 +71,14 @@ public class OrdersRepositorySupport {
         em.remove(orders);
     }
 
+    public Long ordersCount(Long openLessonId){
+        return jpaQueryFactory
+                .select(qOrders.count())
+                .from(qOrders)
+                .where(qOrders.openLesson.id.eq(openLessonId))
+                .fetchOne();
+    }
+
     public boolean AttendedCheck(Long lessonId, User user) {
         if (user == null) return false;
         return jpaQueryFactory

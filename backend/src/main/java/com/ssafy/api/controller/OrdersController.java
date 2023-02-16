@@ -5,10 +5,7 @@ import com.ssafy.api.request.PhotocardRegistPostReq;
 import com.ssafy.api.response.NoticeInfoRes;
 import com.ssafy.api.response.OrdersInfoGetRes;
 import com.ssafy.api.service.OrdersService;
-import com.ssafy.common.exception.handler.LessonException;
-import com.ssafy.common.exception.handler.OpenLessonException;
-import com.ssafy.common.exception.handler.OrdersException;
-import com.ssafy.common.exception.handler.UserException;
+import com.ssafy.common.exception.handler.*;
 import com.ssafy.common.model.response.*;
 import com.ssafy.db.entity.board.Notice;
 import io.swagger.annotations.*;
@@ -81,6 +78,7 @@ public class OrdersController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = OrdersInfoGetRes.class),
             @ApiResponse(code = 401, message = "인증 실패", response = InvalidErrorResponseBody.class),
+            @ApiResponse(code = 403, message = "인원 수로 인한 거절", response = ForbiddenErrorResponseBody.class),
             @ApiResponse(code = 404, message = "해당 자료 없음", response = NotFoundErrorResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = ServerErrorResponseBody.class)
     })
@@ -96,6 +94,8 @@ public class OrdersController {
             return ResponseEntity.status(404).body("lesson not found");
         } catch (UserException u){
             return ResponseEntity.status(404).body("user not found");
+        } catch (MaximumException m){
+            return ResponseEntity.status(403).body("exceed the maximum");
         } catch (Exception e){
             return ResponseEntity.status(404).body("unexpected exception");
         }
