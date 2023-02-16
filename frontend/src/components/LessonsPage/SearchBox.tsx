@@ -63,15 +63,7 @@ const SearchBox = ({
     setDayOfWeek([...newDayOfWeek]);
   };
 
-  const days = [
-    '일요일',
-    '월요일',
-    '화요일',
-    '수요일',
-    '목요일',
-    '금요일',
-    '토요일',
-  ];
+  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
   return (
     <div className="search-box">
@@ -152,7 +144,7 @@ const SearchBox = ({
                 최대
                 <input
                   type="text"
-                  placeholder="10,000"
+                  placeholder="100,000"
                   className="search-box__input"
                   onChange={onChangeMaxPrice}
                   ref={maxPriceRef}

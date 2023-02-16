@@ -95,13 +95,33 @@ const PhotoCardApi = () => {
     }
     return null;
   };
-
+  const doGetMyPhotoCards = async (
+    email: string,
+    limit: number,
+    offset: number,
+  ) => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_SERVER_URI}/api/v1/photocard/list/${email}?limit=${limit}&offset=${offset}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+          },
+        },
+      );
+      return response.data;
+    } catch (error: any) {
+      console.error(error);
+    }
+    return null;
+  };
   return {
     doCreatePhotoCard,
     doGetPhotoCards,
     doLikePhotoCard,
     doDislikePhotoCard,
     doDeletePhotoCard,
+    doGetMyPhotoCards,
   };
 };
 

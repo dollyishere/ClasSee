@@ -1,1 +1,112 @@
 @use '../base/colors';
+
+.lesson-enroll-page-container {
+  background-color: colors.$theme_color_light;
+  .lesson-enroll-page__body {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin-block: 5%;
+    .lesson-enroll-page__left-content {
+      width: 40%;
+      .lesson-enroll-page__lessonInfo {
+        margin-bottom: 5%;
+        .lesson-enroll-page__pre-img {
+          box-shadow: 2px 2px 4px 0px rgba(0, 0, 0, 0.5);
+          border-radius: 10px;
+          margin-top: 5%;
+          width: 50%;
+          height: 50%;
+        }
+      }
+      .lesson-enroll-page__userInfo {
+        margin-bottom: 10%;
+      }
+    }
+    .lesson-enroll-page__right-content {
+      width: 30%;
+      .lesson-enroll-page__payment-block {
+        .lesson-enroll-page__payment-value-also-kit {
+          display: flex;
+          align-items: flex-end;
+          flex-direction: column;
+          .lesson-enroll-page__kit-check {
+            display: flex;
+            margin: 0;
+          }
+        }
+        .lesson-enroll-page__payment-content {
+          text-align: right;
+        }
+      }
+      .lesson-enroll-page__enroll-btn {
+        width: 100%;
+        margin-block: 5%;
+        padding: 5%;
+        font-size: 30px;
+        font-weight: bold;
+        background-color: colors.$theme_color_focus;
+      }
+    }
+  }
+}
+
+.lesson-enroll-page__card-header {
+  width: 99.2%;
+  padding-block: 10px;
+  background-color: colors.$beige-color;
+  border: 3px solid colors.$beige_color_focus;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 200%;
+}
+
+.lesson-enroll-page__all-content {
+  margin-inline: 10%;
+  text-align: left;
+}
+
+.lesson-enroll-page__payment-value {
+  font-size: 30px;
+  text-align: right;
+}
+
+.lesson-enroll-page__payment-content p {
+  animation: text-fade-in 2s;
+}
+
+@keyframes text-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.lesson-enroll-page__modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400;
+  background-color: white;
+  padding: 3%;
+  border-radius: 5px;
+  .lesson-enroll-page__modal-title {
+    color: red;
+    text-decoration: underline;
+    text-align: center;
+    margin-bottom: 5%;
+  }
+  .lesson-enroll-page__modal-content {
+    margin-block: 5%;
+    text-align: left;
+    .lesson-enroll-page__modal-content-list {
+      margin-block: 10%;
+    }
+    .lesson-enroll-page__modal-content-announce {
+      font-style: italic;
+    }
+  }
+}

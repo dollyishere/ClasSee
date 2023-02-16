@@ -363,6 +363,7 @@ const LessonsApi = () => {
       return response.data;
     } catch (error: any) {
       console.error(error);
+      return error.response;
     }
     return null;
   };

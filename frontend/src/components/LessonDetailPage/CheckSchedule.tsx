@@ -104,7 +104,7 @@ const CheckSchedule = (teacherEmail: any) => {
       }
     } else {
       alert('로그인 후에 이용이 가능합니다.');
-      navigate('/');
+      navigate('/login');
     }
   };
 

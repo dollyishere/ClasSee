@@ -15,6 +15,7 @@ const PhotoCardsViewModel = () => {
     doLikePhotoCard,
     doDislikePhotoCard,
     doDeletePhotoCard,
+    doGetMyPhotoCards,
   } = useApi();
 
   const deletePhotoCard = async (id: number) => {
@@ -45,7 +46,16 @@ const PhotoCardsViewModel = () => {
     return ret;
   };
 
+  const getMyPhotoCards = async (
+    email: string,
+    limit: number,
+    offset: number,
+  ) => {
+    const response = await doGetMyPhotoCards(email, limit, offset);
+    return response;
+  };
   return {
+    getMyPhotoCards,
     getPhotoCards,
     getPhotoCardImage,
     likePhotoCard,

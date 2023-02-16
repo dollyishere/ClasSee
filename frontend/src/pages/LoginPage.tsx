@@ -52,10 +52,10 @@ const LoginPage = () => {
         const res = await login(id.value, password.value);
         if (res.statusCode && res.statusCode === 200) {
           navigate('/');
+        } else {
+          // 만약 둘 중 하나의 value가 null일 시 alert
+          alert('아이디, 비밀번호를 확인해주세요.');
         }
-        // 만약 둘 중 하나의 value가 null일 시 alert
-      } else {
-        alert('아이디, 비밀번호를 확인해주세요.');
       }
     }
   };

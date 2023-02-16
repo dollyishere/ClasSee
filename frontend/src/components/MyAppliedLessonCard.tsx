@@ -92,10 +92,10 @@ const MyAppliedLessonCard = ({ lesson, flag, setFlag }: any) => {
               className="lesson__bookmark--icon"
             />
           ) : (
-            <BookmarkBorderIcon
+            <BookmarkIcon
               fontSize="large"
-              color="action"
-              className="lesson__bookmark--icon"
+              color="disabled"
+              className="lesson__nobookmark--icon"
             />
           )}
         </button>
