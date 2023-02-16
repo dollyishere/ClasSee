@@ -282,14 +282,14 @@ const UpdateLessonPage = () => {
   };
 
   return (
-    <div className="page" id="create-lesson-page">
+    <div className="page update-lesson-page">
       <Header />
       {/* 페이지 제목 지정 */}
-      <h1>강의 간편 개설하기</h1>
+      <h1>클래스 간편 수정하기</h1>
       {/* 카드로 form이 들어갈 영역 지정 */}
       {/* selectedComponent 값이 변환될 시, 해당하는 컴포넌트를 리렌더링함 */}
       {/* 해당하는 component에 필요한 props를 상속시켜줌 */}
-      <Card sx={{ minWidth: 275 }}>
+      <Card className="update-lesson-page__card">
         {selectedComponent === 1 && (
           <StepOne
             lessonNameState={lessonNameState}
@@ -352,34 +352,34 @@ const UpdateLessonPage = () => {
         {/* 만약 selectedComponent의 값이 0이라면, 이전 단계를 볼 필요가 없으므로 해당 버튼을 숨김 */}
         {/* 이전 단계 버튼의 경우, 클릭할 때마다 onClick event로 selectedComponent 값을 1 감소시킴 */}
         {/* 이를 통해 현재 렌더링되는 컴포넌트를 리렌더링을 통해 변화시킴 */}
-        <CardActions>
+        <CardActions className="update-lesson-page__card-footer">
           {selectedComponent === 1 ? null : (
-            <Button
+            <button
               type="button"
-              variant="contained"
+              className="button"
               onClick={() => setSelectedComponent(selectedComponent - 1)}
             >
               이전 단계
-            </Button>
+            </button>
           )}
           {/* 반대로 다음 단계 버튼의 경우, selectedComponent의 값이 6이라면 다음 단계 대신 강의 생성 버튼을 보이도록 함 */}
           {/* 마찬가지로 다음 단계 버튼의 경우 누를 때마다 selectedComponent 값을 1씩 증가시켜 재렌더링을 유도함 */}
           {selectedComponent === 6 ? (
-            <Button
+            <button
               type="button"
-              variant="contained"
               onClick={handleCreateLessonSubmit}
+              className="button update-lesson-page__button--right update-lesson-page__button--finish"
             >
-              강의 수정
-            </Button>
+              클래스 수정
+            </button>
           ) : (
-            <Button
+            <button
               type="button"
-              variant="contained"
               onClick={() => setSelectedComponent(selectedComponent + 1)}
+              className="button update-lesson-page__button--right"
             >
               다음 단계
-            </Button>
+            </button>
           )}
         </CardActions>
       </Card>

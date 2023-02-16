@@ -141,7 +141,7 @@
       }
       .lesson-detail-page__no-img {
         padding: 5%;
-        margin: auto;
+        margin: 5%;
         background-color: colors.$gray_color;
       }
       .lesson-detail-page__ckls-desc {
@@ -188,6 +188,7 @@
   height: 200px;
   width: 60%;
   margin: 40px 0;
+  padding: 2%;
   .lesson-detail-page__teacher-image {
     width: 180px;
     height: 180px;
@@ -209,4 +210,10 @@
       text-decoration: underline;
     }
   }
+}
+
+pre {
+  white-space: pre-wrap;
+  word-break: keep-all;
+  margin: 5%;
 }
