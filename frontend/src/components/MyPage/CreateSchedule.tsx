@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { Stack, TextField, Button, Card } from '@mui/material/';
 
@@ -18,9 +19,8 @@ const CreateScheduleComponent = ({
   const [startTime, setStartTime] = useState<string>('');
   const [endTime, setEndTime] = useState<string>('');
 
-  // 등록 가능 여부를 판별하는 데에 쓸 state 생성
-  const [canEnroll, setCanEnroll] = useState(true);
   const { createSchedule } = ScheduleViewModel();
+  const navigate = useNavigate();
   const today = new Date();
 
   // 시간 input 값 변경 시, endTime값도 함께 수정(runningTime이 0보다 높을 때 효력 발생함)
@@ -88,10 +88,17 @@ const CreateScheduleComponent = ({
         };
 
         const res = await createSchedule(createScheduleRequestBody, lessonId);
-        if (res && res.message === 'SUCCESS') {
+        if (res?.statusCode === 200) {
           alert('스케줄이 등록되었습니다');
           setScheduleInputState(false);
           setRerenderSchedule(!rerenderSchedule);
+        } else if (res?.statusCode === 401) {
+          alert('로그인 후 이용 가능합니다.');
+          navigate('/login');
+        } else if (res?.statusCode === 404) {
+          alert('사용자가 존재하지 않습니다');
+        } else if (res?.statusCode === 500) {
+          alert('서버 오류입니다. 다시 시도해주십시오.');
         } else {
           alert('다시 시도해주세요');
         }
