@@ -34,9 +34,8 @@ const LessonsApi = () => {
       );
       return response.data;
     } catch (error: any) {
-      console.error(error);
+      return error.response.data;
     }
-    return null;
   };
   const doUpdateLesson = async (
     updateLessonRequestBody: LessonRequest,
@@ -54,9 +53,8 @@ const LessonsApi = () => {
       );
       return response.data;
     } catch (error: any) {
-      console.error(error);
+      return error.response.data;
     }
-    return null;
   };
   const doGetLessonDetail = async (
     getLessonDetailRequestBody: LessonDetailRequest,
@@ -75,9 +73,8 @@ const LessonsApi = () => {
       }
       return response.data;
     } catch (error: any) {
-      console.error(error);
+      return error.response.data;
     }
-    return null;
   };
 
   const doDeleteLesson = async (email: string, lessonId: number) => {
@@ -92,9 +89,8 @@ const LessonsApi = () => {
       );
       return response.data;
     } catch (error: any) {
-      console.error(error);
+      return error.response.data;
     }
-    return null;
   };
   const doSearchLessons = async (searchOption: LessonSearchOption) => {
     let query = `limit=${searchOption.limit}&offset=${searchOption.offset}`;
@@ -130,9 +126,8 @@ const LessonsApi = () => {
       );
       return response.data;
     } catch (error: any) {
-      console.error(error);
+      return error.response.data;
     }
-    return null;
   };
 
   const getRecommandLessonsApi = async (email: string | null) => {
@@ -149,9 +144,8 @@ const LessonsApi = () => {
       }
       return response.data;
     } catch (error: any) {
-      console.log(error);
+      return error.response.data;
     }
-    return null;
   };
 
   // 내가 개설한 강의 2개 불러오는 함수
@@ -171,9 +165,8 @@ const LessonsApi = () => {
       );
       return response.data;
     } catch (error: any) {
-      console.error(error);
+      return error.response.data;
     }
-    return null;
   };
   const MyAppliedLessonsMainpageApi = async (
     email: string,
@@ -192,9 +185,8 @@ const LessonsApi = () => {
       );
       return response.data;
     } catch (error: any) {
-      console.error(error);
+      return error.response.data;
     }
-    return null;
   };
   const deleteMyAppliedLessonsMainpageApi = async (
     email: string,
@@ -211,9 +203,8 @@ const LessonsApi = () => {
       );
       return response.data;
     } catch (error: any) {
-      console.error(error);
+      return error.response.data;
     }
-    return null;
   };
   const deleteBookmarkApi = async (email: string, lessonId: number) => {
     try {
@@ -227,9 +218,8 @@ const LessonsApi = () => {
       );
       return response.data;
     } catch (error: any) {
-      console.error(error);
+      return error.response.data;
     }
-    return null;
   };
   const addBookmarkApi = async (email: string, lessonId: number) => {
     try {
@@ -244,9 +234,8 @@ const LessonsApi = () => {
       );
       return response.data;
     } catch (error: any) {
-      console.error(error);
+      return error.response.data;
     }
-    return null;
   };
   const doGetBookmark = async (
     email: string,
@@ -262,12 +251,10 @@ const LessonsApi = () => {
           },
         },
       );
-      console.log(response);
       return response.data;
     } catch (error: any) {
-      console.error(error);
+      return error.response.data;
     }
-    return null;
   };
   const doCreateSchedule = async (
     createScheduleRequestBody: ScheduleRequest,
@@ -285,9 +272,8 @@ const LessonsApi = () => {
       );
       return response.data;
     } catch (error: any) {
-      console.error(error);
+      return error.response.data;
     }
-    return null;
   };
   const doGetSchedule = async (getScheduleRequestBody: GetScheduleRequest) => {
     try {
@@ -301,12 +287,10 @@ const LessonsApi = () => {
           `${process.env.REACT_APP_SERVER_URI}/api/v1/lessons/${getScheduleRequestBody.lessonId}/schedules`,
         );
       }
-      console.log(response);
       return response.data;
     } catch (error: any) {
-      console.error(error);
+      return error.response.data;
     }
-    return null;
   };
 
   const doDeleteSchedule = async (
@@ -325,8 +309,7 @@ const LessonsApi = () => {
       );
       return response.data;
     } catch (error: any) {
-      console.error(error);
-      return error;
+      return error.response.data;
     }
   };
 
@@ -342,9 +325,8 @@ const LessonsApi = () => {
       );
       return response.data;
     } catch (error: any) {
-      console.error(error);
+      return error.response.data;
     }
-    return null;
   };
   const doEnrollLessonSchedule = async (
     LessonEnrollRequestBody: LessonEnrollRequest,
@@ -359,11 +341,9 @@ const LessonsApi = () => {
           },
         },
       );
-      console.log(response);
       return response.data;
     } catch (error: any) {
-      console.error(error);
-      return error.response;
+      return error.response.data;
     }
   };
   return {

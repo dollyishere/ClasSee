@@ -17,9 +17,8 @@ const VideoCallApi = () => {
       );
       return response.data;
     } catch (error: any) {
-      console.error(error);
+      return error.response.data;
     }
-    return null;
   };
   const doCreateSession = async (email: string, sessionId: string) => {
     try {
@@ -35,9 +34,8 @@ const VideoCallApi = () => {
       );
       return response.data;
     } catch (error: any) {
-      console.log(error);
+      return error.response.data;
     }
-    return null;
   };
 
   return {

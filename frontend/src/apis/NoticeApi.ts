@@ -17,9 +17,8 @@ const NoticeApi = () => {
       );
       return response.data;
     } catch (error: any) {
-      console.error(error);
+      return error.response.data;
     }
-    return null;
   };
   const doUpdateNotice = async (
     requestBody: CreateNoticeRequest,
@@ -37,9 +36,8 @@ const NoticeApi = () => {
       );
       return response.data;
     } catch (error: any) {
-      console.error(error);
+      return error.response.data;
     }
-    return null;
   };
   const doGetNotice = async (noticeId: string) => {
     try {
@@ -48,7 +46,7 @@ const NoticeApi = () => {
       );
       return response.data;
     } catch (error: any) {
-      console.error(error);
+      return error.response.data;
     }
     return null;
   };
@@ -59,10 +57,8 @@ const NoticeApi = () => {
       );
       return response.data;
     } catch (error: any) {
-      console.error(error);
+      return error.response.data;
     }
-
-    return null;
   };
   const doCreateNotice = async (requestBody: CreateNoticeRequest) => {
     try {
@@ -77,10 +73,8 @@ const NoticeApi = () => {
       );
       return response.data;
     } catch (error: any) {
-      console.error(error);
+      return error.response.data;
     }
-
-    return null;
   };
   return {
     doCreateNotice,
