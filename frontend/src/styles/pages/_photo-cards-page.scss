@@ -36,11 +36,12 @@
       .photo-cards-page__card {
         width: 18%;
         padding: 1%;
-        height: 320px;
+        height: 400px;
         z-index: 0;
       }
     }
     .photo-cards-page__pagination {
+      margin: 20px 0;
       width: 100%;
       display: flex;
       justify-content: center;
