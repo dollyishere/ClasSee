@@ -5,6 +5,7 @@ import com.ssafy.db.entity.lesson.*;
 import com.ssafy.db.entity.orders.Orders;
 import com.ssafy.db.entity.orders.QOrders;
 import com.ssafy.db.entity.user.QUser;
+import com.ssafy.db.entity.user.User;
 import io.lettuce.core.api.push.PushListener;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -70,4 +71,14 @@ public class OrdersRepositorySupport {
         em.remove(orders);
     }
 
+    public boolean AttendedCheck(Long lessonId, User user) {
+        if (user == null) return false;
+        return jpaQueryFactory
+                .select(qOrders.id)
+                .from(qOrders)
+                .where(
+                        qOrders.openLesson.lessonId.eq(lessonId),
+                        qOrders.user.eq(user)
+                ).fetchFirst() != null;
+    }
 }
