@@ -24,7 +24,6 @@ const LessonDetailViewModel = () => {
   const userInfo = useRecoilValue(PrivateInfoState);
 
   const getLessonDetail = async (data: LessonDetailRequest) => {
-    console.log(data);
     const res = await doGetLessonDetail(data);
     return res;
   };

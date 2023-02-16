@@ -55,7 +55,6 @@ const CreateNoticePage = () => {
           },
           noticeId,
         );
-        console.log(response);
         if (response === 'success') {
           navigate(`/notice/${noticeId}`);
         }

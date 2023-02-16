@@ -67,7 +67,6 @@ const Header = () => {
       const response = await getUserInfo(userInfo.email);
       if (response) {
         setUserPoint(response.point);
-        console.log(response.point);
       }
     }
   };

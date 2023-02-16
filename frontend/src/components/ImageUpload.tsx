@@ -61,7 +61,6 @@ const ImageUpload = ({
     if (!(deletedImg instanceof Blob)) {
       setDeleteImgList([...deleteImgList, deletedImg]);
       alert('사진이 삭제되었습니다!');
-      console.log(deleteImgList);
     }
     setImgSrcListState(imgSrcListState.filter((_, index) => index !== id));
     setImgFileListState(imgFileListState.filter((_, index) => index !== id));

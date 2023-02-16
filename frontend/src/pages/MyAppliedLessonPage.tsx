@@ -66,7 +66,6 @@ const MyAppliedLessonsPage = () => {
           offset,
           'TODO',
         );
-        console.log(todoData);
         setTodoLessons(todoData.lessonInfoList);
         setTodoCount(Math.ceil(todoData.count / limit));
       };

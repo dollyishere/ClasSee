@@ -40,7 +40,7 @@ const MyPage = () => {
         <Sidebar
           items={sidebarItems}
           onSidebarClick={(item: string) => {
-            console.log(item);
+            return item;
           }}
         />
         <div className="my-page__sub-page">

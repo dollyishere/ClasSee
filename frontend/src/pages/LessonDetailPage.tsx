@@ -141,7 +141,6 @@ const LessonDetailPage = () => {
       if (res?.message === 'SUCCESS') {
         // 만약 강의 상세 정보를 db에서 받아오는 것에 성공했다면, lessonDetailState에 해당 정보를 저장
         setLessonDetailState(res);
-        console.log(res);
         setIsBookMarked(res.bookMarked);
 
         // firebase의 해당 강의가 저장된 폴더의 url에 접근하여 해당하는 이미지 파일을 각각 다운받음
@@ -156,8 +155,6 @@ const LessonDetailPage = () => {
             setCheckListImgState(urls);
           },
         );
-        console.log(pamphletsImgState);
-        console.log(checkListImgState);
         if (res?.teacherImage) {
           const imageUrl = await getProfileImage(res.teacherImage);
           setTeacherImgState(imageUrl);
@@ -188,7 +185,6 @@ const LessonDetailPage = () => {
                   height="300px"
                 >
                   {pamphletsImgState.map((item: any, i: number) => {
-                    console.log(item);
                     return (
                       <div className="carousel__item">
                         <img src={item} alt={item} className="carousel__img" />

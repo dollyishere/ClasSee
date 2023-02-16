@@ -61,7 +61,6 @@ const StepFive = ({
         setInputVisiable(false);
       } else {
         // 만약 값을 입력하지 않았을 시, 값을 입력해달라는 메세지를 출력함
-        console.log('값을 입력해 주세요.');
       }
     }
   };

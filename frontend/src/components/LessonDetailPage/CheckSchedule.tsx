@@ -83,7 +83,6 @@ const CheckSchedule = (teacherEmail: any) => {
 
   // 사용자가 달력에서 다른 값을 선택했을 시, 해당 값으로 value를 바꿔준 후, 스케줄을 가져옴
   const handleDateChange = (date: Date) => {
-    console.log(date);
     const selecteDate = moment(date);
     if (selecteDate.isBefore(today, 'day')) {
       alert('지나간 스케줄은 선택할 수 없습니다.');
@@ -96,7 +95,6 @@ const CheckSchedule = (teacherEmail: any) => {
   const handleDoEnroll = (lessonId: number, openLessonId: number) => {
     if (userInfo) {
       if (userInfo.email === teacherEmail) {
-        console.log(teacherEmail);
         alert('본인이 개설한 클래스는 수강 신청할 수 없습니다.');
       } else {
         navigate(`/enroll-lesson/${lessonId}/${openLessonId}`);

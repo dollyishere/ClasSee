@@ -31,7 +31,6 @@ const MyReviewsPage: React.FC = () => {
         setCount(Math.ceil(MyReviewData.count / limit));
       }
       setReviews(MyReviewData?.page);
-      console.log(MyReviewData?.page);
     }
   };
   const handleDeleteReview = async (reviewId: number, imgSrc: string) => {

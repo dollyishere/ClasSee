@@ -35,7 +35,6 @@ const ScheduleDetail = ({
       navigate('/login');
     } else if (window.confirm('스케줄을 삭제하시겠습니까?')) {
       const res = await deleteSchedule(userInfo.email, lessonId, openLessonId);
-      console.log(res);
       if (res?.statusCode === 200) {
         alert('스케줄이 삭제되었습니다.');
         setRerenderSchedule(!rerenderSchedule);
