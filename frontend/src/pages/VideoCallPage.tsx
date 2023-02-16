@@ -610,9 +610,7 @@ const VideoCallPage = () => {
             <div className="video-call-page__video--students-bottom">
               {subscribers.map((sub: StreamManager) =>
                 studentStreamManager !== sub ? (
-                  <div className="video-call-page__stream-container">
-                    <UserVideo streamManager={sub} />
-                  </div>
+                  <UserVideo streamManager={sub} />
                 ) : null,
               )}
             </div>

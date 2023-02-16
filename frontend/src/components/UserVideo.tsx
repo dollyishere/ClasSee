@@ -10,7 +10,7 @@ const UserVideo = ({ streamManager }: any) => {
     return JSON.parse(streamManager.stream.connection.data).clientData;
   };
   return (
-    <div>
+    <div className="video-call-page__stream-container">
       {streamManager !== undefined ? (
         <div className="streamcomponent">
           <OpenViduVideo streamManager={streamManager} />
