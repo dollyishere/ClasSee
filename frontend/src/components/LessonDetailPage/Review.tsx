@@ -49,6 +49,15 @@ const Review = ({ attended }: any) => {
       const response = await deleteReview(reviewId, imgSrc);
       if (response.statusCode === 200) {
         getData();
+      } else if (response.statusCode === 401) {
+        alert('로그인 후 이용 바랍니다');
+        navigate('/login');
+      } else if (response.statusCode === 404) {
+        alert('유효하지 않은 접근입니다');
+      } else if (response.statusCode === 500) {
+        alert('서버오류 입니다');
+      } else {
+        alert('알 수 없는 오류입니다');
       }
     }
   };
