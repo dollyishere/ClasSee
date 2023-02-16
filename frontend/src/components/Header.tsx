@@ -2,17 +2,40 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import { useRecoilValue } from 'recoil';
-
+import Box from '@mui/material/Box';
+import Avatar from '@mui/material/Avatar';
+import Modal from '@mui/material/Modal';
 import { Notifications, Person } from '@mui/icons-material';
 import useViewModel from '../viewmodels/LoginViewModel';
 import logo from '../assets/logo2.png';
 import privateInfoState from '../models/PrivateInfoAtom';
+import useProfileViewModel from '../viewmodels/ProfileViewModel';
 
+// 모달창 스타일
+const style = {
+  position: 'absolute',
+  top: '8.5%',
+  right: '0%',
+  width: '220px',
+  bgcolor: '#F8F7FF',
+  border: '2px solid #000',
+  borderRadius: '10px',
+  boxShadow: 24,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  p: 4,
+};
 const Header = () => {
   const searchbarRef = useRef(null); // 검색창을 접근/제어하기 위한 hook
-  const userInfo = useRecoilValue(privateInfoState);
-  const [toggleUserInfo, setToggleUserInfo] = useState<boolean>(false);
-  const viewModel = useViewModel();
+  const userInfo = useRecoilValue(privateInfoState); // 유저 정보를 사용하기 위한 hook
+  const viewModel = useViewModel(); // 로그인 viewmodel을 사용하기 위한 hook
+  const [toggleUserInfo, setToggleUserInfo] = useState<boolean>(false); // 개인정보 모달을 띄우기 위한 boolean값
+  const handleOpen = () => setToggleUserInfo(true);
+  const handleClose = () => setToggleUserInfo(false);
+  const [teacherImage, setTeacherImage] = useState<string>(logo);
+
+  const { getProfileImage } = useProfileViewModel();
 
   const navigate = useNavigate();
 
@@ -41,6 +64,17 @@ const Header = () => {
     }
   };
 
+  useEffect(() => {
+    if (userInfo) {
+      const getTeacherImage = async () => {
+        const teacherImageUrl = await getProfileImage(userInfo.img);
+        if (teacherImageUrl) {
+          setTeacherImage(teacherImageUrl);
+        }
+      };
+      getTeacherImage();
+    }
+  }, [toggleUserInfo]);
   return (
     <header>
       {/* 로고 */}
@@ -74,7 +108,7 @@ const Header = () => {
 
       {/* 버튼 */}
       <ul className="nav">
-        {userInfo === null ? (
+        {!sessionStorage.getItem('isLogin') ? (
           <>
             <li className="nav__item">
               <Link to="/login">
@@ -104,7 +138,8 @@ const Header = () => {
             <button
               type="button"
               className="nav__button--icon"
-              onClick={handleToggleUserInfo}
+              // onClick={handleToggleUserInfo}
+              onClick={handleOpen}
             >
               <Person fontSize="large" />
             </button>
@@ -112,27 +147,72 @@ const Header = () => {
         )}
       </ul>
       {toggleUserInfo && userInfo !== null ? (
-        <div className="header__user-info">
-          <div>{userInfo.nickname}</div>
-          <div>{userInfo.point} pt</div>
-          <div>
-            <button
-              type="button"
-              className="header__user-info--logout button"
-              onClick={() => navigate('/mypage')}
-            >
-              회원정보
-            </button>
-            <button
-              type="button"
-              className="header__user-info--logout button"
-              onClick={handleLogout}
-            >
-              로그아웃
-            </button>
-          </div>
-        </div>
-      ) : null}
+        <Modal
+          open={toggleUserInfo}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={style}>
+            <div className="header__user-info">
+              <div className="user__profile">
+                <div className="user__profile--img">
+                  <Avatar
+                    alt="Remy Sharp"
+                    src={teacherImage}
+                    className="avatar"
+                  />
+                </div>
+                <div className="user__profile--text">
+                  <h3 className="user__nickname--text">{userInfo.nickname}</h3>
+                  <h3>님</h3>
+                </div>
+              </div>
+              <div className="user__point">
+                <p className="user__point--text">
+                  {userInfo.point.toLocaleString()} pt
+                </p>
+              </div>
+              <div className="user__info">
+                <button
+                  type="button"
+                  className="user__info--button button"
+                  onClick={() => navigate('/mypage')}
+                >
+                  마이페이지
+                </button>
+                <button
+                  type="button"
+                  className="user__logout--button button"
+                  onClick={handleLogout}
+                >
+                  로그아웃
+                </button>
+              </div>
+            </div>
+          </Box>
+        </Modal>
+      ) : // <div className="header__user-info">
+      //   <div>{userInfo.nickname}</div>
+      //   <div>{userInfo.point} pt</div>
+      //   <div>
+      //     <button
+      //       type="button"
+      //       className="header__user-info--logout button"
+      //       onClick={() => navigate('/mypage')}
+      //     >
+      //       회원정보
+      //     </button>
+      //     <button
+      //       type="button"
+      //       className="header__user-info--logout button"
+      //       onClick={handleLogout}
+      //     >
+      //       로그아웃
+      //     </button>
+      //   </div>
+      // </div>
+      null}
     </header>
   );
 };
