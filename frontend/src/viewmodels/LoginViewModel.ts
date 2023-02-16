@@ -29,39 +29,32 @@ const LoginViewModel = () => {
     const saltResponse = await doGetSalt(email);
     if (saltResponse.statusCode === 200) {
       const hashedPassword = createHashedPassword(password, saltResponse.salt);
-      const loginResponse = await doLogin({
+      const res = await doLogin({
         email,
         password: hashedPassword,
       });
-      if (loginResponse.statusCode === 401) {
-        return loginResponse.statusCode;
-      }
-      if (loginResponse.data?.statusCode === 200) {
+      if (res.data.statusCode === 200) {
         setPrivateInfo({
-          email: loginResponse.data.email,
-          name: loginResponse.data.name,
-          nickname: loginResponse.data.nickname,
-          address: loginResponse.data.address,
-          birth: loginResponse.data.birth,
-          img: loginResponse.data.img,
-          description: loginResponse.data.description,
-          phone: loginResponse.data.phone,
-          userRole: loginResponse.data.userRole,
-          point: loginResponse.data.point,
+          email: res.data.email,
+          name: res.data.name,
+          nickname: res.data.nickname,
+          address: res.data.address,
+          birth: res.data.birth,
+          img: res.data.img,
+          description: res.data.description,
+          phone: res.data.phone,
+          userRole: res.data.userRole,
+          point: res.data.point,
         });
-        const accessToken = loginResponse.headers.authorization.substr(7);
-        const refreshToken = loginResponse.headers['refresh-token'];
+        const accessToken = res.headers.authorization.substr(7);
+        const refreshToken = res.headers['refresh-token'];
         setAuthToken(accessToken);
-        const encryptedToken = encryptToken(
-          refreshToken,
-          loginResponse.data.email,
-        );
+        const encryptedToken = encryptToken(refreshToken, res.data.email);
         localStorage.setItem('refreshToken', encryptedToken);
         sessionStorage.setItem('isLogin', 'true');
-        return {
-          statusCode: 200,
-        };
+        return res.data;
       }
+      return res.data;
     }
     // get salt api 응답 코드에 따라 다르게 반환할것
     return saltResponse;
