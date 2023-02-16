@@ -17,11 +17,12 @@ const LoginViewModel = () => {
   const { doGetSalt, doLogin, doLogout, doGetAccessToken } = useApi();
 
   const logout = async (email: string) => {
-    await doLogout(email);
+    const response = await doLogout(email);
 
     setPrivateInfo(null);
     sessionStorage.clear();
     localStorage.setItem('accessToken', '');
+    return response;
   };
 
   const login = async (email: string, password: string) => {

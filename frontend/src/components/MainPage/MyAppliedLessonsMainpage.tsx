@@ -26,7 +26,6 @@ const MyAppliedLessonsMainpage = () => {
     if (userInfo) {
       getMyAppliedLessonsMainpage(userInfo.email, limit, offset, status).then(
         (response: LessonsResponse) => {
-          console.log('내가 신청한 강의', response.lessonInfoList.length);
           if (response.lessonInfoList.length === 0) {
             setLessons(undefined);
           } else {

@@ -23,7 +23,6 @@ const MyCreatedLessonsMainpage = () => {
     if (userInfo) {
       getMyCreatedLessonsMainpage(userInfo.email, 2, 0).then(
         (response: LessonsResponse) => {
-          console.log('내가 개설한 강의', response.lessonInfoList.length);
           if (response.lessonInfoList.length === 0) {
             setLessons(undefined);
           } else {

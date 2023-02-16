@@ -42,7 +42,15 @@ const ProfilePage = () => {
     if (userInfo !== null) {
       const nickname = prompt('변경할 닉네임을 입력하세요.', userInfo.nickname);
       if (nickname !== null) {
-        updateNickName(userInfo.email, nickname);
+        const response = await updateNickName(nickname);
+        if (response.statusCode === 401 || response.status === 401) {
+          alert('로그인이 필요한 서비스입니다.');
+          navigate('/login');
+        } else if (response === undefined) {
+          alert('내부 서버 오류');
+        } else if (response.statusCode === 200) {
+          alert('변경되었습니다.');
+        }
       }
     }
   };
@@ -51,7 +59,15 @@ const ProfilePage = () => {
     if (userInfo !== null) {
       const phone = prompt('변경할 전화번호를 입력하세요.', userInfo.phone);
       if (phone !== null) {
-        updatePhone(phone);
+        const response = await updatePhone(phone);
+        if (response.statusCode === 401 || response.status === 401) {
+          alert('로그인이 필요한 서비스입니다.');
+          navigate('/login');
+        } else if (response === undefined) {
+          alert('내부 서버 오류');
+        } else if (response.statusCode === 200) {
+          alert('변경되었습니다.');
+        }
       }
     }
   };
@@ -60,24 +76,51 @@ const ProfilePage = () => {
     if (userInfo !== null) {
       const address = prompt('변경할 주소를 입력하세요.', userInfo.address);
       if (address !== null) {
-        updateAddress(address);
+        const response = await updateAddress(address);
+        if (response.statusCode === 401 || response.status === 401) {
+          alert('로그인이 필요한 서비스입니다.');
+          navigate('/login');
+        } else if (response === undefined) {
+          alert('내부 서버 오류');
+        } else if (response.statusCode === 200) {
+          alert('변경되었습니다.');
+        }
       }
     }
   };
 
   const handleUpdateDescription = async () => {
     if (descriptionRef.current !== null) {
-      updateDescription(descriptionRef.current.value);
+      const response = await updateDescription(descriptionRef.current.value);
+      if (response.statusCode === 401 || response.status === 401) {
+        alert('로그인이 필요한 서비스입니다.');
+        navigate('/login');
+      } else if (response === undefined) {
+        alert('내부 서버 오류');
+      } else if (response.statusCode === 200) {
+        alert('변경되었습니다.');
+      }
     }
   };
 
   const openPwModal = () => setIsPwModalOpen(true);
   const closePwModal = () => setIsPwModalOpen(false);
 
-  const handleUpdatePassword = async () => {
+  const handleUpdatePassword = async (
+    event: React.FormEvent<HTMLFormElement>,
+  ) => {
+    event.preventDefault();
     if (passwordRef.current !== null && passwordCheckRef.current !== null) {
       if (passwordRef.current.value === passwordCheckRef.current.value) {
-        updatePassword(passwordRef.current.value);
+        const response = await updatePassword(passwordRef.current.value);
+        if (response.statusCode === 401 || response.status === 401) {
+          alert('로그인이 필요한 서비스입니다.');
+          navigate('/login');
+        } else if (response === undefined) {
+          alert('내부 서버 오류');
+        } else if (response.statusCode === 200) {
+          alert('변경되었습니다.');
+        }
         closePwModal();
       } else {
         alert('비밀번호가 일치하지 않습니다.');
@@ -93,7 +136,7 @@ const ProfilePage = () => {
     );
     if (email === userInfo?.email) {
       const response = await withdrawl();
-      if (response === 200) {
+      if (response.statusCode === 200) {
         alert('탈퇴 처리되셨습니다.');
         navigate('/');
       }
@@ -106,7 +149,6 @@ const ProfilePage = () => {
 
   useEffect(() => {
     if (userInfo === null) {
-      alert('로그인 후 이용 가능합니다.');
       navigate('/login');
     } else {
       const getData = async () => {
