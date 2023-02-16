@@ -4,7 +4,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import { useRecoilValue } from 'recoil';
 
 import { Notifications, Person } from '@mui/icons-material';
-import useViewModel from '../viewmodels/LoginViewModel';
+import useLoginViewModel from '../viewmodels/LoginViewModel';
+import useProfileViewModel from '../viewmodels/ProfileViewModel';
 import logo from '../assets/logo2.png';
 import privateInfoState from '../models/PrivateInfoAtom';
 
@@ -12,7 +13,9 @@ const Header = () => {
   const searchbarRef = useRef(null); // 검색창을 접근/제어하기 위한 hook
   const userInfo = useRecoilValue(privateInfoState);
   const [toggleUserInfo, setToggleUserInfo] = useState<boolean>(false);
-  const viewModel = useViewModel();
+  const [img, setImg] = useState<string>();
+  const { logout } = useLoginViewModel();
+  const { getProfileImage } = useProfileViewModel();
 
   const navigate = useNavigate();
 
@@ -36,11 +39,20 @@ const Header = () => {
   };
   const handleLogout = async () => {
     if (userInfo?.email) {
-      const result = await viewModel.logout(userInfo?.email);
+      const result = await logout(userInfo?.email);
       navigate('/');
     }
   };
 
+  useEffect(() => {
+    if (userInfo !== null) {
+      const getImage = async () => {
+        const response = await getProfileImage(userInfo.img);
+        setImg(response);
+      };
+      getImage();
+    }
+  }, []);
   return (
     <header>
       {/* 로고 */}
@@ -53,14 +65,22 @@ const Header = () => {
       {/* 네비게이션 */}
       <ul className="nav">
         <li className="nav__item">
-          <Link to="/lessons" className="nav__item--link">
+          <button
+            type="button"
+            className="button nav__button"
+            onClick={() => navigate('/lessons')}
+          >
             강의
-          </Link>
+          </button>
         </li>
         <li className="nav__item">
-          <Link to="/photo-card" className="nav__item--link">
+          <button
+            type="button"
+            className="button nav__button"
+            onClick={() => navigate('/photo-card')}
+          >
             자랑 게시판
-          </Link>
+          </button>
         </li>
       </ul>
 
@@ -113,19 +133,20 @@ const Header = () => {
       </ul>
       {toggleUserInfo && userInfo !== null ? (
         <div className="header__user-info">
-          <div>{userInfo.nickname}</div>
+          <img src={img} alt={userInfo.nickname} className="header__user-img" />
+          <div className="header__nickname">{userInfo.nickname}</div>
           <div>{userInfo.point} pt</div>
           <div>
             <button
               type="button"
-              className="header__user-info--logout button"
+              className="button header__user-button"
               onClick={() => navigate('/mypage')}
             >
               회원정보
             </button>
             <button
               type="button"
-              className="header__user-info--logout button"
+              className="header__user-logout button"
               onClick={handleLogout}
             >
               로그아웃
