@@ -17,11 +17,14 @@ import java.util.List;
 public class AttendLessonInfoListRes extends BaseResponseBody {
     List<? extends AttendLessonInfoDto> lessonInfoList;
 
+    Long count;
+
     public static AttendLessonInfoListRes of(Integer statusCode, String message, AttendLessonInfoListRes attendLessonInfoListRes) {
         AttendLessonInfoListRes res = new AttendLessonInfoListRes();
         res.setStatusCode(statusCode);
         res.setMessage(message);
         res.setLessonInfoList(attendLessonInfoListRes.getLessonInfoList());
+        res.setCount(attendLessonInfoListRes.getCount());
         return res;
     }
 }

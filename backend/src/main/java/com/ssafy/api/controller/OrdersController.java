@@ -5,10 +5,7 @@ import com.ssafy.api.request.PhotocardRegistPostReq;
 import com.ssafy.api.response.NoticeInfoRes;
 import com.ssafy.api.response.OrdersInfoGetRes;
 import com.ssafy.api.service.OrdersService;
-import com.ssafy.common.exception.handler.LessonException;
-import com.ssafy.common.exception.handler.OpenLessonException;
-import com.ssafy.common.exception.handler.OrdersException;
-import com.ssafy.common.exception.handler.UserException;
+import com.ssafy.common.exception.handler.*;
 import com.ssafy.common.model.response.*;
 import com.ssafy.db.entity.board.Notice;
 import io.swagger.annotations.*;
@@ -81,6 +78,7 @@ public class OrdersController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = OrdersInfoGetRes.class),
             @ApiResponse(code = 401, message = "인증 실패", response = InvalidErrorResponseBody.class),
+            @ApiResponse(code = 406, message = "인원 수로 인한 거절", response = ForbiddenErrorResponseBody.class),
             @ApiResponse(code = 404, message = "해당 자료 없음", response = NotFoundErrorResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = ServerErrorResponseBody.class)
     })
@@ -91,19 +89,24 @@ public class OrdersController {
         try {
             ordersInfoGetRes = ordersService.readOrders(email, openLessonId);
         } catch (OpenLessonException o){
-            return ResponseEntity.status(404).body("openLesson not found");
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404,"openLesson not found"));
         } catch (LessonException l){
-            return ResponseEntity.status(404).body("lesson not found");
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404,"lesson not found"));
         } catch (UserException u){
-            return ResponseEntity.status(404).body("user not found");
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404,"user not found"));
+        } catch (MaximumException m){
+            return ResponseEntity.status(406).body(BaseResponseBody.of(406,"exceed the maximum"));
         } catch (Exception e){
-            return ResponseEntity.status(404).body("unexpected exception");
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404,"unexpected exception"));
         }
+
+        ordersInfoGetRes.setStatusCode(200);
+        ordersInfoGetRes.setMessage("SUCCESS");
 
         return ResponseEntity.status(200).body(ordersInfoGetRes);
     }
 
-    @DeleteMapping("/{ordersId}")
+    @DeleteMapping("/{email}")
     @ApiOperation(value = "주문 취소, 로그인 O", notes = "주문 ID ")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = BaseResponseBody.class),
@@ -111,12 +114,16 @@ public class OrdersController {
             @ApiResponse(code = 404, message = "해당 자료 없음", response = NotFoundErrorResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = ServerErrorResponseBody.class)
     })
-    public ResponseEntity<? extends BaseResponseBody> deleteOrders(@PathVariable Long ordersId){
+    public ResponseEntity<? extends BaseResponseBody> deleteOrders(@PathVariable String email, @RequestParam Long openLessonId){
 
         try {
-            ordersService.deleteOrders(ordersId);
+            ordersService.deleteOrders(email, openLessonId);
         } catch (OrdersException o){
             return ResponseEntity.status(404).body(BaseResponseBody.of(404, "orders not found"));
+        } catch (UserException u) {
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404, "user not found"));
+        } catch (Exception e){
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404, "unexpected error"));
         }
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200,"success"));

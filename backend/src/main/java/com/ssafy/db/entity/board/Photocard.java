@@ -32,6 +32,7 @@ public class Photocard {
     private String img;
     private String sign;
     private String lesson_name;
+    private Long openLesson_id;
 
     @Column(name = "regdate")
     private String regDate;

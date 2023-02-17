@@ -2,6 +2,7 @@ package com.ssafy.api.service;
 
 import com.querydsl.core.Tuple;
 import com.ssafy.api.dto.*;
+import com.ssafy.api.response.AttendLessonInfoListRes;
 import com.ssafy.api.response.LessonDetailsRes;
 import com.ssafy.api.response.LessonSchedulesRes;
 import com.ssafy.db.entity.lesson.*;
@@ -13,10 +14,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class LessonServiceImpl implements LessonService {
@@ -34,6 +32,9 @@ public class LessonServiceImpl implements LessonService {
     CheckListRepositorySupport checkListRepositorySupport;
     @Autowired
     CurriculumRepositorySupport curriculumRepositorySupport;
+
+    @Autowired
+    OrdersRepositorySupport ordersRepositorySupport;
 
     @Autowired
     PamphletRepositorySupport pamphletRepositorySupport;
@@ -122,7 +123,7 @@ public class LessonServiceImpl implements LessonService {
             );
 
             lessonRes.setBookMarked(
-                    (bookmarkRepositorySupport.bookmarkedCheck(lesson.getId(), user) == 0) ? false: true
+                    bookmarkRepositorySupport.bookmarkedCheck(lesson.getId(), user)
             );
 
             lessonRes.setScore(
@@ -149,7 +150,8 @@ public class LessonServiceImpl implements LessonService {
         List<Checklist> checklists = lessonRepositorySupport.findCheckListByLesson(lessonId);
         List<Pamphlet> pamphlets = lessonRepositorySupport.findPamphletByLesson(lessonId);
         double score = lessonRepositorySupport.setLessonAvgScore(lesson.get());
-        Long isBookMarked = bookmarkRepositorySupport.bookmarkedCheck(lessonId, user);
+        boolean isBookMarked = bookmarkRepositorySupport.bookmarkedCheck(lessonId, user);
+        boolean isAttended = ordersRepositorySupport.AttendedCheck(lessonId, user);
 
         LessonDetailsRes lessonDetailsRes = LessonDetailsRes.builder()
                 .lessonId(lessonId)
@@ -169,7 +171,8 @@ public class LessonServiceImpl implements LessonService {
                 .maximum(lesson.get().getMaximum())
                 .checkLists(checklists)
                 .pamphlets(pamphlets)
-                .isBookMarked((isBookMarked == 0) ? false: true)
+                .isBookMarked(isBookMarked)
+                .isAttended(isAttended)
                 .score(score)
                 .build();
         return lessonDetailsRes;
@@ -220,8 +223,10 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public List<AttendOpenLessonInfoDto> getAttendLessonListByStudent(Long userId, String query, int limit, int offset) {
-        List<OpenLesson> openLessonList = lessonRepositorySupport.findAttendLessonListByStudent(userId, query, limit, offset);
+    public AttendLessonInfoListRes getAttendLessonListByStudent(Long userId, String query, int limit, int offset) {
+        Map<String, Object> attendLessonDto = lessonRepositorySupport.findAttendLessonListByStudent(userId, query, limit, offset);
+        List<OpenLesson> openLessonList = (List<OpenLesson>) attendLessonDto.get("LESSON_LIST");
+        Long count = (Long) attendLessonDto.get("COUNT");
 
         List<AttendOpenLessonInfoDto> attendLessonList = new ArrayList<>();
 
@@ -244,21 +249,26 @@ public class LessonServiceImpl implements LessonService {
                             .score(lessonRepositorySupport.setLessonAvgScore(lesson.get()))
                             .startTime(openLesson.getStartTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
                             .endTime(openLesson.getEndTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
-                            .isBookMarked(
-                                    (bookmarkRepositorySupport.bookmarkedCheck(lesson.get().getId(), userRepositorySupport.findOne(userId))) == 0 ? false: true
-                            )
+                            .isBookMarked(bookmarkRepositorySupport.bookmarkedCheck(lesson.get().getId(), userRepositorySupport.findOne(userId)))
                             .price(lesson.get().getPrice())
                             .kitPrice(lesson.get().getKitPrice())
                             .build()
             );
         });
-        return attendLessonList;
+
+        AttendLessonInfoListRes res = AttendLessonInfoListRes
+                                                    .builder()
+                                                    .lessonInfoList(attendLessonList)
+                                                    .count(count)
+                                                    .build();
+        return res;
     }
 
     @Override
-    public List<AttendLessonInfoDto> getAttendLessonListByTeacher(Long userId, int limit, int offset) {
-        List<Lesson> lessonList = lessonRepositorySupport.findAttendLessonListByTeacher(userId, limit, offset);
+    public AttendLessonInfoListRes getAttendLessonListByTeacher(Long userId, int limit, int offset) {
+        HashMap<String, Object> result = lessonRepositorySupport.findAttendLessonListByTeacher(userId, limit, offset);
 
+        List<Lesson> lessonList = (List<Lesson>) result.get("LESSON_LIST");
         List<AttendLessonInfoDto> attendLessonList = new ArrayList<>();
 
         lessonList.forEach((lesson) -> {
@@ -276,15 +286,17 @@ public class LessonServiceImpl implements LessonService {
                             .teacherImage(lesson.getUser().getImg())
                             .teacher(lesson.getUser().getAuth().getEmail())
                             .score(lessonRepositorySupport.setLessonAvgScore(lesson))
-                            .isBookMarked(
-                                    (bookmarkRepositorySupport.bookmarkedCheck(lesson.getId(), userRepositorySupport.findOne(userId))) == 0 ? false: true
-                            )
+                            .isBookMarked(bookmarkRepositorySupport.bookmarkedCheck(lesson.getId(), userRepositorySupport.findOne(userId)))
                             .price(lesson.getPrice())
                             .kitPrice(lesson.getKitPrice())
                             .build()
             );
         });
-        return attendLessonList;
+        return AttendLessonInfoListRes
+                .builder()
+                .lessonInfoList(attendLessonList)
+                .count((Long)result.get("COUNT"))
+                .build();
     }
 
     @Override

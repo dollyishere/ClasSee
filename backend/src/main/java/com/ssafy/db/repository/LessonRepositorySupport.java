@@ -7,6 +7,7 @@ import com.querydsl.core.types.SubQueryExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.api.dto.LessonInfoDto;
 import com.ssafy.api.dto.LessonSearchFilterDto;
+import com.ssafy.api.response.AttendLessonInfoListRes;
 import com.ssafy.db.entity.lesson.*;
 import com.ssafy.db.entity.orders.QOrders;
 import com.ssafy.db.entity.user.QUser;
@@ -129,13 +130,21 @@ public class LessonRepositorySupport {
         return pamphlets;
     }
 
-    public List<OpenLesson> findAttendLessonListByStudent(Long userId, String query, int limit, int offset) {
+    public HashMap<String, Object> findAttendLessonListByStudent(Long userId, String query, int limit, int offset) {
+        HashMap<String, Object> res = new HashMap<>();
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(qOpenLesson.id.eq(qOrders.openLesson.id));
         builder.and(qOrders.user.id.eq(userId));
 
         if(query.toUpperCase().equals("DONE")) builder.and(qOpenLesson.startTime.before(LocalDateTime.now()));
         if(query.toUpperCase().equals("TODO")) builder.and(qOpenLesson.startTime.after(LocalDateTime.now()));
+
+        Long count = jpaQueryFactory
+                .select(qOpenLesson.count())
+                .from(qOpenLesson, qOrders)
+                .where(builder)
+                .orderBy(qOpenLesson.startTime.asc())
+                .fetchOne();
 
         List<OpenLesson> lessons = jpaQueryFactory
                 .select(qOpenLesson)
@@ -145,10 +154,14 @@ public class LessonRepositorySupport {
                 .offset(offset)
                 .limit(limit)
                 .fetch();
-        return lessons;
+
+        res.put("LESSON_LIST", lessons);
+        res.put("COUNT", count);
+        return res;
     }
 
-    public List<Lesson> findAttendLessonListByTeacher(Long userId, int limit, int offset) {
+    public HashMap<String, Object> findAttendLessonListByTeacher(Long userId, int limit, int offset) {
+        HashMap<String, Object> res = new HashMap<>();
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(qLesson.user.auth.id.eq(userId));
 
@@ -161,7 +174,15 @@ public class LessonRepositorySupport {
                 .limit(limit)
                 .fetch();
 
-        return lessonList;
+        Long count = jpaQueryFactory
+                .select(qLesson.count())
+                .from(qLesson)
+                .where(builder)
+                .fetchOne();
+
+        res.put("LESSON_LIST", lessonList);
+        res.put("COUNT", count);
+        return res;
     }
 
     /*
@@ -228,6 +249,7 @@ public class LessonRepositorySupport {
                 .from(qLesson)
                 .leftJoin(qLesson.openLessonList, qOpenLesson)
                 .where(builder)
+                .orderBy(qLesson.id.desc())
                 .offset(offset)
                 .limit(limit)
                 .fetch();

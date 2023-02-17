@@ -49,7 +49,7 @@ public class UserRepositorySupport {
     //이메일로 id를 반환
     public Long findId(String email) {
 
-        Long id = jpaQueryFactory.select(qUser.id).from(qUser).join(qUser.auth, qAuth)
+        Long id = jpaQueryFactory.select(qUser.auth.id).from(qUser).join(qUser.auth, qAuth)
                 .where(qAuth.email.eq(email)).fetchOne();
 
         return id;

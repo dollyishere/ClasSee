@@ -5,6 +5,7 @@ import com.ssafy.db.entity.lesson.*;
 import com.ssafy.db.entity.orders.Orders;
 import com.ssafy.db.entity.orders.QOrders;
 import com.ssafy.db.entity.user.QUser;
+import com.ssafy.db.entity.user.User;
 import io.lettuce.core.api.push.PushListener;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -28,6 +29,14 @@ public class OrdersRepositorySupport {
     public void delete(Orders orders){ em.remove(orders); }
 
     public Orders findOne(Long id){ return em.find(Orders.class, id); }
+
+    public Long findUserId(String email){
+        return jpaQueryFactory
+                .select(qUser.id)
+                .from(qUser)
+                .where(qUser.auth.email.eq(email))
+                .fetchOne();
+    }
 
     public Orders findOne(Long user_id, Long openLesson_id){
         Orders orders = jpaQueryFactory
@@ -62,4 +71,22 @@ public class OrdersRepositorySupport {
         em.remove(orders);
     }
 
+    public Long ordersCount(Long openLessonId){
+        return jpaQueryFactory
+                .select(qOrders.count())
+                .from(qOrders)
+                .where(qOrders.openLesson.id.eq(openLessonId))
+                .fetchOne();
+    }
+
+    public boolean AttendedCheck(Long lessonId, User user) {
+        if (user == null) return false;
+        return jpaQueryFactory
+                .select(qOrders.id)
+                .from(qOrders)
+                .where(
+                        qOrders.openLesson.lessonId.eq(lessonId),
+                        qOrders.user.eq(user)
+                ).fetchFirst() != null;
+    }
 }

@@ -5,6 +5,7 @@ import com.ssafy.api.dto.AttendLessonInfoDto;
 import com.ssafy.api.dto.AttendOpenLessonInfoDto;
 import com.ssafy.api.dto.LessonInfoDto;
 import com.ssafy.api.dto.LessonSearchFilterDto;
+import com.ssafy.api.response.AttendLessonInfoListRes;
 import com.ssafy.api.response.LessonDetailsRes;
 import com.ssafy.api.response.LessonSchedulesRes;
 import com.ssafy.db.entity.lesson.Lesson;
@@ -32,8 +33,8 @@ public interface LessonService {
 
     LessonSchedulesRes getLessonSchedules(Long lessonId, LocalDate regDate);
 
-    List<AttendLessonInfoDto> getAttendLessonListByTeacher(Long userId, int limit, int offset);
-    List<AttendOpenLessonInfoDto> getAttendLessonListByStudent(Long userId, String query, int limit, int offset);
+    AttendLessonInfoListRes getAttendLessonListByTeacher(Long userId, int limit, int offset);
+    AttendLessonInfoListRes getAttendLessonListByStudent(Long userId, String query, int limit, int offset);
 
     List<Lesson> getPopularLessonList();
 

@@ -1,13 +1,11 @@
 package com.ssafy.api.service;
 
 import com.ssafy.api.request.PhotocardRegistPostReq;
-import com.ssafy.common.exception.handler.LessonException;
-import com.ssafy.common.exception.handler.LikesException;
-import com.ssafy.common.exception.handler.PhotocardException;
-import com.ssafy.common.exception.handler.UserException;
+import com.ssafy.common.exception.handler.*;
 import com.ssafy.db.entity.board.Likes;
 import com.ssafy.db.entity.board.Photocard;
 import com.ssafy.db.entity.lesson.Lesson;
+import com.ssafy.db.entity.lesson.OpenLesson;
 import com.ssafy.db.entity.user.User;
 import com.ssafy.db.repository.LessonRepository;
 import com.ssafy.db.repository.LessonRepositorySupport;
@@ -50,9 +48,21 @@ public class PhotocardServiceImpl implements PhotocardService {
         Lesson lesson = photocardRepositorySupport
                 .findOneLesson(photocardRegistPostReq.getLessonId());
 
+        OpenLesson openLesson = photocardRepositorySupport
+                .findOneOpenLesson(photocardRegistPostReq.getOpenLessonId());
+
         if(lesson == null){
             throw new LessonException("lesson not found");
         }
+
+        if(openLesson == null){
+            throw new OpenLessonException("openlesson not found");
+        }
+
+        if(photocardRepositorySupport.findOne(user_id,photocardRegistPostReq.getOpenLessonId()) != null){
+            throw new PhotocardException("photocard duplicated");
+        }
+
 
         Photocard photocard = Photocard.builder()
                 .title(photocardRegistPostReq.getTitle())
@@ -60,6 +70,7 @@ public class PhotocardServiceImpl implements PhotocardService {
                 .img(photocardRegistPostReq.getImg())
                 .sign(photocardRegistPostReq.getSign())
                 .regDate(LocalDateTime.now().toString())
+                .openLesson_id(photocardRegistPostReq.getOpenLessonId())
                 .lesson_name(lesson.getName())
                 .user(user)
                 .build();

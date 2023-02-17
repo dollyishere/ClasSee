@@ -40,6 +40,10 @@ public class OrdersInfoGetRes {
 
     Long kitPrice;
 
+    Integer statusCode;
+
+    String message;
+
     public OrdersInfoGetRes(OpenLesson openLesson, Lesson lesson, User user){
 
         this.lessonName = lesson.getName();

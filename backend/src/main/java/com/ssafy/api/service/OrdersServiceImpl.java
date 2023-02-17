@@ -2,10 +2,7 @@ package com.ssafy.api.service;
 
 import com.ssafy.api.request.OrdersRegistPostReq;
 import com.ssafy.api.response.OrdersInfoGetRes;
-import com.ssafy.common.exception.handler.LessonException;
-import com.ssafy.common.exception.handler.OpenLessonException;
-import com.ssafy.common.exception.handler.OrdersException;
-import com.ssafy.common.exception.handler.UserException;
+import com.ssafy.common.exception.handler.*;
 import com.ssafy.db.entity.lesson.Lesson;
 import com.ssafy.db.entity.lesson.OpenLesson;
 import com.ssafy.db.entity.orders.Orders;
@@ -45,6 +42,10 @@ public class OrdersServiceImpl implements OrdersService{
 
         if(lesson == null){
             throw new LessonException("lesson not found");
+        }
+
+        if(ordersRepositorySupport.ordersCount(openLesson.getId()) >= lesson.getMaximum()){
+            throw new MaximumException("exceed the maximum");
         }
 
         Long user_id = userRepositorySupport.findId(email);
@@ -138,13 +139,21 @@ public class OrdersServiceImpl implements OrdersService{
     }
 
     @Override
-    public void deleteOrders(Long ordersId) throws OrdersException {
+    public void deleteOrders(String email, Long openLessonId) throws Exception {
 
-        if(ordersRepositorySupport.findOne(ordersId) == null){
+        Long user_id = ordersRepositorySupport.findUserId(email);
+
+        if(user_id == null){
+            throw new UserException("user not found");
+        }
+
+        Orders orders = ordersRepositorySupport.findOne(user_id, openLessonId);
+
+        if(orders == null){
             throw new OrdersException("orders not found");
         }
 
-        ordersRepositorySupport.deleteOrders(ordersId);
+        ordersRepositorySupport.delete(orders);
 
     }
 

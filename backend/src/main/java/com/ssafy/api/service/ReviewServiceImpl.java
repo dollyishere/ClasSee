@@ -35,7 +35,7 @@ public class ReviewServiceImpl implements ReviewService {
     OrdersRepositorySupport ordersRepositorySupport;
 
     @Override
-    public void createReview(ReviewRegistPostReq reviewRegistPostReq) throws Exception {
+    public Long createReview(ReviewRegistPostReq reviewRegistPostReq) throws Exception {
 
         Long user_id = userRepositorySupport
                 .findId(reviewRegistPostReq.getUserEmail());
@@ -54,10 +54,6 @@ public class ReviewServiceImpl implements ReviewService {
             throw new LessonException("LESSON NOT FOUND");
         }
 
-        if(reviewRepositorySupport.findOne(user_id, lesson.getId()) != null){
-            throw new ReviewException("duplicated review");
-        }
-
         Review review = Review.builder()
                 .content(reviewRegistPostReq.getContent())
                 .regtime(Timestamp.valueOf(LocalDateTime.now()))
@@ -69,8 +65,7 @@ public class ReviewServiceImpl implements ReviewService {
 
         reviewRepositorySupport.save(review);
 
-        return;
-
+        return review.getId();
     }
 
     @Override

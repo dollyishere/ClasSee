@@ -7,10 +7,7 @@ import com.ssafy.api.response.PageGetRes;
 import com.ssafy.api.response.PhotocardListGetRes;
 import com.ssafy.api.response.PhotocardPageGetRes;
 import com.ssafy.api.service.PhotocardService;
-import com.ssafy.common.exception.handler.LessonException;
-import com.ssafy.common.exception.handler.LikesException;
-import com.ssafy.common.exception.handler.PhotocardException;
-import com.ssafy.common.exception.handler.UserException;
+import com.ssafy.common.exception.handler.*;
 import com.ssafy.common.model.response.*;
 import com.ssafy.db.entity.board.Photocard;
 import io.swagger.annotations.Api;
@@ -50,6 +47,10 @@ public class PhotocardController {
             return ResponseEntity.status(404).body(BaseResponseBody.of(404,"user not found"));
         } catch (LessonException l){
             return ResponseEntity.status(404).body(BaseResponseBody.of(404, "lesson not found"));
+        } catch (PhotocardException p){
+            return ResponseEntity.status(409).body(BaseResponseBody.of(409, "photocard duplicated"));
+        } catch (OpenLessonException o){
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404, "openLesson not found"));
         } catch (Exception e){
             return ResponseEntity.status(404).body(BaseResponseBody.of(404, "unexpected exception"));
         }
@@ -165,6 +166,8 @@ public class PhotocardController {
 
         photocardPage.setCount(photocardCount);
         photocardPage.setPage(photocardListGetResList);
+        photocardPage.setStatusCode(200);
+        photocardPage.setMessage("SUCCESS");
 
         return ResponseEntity.status(200).body(photocardPage);
     }
