@@ -1,0 +1,146 @@
+@use '../base/colors';
+
+.profile-page__modal {
+  background-color: white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-wrap: wrap;
+  width: 400px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  padding: 10px;
+  .profile-page__modal--row {
+    font-size: 20px;
+    width: 300px;
+    display: flex;
+    padding: 10px;
+    .profile-page__modal--label {
+      width: 30%;
+    }
+    .profile-page__modal--input {
+      width: 70%;
+    }
+  }
+}
+
+.profile-page {
+  height: 100%;
+  overflow: auto;
+
+  .profile-page__card {
+    width: 60%;
+    margin: 80px auto;
+    .profile-page__buttons {
+      margin-left: auto;
+      width: 200px;
+      text-align: center;
+      .profile-page__button {
+        color: colors.$gray_color;
+        background-color: colors.$beige-color;
+        font-size: 16px;
+        width: 120px;
+        margin: 5px 0;
+      }
+    }
+
+    .profile-page__header {
+      display: flex;
+      .profile-page__image {
+        width: 33%;
+        height: 300px;
+        flex-wrap: wrap;
+        .profile-page__image--not {
+          margin: 20px auto;
+          width: 220px;
+          height: 220px;
+          background-color: colors.$light_gray_color;
+          border-radius: 50%;
+        }
+        .profile-page__image--change {
+          padding: 0 20px 0 0;
+          text-align: right;
+          color: colors.$theme_color;
+          label {
+            cursor: pointer;
+            input {
+              display: none;
+            }
+          }
+        }
+      }
+      .profile-page__sub-header {
+        display: flex;
+        flex-wrap: wrap;
+        .profile-page__section--nickname {
+          font-size: 32px;
+          padding: 20px;
+          text-align: left;
+          font-weight: 600;
+          display: flex;
+          align-items: flex-end;
+          height: 50%;
+          width: 100%;
+          .profile-page__nickname {
+            height: 100%;
+            span {
+              color: colors.$theme_color;
+            }
+          }
+        }
+        .profile-page__section--point {
+          display: flex;
+          width: 100%;
+          padding: 20px;
+          .profile-page__point {
+            width: 70%;
+            font-weight: 600;
+            font-size: 32px;
+            text-align: right;
+            span {
+              color: colors.$theme_color;
+            }
+          }
+        }
+      }
+    }
+    .profile-page__info {
+      font-size: 24px;
+      padding: 20px;
+      .profile-page__section {
+        display: flex;
+        padding: 2px 0;
+
+        .profile-page__section--label {
+          width: 100px;
+          font-weight: 600;
+          text-align: right;
+        }
+        .profile-page__section--content {
+          width: 50%;
+          color: colors.$gray_color;
+          text-align: left;
+          margin: 0 50px;
+          textarea {
+            width: 100%;
+            height: 200px;
+            resize: none;
+            border-style: solid;
+            border-width: 1px;
+            border-color: colors.$gray_color;
+            border-radius: 10px;
+            padding: 10px;
+          }
+        }
+      }
+    }
+    .profile-page__withdrawl {
+      padding: 10px;
+      color: white;
+      background-color: red;
+    }
+  }
+}

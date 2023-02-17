@@ -1,26 +1,18 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from 'react';
+import { RecoilRoot, useRecoilValue } from 'recoil';
 
-function App() {
+import TopRoutes from './TopRoutes';
+import './App.css';
+import './styles/main.scss';
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <RecoilRoot>
+      <div className="App">
+        <TopRoutes />
+      </div>
+    </RecoilRoot>
   );
-}
+};
 
 export default App;

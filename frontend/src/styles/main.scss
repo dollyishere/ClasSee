@@ -1,0 +1,69 @@
+// base
+@use './base/colors';
+
+// components
+@use './components/header';
+@use './components/footer';
+@use './components/custom-carousel';
+@use './components/my-applied-lesson-mainpage';
+@use './components/my-applied-lesson-card';
+@use './components/my-applied-lesson-cancel-modal';
+@use './components/my-create-lesson-mainpage';
+@use './components/recommand-lesson';
+@use './components/lesson-card';
+@use './components/button';
+@use './components/user-video';
+@use './components/chat-box';
+@use './components/message';
+@use './components/sidebar';
+@use './components/search-box';
+@use './components/calendar';
+@use './components/_check-schedule';
+@use './components/photo-card';
+@use './components/review';
+@use './components/lesson_carousel';
+@use './components/review-card';
+@use './components/no_lesson';
+@use './components/create-schedule';
+@use './components/schedule-detail';
+@use './components/step';
+@use './components/category-select-box';
+@use './components/image-upload';
+
+// pages
+@use './pages/signup-page';
+@use './pages/video-call-page';
+@use './pages/login-page';
+@use './pages/create-lesson-page';
+@use './pages/lesson-detail-page';
+@use './pages/my-page';
+@use './pages/profile-page';
+@use './pages/lessons_page';
+@use './pages/point-charge-page';
+@use './pages/my-bookmark-page';
+@use './pages/find-pw-page';
+@use './pages/my-created-lessons-page';
+@use './pages/my-created-lesson-detail-page';
+@use './pages/my-applied-lessons-page';
+@use './pages/photo-card-qr-page';
+@use './pages/create-photo-card-page';
+@use './pages/photo-cards-page';
+@use './pages/my-photo-book-page';
+@use './pages/notice-page';
+@use './pages/create-notice-page';
+@use './pages/notice-detail-page';
+@use './pages/lesson-enroll-page';
+@use './pages/update-lesson-page';
+@use './pages/my-review-page';
+
+html,
+body,
+#root,
+.App {
+  margin: 0;
+  height: 100%;
+}
+
+.page {
+  background-color: colors.$theme_color_light;
+}

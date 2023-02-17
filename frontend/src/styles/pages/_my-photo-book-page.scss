@@ -1,0 +1,40 @@
+.my-photo-book-page__modal {
+  width: 20%;
+  height: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.my-photo-book-page {
+  .my-photo-book-page__card {
+    width: 80%;
+    margin: 40px auto;
+    display: flex;
+    justify-content: center;
+    .my-photo-book-page__card-content {
+      width: 90%;
+      .my-photo-book-page__title {
+        font-size: 36px;
+        font-weight: bold;
+        width: 100%;
+        text-align: left;
+      }
+      .my-photo-book-page__list {
+        margin: 0 auto;
+        display: flex;
+        width: 90%;
+        flex-wrap: wrap;
+        .my-photo-book-page__card {
+          width: 30%;
+          height: 400px;
+          z-index: 0;
+        }
+      }
+      .my-photo-book-page__pagination {
+        display: flex;
+        justify-content: center;
+      }
+    }
+  }
+}

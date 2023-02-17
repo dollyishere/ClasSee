@@ -1,0 +1,43 @@
+@use '../base/colors';
+
+.chat-box {
+  width: 500px;
+  background-color: colors.$theme-color;
+  z-index: 1;
+  .chat-box__header {
+    padding: 20px;
+    display: flex;
+    span {
+      font-size: 24px;
+      color: white;
+      font-weight: bold;
+    }
+
+    .chat-box__close-btn {
+      margin-left: auto;
+      background-color: white;
+      border: none;
+      border-radius: 50%;
+      color: colors.$theme-color;
+      cursor: pointer;
+    }
+  }
+  .chat-box__message-box {
+    background-color: white;
+    margin: 0 10px;
+    height: 83%;
+    border-radius: 10px;
+    overflow: auto;
+  }
+
+  .chat-box__form {
+    margin: 20px;
+    .chat-box__input {
+      font-size: 24px;
+      border-radius: 10px;
+      width: 100%;
+      height: 36px;
+      border: none;
+    }
+  }
+}

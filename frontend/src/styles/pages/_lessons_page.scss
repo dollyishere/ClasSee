@@ -1,0 +1,84 @@
+@use '../base/colors';
+@use '../components/sidebar';
+@use '../components/header';
+
+.lessons-page {
+  height: 100%;
+  background-color: colors.$theme_color_light;
+  .lessons-page__contents {
+    height: calc(100% - header.$height);
+    width: 100%;
+    height: calc(100% - 80px);
+    display: flex;
+    .lessons-page__sub-page {
+      width: calc(100% - sidebar.$width);
+      overflow: auto;
+
+      .lessons-page__lesson-card {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 33%;
+      }
+
+      .lessons-page__pagination {
+        display: flex;
+        justify-content: center;
+        padding: 20px;
+      }
+    }
+  }
+}
+@media screen and (min-width: 1024px) {
+  .lessons-page__lesson-list {
+    width: 80%;
+    margin: 0 auto 0 300px;
+    // display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    flex-wrap: wrap;
+  }
+}
+@media screen and (min-width: 700px) and (max-width: 1024px) {
+  .lessons-page__lesson-list {
+    width: 80%;
+    margin: 0 auto 0 300px;
+    // display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    flex-wrap: wrap;
+  }
+}
+@media screen and (max-width: 700px) {
+  .recommandlessons__cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    // display: flex;
+    // justify-content: space-evenly;
+  }
+}
+// @media screen and (min-width: 1024px) {
+//   .lessons-page__lesson-list {
+//     display: grid;
+//     grid-template-columns: 1fr 1fr 1fr 1fr;
+//     // display: flex;
+//     // justify-content: space-evenly;
+//   }
+// }
+
+// @media screen and (min-width: 700px) and (max-width: 1024px) {
+//   .recommandlessons__cards {
+//     display: grid;
+//     grid-template-columns: 1fr 1fr 1fr;
+//     // display: flex;
+//     // justify-content: space-evenly;
+//   }
+// }
+// @media screen and (max-width: 700px) {
+//   .recommandlessons__cards {
+//     display: grid;
+//     grid-template-columns: 2fr 2fr;
+//     // display: flex;
+//     // justify-content: space-evenly;
+//   }
+// }

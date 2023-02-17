@@ -1,0 +1,29 @@
+@use '../base/colors';
+// .recommandlessons {
+// }
+
+@media screen and (min-width: 1024px) {
+  .recommandlessons__cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    // display: flex;
+    // justify-content: space-evenly;
+  }
+}
+
+@media screen and (min-width: 700px) and (max-width: 1024px) {
+  .recommandlessons__cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    // display: flex;
+    // justify-content: space-evenly;
+  }
+}
+@media screen and (max-width: 700px) {
+  .recommandlessons__cards {
+    display: grid;
+    grid-template-columns: 2fr 2fr;
+    // display: flex;
+    // justify-content: space-evenly;
+  }
+}

@@ -1,0 +1,52 @@
+@use '../base/colors';
+
+.search-box {
+  padding: 40px 20%;
+  .search-box__card {
+    font-size: 20px;
+    padding: 20px 10%;
+    .search-box__row {
+      margin: 24px 0;
+      justify-content: center;
+      align-items: center;
+      display: flex;
+      width: 100%;
+      .search-box__label {
+        width: 20%;
+      }
+      .search-box__content {
+        width: 80%;
+        display: flex;
+        justify-content: center;
+      }
+      .search-box__input {
+        width: 130px;
+        text-align: right;
+        box-sizing: border-box;
+        border-radius: 10px;
+        font-size: 20px;
+        padding: 8px;
+      }
+      .search-box__button--day {
+        background-color: colors.$beige_color;
+        font-size: 16px;
+        width: 80px;
+        margin: 0 10px;
+        color: colors.$gray_color;
+      }
+      .clicked {
+        background-color: colors.$beige_color_focus;
+        color: black;
+      }
+      .search-box__button {
+        background-color: colors.$theme_color;
+        color: white;
+        width: 20%;
+        margin: 0 16px;
+        &:hover {
+          font-size: 25px;
+        }
+      }
+    }
+  }
+}
