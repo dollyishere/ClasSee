@@ -1,0 +1,23 @@
+@use '../base/colors';
+
+.create_apply_lessons {
+  display: flex;
+  margin-bottom: 100px;
+}
+.createlessons {
+  width: 50%;
+  border-right: 1.5px solid black;
+  .createlessons__title {
+    margin-left: 50px;
+    text-align: left;
+  }
+  @media screen and (min-width: 700px) {
+    .createlessons__cards {
+      column-count: 8;
+    }
+  }
+  .createlessons__cards {
+    display: flex;
+    justify-content: space-evenly;
+  }
+}

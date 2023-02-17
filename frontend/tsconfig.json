@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -19,8 +15,9 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx"
+    // @types/mysql 설치 후 추가하라고 하는 글을 보고 써놓은 것 없어도 되는지 불확실
+    // "typeRoots": ["./node_modules/@types"],
+    // "types": ["mysql"]
   },
-  "include": [
-    "src"
-  ]
+  "include": ["src"]
 }

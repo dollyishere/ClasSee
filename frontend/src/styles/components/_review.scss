@@ -1,0 +1,66 @@
+@use '../base/colors';
+
+.review {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  .review__review-list {
+    width: 80%;
+  }
+  .review__pagination {
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    margin: 0 0 60px 0;
+  }
+  .review__input-box {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: colors.$beige_color_focus;
+    border-radius: 10px;
+    padding: 20px 0;
+    justify-content: center;
+    width: 80%;
+    .review__form {
+      display: flex;
+      flex-wrap: wrap;
+      width: 90%;
+      .review__button--submit {
+        margin: 0 auto;
+        width: 20%;
+        background-color: colors.$beige_color;
+        color: colors.$gray_color;
+      }
+      textarea {
+        width: 100%;
+        height: 100px;
+        resize: none;
+        border-radius: 10px;
+        padding: 20px;
+        font-size: 16px;
+        border: none;
+        box-shadow: 0 0 0 1px colors.$light_gray_color;
+        outline: none;
+      }
+
+      .review__row--input-box {
+        padding: 10px;
+        display: flex;
+        width: 100%;
+        .review__label {
+          margin-left: auto;
+          display: flex;
+          .review__button--upload {
+            background-color: colors.$theme_color;
+            color: white;
+            margin: 0 0 0 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 10px;
+          }
+        }
+      }
+    }
+  }
+}

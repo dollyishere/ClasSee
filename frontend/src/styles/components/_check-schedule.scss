@@ -1,0 +1,48 @@
+@use '../base/colors';
+
+.check-schedule__header {
+  width: 300px;
+}
+.check-schedule__container {
+  width: 300px;
+  justify-content: center;
+  // opacity: 0;
+  // transition: opacity 0.3s ease-in;
+  .check-schedule__container-show {
+    width: 300px;
+    justify-content: center;
+    opacity: 1;
+  }
+  .check-schedule__date-part {
+    display: inline-block;
+    .check-schedule__date-info {
+      width: 100%;
+      padding: 1px;
+      margin: 0%;
+      border-radius: 10%;
+      background-color: colors.$theme_color;
+    }
+  }
+}
+
+.check-schedule__ul {
+  list-style: none;
+  padding-left: 0px;
+  .check-schedule__li {
+    list-style: none;
+    text-align: center;
+    margin-block: 10px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: stretch;
+    justify-content: center;
+    align-items: center;
+    background-color: colors.$beige-color;
+    .check-schedule__class-time {
+      margin-right: 5px;
+      font-weight: bolder;
+      height: 100%;
+    }
+  }
+}

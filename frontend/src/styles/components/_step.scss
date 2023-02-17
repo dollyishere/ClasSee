@@ -1,0 +1,127 @@
+@use '../base/colors';
+
+.step {
+  width: 100%;
+  margin: 20px auto;
+  .step__title {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  .step__row {
+    padding: 10px 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+  }
+  .step__right {
+    justify-content: right;
+  }
+
+  .step__center {
+    justify-content: center;
+  }
+
+  .step__lesson-title {
+    width: 60%;
+    height: 40px;
+    font-size: 24px;
+    font-weight: bold;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom-width: 0.5px;
+    outline: none;
+  }
+  ul {
+    padding: 0;
+  }
+  .step__textarea {
+    width: 80%;
+    margin: 20px auto;
+    resize: none;
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 0 0 0.5px black;
+    padding: 10px;
+  }
+  .step__curriculum {
+    background-color: colors.$theme_color;
+    width: 80%;
+    height: 64px;
+    border-radius: 10px;
+    margin: 10px auto;
+    align-items: center;
+    display: flex;
+    .step__curriculum-label {
+      color: white;
+      font-size: 24px;
+      font-weight: bold;
+      width: 20%;
+      text-align: center;
+    }
+    .step__curriculum-content {
+      width: 66%;
+      height: 60%;
+      outline: none;
+      border-radius: 10px;
+      border: none;
+      padding: 0 2%;
+    }
+    .step__curriculum-button {
+      width: 10%;
+      margin-left: auto;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+
+  .step__etc {
+    display: flex;
+    width: 80%;
+    margin: 10px auto;
+    font-size: 20px;
+    font-weight: bold;
+    justify-content: right;
+    align-items: center;
+    p {
+      margin: 0 20px;
+      font-size: 12px;
+    }
+    input {
+      font-size: 20px;
+      outline: none;
+    }
+    span {
+      width: 10%;
+      text-align: center;
+    }
+  }
+
+  .step__price {
+    display: flex;
+    justify-content: center;
+    label {
+      width: 60%;
+      flex-wrap: wrap;
+      display: flex;
+      justify-content: center;
+      margin: 10px 0;
+      font-size: 20px;
+      font-weight: bold;
+      .step__price-label {
+        width: 30%;
+      }
+      input {
+        width: 30%;
+        text-align: right;
+        margin: 0 10px;
+      }
+      .step__price-button {
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}

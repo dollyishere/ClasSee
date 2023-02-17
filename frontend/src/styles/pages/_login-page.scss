@@ -1,0 +1,166 @@
+@use '../base/colors';
+
+.login-page {
+  height: 100%;
+  background-color: rgb(255, 255, 255);
+  .login-page__container {
+    margin: 200px auto;
+    width: 400px;
+    padding: 30px 30px;
+    height: 450px;
+    // width: 300px;
+    align-items: center;
+    // border-width: 1px;
+    // border-color: colors.$gray_color;
+    // border-style: solid;
+    background-color: rgb(255, 255, 255);
+    // text-align: center;
+    .logo {
+      align-items: center;
+      padding: 0 30px;
+      img {
+        height: 50px;
+      }
+    }
+
+    .login {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 16px;
+      .login__input {
+        padding: 0px 10px;
+        height: 40px;
+        width: 230px;
+        margin: 10px;
+        border-width: 1px;
+        border-color: colors.$gray_color;
+        font-size: 13px;
+        border-radius: 10px;
+        &:focus {
+          border-color: colors.$theme_color;
+        }
+      }
+
+      .login__show {
+        background-color: transparent;
+        color: colors.$gray_color;
+        border-width: 0;
+        padding: 0 0px;
+        margin-left: -25px;
+        position: relative; left: -20px; top: 8px;
+        &:hover {
+          cursor: pointer;
+          color: black;
+        }
+      }
+
+      .link {
+        display: inline;
+        align-items: flex-end;
+        text-align: center;
+        list-style: none;
+        float: inline-end;
+        li {
+          display: inline-block;
+        }
+        .link__item {
+          font-size: 12px;
+          color: colors.$theme_color;
+        }
+      }
+    }
+
+    .find_pw_button{
+      padding: 10px 10px;
+      color: white;
+      height: 40px;
+      width: 130px;
+      border-width: 0px;
+      border-radius: 10px;
+      background-color: colors.$theme_color;
+      box-shadow: 0 2px 4px gray;
+      transition: 0.1s;
+      font-size: 13px;
+      font-weight: bold;
+      line-height: 20px;
+      border: 0;
+      outline: 0;
+      margin: 5px;
+      &:hover {
+        cursor: pointer;
+        background-color: colors.$theme_color_focus;
+      }
+    }
+
+    .signup_button{
+      padding: 10px 10px;
+      color: white;
+      height: 40px;
+      width: 110px;
+      border-width: 0px;
+      border-radius: 10px;
+      background-color: colors.$theme_color;
+      box-shadow: 0 2px 4px gray;
+      transition: 0.1s;
+      font-size: 13px;
+      font-weight: bold;
+      line-height: 20px;
+      border: 0;
+      outline: 0;
+      margin: 5px;
+      &:hover {
+        cursor: pointer;
+        background-color: colors.$theme_color_focus;
+      }
+    }
+
+    .login__find{
+      font-size: 12px;
+      font-family:'Franklin Gothic Medium', 'Arial Narrow';
+    }
+
+    .login__button {
+      padding: 10px 10px;
+      color: rgb(255, 255, 255);
+      height: 40px;
+      width: 250px;
+      border-width: 0px;
+      border-radius: 10px;
+      background-color: colors.$theme_color;
+      box-shadow: 0 2px 4px gray;
+      transition: 0.1s;
+      font-size: 13px;
+      font-weight: bold;
+      line-height: 20px;
+      border: 0;
+      outline: 0;
+      margin: 5px;
+      &:hover {
+        cursor: pointer;
+        font-size: 15px;
+        background-color: colors.$theme_color_focus;
+      }
+    }
+    .social-login {
+      background-color: #ffe100;
+      color: #3c1e1e;
+      line-height: 0px;
+      position: relative;
+      top: -7px;
+      &:hover {
+        background-color: #e4d104;
+      }
+
+    }
+    .kakao__icon{
+      float: left;
+    }
+    .kakao__text {
+      line-height: 25px;
+      
+      position: relative; left: -10px;
+    }
+  }
+}
