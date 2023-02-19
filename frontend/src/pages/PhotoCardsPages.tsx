@@ -30,7 +30,7 @@ const PhotoCardsPage = () => {
   const getData = async () => {
     const limit = 10;
     const offset = (page - 1) * limit;
-    if (userInfo) {
+    if (userInfo !== null) {
       const response = await getPhotoCards(userInfo.email, limit, offset);
       setPhotoCards([...response.page]);
       setCount(Math.ceil(response.count / limit));

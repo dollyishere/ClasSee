@@ -31,7 +31,9 @@ const ProfileViewModel = () => {
 
   const getUserInfo = async (email: string) => {
     const response = await doGetUserInfo(email);
-    setUserInfo({ ...response, email });
+    if (response.statusCode === 200) {
+      setUserInfo({ ...response, email });
+    }
     return response;
   };
 
