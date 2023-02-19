@@ -14,6 +14,8 @@ import java.time.LocalDate;
 @ApiModel("UserInfoGetResponse")
 public class UserInfoGetRes extends BaseResponseBody {
 
+    int statusCode;
+    String message;
     String name;
     String nickname;
     String address;
