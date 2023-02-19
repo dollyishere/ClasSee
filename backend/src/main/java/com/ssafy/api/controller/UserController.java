@@ -102,6 +102,8 @@ public class UserController {
             return ResponseEntity.status(404).body("user not found");
         }
         UserInfoGetRes userInfoGetRes = new UserInfoGetRes(user);
+        userInfoGetRes.setStatusCode(200);
+        userInfoGetRes.setMessage("SUCCESS");
 
         return ResponseEntity.status(200).body(userInfoGetRes);
     }
