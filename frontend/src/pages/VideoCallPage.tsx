@@ -619,6 +619,21 @@ const VideoCallPage = () => {
         </div>
         {/* 화상통화에 사용하는 각종 기능 버튼들을 배치할 푸터 */}
         <div className="video-call-page__footer">
+          <div className="video-call-page__hands">
+            {raiseHand.map((hand: StreamManager) => (
+              <div
+                role="presentation"
+                key={JSON.parse(hand.stream.connection.data).clientData}
+                className="video-call-page__hand"
+                onClick={() => handleVideoClick(hand)}
+              >
+                <div className="video-call-page__icon">
+                  <PanTool style={{ width: '48px', height: '48px' }} />
+                </div>
+                <div>{JSON.parse(hand.stream.connection.data).clientData}</div>
+              </div>
+            ))}
+          </div>
           <div className="video-call-page__buttons">
             {/* 손들기 버튼 */}
             <button
@@ -673,21 +688,6 @@ const VideoCallPage = () => {
             >
               <Message fontSize="large" />
             </button>
-          </div>
-          <div className="video-call-page__hands">
-            {raiseHand.map((hand: StreamManager) => (
-              <div
-                role="presentation"
-                key={JSON.parse(hand.stream.connection.data).clientData}
-                className="video-call-page__hand"
-                onClick={() => handleVideoClick(hand)}
-              >
-                <div>
-                  <PanTool />
-                </div>
-                <div>{JSON.parse(hand.stream.connection.data).clientData}</div>
-              </div>
-            ))}
           </div>
         </div>
       </div>
