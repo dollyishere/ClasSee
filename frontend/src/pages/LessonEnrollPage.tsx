@@ -143,9 +143,9 @@ const LessonEnrollPage = () => {
             setOpenLessonInfo(res);
             const imgRef = ref(
               storage,
-              `lessons/${Number(
-                openLessonId.lessonId,
-              )}/pamphlet_images/${res.lessonImg}`,
+              `lessons/${Number(openLessonId.lessonId)}/pamphlet_images/${
+                res.lessonImg
+              }`,
             );
             const url = await getDownloadURL(imgRef);
             setLessonImage(url);
