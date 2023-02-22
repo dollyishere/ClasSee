@@ -250,6 +250,9 @@ const LessonDetailPage = () => {
                   </div>
                 )}
               </div>
+              <h3 className="lesson-detail-page__price">
+                {lessonDetailState.price}원
+              </h3>
               <div className="lesson__category">
                 <div className="lesson__category--text">
                   {lessonDetailState.category}
