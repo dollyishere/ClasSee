@@ -122,3 +122,7 @@
 - [시스템 구성도](./output/SystemConfiguration)
 - [ERD](./output/ERD)
 - [E2E TEST](./output/E2ETest)
+
+## ✔ UCC 음원 출처
+https://www.youtube.com/watch?v=WJ2HYRzCz2g&t=1437s [🎄Playlist🎄] 샛별 음악 - 귀여움 = ( ´・`)
+https://www.youtube.com/watch?v=X_iSipLXcg0 ✨샛별 - 솜뭉치✨(Royalty Free Music)
