@@ -138,6 +138,7 @@ const LessonEnrollPage = () => {
           userInfo.email,
           Number(openLessonId.openLessonId),
         );
+        console.log(res);
         if (res?.statusCode === 200) {
           if (res.lessonTeacherName !== userInfo.name) {
             setOpenLessonInfo(res);
@@ -153,13 +154,13 @@ const LessonEnrollPage = () => {
             alert('자신이 개설한 클래스는 신청이 불가능합니다.');
             navigate(`/lesson/${openLessonId.lessonId}`);
           }
-        } else if (res?.status === 401) {
+        } else if (res?.statusCode === 401) {
           alert('로그인이 필요합니다.');
           navigate(`/login`);
-        } else if (res?.status === 404) {
+        } else if (res?.statusCode === 404) {
           alert('해당 스케줄 또는 클래스가 존재하지 않습니다.');
           navigate(`/lesson/${openLessonId.lessonId}`);
-        } else if (res?.status === 500) {
+        } else if (res?.statusCode === 500) {
           alert('서버 오류입니다. 다시 시도해주십시오.');
           navigate(`/lesson/${openLessonId.lessonId}`);
         } else {
